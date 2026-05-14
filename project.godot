@@ -11,8 +11,25 @@ config_version=5
 [application]
 
 config/name="2026_01-Taller-Sistemas-Software-Videojuego-301"
+run/main_scene="uid://tjyxg3ebxn0i"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+AUDIOMANAGER="*uid://dtpeafd6gy3q2"
+CLIENTMANAGER="*uid://dsk7c8ugvy4wj"
+DAYMANAGER="*uid://cggfm483tnp4c"
+ECONOMYMANAGER="*uid://dlaaob3shxw11"
+EVENTMANAGER="*uid://bd1omspi18yqe"
+GAMEMANAGER="*uid://dpspn7q5ttxku"
+INVENTORYMANAGER="*uid://cy2w3le7etpso"
+SERVICEMANAGER="*uid://to0vy78y4go5"
+DialogueManager="*uid://c3rodes2l3gxb"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/dialogue_manager/plugin.cfg")
 
 [physics]
 
