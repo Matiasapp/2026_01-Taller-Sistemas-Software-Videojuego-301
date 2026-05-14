@@ -40,38 +40,28 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -364.5
-offset_top = -181.5
-offset_right = 364.5
-offset_bottom = 181.5
+offset_left = -118.0
+offset_top = 131.0
+offset_right = 543.0
+offset_bottom = 285.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 theme = ExtResource("1_4v8sn")
 theme_override_styles/panel = SubResource("StyleBoxTexture_rygbo")
 
-[node name="Label" type="Label" parent="CanvasLayer/Panel" unique_id=771166603]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -312.5
-offset_top = -130.5
-offset_right = 347.5
-offset_bottom = 152.5
-grow_horizontal = 2
-grow_vertical = 2
-text = "Es lunes por la mañana y el aire en el taller huele a aceite quemado y a desesperación. Heredaste este negocio con la promesa de un futuro brillante, pero hoy la realidad es otra: las deudas se acumulan, el refrigerador está vacío y el inspector municipal ya ha pasado dos veces por la acera.  Tienes exactamente 7 días para evitar que la cortina metálica se cierre para siempre.  Cada cliente que cruza esa puerta es una oportunidad de salvación o un paso más hacia el abismo. Deberás diagnosticar fallas con precisión, decidir si usas repuestos de calidad o piezas dudosas para ahorrar unos pesos, y gestionar tu reputación mientras el hambre aprieta.  En este taller, el motor más difícil de reparar no es el de un auto... es tu propia supervivencia.  ¿Lograrás llegar al domingo con el taller en pie o terminarás en la quiebra absoluta?"
-horizontal_alignment = 1
-autowrap_mode = 2
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/Panel" unique_id=1383896994]
+layout_mode = 0
+offset_left = 35.0
+offset_top = 15.0
+offset_right = 630.0
+offset_bottom = 136.0
 
 [node name="Button" type="Button" parent="CanvasLayer" unique_id=773601751]
-offset_left = 976.0
-offset_top = 556.0
-offset_right = 1077.0
-offset_bottom = 609.0
+offset_left = 79.0
+offset_top = 552.0
+offset_right = 180.0
+offset_bottom = 605.0
 theme = ExtResource("1_4v8sn")
 text = "VOLVER"
 

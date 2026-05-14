@@ -13,7 +13,6 @@ config_version=5
 config/name="2026_01-Taller-Sistemas-Software-Videojuego-301"
 run/main_scene="uid://tjyxg3ebxn0i"
 config/features=PackedStringArray("4.6", "Forward Plus")
-config/icon="res://icon.svg"
 
 [autoload]
 
