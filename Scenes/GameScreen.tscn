@@ -2,46 +2,71 @@
 
 [ext_resource type="Script" uid="uid://bfbq2m0vc4yup" path="res://Scripts/game_screen.gd" id="1_qy101"]
 [ext_resource type="Script" uid="uid://cudgsjqipp24d" path="res://Scripts/UI_clock.gd" id="2_4v8sn"]
+[ext_resource type="PackedScene" uid="uid://ct3356eys7jbo" path="res://Scenes/Player.tscn" id="3_pv3es"]
+[ext_resource type="Script" uid="uid://bribn7otwngw3" path="res://Scripts/UI_numero_dia.gd" id="4_oeeqd"]
+[ext_resource type="Texture2D" uid="uid://dwym6bujar4i2" path="res://Assets/Sprites/MAPA.png" id="4_rygbo"]
+[ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="5_8u4e5"]
 
 [node name="GameScreen" type="Node2D" unique_id=1964637352]
 script = ExtResource("1_qy101")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2020918962]
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=32367552]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -584.5
-offset_top = -326.0
-offset_right = 584.5
-offset_bottom = 326.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=1803486817]
+offset_left = -52.0
+offset_top = -13.0
+offset_right = 1184.0
+offset_bottom = 662.0
 color = Color(0, 0, 0, 1)
 
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer" unique_id=1591417640]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer" unique_id=635221028]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -218.0
-offset_top = -63.5
-offset_right = 218.0
-offset_bottom = 63.5
+offset_left = -588.0
+offset_top = -315.0
+offset_right = 581.8804
+offset_bottom = 322.5
 grow_horizontal = 2
 grow_vertical = 2
+texture = ExtResource("4_rygbo")
+expand_mode = 1
+stretch_mode = 4
 
 [node name="Label" type="Label" parent="CanvasLayer" unique_id=453184042]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -200.0
-offset_top = 37.0
-offset_right = -60.0
-offset_bottom = 103.0
+offset_left = -74.0
+offset_top = 416.0
+offset_right = -6.0
+offset_bottom = 451.0
 grow_horizontal = 0
 script = ExtResource("2_4v8sn")
+
+[node name="numero_dia" type="Label" parent="CanvasLayer" unique_id=236305627]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -109.0
+offset_top = 388.0
+offset_right = -5.0
+offset_bottom = 423.0
+grow_horizontal = 0
+script = ExtResource("4_oeeqd")
+
+[node name="Player" parent="CanvasLayer" unique_id=71694045 instance=ExtResource("3_pv3es")]
+position = Vector2(746, 411)
+scale = Vector2(5, 5)
+
+[node name="start_day_button" type="Button" parent="CanvasLayer" unique_id=1125782982]
+offset_left = 1004.0
+offset_top = 594.0
+offset_right = 1136.0
+offset_bottom = 628.0
+theme = ExtResource("5_8u4e5")
+text = "empezar día"
+
+[connection signal="pressed" from="CanvasLayer/start_day_button" to="." method="_on_start_day_button_pressed"]

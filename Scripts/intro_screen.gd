@@ -68,10 +68,10 @@ func _on_comenzar_pressed() -> void:
 
 
 func _on_chico_button_pressed() -> void:
-	DatosGlobales.genero_jugador = "Masculino"
+	DATOSGLOBALES.genero_jugador = "Masculino"
 	get_tree().change_scene_to_file("res://Scenes/GameScreen.tscn")
 
 
 func _on_chica_button_pressed() -> void:
-	DatosGlobales.genero_jugador = "Femenino"
+	DATOSGLOBALES.genero_jugador = "Femenino"
 	get_tree().change_scene_to_file("res://Scenes/GameScreen.tscn")
