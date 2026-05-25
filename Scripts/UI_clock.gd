@@ -3,13 +3,13 @@ extends Label
 
 func _ready() -> void:
 	# Nos conectamos a la señal del script global
-	TIMEMANAGER.time_changed.connect(_on_time_changed)
+	TIEMPOMANAGER.time_changed.connect(_on_time_changed)
 	
 	# Mostrar la hora inicial al cargar la pantalla
-	update_clock_text(TIMEMANAGER.current_hour, TIMEMANAGER.current_minute)
+	update_clock_text(TIEMPOMANAGER.current_hour, TIEMPOMANAGER.current_minute)
 	
 	# Iniciar el tiempo del día
-	TIMEMANAGER.start_timer()
+	TIEMPOMANAGER.start_timer()
 
 func _on_time_changed(hours: int, minutes: int) -> void:
 	update_clock_text(hours, minutes)
