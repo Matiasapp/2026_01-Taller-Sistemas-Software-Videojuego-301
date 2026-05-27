@@ -15,7 +15,7 @@ func _process(delta: float) -> void:
 func _on_button_new_game_pressed() -> void:
 	#añadir sonido click
 	print("Iniciando el nivel...")
-	get_tree().change_scene_to_file("res://Scenes/IntroScreen.tscn")
+	get_tree().change_scene_to_file("res://Scenes/Gameplay/IntroScreen.tscn")
 
 func _on_button_load_game_pressed() -> void:
 	#añadir sonido click

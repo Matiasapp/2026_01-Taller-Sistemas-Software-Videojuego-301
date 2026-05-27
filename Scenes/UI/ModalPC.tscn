@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://450baybsaca4"]
 
 [ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="1_3eavq"]
-[ext_resource type="Script" uid="uid://c3e7ywr588s6m" path="res://Scripts/modal_pc_manager.gd" id="1_tkvc3"]
+[ext_resource type="Script" uid="uid://c3e7ywr588s6m" path="res://Scripts/UI/modal_pc_manager.gd" id="1_tkvc3"]
 [ext_resource type="Texture2D" uid="uid://rct57uqcc37x" path="res://Assets/Sprites/pantalla_pc.png" id="2_hywvy"]
 
 [node name="ModalPc" type="Panel" unique_id=285796187]
