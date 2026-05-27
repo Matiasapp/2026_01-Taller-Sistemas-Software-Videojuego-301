@@ -6,7 +6,6 @@ func _ready() -> void:
 func _on_button_pressed() -> void:
 	# 1. Deshabilitamos el botón inmediatamente para evitar que el jugador spamee clics mientras se cierra
 	$Button.disabled = true
-	
 	var tween = create_tween()
 	tween.set_parallel(true)
 	tween.tween_property(self, "modulate:a", 0.0, 0.2)

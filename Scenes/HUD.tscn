@@ -1,0 +1,64 @@
+[gd_scene format=3 uid="uid://cyl73mjtc24ao"]
+
+[ext_resource type="Script" uid="uid://cx1y7ow3g0hcx" path="res://Scripts/hud_manager.gd" id="1_sd512"]
+[ext_resource type="Texture2D" uid="uid://cxqi1lh5nip8y" path="res://Assets/UI/button_style.png" id="2_jo1ms"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_psnte"]
+atlas = ExtResource("2_jo1ms")
+region = Rect2(1873, 492, 769, 568)
+
+[node name="Hud" type="CanvasLayer" unique_id=715583916]
+script = ExtResource("1_sd512")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1975738070]
+self_modulate = Color(1, 1, 1, 0.7921569)
+offset_left = 966.0
+offset_top = 540.0
+offset_right = 1137.0
+offset_bottom = 636.0
+texture = SubResource("AtlasTexture_psnte")
+expand_mode = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1640203519]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -293.0
+offset_top = 513.0
+offset_right = 19.0
+offset_bottom = 698.0
+grow_horizontal = 0
+size_flags_vertical = 8
+theme_override_constants/margin_left = 51
+theme_override_constants/margin_top = 36
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1230521768]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+
+[node name="LabelDinero" type="Label" parent="MarginContainer/VBoxContainer" unique_id=522878898]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 33
+text = "$0"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=684228979]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="LabelHora" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1645891486]
+layout_mode = 2
+text = "Hora: 8:00"
+
+[node name="LabelDia" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=485410212]
+layout_mode = 2
+text = "Día: 0"

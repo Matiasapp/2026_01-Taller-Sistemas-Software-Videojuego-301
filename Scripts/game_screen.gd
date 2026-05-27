@@ -3,8 +3,10 @@ extends Node2D
 var jugador_en_rango_abrir_taller = false
 var jugador_en_rango_interactuar_pc = false
 var jugador_en_rango_atender_cliente = false
-var puede_interactuar = true # Flag de seguridad (Debounce)
+var puede_interactuar = true
 
+@onready var en_desarrollo = $en_desarrollo
+@onready var resumen_dia = $PantallaResumenDia
 @onready var mensaje_abrir_taller = $Marker2DAbrirTaller/LabelAbrirTaller
 @onready var mensaje_interactuar_pc = $Marker2DInteractuarPc/LabelInteractuarPc
 @onready var mensaje_atender_cliente = $Marker2DAtenderCliente/LabelAtenderCliente
@@ -14,7 +16,8 @@ func _ready() -> void:
 	mensaje_interactuar_pc.visible = false
 	mensaje_atender_cliente.visible = false
 	$Node2D/ventilador.play("giro_ventilador")
-	GLOBALSIGNALS.cerrar_pc.connect(_on_cerrar_pc)
+	if TIEMPOMANAGER:
+		TIEMPOMANAGER.day_ended.connect(_on_day_ended)
 	
 	if TIEMPOMANAGER and not TIEMPOMANAGER.has_initialized:
 		TIEMPOMANAGER.stop_timer()
@@ -23,22 +26,36 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	pass
-
+func _on_day_ended():
+	get_tree().paused = true
+	resumen_dia.visible = true
+	
+	# Si el jugador sigue en la zona de la puerta, refrescamos el cartel
+	if jugador_en_rango_abrir_taller:
+		actualizar_mensaje_puerta()
 func _input(event):
 	if get_tree().paused: 
 		return
 	if not puede_interactuar: return
 	if jugador_en_rango_abrir_taller and event.is_action_pressed("interactuar"):
-		print("¡Se abrió el taller!")
+		if not TIEMPOMANAGER.is_timer_running:
+			TIEMPOMANAGER.reset_day()
+			print("¡Se abrió el taller!")
+			TIEMPOMANAGER.start_timer()
+			TIEMPOMANAGER.avanzar_dia()
+			actualizar_mensaje_puerta()
+		else: 
+			print("día ya iniciado")
+		
 	if jugador_en_rango_atender_cliente and event.is_action_pressed("interactuar"):
 		print("¡Se atendió cliente!")
+		en_desarrollo.popup_centered()
 	if jugador_en_rango_interactuar_pc and event.is_action_pressed("interactuar"):
 		GLOBALSIGNALS.abrir_pc.emit()
 		print("¡Se abrió el pc!")
 
 	
-#TIEMPOMANAGER.start_timer()
-#TIEMPOMANAGER.avanzar_dia()
+
 
 
 '''
@@ -48,6 +65,7 @@ CODIGO INTERACCIÓN TALLER
 ####
 func _on_area_abrir_taller_body_entered(body):
 	if body.name == "Player":
+		actualizar_mensaje_puerta()			
 		jugador_en_rango_abrir_taller = true
 		mensaje_abrir_taller.visible = true
 
@@ -56,7 +74,13 @@ func _on_area_abrir_taller_body_exited(body):
 		jugador_en_rango_abrir_taller = false
 		mensaje_abrir_taller.visible = false
 
-
+func actualizar_mensaje_puerta():
+	if TIEMPOMANAGER.is_timer_running:
+		mensaje_abrir_taller.text = "El Taller ya está Abierto"
+		mensaje_abrir_taller.modulate = Color.RED
+	else:
+		mensaje_abrir_taller.text = "Presiona [E] para Abrir Taller"
+		mensaje_abrir_taller.modulate = Color.WHITE
 '''
 CODIGO INTERACCIÓN USAR PC
 '''
@@ -65,8 +89,6 @@ func _on_area_interactuar_pc_body_entered(body):
 		jugador_en_rango_interactuar_pc = true
 		mensaje_interactuar_pc.visible = true
 		
-func _on_cerrar_pc():
-	pass
 
 func _on_area_interactuar_pc_body_exited(body):
 	if body.name == "Player":
@@ -86,3 +108,8 @@ func _on_area_atender_cliente_body_exited(body):
 	if body.name == "Player":
 		jugador_en_rango_atender_cliente = false
 		mensaje_atender_cliente.visible = false
+
+
+func _on_botón_resumen_dia_pressed() -> void:
+	resumen_dia.visible = false
+	get_tree().paused = false

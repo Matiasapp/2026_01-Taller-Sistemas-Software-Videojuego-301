@@ -12,6 +12,7 @@ func _on_abrir_pc():
 	# 1. EL ESCUDO: Si el panel ya está visible, ignoramos el spam por completo
 	if panel_pc.visible:
 		return 
+	panel_pc.visible = true
 		
 	# 2. Mata cualquier animación previa que se haya quedado pegada por seguridad
 	if tween_actual and tween_actual.is_valid():

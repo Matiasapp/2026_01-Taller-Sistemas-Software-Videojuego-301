@@ -1,15 +1,16 @@
 [gd_scene format=3 uid="uid://b8v225oovf4dl"]
 
 [ext_resource type="Script" uid="uid://bfbq2m0vc4yup" path="res://Scripts/game_screen.gd" id="1_qy101"]
-[ext_resource type="Script" uid="uid://cudgsjqipp24d" path="res://Scripts/UI_clock.gd" id="2_4v8sn"]
 [ext_resource type="Texture2D" uid="uid://bppunb57wognv" path="res://Assets/Sprites/mapa final.png" id="2_oeeqd"]
 [ext_resource type="PackedScene" uid="uid://ct3356eys7jbo" path="res://Scenes/Player.tscn" id="3_pv3es"]
 [ext_resource type="Texture2D" uid="uid://dt1w1rxc12fai" path="res://Assets/Sprites/ventilador.png" id="3_t0qu4"]
-[ext_resource type="Script" uid="uid://bribn7otwngw3" path="res://Scripts/UI_numero_dia.gd" id="4_oeeqd"]
 [ext_resource type="Texture2D" uid="uid://denqwdpjs2yn8" path="res://Assets/Sprites/farol.png" id="5_yy1jf"]
 [ext_resource type="PackedScene" uid="uid://450baybsaca4" path="res://Scenes/ModalPC.tscn" id="6_hi6fo"]
 [ext_resource type="Texture2D" uid="uid://dybgl21rhvn75" path="res://Assets/Sprites/objetos taller.png" id="6_oeeqd"]
 [ext_resource type="Script" uid="uid://r076efyqmequ" path="res://Scripts/pc_gamescreen_manager.gd" id="9_xxqb8"]
+[ext_resource type="PackedScene" uid="uid://1gjadl8wqlap" path="res://Scenes/PantallaResumenDia.tscn" id="10_4i3ym"]
+[ext_resource type="PackedScene" uid="uid://cyl73mjtc24ao" path="res://Scenes/HUD.tscn" id="10_hi6fo"]
+[ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="11_4i3ym"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oeeqd"]
 size = Vector2(230.57608, 1161.1431)
@@ -176,6 +177,18 @@ tracks/0/keys = {
 "update": 0,
 "values": [1.0, 0.8, 0.0, 1.2, 1.0, 0.0, 0.9]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../PointLight2D:energy")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.25, 0.3, 0.5, 0.7, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [1.0, 0.8, 0.0, 1.2, 1.0, 0.0, 0.9]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_hi6fo"]
 _data = {
@@ -210,7 +223,7 @@ shape = SubResource("RectangleShape2D_oeeqd")
 debug_color = Color(0, 0.6356338, 0.6330667, 0.59607846)
 
 [node name="Pared Arriba" type="CollisionPolygon2D" parent="Taller/Paredes taller" unique_id=137463625]
-polygon = PackedVector2Array(-1317.9172, -458.75507, -822.8883, -458.75507, -787.89935, -401.73465, -452.26456, -401.73465, -452.26456, -239.74489, -434.12216, -238.44896, -432.82626, -404.3265, 1347.7227, -403.03058, 1359.3857, -575.3877, -1441.0264, -575.3877, -1396.9663, -491.153)
+polygon = PackedVector2Array(-1317.9172, -458.75507, -822.8883, -458.75507, -787.89935, -401.73465, -452.26456, -401.73465, -452.26456, -239.74489, -434.12216, -238.44896, -432.82626, -404.3265, 1347.7227, -403.03058, 1364.5693, -794.3979, -1499.3413, -796.98975, -1396.9663, -491.153)
 
 [node name="pared abajo" type="CollisionPolygon2D" parent="Taller/Paredes taller" unique_id=863020992]
 position = Vector2(1.2958871, -3.8877547)
@@ -326,7 +339,7 @@ position = Vector2(1297, -119)
 [node name="LabelInteractuarPc" type="Label" parent="Marker2DInteractuarPc" unique_id=554658397]
 offset_right = 40.0
 offset_bottom = 23.0
-text = "Presiona E para usar el PC"
+text = "Presiona [E] para usar el PC"
 
 [node name="Marker2DAtenderCliente" type="Marker2D" parent="." unique_id=233723869]
 
@@ -335,31 +348,7 @@ offset_left = -209.0
 offset_top = 656.0
 offset_right = 123.0
 offset_bottom = 679.0
-text = "Presiona E para atender a un nuevo cliente"
-
-[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2020918962]
-
-[node name="Label" type="Label" parent="CanvasLayer" unique_id=453184042]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -74.0
-offset_top = 416.0
-offset_right = -6.0
-offset_bottom = 451.0
-grow_horizontal = 0
-script = ExtResource("2_4v8sn")
-
-[node name="numero_dia" type="Label" parent="CanvasLayer" unique_id=236305627]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -109.0
-offset_top = 388.0
-offset_right = -5.0
-offset_bottom = 423.0
-grow_horizontal = 0
-script = ExtResource("4_oeeqd")
+text = "Presiona [E] para Atender a un Nuevo Cliente"
 
 [node name="AreaAbrirTaller" type="Area2D" parent="." unique_id=1436614710]
 
@@ -379,6 +368,9 @@ shape = SubResource("RectangleShape2D_8u4e5")
 process_mode = 3
 
 [node name="ModalPc" parent="AreaInteractuarPc/CanvasLayer" unique_id=285796187 instance=ExtResource("6_hi6fo")]
+visible = false
+size_flags_horizontal = 4
+size_flags_vertical = 4
 
 [node name="AreaAtenderCliente" type="Area2D" parent="." unique_id=2141881655]
 
@@ -420,20 +412,22 @@ limit_top = -295
 limit_right = 1618
 limit_bottom = 912
 
-[node name="PointLight2D" type="PointLight2D" parent="Node2D" unique_id=770448399]
-position = Vector2(-149.125, -322)
-scale = Vector2(1.9003906, 1.8033748)
-color = Color(1, 1, 0.18431373, 1)
-texture = ExtResource("5_yy1jf")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Node2D" unique_id=786414300]
-root_node = NodePath("PointLight2D")
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Node2D" unique_id=1251475266]
+root_node = NodePath("PointLight2D2")
 libraries/ = SubResource("AnimationLibrary_hi6fo")
 autoplay = &"luz_averiada"
 
-[node name="PointLight2D" type="PointLight2D" parent="Node2D/AnimationPlayer" unique_id=786941393]
-position = Vector2(1017.5, 162.20882)
-scale = Vector2(1.6054688, 1.4645038)
+[node name="PointLight2D" type="PointLight2D" parent="Node2D/AnimationPlayer" unique_id=1900031163]
+position = Vector2(1009, 166)
+scale = Vector2(2.001953, 1.4645038)
+color = Color(1, 1, 0.15686275, 1)
+energy = 0.93427974
+shadow_filter_smooth = 24.6
+texture = ExtResource("5_yy1jf")
+
+[node name="PointLight2D2" type="PointLight2D" parent="Node2D/AnimationPlayer" unique_id=786941393]
+position = Vector2(402, 164.00002)
+scale = Vector2(1.9746087, 1.4645038)
 color = Color(1, 1, 0.15686275, 1)
 shadow_filter_smooth = 24.6
 texture = ExtResource("5_yy1jf")
@@ -443,9 +437,28 @@ position = Vector2(453.875, 287.00003)
 scale = Vector2(0.8085365, 0.8002285)
 texture = SubResource("AtlasTexture_ev6y3")
 
+[node name="Hud" parent="." unique_id=715583916 instance=ExtResource("10_hi6fo")]
+
+[node name="PantallaResumenDia" parent="." unique_id=1139403389 instance=ExtResource("10_4i3ym")]
+process_mode = 3
+visible = false
+
+[node name="BotónResumenDia" type="Button" parent="PantallaResumenDia" unique_id=256500136]
+offset_left = 803.0
+offset_top = 501.0
+offset_right = 938.0
+offset_bottom = 538.0
+theme = ExtResource("11_4i3ym")
+text = "cerrar"
+
+[node name="en_desarrollo" type="AcceptDialog" parent="." unique_id=237246111]
+title = "Aviso"
+dialog_text = "Lo sentimos, esta función se encuentra en desarrollo !!"
+
 [connection signal="body_entered" from="AreaAbrirTaller" to="." method="_on_area_abrir_taller_body_entered"]
 [connection signal="body_exited" from="AreaAbrirTaller" to="." method="_on_area_abrir_taller_body_exited"]
 [connection signal="body_entered" from="AreaInteractuarPc" to="." method="_on_area_interactuar_pc_body_entered"]
 [connection signal="body_exited" from="AreaInteractuarPc" to="." method="_on_area_interactuar_pc_body_exited"]
 [connection signal="body_entered" from="AreaAtenderCliente" to="." method="_on_area_atender_cliente_body_entered"]
 [connection signal="body_exited" from="AreaAtenderCliente" to="." method="_on_area_atender_cliente_body_exited"]
+[connection signal="pressed" from="PantallaResumenDia/BotónResumenDia" to="." method="_on_botón_resumen_dia_pressed"]
