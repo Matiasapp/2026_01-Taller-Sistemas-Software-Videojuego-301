@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://1gjadl8wqlap"]
+
+[ext_resource type="Texture2D" uid="uid://p64v6cqe7lpx" path="res://Assets/Sprites/pergamino.png" id="1_jboll"]
+
+[node name="PantallaResumenDia" type="CanvasLayer" unique_id=1139403389]
+
+[node name="TextureRect2" type="TextureRect" parent="." unique_id=500035744]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -613.4598
+offset_top = -564.3327
+offset_right = 692.0359
+offset_bottom = 587.8409
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 1.5707964
+pivot_offset = Vector2(631.10504, 556.93787)
+size_flags_horizontal = 4
+texture = ExtResource("1_jboll")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="." unique_id=1696276231]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -121.0
+offset_top = -159.0
+offset_right = 87.0
+offset_bottom = -117.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.57254905, 0.078431375, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 30
+text = "Día terminado"
+
+[node name="Label2" type="Label" parent="." unique_id=924871672]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -240.5
+offset_top = -60.0
+offset_right = 240.5
+offset_bottom = -37.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "acá se mostrarán las estadísticas del día que realizó el jugador"
