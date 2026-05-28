@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://tjyxg3ebxn0i"]
 
-[ext_resource type="Script" uid="uid://bd40brbnyh2wk" path="res://Scripts/main_menu.gd" id="1_8saeu"]
-[ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="2_853f1"]
+[ext_resource type="Script" uid="uid://bd40brbnyh2wk" path="res://Scripts/UI/main_menu.gd" id="1_8saeu"]
 [ext_resource type="Script" uid="uid://dnrxfow5ve4cl" path="res://Scenes/background_group.gd" id="3_cmrfp"]
+[ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="3_k8um8"]
 [ext_resource type="Texture2D" uid="uid://cy7hlk7q6lmas" path="res://Assets/Sprites/MainMenu/background_menu_no_logo.png" id="3_xim88"]
 [ext_resource type="AudioStream" uid="uid://1atqkxlfiwhr" path="res://Assets/Audio/Menu/musicloop.ogg" id="4_ghw46"]
 [ext_resource type="Texture2D" uid="uid://e3pwsguobb8u" path="res://Assets/Sprites/MainMenu/logo.png" id="4_koqhg"]
@@ -107,7 +107,9 @@ click_sound = NodePath("ClickSound")
 hover_sound = NodePath("HoverSound")
 
 [node name="en_desarrollo" type="AcceptDialog" parent="." unique_id=669846821]
+oversampling_override = 1.0
 title = "Aviso"
+size = Vector2i(438, 100)
 dialog_text = "Lo sentimos, esta función se encuentra en desarrollo !!"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=918920461]
@@ -128,20 +130,20 @@ grow_vertical = 0
 
 [node name="button_new_game" type="Button" parent="CanvasLayer/VBoxContainer" unique_id=666862922]
 layout_mode = 2
-theme = ExtResource("2_853f1")
+theme = ExtResource("3_k8um8")
 theme_override_font_sizes/font_size = 16
 text = "Nueva Partida"
 
 [node name="button_load_game" type="Button" parent="CanvasLayer/VBoxContainer" unique_id=535819244]
 layout_mode = 2
-theme = ExtResource("2_853f1")
+theme = ExtResource("3_k8um8")
 theme_override_font_sizes/font_size = 16
 text = "Cargar Partida
 "
 
 [node name="button_options" type="Button" parent="CanvasLayer/VBoxContainer" unique_id=865942758]
 layout_mode = 2
-theme = ExtResource("2_853f1")
+theme = ExtResource("3_k8um8")
 theme_override_font_sizes/font_size = 16
 text = "Opciones
 
@@ -149,7 +151,7 @@ text = "Opciones
 
 [node name="button_exit" type="Button" parent="CanvasLayer/VBoxContainer" unique_id=351645165]
 layout_mode = 2
-theme = ExtResource("2_853f1")
+theme = ExtResource("3_k8um8")
 theme_override_font_sizes/font_size = 16
 text = "Salir
 "

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ct3356eys7jbo"]
 
-[ext_resource type="Script" uid="uid://binuh77ljaa4o" path="res://Scripts/movement_manager.gd" id="1_kyqiw"]
+[ext_resource type="Script" uid="uid://binuh77ljaa4o" path="res://Scripts/Gameplay/movement_manager.gd" id="1_kyqiw"]
 [ext_resource type="SpriteFrames" uid="uid://ch8n8r1m80m0n" path="res://Assets/Sprites/animaciones_mujer.tres" id="2_kyqiw"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_kyqiw"]

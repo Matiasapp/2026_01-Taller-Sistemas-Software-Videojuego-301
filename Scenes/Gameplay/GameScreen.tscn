@@ -1,16 +1,17 @@
 [gd_scene format=3 uid="uid://b8v225oovf4dl"]
 
-[ext_resource type="Script" uid="uid://bfbq2m0vc4yup" path="res://Scripts/game_screen.gd" id="1_qy101"]
+[ext_resource type="Script" uid="uid://bfbq2m0vc4yup" path="res://Scripts/Gameplay/game_screen.gd" id="1_qy101"]
 [ext_resource type="Texture2D" uid="uid://bppunb57wognv" path="res://Assets/Sprites/mapa final.png" id="2_oeeqd"]
-[ext_resource type="PackedScene" uid="uid://ct3356eys7jbo" path="res://Scenes/Player.tscn" id="3_pv3es"]
+[ext_resource type="PackedScene" uid="uid://ct3356eys7jbo" path="res://Scenes/Gameplay/Player.tscn" id="3_pv3es"]
 [ext_resource type="Texture2D" uid="uid://dt1w1rxc12fai" path="res://Assets/Sprites/ventilador.png" id="3_t0qu4"]
 [ext_resource type="Texture2D" uid="uid://denqwdpjs2yn8" path="res://Assets/Sprites/farol.png" id="5_yy1jf"]
-[ext_resource type="PackedScene" uid="uid://450baybsaca4" path="res://Scenes/ModalPC.tscn" id="6_hi6fo"]
+[ext_resource type="PackedScene" uid="uid://450baybsaca4" path="res://Scenes/UI/ModalPC.tscn" id="6_hi6fo"]
 [ext_resource type="Texture2D" uid="uid://dybgl21rhvn75" path="res://Assets/Sprites/objetos taller.png" id="6_oeeqd"]
-[ext_resource type="Script" uid="uid://r076efyqmequ" path="res://Scripts/pc_gamescreen_manager.gd" id="9_xxqb8"]
-[ext_resource type="PackedScene" uid="uid://1gjadl8wqlap" path="res://Scenes/PantallaResumenDia.tscn" id="10_4i3ym"]
-[ext_resource type="PackedScene" uid="uid://cyl73mjtc24ao" path="res://Scenes/HUD.tscn" id="10_hi6fo"]
+[ext_resource type="Script" uid="uid://r076efyqmequ" path="res://Scripts/Gameplay/pc_gamescreen_manager.gd" id="9_xxqb8"]
+[ext_resource type="PackedScene" uid="uid://1gjadl8wqlap" path="res://Scenes/UI/PantallaResumenDia.tscn" id="10_4i3ym"]
+[ext_resource type="PackedScene" uid="uid://cyl73mjtc24ao" path="res://Scenes/UI/HUD.tscn" id="10_hi6fo"]
 [ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="11_4i3ym"]
+[ext_resource type="PackedScene" uid="uid://ponv4684dx6a" path="res://Scenes/UI/pause_menu.tscn" id="12_u8dp7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oeeqd"]
 size = Vector2(230.57608, 1161.1431)
@@ -454,6 +455,10 @@ text = "cerrar"
 [node name="en_desarrollo" type="AcceptDialog" parent="." unique_id=237246111]
 title = "Aviso"
 dialog_text = "Lo sentimos, esta función se encuentra en desarrollo !!"
+
+[node name="MenuPausa" type="CanvasLayer" parent="." unique_id=1314141683]
+
+[node name="Pause_menu" parent="MenuPausa" unique_id=2038693485 instance=ExtResource("12_u8dp7")]
 
 [connection signal="body_entered" from="AreaAbrirTaller" to="." method="_on_area_abrir_taller_body_entered"]
 [connection signal="body_exited" from="AreaAbrirTaller" to="." method="_on_area_abrir_taller_body_exited"]

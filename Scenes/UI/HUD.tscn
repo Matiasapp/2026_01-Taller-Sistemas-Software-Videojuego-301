@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cyl73mjtc24ao"]
 
-[ext_resource type="Script" uid="uid://cx1y7ow3g0hcx" path="res://Scripts/hud_manager.gd" id="1_sd512"]
+[ext_resource type="Script" uid="uid://cx1y7ow3g0hcx" path="res://Scripts/Managers/hud_manager.gd" id="1_sd512"]
 [ext_resource type="Texture2D" uid="uid://cxqi1lh5nip8y" path="res://Assets/UI/button_style.png" id="2_jo1ms"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_psnte"]
