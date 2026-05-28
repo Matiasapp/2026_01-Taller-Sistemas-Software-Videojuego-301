@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://bsrmonvnku0av"]
+
+[ext_resource type="Texture2D" uid="uid://blc4wl3pf8i5s" path="res://Assets/Sprites/crossy_road/proyecto.png" id="1_hp1j6"]
+[ext_resource type="PackedScene" uid="uid://ct3356eys7jbo" path="res://Scenes/Player.tscn" id="2_3x3vj"]
+[ext_resource type="Script" uid="uid://0nxmsg1crbbv" path="res://Scripts/movement_crossy_road.gd" id="3_3x3vj"]
+
+[node name="CrossyRoad" type="Node2D" unique_id=579727455]
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=172651836]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -2496.0
+offset_right = 1080.0
+grow_vertical = 0
+texture = ExtResource("1_hp1j6")
+
+[node name="Player" parent="." unique_id=332878050 instance=ExtResource("2_3x3vj")]
+position = Vector2(597, -242.00002)
+scale = Vector2(3, 3)
+script = ExtResource("3_3x3vj")
+"tamaño_casilla" = 64
+velocidad_movimiento = 0.15
+
+[node name="Camera2D" type="Camera2D" parent="Player" unique_id=738366866]
+position = Vector2(-1, -16)
+scale = Vector2(0.17333333, 0.11999999)
+zoom = Vector2(1.5, 1.5)

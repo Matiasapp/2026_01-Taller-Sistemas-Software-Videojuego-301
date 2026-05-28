@@ -1,7 +1,6 @@
 [gd_resource type="TileSet" format=3 uid="uid://cw3pbqvqqcck2"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_3wbc1"]
-load_path = "res://.godot/imported/tiles taller sin bordes.png-e0730dfb66479b4d35121c5fff68e548.ctex"
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_02sq3"]
 texture = SubResource("CompressedTexture2D_3wbc1")

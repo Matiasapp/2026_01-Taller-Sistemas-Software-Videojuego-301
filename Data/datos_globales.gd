@@ -15,6 +15,8 @@ var dinero: int = 99999:
 		dinero = value
 		dinero_cambiado.emit(dinero)
 
+
+
 func sumar_dinero(cantidad: int):
 	dinero += cantidad
 
