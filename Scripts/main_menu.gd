@@ -46,7 +46,7 @@ func _on_button_new_game_pressed() -> void:
 	await get_tree().create_timer(0.15).timeout
 
 	print("Iniciando el nivel...")
-	get_tree().change_scene_to_file("res://Scenes/GameScreen.tscn")
+	get_tree().change_scene_to_file("res://Scenes/IntroScreen.tscn")
 
 
 func _on_button_load_game_pressed() -> void:
