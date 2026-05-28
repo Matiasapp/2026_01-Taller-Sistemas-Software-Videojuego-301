@@ -57,3 +57,8 @@ func _physics_process(delta):
 			anim.play(estado + "_derecha")
 		elif input_direction.x < 0:
 			anim.play(estado + "_izquierda")
+			
+			
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("Pausa"):
+		SceneManager.pause_game(true)
