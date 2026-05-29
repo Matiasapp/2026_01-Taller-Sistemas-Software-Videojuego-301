@@ -1,21 +1,17 @@
 [gd_scene format=3 uid="uid://0l8f5dotsieg"]
 
-[ext_resource type="Texture2D" uid="uid://cbym446ax608d" path="res://Assets/Sprites/crossy_road/assets.png" id="1_xq2n5"]
+[ext_resource type="Texture2D" uid="uid://bdixjhy47kutr" path="res://Assets/Sprites/crossy_road/assets.png" id="1_xq2n5"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_3vgxe"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_xq2n5"]
 atlas = ExtResource("1_xq2n5")
-region = Rect2(364, 14, 170, 259)
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_txupu"]
-radius = 30.016663
+region = Rect2(380, 153, 76, 167)
 
 [node name="Arbol" type="Node2D" unique_id=1385009933]
+z_as_relative = false
+y_sort_enabled = true
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1023373002]
-position = Vector2(-1.9073486e-06, -44)
-scale = Vector2(0.4647059, 0.4647059)
-texture = SubResource("AtlasTexture_3vgxe")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1893469378]
-position = Vector2(-2, -11)
-shape = SubResource("CircleShape2D_txupu")
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=141228919]
+y_sort_enabled = true
+position = Vector2(0, 35)
+texture = SubResource("AtlasTexture_xq2n5")
+offset = Vector2(0, -83.5)

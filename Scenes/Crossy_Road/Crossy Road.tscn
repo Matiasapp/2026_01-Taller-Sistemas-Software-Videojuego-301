@@ -1,28 +1,75 @@
 [gd_scene format=3 uid="uid://bsrmonvnku0av"]
 
-[ext_resource type="Texture2D" uid="uid://blc4wl3pf8i5s" path="res://Assets/Sprites/crossy_road/proyecto.png" id="1_hp1j6"]
-[ext_resource type="PackedScene" uid="uid://ct3356eys7jbo" path="res://Scenes/Player.tscn" id="2_3x3vj"]
-[ext_resource type="Script" uid="uid://0nxmsg1crbbv" path="res://Scripts/movement_crossy_road.gd" id="3_3x3vj"]
+[ext_resource type="Script" uid="uid://dhlun5yln7nvx" path="res://Scripts/CrossyRoad/world_generator.gd" id="1_d0mq6"]
+[ext_resource type="Texture2D" uid="uid://bdixjhy47kutr" path="res://Assets/Sprites/crossy_road/assets.png" id="1_hw670"]
+[ext_resource type="PackedScene" uid="uid://ct3356eys7jbo" path="res://Scenes/Gameplay/Player.tscn" id="2_3x3vj"]
+[ext_resource type="PackedScene" uid="uid://dtc8u5lkkxjhs" path="res://Scenes/Crossy_Road/calle.tscn" id="2_cfljh"]
+[ext_resource type="Script" uid="uid://0nxmsg1crbbv" path="res://Scripts/CrossyRoad/movement_crossy_road.gd" id="3_3x3vj"]
+[ext_resource type="PackedScene" uid="uid://43eaehpmc00w" path="res://Scenes/Crossy_Road/FranjaPasto.tscn" id="3_ijbgn"]
+[ext_resource type="PackedScene" uid="uid://0l8f5dotsieg" path="res://Scenes/Crossy_Road/arbol.tscn" id="7_ijbgn"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d0mq6"]
+atlas = ExtResource("1_hw670")
+region = Rect2(0, 1235, 1080, 265)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ijbgn"]
+radius = 6.666667
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ijbgn"]
+size = Vector2(1152, 242)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mfv65"]
+size = Vector2(40.5, 29.5)
 
 [node name="CrossyRoad" type="Node2D" unique_id=579727455]
+y_sort_enabled = true
+script = ExtResource("1_d0mq6")
+franjas_posibles = Array[PackedScene]([ExtResource("2_cfljh"), ExtResource("3_ijbgn")])
 
-[node name="TextureRect" type="TextureRect" parent="." unique_id=172651836]
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = -2496.0
-offset_right = 1080.0
-grow_vertical = 0
-texture = ExtResource("1_hp1j6")
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=443189297]
+position = Vector2(0, 32)
+scale = Vector2(1.0064815, 1.0018868)
+texture = SubResource("AtlasTexture_d0mq6")
+offset = Vector2(0, 121.77024)
 
 [node name="Player" parent="." unique_id=332878050 instance=ExtResource("2_3x3vj")]
-position = Vector2(597, -242.00002)
+physics_interpolation_mode = 1
+y_sort_enabled = true
+position = Vector2(-6.0000005, 240)
 scale = Vector2(3, 3)
 script = ExtResource("3_3x3vj")
 "tamaño_casilla" = 64
 velocidad_movimiento = 0.15
 
-[node name="Camera2D" type="Camera2D" parent="Player" unique_id=738366866]
-position = Vector2(-1, -16)
-scale = Vector2(0.17333333, 0.11999999)
-zoom = Vector2(1.5, 1.5)
+[node name="Camera2D" type="Camera2D" parent="Player" unique_id=440032078]
+position = Vector2(0, -0.5)
+scale = Vector2(0.33333334, 0.33333334)
+zoom = Vector2(1.2, 1.2)
+limit_left = -544
+limit_right = 544
+limit_bottom = 288
+
+[node name="Area2D" type="Area2D" parent="Player" unique_id=2107450111]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player/Area2D" unique_id=771872164]
+position = Vector2(2.0000002, 5.3333335)
+shape = SubResource("CircleShape2D_ijbgn")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=2025136447]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1396928967]
+position = Vector2(0, 408)
+shape = SubResource("RectangleShape2D_ijbgn")
+
+[node name="objetos inicio" type="Node2D" parent="." unique_id=65350012]
+position = Vector2(-95, 200)
+
+[node name="Arbol" parent="objetos inicio" unique_id=1385009933 instance=ExtResource("7_ijbgn")]
+
+[node name="Area2D" type="Area2D" parent="objetos inicio/Arbol" unique_id=655545184]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="objetos inicio/Arbol/Area2D" unique_id=1435648118]
+position = Vector2(-2.25, 17.25)
+shape = SubResource("RectangleShape2D_mfv65")
+
+[connection signal="area_entered" from="Player/Area2D" to="Player" method="_on_area_2d_area_entered"]

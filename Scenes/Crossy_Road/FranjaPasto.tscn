@@ -2,11 +2,22 @@
 
 [ext_resource type="Script" uid="uid://oigt73dpawfp" path="res://Scripts/CrossyRoad/franja_pasto_manager.gd" id="1_etem3"]
 
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_orsij"]
+load_path = "res://.godot/imported/assets.png-0aec246d8063b188dacd6ec41875ad52.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ecaer"]
+atlas = SubResource("CompressedTexture2D_orsij")
+region = Rect2(8, 912, 1072, 140)
+
 [node name="FranjaPasto" type="Node2D" unique_id=1259762707]
+z_index = -1
+y_sort_enabled = true
 script = ExtResource("1_etem3")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1093873650]
-position = Vector2(3, -12)
+z_index = -1
+position = Vector2(0, -34)
+scale = Vector2(1.0121269, 1)
+texture = SubResource("AtlasTexture_ecaer")
 
-[node name="Camera2D" type="Camera2D" parent="Sprite2D" unique_id=283515072]
-zoom = Vector2(0.5, 0.5)
+[node name="Camera2D" type="Camera2D" parent="Sprite2D" unique_id=1878166802]
