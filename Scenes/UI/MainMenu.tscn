@@ -105,6 +105,7 @@ _data = {
 script = ExtResource("1_8saeu")
 click_sound = NodePath("ClickSound")
 hover_sound = NodePath("HoverSound")
+menu_music = ExtResource("4_ghw46")
 
 [node name="en_desarrollo" type="AcceptDialog" parent="." unique_id=669846821]
 oversampling_override = 1.0
@@ -189,12 +190,6 @@ texture = ExtResource("4_koqhg")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/WorldVisuals/LogoGroup" unique_id=483541917]
 libraries/ = SubResource("AnimationLibrary_if7li")
-
-[node name="MusicPlayer" type="AudioStreamPlayer" parent="." unique_id=2120845624]
-stream = ExtResource("4_ghw46")
-volume_db = -2.0
-autoplay = true
-bus = &"Music"
 
 [node name="ClickSound" type="AudioStreamPlayer" parent="." unique_id=1361268679]
 stream = ExtResource("5_df05h")
