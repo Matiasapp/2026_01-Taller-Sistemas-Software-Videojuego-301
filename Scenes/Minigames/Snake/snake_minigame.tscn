@@ -1,0 +1,64 @@
+[gd_scene format=3 uid="uid://dmdooxhrinxhv"]
+
+[ext_resource type="Script" uid="uid://ciny2lx0jwxxs" path="res://Scenes/Minigames/Snake/snake_minigame.gd" id="1_esgbc"]
+[ext_resource type="SpriteFrames" uid="uid://1wudhpdgds2f" path="res://Scenes/Minigames/Snake/Car/car_sprite_frames.tres" id="2_gtpg2"]
+[ext_resource type="PackedScene" uid="uid://c80byqtkm0rum" path="res://Scenes/Minigames/Snake/Burn/burn_mark.tscn" id="2_xmi42"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xmi42"]
+size = Vector2(201, 101)
+
+[sub_resource type="Animation" id="Animation_yumc8"]
+resource_name = "avanzar"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_faefq"]
+_data = {
+&"avanzar": SubResource("Animation_yumc8")
+}
+
+[node name="SnakeMinigame" type="Node2D" unique_id=1131837256]
+script = ExtResource("1_esgbc")
+burn_mark_scene = ExtResource("2_xmi42")
+
+[node name="Background" type="Sprite2D" parent="." unique_id=1121329477]
+
+[node name="GridOrigin" type="Marker2D" parent="." unique_id=1281786702]
+
+[node name="TrailContainer" type="Node2D" parent="." unique_id=674163492]
+
+[node name="ObstacleContainer" type="Node2D" parent="." unique_id=515357766]
+
+[node name="Car" type="Node2D" parent="." unique_id=1314031482]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Car" unique_id=350197503]
+sprite_frames = ExtResource("2_gtpg2")
+animation = &"avanzar"
+frame_progress = 0.50062007
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Car" unique_id=53048584]
+position = Vector2(-0.5, 1.5)
+shape = SubResource("RectangleShape2D_xmi42")
+
+[node name="MoveTimer" type="Timer" parent="." unique_id=857158890]
+wait_time = 0.12
+autostart = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2023046386]
+
+[node name="HUD" type="Control" parent="CanvasLayer" unique_id=1715585278]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TimeLabel" type="Label" parent="CanvasLayer/HUD" unique_id=291251375]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="StatusLabel" type="Label" parent="CanvasLayer/HUD" unique_id=1146050716]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=597146242]
+libraries/ = SubResource("AnimationLibrary_faefq")

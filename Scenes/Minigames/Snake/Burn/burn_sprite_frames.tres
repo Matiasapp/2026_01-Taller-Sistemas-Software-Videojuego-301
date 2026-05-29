@@ -1,0 +1,39 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://dac86tcx622kn"]
+
+[ext_resource type="Texture2D" uid="uid://xfnrwiujc22s" path="res://Assets/Sprites/snake_sprites/burning_trail.png" id="1_gkrut"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xoy42"]
+atlas = ExtResource("1_gkrut")
+region = Rect2(0, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h64c8"]
+atlas = ExtResource("1_gkrut")
+region = Rect2(256, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_imqah"]
+atlas = ExtResource("1_gkrut")
+region = Rect2(512, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_62di5"]
+atlas = ExtResource("1_gkrut")
+region = Rect2(768, 0, 256, 256)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xoy42")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h64c8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_imqah")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_62di5")
+}],
+"loop": true,
+"name": &"default",
+"speed": 12.0
+}]
