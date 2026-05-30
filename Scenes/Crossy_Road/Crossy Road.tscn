@@ -55,6 +55,20 @@ z_index = 2
 z_as_relative = false
 position = Vector2(-410, -112)
 
+[node name="ArbolesInicioLimitederecho" type="Node2D" parent="objetos inicio" unique_id=78506721]
+
+[node name="Arbol" parent="objetos inicio/ArbolesInicioLimitederecho" unique_id=776265993 instance=ExtResource("7_ijbgn")]
+position = Vector2(590, 16)
+
+[node name="Arbol2" parent="objetos inicio/ArbolesInicioLimitederecho" unique_id=1618055430 instance=ExtResource("7_ijbgn")]
+position = Vector2(590, -48)
+
+[node name="Arbol3" parent="objetos inicio/ArbolesInicioLimitederecho" unique_id=1512695996 instance=ExtResource("7_ijbgn")]
+position = Vector2(590, -104)
+
+[node name="Arbol4" parent="objetos inicio/ArbolesInicioLimitederecho" unique_id=1364506899 instance=ExtResource("7_ijbgn")]
+position = Vector2(590, -176)
+
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=443189297]
 z_index = -1
 position = Vector2(0, 32)
@@ -102,5 +116,20 @@ collision_layer = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1396928967]
 position = Vector2(0, 408)
 shape = SubResource("RectangleShape2D_ijbgn")
+
+[node name="ArbolesInicioLimiteIzquierdo" type="Node2D" parent="." unique_id=1828587698]
+position = Vector2(-1176, 240)
+
+[node name="Arbol" parent="ArbolesInicioLimiteIzquierdo" unique_id=1272766822 instance=ExtResource("7_ijbgn")]
+position = Vector2(590, 16)
+
+[node name="Arbol2" parent="ArbolesInicioLimiteIzquierdo" unique_id=605529895 instance=ExtResource("7_ijbgn")]
+position = Vector2(590, -48)
+
+[node name="Arbol3" parent="ArbolesInicioLimiteIzquierdo" unique_id=852214397 instance=ExtResource("7_ijbgn")]
+position = Vector2(590, -104)
+
+[node name="Arbol4" parent="ArbolesInicioLimiteIzquierdo" unique_id=1885989848 instance=ExtResource("7_ijbgn")]
+position = Vector2(590, -176)
 
 [connection signal="area_entered" from="Player/Area2D" to="Player" method="_on_area_2d_area_entered"]

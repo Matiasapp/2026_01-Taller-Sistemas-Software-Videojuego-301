@@ -4,6 +4,7 @@ var jugador_en_rango_abrir_taller = false
 var jugador_en_rango_interactuar_pc = false
 var jugador_en_rango_atender_cliente = false
 var puede_interactuar = true
+var jugador_en_rango_easter_egg = false
 
 @onready var en_desarrollo = $en_desarrollo
 @onready var resumen_dia = $PantallaResumenDia
@@ -46,6 +47,10 @@ func _input(event):
 			actualizar_mensaje_puerta()
 		else: 
 			print("día ya iniciado")
+		
+	if jugador_en_rango_easter_egg and event.is_action_pressed("interactuar"):
+		print("¡Se atendió cliente!")
+		get_tree().change_scene_to_file("res://Scenes/Crossy_Road/Crossy Road.tscn")
 		
 	if jugador_en_rango_atender_cliente and event.is_action_pressed("interactuar"):
 		print("¡Se atendió cliente!")
@@ -113,3 +118,7 @@ func _on_area_atender_cliente_body_exited(body):
 func _on_botón_resumen_dia_pressed() -> void:
 	resumen_dia.visible = false
 	get_tree().paused = false
+
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	if body.name == "Player":
+		jugador_en_rango_easter_egg = true

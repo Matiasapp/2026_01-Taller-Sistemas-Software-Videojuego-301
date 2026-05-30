@@ -201,6 +201,9 @@ _data = {
 atlas = ExtResource("6_oeeqd")
 region = Rect2(1806, 1353, 205, 219)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_u8dp7"]
+size = Vector2(42, 34)
+
 [node name="GameScreen" type="Node2D" unique_id=1964637352]
 script = ExtResource("1_qy101")
 
@@ -460,6 +463,12 @@ dialog_text = "Lo sentimos, esta función se encuentra en desarrollo !!"
 
 [node name="Pause_menu" parent="MenuPausa" unique_id=2038693485 instance=ExtResource("12_u8dp7")]
 
+[node name="Area2D" type="Area2D" parent="." unique_id=1087812777]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1400608411]
+position = Vector2(880, 872)
+shape = SubResource("RectangleShape2D_u8dp7")
+
 [connection signal="body_entered" from="AreaAbrirTaller" to="." method="_on_area_abrir_taller_body_entered"]
 [connection signal="body_exited" from="AreaAbrirTaller" to="." method="_on_area_abrir_taller_body_exited"]
 [connection signal="body_entered" from="AreaInteractuarPc" to="." method="_on_area_interactuar_pc_body_entered"]
@@ -467,3 +476,4 @@ dialog_text = "Lo sentimos, esta función se encuentra en desarrollo !!"
 [connection signal="body_entered" from="AreaAtenderCliente" to="." method="_on_area_atender_cliente_body_entered"]
 [connection signal="body_exited" from="AreaAtenderCliente" to="." method="_on_area_atender_cliente_body_exited"]
 [connection signal="pressed" from="PantallaResumenDia/BotónResumenDia" to="." method="_on_botón_resumen_dia_pressed"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

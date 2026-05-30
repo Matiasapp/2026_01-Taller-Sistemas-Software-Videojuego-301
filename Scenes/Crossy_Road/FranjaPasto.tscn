@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://43eaehpmc00w"]
 
 [ext_resource type="Script" uid="uid://oigt73dpawfp" path="res://Scripts/CrossyRoad/franja_pasto_manager.gd" id="1_etem3"]
+[ext_resource type="PackedScene" uid="uid://0l8f5dotsieg" path="res://Scenes/Crossy_Road/arbol.tscn" id="2_etem3"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_orsij"]
 load_path = "res://.godot/imported/assets.png-0aec246d8063b188dacd6ec41875ad52.ctex"
@@ -21,3 +22,15 @@ scale = Vector2(1.0121269, 1)
 texture = SubResource("AtlasTexture_ecaer")
 
 [node name="Camera2D" type="Camera2D" parent="Sprite2D" unique_id=1878166802]
+
+[node name="Arbol" parent="." unique_id=1385009933 instance=ExtResource("2_etem3")]
+position = Vector2(-584, -56)
+
+[node name="Arbol2" parent="." unique_id=1089181522 instance=ExtResource("2_etem3")]
+position = Vector2(-584, 8)
+
+[node name="Arbol3" parent="." unique_id=265743901 instance=ExtResource("2_etem3")]
+position = Vector2(584, 0)
+
+[node name="Arbol4" parent="." unique_id=851921865 instance=ExtResource("2_etem3")]
+position = Vector2(584, -64)
