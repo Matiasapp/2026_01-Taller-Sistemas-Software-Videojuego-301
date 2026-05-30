@@ -1,21 +1,37 @@
 extends Control
 
-@onready var barra = $ProgressBar
-@onready var psi_label = $LabelPSI
+@onready var barra = $AreaMovimiento
+@onready var zona = $AreaMovimiento/ZonaVerde
+@onready var indicador = $AreaMovimiento/Indicador
+
 @onready var resultado = $Resultado
 @onready var nivel_label = $NivelNeumatico
 
-var presion = 0.0
 
-var tiempo_estable = 0.0
-var tiempo_objetivo = 3.0
+# Movimiento
+var velocidad = 350.0
+var direccion = 1
 
+
+# Progreso
 var nivel_inflado = 0
-var max_nivel = 3
+var max_nivel = 5
 
 var juego_terminado = false
 
+
+# Dificultad
+var ancho_minimo_zona = 45
+var reduccion_zona = 10
+
+
 func _ready():
+
+	randomize()
+
+	# Indicador inicia arriba
+	indicador.position.y = 0
+
 	actualizar_nivel()
 
 
@@ -24,55 +40,82 @@ func _process(delta):
 	if juego_terminado:
 		return
 
-	# Bombear aire
+	mover_indicador(delta)
+
 	if Input.is_action_just_pressed("ui_accept"):
-		presion += 4
+		evaluar_golpe()
 
-	# Aire baja lentamente
-	presion -= 8 * delta
 
-	# Limitar presión
-	presion = clamp(presion, 0, 100)
+func mover_indicador(delta):
 
-	# Actualizar UI
-	barra.value = presion
-	psi_label.text = str(int(presion)) + " PSI"
+	indicador.position.y += velocidad * direccion * delta
 
-	# Mantener presión correcta
-	if presion >= 30 and presion <= 50 :
+	# Límite inferior
+	if indicador.position.y >= barra.size.y - indicador.size.y:
+		indicador.position.y = barra.size.y - indicador.size.y
+		direccion = -1
 
-		tiempo_estable += delta
+	# Límite superior
+	if indicador.position.y <= 0:
+		indicador.position.y = 0
+		direccion = 1
 
-		var restante = snapped(tiempo_objetivo - tiempo_estable, 0.1)
 
-		resultado.text = "MANTEN PRESION: " + str(restante)
+func evaluar_golpe():
 
-		# Completa una fase
-		if tiempo_estable >= tiempo_objetivo:
+	var centro_indicador = indicador.position.y
 
-			tiempo_estable = 0
-			nivel_inflado += 1
+	var inicio_zona = zona.position.y
+	var final_zona = zona.position.y + zona.size.y
 
-			actualizar_nivel()
+	var margen = 8
 
-			# Reinicia presión
-			presion = 10
+	var dentro = (
+		centro_indicador >= inicio_zona - margen
+		and centro_indicador <= final_zona + margen
+	)
 
-			# Victoria
-			if nivel_inflado >= max_nivel:
+	if dentro:
 
-				resultado.text = "NEUMATICO LISTO"
-				juego_terminado = true
+		nivel_inflado += 1
+
+		resultado.text = "BIEN"
+
+		actualizar_nivel()
+
+		cambiar_zona()
+
+		# Aumenta dificultad gradualmente
+		velocidad += 20
+
+		if nivel_inflado >= max_nivel:
+
+			resultado.text = "NEUMATICO INFLADO"
+			juego_terminado = true
 
 	else:
-		tiempo_estable = 0
 
-	# Explota
-	if presion > 45:
-		resultado.text = "EXPLOTO"
-		juego_terminado = true
+		resultado.text = "FALLASTE"
+
+
+func cambiar_zona():
+
+	# Nueva posición aleatoria
+	var nueva_y = randf_range(
+		0,
+		barra.size.y - zona.size.y
+	)
+
+	zona.position.y = nueva_y
+
+	# Reducir tamaño zona
+	var nuevo_alto = zona.size.y - reduccion_zona
+
+	nuevo_alto = max(nuevo_alto, ancho_minimo_zona)
+
+	zona.size.y = nuevo_alto
 
 
 func actualizar_nivel():
 
-	nivel_label.text = "Nivel Neumatico: " + str(nivel_inflado)
+	nivel_label.text = "Nivel: " + str(nivel_inflado)
