@@ -2,6 +2,10 @@
 
 [ext_resource type="Texture2D" uid="uid://my0at8dmwa5" path="res://Assets/Sprites/spritesheed_mujer.png" id="1_kciaa"]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_ss77c"]
+atlas = ExtResource("1_kciaa")
+region = Rect2(320, 1280, 64, 64)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_xiyma"]
 atlas = ExtResource("1_kciaa")
 region = Rect2(0, 640, 64, 64)
@@ -384,6 +388,14 @@ region = Rect2(0, 1728, 64, 64)
 
 [resource]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ss77c")
+}],
+"loop": true,
+"name": &"atropellado",
+"speed": 1.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_xiyma")

@@ -35,19 +35,24 @@ region = Rect2(266, 604, 177, 124)
 atlas = SubResource("AtlasTexture_e27w3")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e27w3"]
-size = Vector2(178, 60)
+size = Vector2(152, 60)
 
 [node name="Camion" type="Area2D" unique_id=206663252 groups=["vehiculos"]]
+z_index = 2
+z_as_relative = false
 y_sort_enabled = true
 script = ExtResource("1_we4qe")
 texturas_derecha = Array[Texture2D]([SubResource("AtlasTexture_0lb3p"), SubResource("AtlasTexture_frply"), SubResource("AtlasTexture_yomyc"), SubResource("AtlasTexture_46os4")])
 texturas_izquierda = Array[Texture2D]([null, null, SubResource("AtlasTexture_xggxn"), SubResource("AtlasTexture_b6nam")])
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=482849701]
+z_index = 2
+z_as_relative = false
+y_sort_enabled = true
 position = Vector2(0, 32)
 texture = SubResource("AtlasTexture_s5kks")
 offset = Vector2(-1, -61)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=663829926]
-position = Vector2(-0.5, 0)
+z_index = 2
 shape = SubResource("RectangleShape2D_e27w3")

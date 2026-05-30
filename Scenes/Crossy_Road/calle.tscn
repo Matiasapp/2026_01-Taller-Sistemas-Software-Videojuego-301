@@ -16,6 +16,7 @@ vehiculos_posibles = Array[PackedScene]([ExtResource("2_chym7"), ExtResource("3_
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1710818377]
 z_index = -1
+z_as_relative = false
 y_sort_enabled = true
 scale = Vector2(1.0074074, 1)
 texture = SubResource("AtlasTexture_chym7")

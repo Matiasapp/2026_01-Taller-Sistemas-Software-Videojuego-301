@@ -6,12 +6,24 @@
 atlas = ExtResource("1_xq2n5")
 region = Rect2(380, 153, 76, 167)
 
-[node name="Arbol" type="Node2D" unique_id=1385009933]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xq2n5"]
+size = Vector2(64, 64)
+
+[node name="Arbol" type="Node2D" unique_id=1385009933 groups=["objetos_crossy_road"]]
+z_index = 2
 z_as_relative = false
 y_sort_enabled = true
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=141228919]
 y_sort_enabled = true
-position = Vector2(0, 35)
+position = Vector2(0, 23)
 texture = SubResource("AtlasTexture_xq2n5")
-offset = Vector2(0, -83.5)
+offset = Vector2(0, -82.5)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=96371407]
+position = Vector2(-8, 11)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1735895724]
+position = Vector2(8, -11)
+shape = SubResource("RectangleShape2D_xq2n5")

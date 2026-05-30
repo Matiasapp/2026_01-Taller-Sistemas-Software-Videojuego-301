@@ -40,19 +40,24 @@ atlas = ExtResource("1_7bg77")
 region = Rect2(259, 739, 122, 55)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xewu1"]
-size = Vector2(10.983534, 12.181593)
+size = Vector2(9.803485, 12.181593)
 
 [node name="Auto" type="Area2D" unique_id=116275514 groups=["vehiculos"]]
+z_index = 2
+z_as_relative = false
+y_sort_enabled = true
 script = ExtResource("1_mri3w")
 texturas_derecha = Array[Texture2D]([SubResource("AtlasTexture_mri3w"), SubResource("AtlasTexture_xewu1"), SubResource("AtlasTexture_jxf3x"), SubResource("AtlasTexture_5ajfa"), SubResource("AtlasTexture_bjeje"), SubResource("AtlasTexture_wyq28"), SubResource("AtlasTexture_sonar"), SubResource("AtlasTexture_2pe66")])
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=549841757]
+z_index = 2
+z_as_relative = false
 y_sort_enabled = true
 position = Vector2(0, 26)
 texture = SubResource("AtlasTexture_6lw2a")
 offset = Vector2(0, -26)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=831924171]
-position = Vector2(0.4999981, -0.50000036)
+position = Vector2(2.861023e-06, -0.50000036)
 scale = Vector2(11.016491, 4.3508267)
 shape = SubResource("RectangleShape2D_xewu1")
