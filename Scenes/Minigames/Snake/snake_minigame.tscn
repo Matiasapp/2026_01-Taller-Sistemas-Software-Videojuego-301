@@ -2,24 +2,17 @@
 
 [ext_resource type="Script" uid="uid://ciny2lx0jwxxs" path="res://Scenes/Minigames/Snake/snake_minigame.gd" id="1_esgbc"]
 [ext_resource type="SpriteFrames" uid="uid://1wudhpdgds2f" path="res://Scenes/Minigames/Snake/Car/car_sprite_frames.tres" id="2_gtpg2"]
-[ext_resource type="PackedScene" uid="uid://c80byqtkm0rum" path="res://Scenes/Minigames/Snake/Burn/burn_mark.tscn" id="2_xmi42"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_xmi42"]
-size = Vector2(201, 101)
-
-[sub_resource type="Animation" id="Animation_yumc8"]
-resource_name = "avanzar"
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_faefq"]
-_data = {
-&"avanzar": SubResource("Animation_yumc8")
-}
+[ext_resource type="Texture2D" uid="uid://bhhmcj8mugm67" path="res://Scenes/Minigames/Snake/Background/checkboard.png" id="3_xmi42"]
+[ext_resource type="Script" uid="uid://cr1t6tqa1jarg" path="res://Scenes/Minigames/Snake/node_2d.gd" id="3_yumc8"]
 
 [node name="SnakeMinigame" type="Node2D" unique_id=1131837256]
+position = Vector2(-921, -1113)
 script = ExtResource("1_esgbc")
-burn_mark_scene = ExtResource("2_xmi42")
 
 [node name="Background" type="Sprite2D" parent="." unique_id=1121329477]
+position = Vector2(89, -74.00002)
+scale = Vector2(0.91788274, 0.988)
+texture = ExtResource("3_xmi42")
 
 [node name="GridOrigin" type="Marker2D" parent="." unique_id=1281786702]
 
@@ -28,37 +21,50 @@ burn_mark_scene = ExtResource("2_xmi42")
 [node name="ObstacleContainer" type="Node2D" parent="." unique_id=515357766]
 
 [node name="Car" type="Node2D" parent="." unique_id=1314031482]
+z_index = 1
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Car" unique_id=350197503]
+scale = Vector2(0.5, 0.5)
 sprite_frames = ExtResource("2_gtpg2")
 animation = &"avanzar"
-frame_progress = 0.50062007
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Car" unique_id=53048584]
-position = Vector2(-0.5, 1.5)
-shape = SubResource("RectangleShape2D_xmi42")
+frame_progress = 0.006212876
 
 [node name="MoveTimer" type="Timer" parent="." unique_id=857158890]
 wait_time = 0.12
 autostart = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2023046386]
+visible = false
 
 [node name="HUD" type="Control" parent="CanvasLayer" unique_id=1715585278]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchor_left = 0.057291668
+anchor_top = -0.0650987
+anchor_right = -0.015625
+anchor_bottom = -0.0046296297
+offset_left = -1221.0
+offset_top = -1306.816
+offset_right = -598.0
+offset_bottom = -909.0
+metadata/_edit_use_anchors_ = true
 
 [node name="TimeLabel" type="Label" parent="CanvasLayer/HUD" unique_id=291251375]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
+metadata/_edit_use_anchors_ = true
 
 [node name="StatusLabel" type="Label" parent="CanvasLayer/HUD" unique_id=1146050716]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
+metadata/_edit_use_anchors_ = true
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=597146242]
-libraries/ = SubResource("AnimationLibrary_faefq")
+[node name="Camera2D" type="Camera2D" parent="." unique_id=790007625]
+position = Vector2(55.85, -50)
+zoom = Vector2(0.8, 0.8)
+
+[node name="GridDebug" type="Node2D" parent="." unique_id=511540467]
+position = Vector2(-234, -373.99997)
+scale = Vector2(1, 1.008)
+script = ExtResource("3_yumc8")

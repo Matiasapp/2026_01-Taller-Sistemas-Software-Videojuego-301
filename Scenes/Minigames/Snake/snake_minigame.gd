@@ -1,53 +1,66 @@
 extends Node2D
 
-@export var grid_size := 64
-@export var move_interval := 0.12
+@export var grid_size := 80
+@export var board_size := 8
 
 @onready var car := $Car
-@onready var move_timer := $MoveTimer
-@export var burn_mark_scene: PackedScene
-@onready var trail_container := $TrailContainer
+@onready var grid_debug := $GridDebug
+
+var car_cell := Vector2i.ZERO
+
+func _ready():
+	randomize()
+	car.z_index = 100
+	spawn_car_random()
 
 
-var direction := Vector2.RIGHT
+func _unhandled_input(event):
+	var dir := Vector2i.ZERO
 
-
-func _ready() -> void:
-	move_timer.wait_time = move_interval
-	move_timer.timeout.connect(_move_car)
-
-
-func _process(_delta: float) -> void:
-
-	if Input.is_action_just_pressed("ui_up"):
-		direction = Vector2.UP
+	if event.is_action_pressed("ui_up"):
+		dir = Vector2i.UP
 		car.rotation_degrees = -90
-
-	elif Input.is_action_just_pressed("ui_down"):
-		direction = Vector2.DOWN
+	elif event.is_action_pressed("ui_down"):
+		dir = Vector2i.DOWN
 		car.rotation_degrees = 90
-
-	elif Input.is_action_just_pressed("ui_left"):
-		direction = Vector2.LEFT
+	elif event.is_action_pressed("ui_left"):
+		dir = Vector2i.LEFT
 		car.rotation_degrees = 180
-
-	elif Input.is_action_just_pressed("ui_right"):
-		direction = Vector2.RIGHT
+	elif event.is_action_pressed("ui_right"):
+		dir = Vector2i.RIGHT
 		car.rotation_degrees = 0
 
+	if dir != Vector2i.ZERO:
+		move_one_cell(dir)
 
-func _move_car() -> void:
-	var previous_position = car.position
 
-	car.position += direction * grid_size
+func spawn_car_random():
+	car_cell = Vector2i(
+		randi_range(0, board_size - 1),
+		randi_range(0, board_size - 1)
+	)
 
-	var burn = burn_mark_scene.instantiate()
-	trail_container.add_child(burn)
+	car.global_position = cell_to_world(car_cell)
+	print("Spawn cell: ", car_cell, " Pos: ", car.global_position)
 
-	burn.position = previous_position
-	burn.rotation_degrees = car.rotation_degrees
-	burn.scale *= randf_range(0.95, 1.05)
-	burn.modulate.a = randf_range(0.75, 1.0)
 
-	var burn_sprite: AnimatedSprite2D = burn.get_node("AnimatedSprite2D")
-	burn_sprite.frame = randi() % 4
+func move_one_cell(dir: Vector2i):
+	var next_cell := car_cell + dir
+
+	if not is_inside_board(next_cell):
+		print("Fuera del tablero: ", next_cell)
+		return
+
+	car_cell = next_cell
+	car.global_position = cell_to_world(car_cell)
+
+	print("Car cell: ", car_cell, " Pos: ", car.global_position)
+
+func cell_to_world(cell: Vector2i) -> Vector2:
+	return grid_debug.global_position \
+		+ Vector2(cell.x * grid_size, cell.y * grid_size) \
+		+ Vector2(grid_size / 2, grid_size / 2)
+
+func is_inside_board(cell: Vector2i) -> bool:
+	return cell.x >= 0 and cell.x < board_size \
+		and cell.y >= 0 and cell.y < board_size
