@@ -7,11 +7,17 @@
 [ext_resource type="Texture2D" uid="uid://denqwdpjs2yn8" path="res://Assets/Sprites/farol.png" id="5_yy1jf"]
 [ext_resource type="PackedScene" uid="uid://450baybsaca4" path="res://Scenes/UI/ModalPC.tscn" id="6_hi6fo"]
 [ext_resource type="Texture2D" uid="uid://dybgl21rhvn75" path="res://Assets/Sprites/objetos taller.png" id="6_oeeqd"]
+[ext_resource type="AudioStream" uid="uid://cr3tsxk1esgqh" path="res://Assets/Audio/GameScreen/fan.wav" id="6_ue0ap"]
+[ext_resource type="AudioStream" uid="uid://comygsnm4cl4q" path="res://Assets/Audio/GameScreen/light.wav" id="9_h5ghc"]
 [ext_resource type="Script" uid="uid://r076efyqmequ" path="res://Scripts/Gameplay/pc_gamescreen_manager.gd" id="9_xxqb8"]
 [ext_resource type="PackedScene" uid="uid://1gjadl8wqlap" path="res://Scenes/UI/PantallaResumenDia.tscn" id="10_4i3ym"]
 [ext_resource type="PackedScene" uid="uid://cyl73mjtc24ao" path="res://Scenes/UI/HUD.tscn" id="10_hi6fo"]
 [ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="11_4i3ym"]
 [ext_resource type="PackedScene" uid="uid://ponv4684dx6a" path="res://Scenes/UI/pause_menu.tscn" id="12_u8dp7"]
+[ext_resource type="AudioStream" uid="uid://oow22vmaxdqq" path="res://Assets/Audio/GameScreen/ambientfx.wav" id="13_imsci"]
+[ext_resource type="AudioStream" uid="uid://dsmrbqe7w6n7u" path="res://Assets/Audio/GameScreen/songloop.wav" id="14_h5ghc"]
+[ext_resource type="AudioStream" uid="uid://b0sfqmvnpypyl" path="res://Assets/Audio/GameScreen/PCin.wav" id="17_vuvpm"]
+[ext_resource type="AudioStream" uid="uid://3u0kjs1x3ovr" path="res://Assets/Audio/GameScreen/PCout.wav" id="18_x4ih4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oeeqd"]
 size = Vector2(230.57608, 1161.1431)
@@ -391,6 +397,13 @@ animation = &"giro_ventilador"
 frame = 7
 frame_progress = 0.23566177
 
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Node2D/ventilador" unique_id=1168291353]
+stream = ExtResource("6_ue0ap")
+volume_db = -4.345
+autoplay = true
+max_distance = 400.0
+bus = &"SFX"
+
 [node name="mesa medio" type="Sprite2D" parent="Node2D" unique_id=1003904537]
 position = Vector2(-0.125, 2)
 scale = Vector2(0.77073985, 0.77804303)
@@ -426,12 +439,26 @@ energy = 0.93427974
 shadow_filter_smooth = 24.6
 texture = ExtResource("5_yy1jf")
 
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Node2D/AnimationPlayer/PointLight2D" unique_id=252787186]
+stream = ExtResource("9_h5ghc")
+volume_db = -5.0
+autoplay = true
+max_distance = 250.0
+bus = &"SFX"
+
 [node name="PointLight2D2" type="PointLight2D" parent="Node2D/AnimationPlayer" unique_id=786941393]
 position = Vector2(402, 164.00002)
 scale = Vector2(1.9746087, 1.4645038)
 color = Color(1, 1, 0.15686275, 1)
 shadow_filter_smooth = 24.6
 texture = ExtResource("5_yy1jf")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Node2D/AnimationPlayer/PointLight2D2" unique_id=1958020924]
+stream = ExtResource("9_h5ghc")
+volume_db = -5.0
+autoplay = true
+max_distance = 400.0
+bus = &"SFX"
 
 [node name="MesaAbajoDerecha" type="Sprite2D" parent="Node2D" unique_id=1100721375]
 position = Vector2(453.875, 287.00003)
@@ -459,6 +486,25 @@ dialog_text = "Lo sentimos, esta función se encuentra en desarrollo !!"
 [node name="MenuPausa" type="CanvasLayer" parent="." unique_id=1314141683]
 
 [node name="Pause_menu" parent="MenuPausa" unique_id=2038693485 instance=ExtResource("12_u8dp7")]
+
+[node name="AmbientFX" type="AudioStreamPlayer" parent="." unique_id=874564267]
+process_mode = 3
+stream = ExtResource("13_imsci")
+bus = &"SFX"
+
+[node name="MusicLoop" type="AudioStreamPlayer" parent="." unique_id=1205667077]
+process_mode = 3
+stream = ExtResource("14_h5ghc")
+
+[node name="PCSoundin" type="AudioStreamPlayer" parent="." unique_id=1059407186]
+stream = ExtResource("17_vuvpm")
+volume_db = 10.0
+bus = &"SFX"
+
+[node name="PCSoundout" type="AudioStreamPlayer" parent="." unique_id=1923804799]
+stream = ExtResource("18_x4ih4")
+volume_db = 10.0
+bus = &"SFX"
 
 [connection signal="body_entered" from="AreaAbrirTaller" to="." method="_on_area_abrir_taller_body_entered"]
 [connection signal="body_exited" from="AreaAbrirTaller" to="." method="_on_area_abrir_taller_body_exited"]
