@@ -104,7 +104,7 @@ func _process(delta: float) -> void:
 
 	var remaining := int(ceil(max(0.0, survival_time - elapsed_time)))
 
-	time_label.text = "Tiempo: %ds" % remaining
+	time_label.text = "Tiempo restante: %ds" % remaining
 
 	if remaining <= 3:
 		danger_label.visible = true
@@ -154,7 +154,7 @@ func start_countdown() -> void:
 
 	start_label.visible = false
 	elapsed_time = 0.0
-	time_label.text = "Tiempo: %ds" % int(survival_time)
+	time_label.text = "Tiempo restante: %ds" % int(survival_time)
 
 	game_started = true
 	move_timer.start()
@@ -239,7 +239,7 @@ func game_over() -> void:
 	move_timer.stop()
 	car_sprite.stop()
 
-	time_label.text = "Tiempo: X"
+	time_label.text = "Tiempo restante: X"
 	time_label.modulate = Color.RED
 	danger_label.visible = false
 
@@ -268,7 +268,7 @@ func win_game() -> void:
 	move_timer.stop()
 	car_sprite.stop()
 
-	time_label.text = "Tiempo: 0s"
+	time_label.text = "Tiempo restante: 0s"
 	time_label.modulate = Color.GREEN
 	danger_label.visible = false
 
