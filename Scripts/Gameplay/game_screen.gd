@@ -11,12 +11,41 @@ var jugador_en_rango_easter_egg = false
 @onready var mensaje_abrir_taller = $Marker2DAbrirTaller/LabelAbrirTaller
 @onready var mensaje_interactuar_pc = $Marker2DInteractuarPc/LabelInteractuarPc
 @onready var mensaje_atender_cliente = $Marker2DAtenderCliente/LabelAtenderCliente
-# Called when the node enters the scene tree for the first time.
+@onready var ambient_fx: AudioStreamPlayer = $AmbientFX
+@onready var music_loop: AudioStreamPlayer = $MusicLoop
+@onready var fan_sound: AudioStreamPlayer2D = $Node2D/ventilador/AudioStreamPlayer2D
+@onready var pc_sound_in: AudioStreamPlayer = $PCSoundin
+@onready var pc_sound_out: AudioStreamPlayer = $PCSoundout
+
+
 func _ready() -> void:
 	mensaje_abrir_taller.visible = false
 	mensaje_interactuar_pc.visible = false
 	mensaje_atender_cliente.visible = false
+	
+	iniciar_audio_taller()
+	
 	$Node2D/ventilador.play("giro_ventilador")
+	
+	if fan_sound:
+		fan_sound.process_mode = Node.PROCESS_MODE_ALWAYS
+		fan_sound.play()
+	
+	if ambient_fx:
+		ambient_fx.process_mode = Node.PROCESS_MODE_ALWAYS
+	
+	if music_loop:
+		music_loop.process_mode = Node.PROCESS_MODE_ALWAYS
+	
+	if pc_sound_in:
+		pc_sound_in.process_mode = Node.PROCESS_MODE_ALWAYS
+	
+	if pc_sound_out:
+		pc_sound_out.process_mode = Node.PROCESS_MODE_ALWAYS
+	
+	if GLOBALSIGNALS:
+		GLOBALSIGNALS.cerrar_pc.connect(play_pc_out)
+	
 	if TIEMPOMANAGER:
 		TIEMPOMANAGER.day_ended.connect(_on_day_ended)
 	
@@ -24,20 +53,54 @@ func _ready() -> void:
 		TIEMPOMANAGER.stop_timer()
 		TIEMPOMANAGER.has_initialized = true
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
+
+func iniciar_audio_taller() -> void:
+	print("Iniciando audio taller")
+
+	if ambient_fx:
+		print("AmbientFX encontrado")
+		ambient_fx.volume_db = 6.0
+		ambient_fx.play()
+	else:
+		print("AmbientFX NULL")
+
+	if music_loop:
+		print("MusicLoop encontrado")
+		music_loop.volume_db = 0.0
+		music_loop.play()
+	else:
+		print("MusicLoop NULL")
+
+
+func play_pc_in() -> void:
+	if pc_sound_in:
+		pc_sound_in.play()
+
+
+func play_pc_out() -> void:
+	if pc_sound_out:
+		pc_sound_out.play()
+
+
 func _process(_delta: float) -> void:
 	pass
+
+
 func _on_day_ended():
 	get_tree().paused = true
 	resumen_dia.visible = true
 	
-	# Si el jugador sigue en la zona de la puerta, refrescamos el cartel
 	if jugador_en_rango_abrir_taller:
 		actualizar_mensaje_puerta()
+
+
 func _input(event):
 	if get_tree().paused: 
 		return
-	if not puede_interactuar: return
+	
+	if not puede_interactuar:
+		return
+	
 	if jugador_en_rango_abrir_taller and event.is_action_pressed("interactuar"):
 		if not TIEMPOMANAGER.is_timer_running:
 			TIEMPOMANAGER.reset_day()
@@ -55,29 +118,29 @@ func _input(event):
 	if jugador_en_rango_atender_cliente and event.is_action_pressed("interactuar"):
 		print("¡Se atendió cliente!")
 		en_desarrollo.popup_centered()
+	
 	if jugador_en_rango_interactuar_pc and event.is_action_pressed("interactuar"):
+		play_pc_in()
 		GLOBALSIGNALS.abrir_pc.emit()
 		print("¡Se abrió el pc!")
-
-	
-
 
 
 '''
 CODIGO INTERACCIÓN TALLER
 '''
 
-####
 func _on_area_abrir_taller_body_entered(body):
 	if body.name == "Player":
 		actualizar_mensaje_puerta()			
 		jugador_en_rango_abrir_taller = true
 		mensaje_abrir_taller.visible = true
 
+
 func _on_area_abrir_taller_body_exited(body):
 	if body.name == "Player":
 		jugador_en_rango_abrir_taller = false
 		mensaje_abrir_taller.visible = false
+
 
 func actualizar_mensaje_puerta():
 	if TIEMPOMANAGER.is_timer_running:
@@ -86,23 +149,28 @@ func actualizar_mensaje_puerta():
 	else:
 		mensaje_abrir_taller.text = "Presiona [E] para Abrir Taller"
 		mensaje_abrir_taller.modulate = Color.WHITE
+
+
 '''
 CODIGO INTERACCIÓN USAR PC
 '''
+
 func _on_area_interactuar_pc_body_entered(body):
 	if body.name == "Player":
 		jugador_en_rango_interactuar_pc = true
 		mensaje_interactuar_pc.visible = true
-		
+
 
 func _on_area_interactuar_pc_body_exited(body):
 	if body.name == "Player":
 		jugador_en_rango_interactuar_pc = false
 		mensaje_interactuar_pc.visible = false
 
+
 '''
 CODIGO INTERACCIÓN ATENDER CLIENTE
 '''
+
 func _on_area_atender_cliente_body_entered(body: Node2D):
 	if body.name == "Player":
 		jugador_en_rango_atender_cliente = true
