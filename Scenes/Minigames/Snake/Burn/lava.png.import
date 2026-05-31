@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://eigitcdwf1ip"
-path="res://.godot/imported/burning_car.png-06c1164cff1c77c434cddbda044481fb.ctex"
+uid="uid://bsv7s4t5qx7fd"
+path="res://.godot/imported/lava.png-566013a6c2ea6c73f458a4549de55d73.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/snake_sprites/burning_car.png"
-dest_files=["res://.godot/imported/burning_car.png-06c1164cff1c77c434cddbda044481fb.ctex"]
+source_file="res://Scenes/Minigames/Snake/Burn/lava.png"
+dest_files=["res://.godot/imported/lava.png-566013a6c2ea6c73f458a4549de55d73.ctex"]
 
 [params]
 

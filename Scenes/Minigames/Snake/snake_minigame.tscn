@@ -2,12 +2,33 @@
 
 [ext_resource type="Script" uid="uid://ciny2lx0jwxxs" path="res://Scenes/Minigames/Snake/snake_minigame.gd" id="1_esgbc"]
 [ext_resource type="SpriteFrames" uid="uid://1wudhpdgds2f" path="res://Scenes/Minigames/Snake/Car/car_sprite_frames.tres" id="2_gtpg2"]
+[ext_resource type="PackedScene" uid="uid://c80byqtkm0rum" path="res://Scenes/Minigames/Snake/Burn/burn_mark.tscn" id="2_yumc8"]
 [ext_resource type="Texture2D" uid="uid://bhhmcj8mugm67" path="res://Scenes/Minigames/Snake/Background/checkboard.png" id="3_xmi42"]
 [ext_resource type="Script" uid="uid://cr1t6tqa1jarg" path="res://Scenes/Minigames/Snake/node_2d.gd" id="3_yumc8"]
+
+[sub_resource type="Gradient" id="Gradient_yumc8"]
+offsets = PackedFloat32Array(0, 0.4949495, 1)
+colors = PackedColorArray(0.7764706, 0.20392157, 0.03529412, 1, 0.627451, 0.07058824, 0, 1, 0.22670749, 0.22670749, 0.22670746, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_faefq"]
+gradient = SubResource("Gradient_yumc8")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_yumc8"]
+particle_flag_disable_z = true
+direction = Vector3(0, -1, 0)
+spread = 180.0
+initial_velocity_min = 60.0
+initial_velocity_max = 140.0
+gravity = Vector3(0, -80, 0)
+scale_min = 2.0
+scale_max = 5.0
+color = Color(0.72102803, 0.16017166, 0, 1)
+color_ramp = SubResource("GradientTexture1D_faefq")
 
 [node name="SnakeMinigame" type="Node2D" unique_id=1131837256]
 position = Vector2(-921, -1113)
 script = ExtResource("1_esgbc")
+burn_mark_scene = ExtResource("2_yumc8")
 
 [node name="Background" type="Sprite2D" parent="." unique_id=1121329477]
 position = Vector2(89, -74.00002)
@@ -21,13 +42,21 @@ texture = ExtResource("3_xmi42")
 [node name="ObstacleContainer" type="Node2D" parent="." unique_id=515357766]
 
 [node name="Car" type="Node2D" parent="." unique_id=1314031482]
-z_index = 1
+z_index = 3
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Car" unique_id=350197503]
 scale = Vector2(0.5, 0.5)
 sprite_frames = ExtResource("2_gtpg2")
 animation = &"avanzar"
-frame_progress = 0.006212876
+frame_progress = 0.5546999
+
+[node name="DeathParticles" type="GPUParticles2D" parent="Car" unique_id=1708702627]
+emitting = false
+amount = 40
+lifetime = 0.6
+one_shot = true
+explosiveness = 0.8
+process_material = SubResource("ParticleProcessMaterial_yumc8")
 
 [node name="MoveTimer" type="Timer" parent="." unique_id=857158890]
 wait_time = 0.12
@@ -38,7 +67,7 @@ visible = false
 
 [node name="HUD" type="Control" parent="CanvasLayer" unique_id=1715585278]
 layout_mode = 3
-anchor_left = 0.057291668
+anchor_left = -0.015625
 anchor_top = -0.0650987
 anchor_right = -0.015625
 anchor_bottom = -0.0046296297
@@ -65,6 +94,7 @@ position = Vector2(55.85, -50)
 zoom = Vector2(0.8, 0.8)
 
 [node name="GridDebug" type="Node2D" parent="." unique_id=511540467]
+visible = false
 position = Vector2(-234, -373.99997)
 scale = Vector2(1, 1.008)
 script = ExtResource("3_yumc8")

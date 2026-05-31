@@ -1,38 +1,45 @@
 [gd_resource type="SpriteFrames" format=3 uid="uid://1wudhpdgds2f"]
 
-[ext_resource type="Texture2D" uid="uid://cudc5tr0xjibl" path="res://Assets/Sprites/snake_sprites/burning_car.png" id="1_n7lgg"]
+[ext_resource type="Texture2D" uid="uid://eigitcdwf1ip" path="res://Assets/Sprites/snake_sprites/burning_car.png" id="1_n7lgg"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_xof1m"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_n7lgg"]
 atlas = ExtResource("1_n7lgg")
 region = Rect2(0, 0, 256, 256)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_fqvec"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_xof1m"]
 atlas = ExtResource("1_n7lgg")
 region = Rect2(256, 0, 256, 256)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_fc02v"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_fqvec"]
 atlas = ExtResource("1_n7lgg")
 region = Rect2(512, 0, 256, 256)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_fjj2y"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_fc02v"]
 atlas = ExtResource("1_n7lgg")
 region = Rect2(768, 0, 256, 256)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_0j1hx"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_fjj2y"]
 atlas = ExtResource("1_n7lgg")
 region = Rect2(1024, 0, 256, 256)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_rsy42"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_0j1hx"]
 atlas = ExtResource("1_n7lgg")
 region = Rect2(1280, 0, 256, 256)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_vln5x"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_rsy42"]
 atlas = ExtResource("1_n7lgg")
 region = Rect2(1536, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vln5x"]
+atlas = ExtResource("1_n7lgg")
+region = Rect2(1792, 0, 256, 256)
 
 [resource]
 animations = [{
 "frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n7lgg")
+}, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_xof1m")
 }, {
@@ -56,10 +63,5 @@ animations = [{
 }],
 "loop": true,
 "name": &"avanzar",
-"speed": 50.0
-}, {
-"frames": [],
-"loop": true,
-"name": &"default",
-"speed": 5.0
+"speed": 40.0
 }]
