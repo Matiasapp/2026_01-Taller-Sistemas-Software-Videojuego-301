@@ -17,6 +17,7 @@ var posicion_logica: Vector2
 var tween_actual: Tween 
 
 func _ready() -> void:
+	z_index = 2
 	entorno_visual.adjustment_saturation = 1.0
 	Engine.time_scale = 1.0
 	if genero == "Masculino":

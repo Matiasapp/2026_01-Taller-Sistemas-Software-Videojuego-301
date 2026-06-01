@@ -24,6 +24,7 @@ adjustment_enabled = true
 size = Vector2(1152, 242)
 
 [node name="CrossyRoad" type="Node2D" unique_id=579727455]
+z_as_relative = false
 y_sort_enabled = true
 script = ExtResource("1_d0mq6")
 franjas_posibles = Array[PackedScene]([ExtResource("2_cfljh"), ExtResource("3_ijbgn")])

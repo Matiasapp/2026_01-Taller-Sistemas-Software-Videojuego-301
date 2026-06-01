@@ -11,6 +11,8 @@ atlas = ExtResource("1_mblyo")
 region = Rect2(0, 796, 1080, 64)
 
 [node name="Calle" type="Node2D" unique_id=1803105545]
+z_as_relative = false
+y_sort_enabled = true
 position = Vector2(544, 0)
 script = ExtResource("2_ffyqn")
 vehiculos_posibles = Array[PackedScene]([ExtResource("2_chym7"), ExtResource("3_uj17p")])
