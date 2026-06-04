@@ -1,0 +1,58 @@
+[gd_scene format=3 uid="uid://c138ghqp6mqxv"]
+
+[ext_resource type="Script" uid="uid://dbr5418n2jf0s" path="res://Scripts/CrossyRoad/vehiculo_manager.gd" id="1_we4qe"]
+[ext_resource type="Texture2D" uid="uid://bdixjhy47kutr" path="res://Assets/Sprites/crossy_road/assets.png" id="2_e27w3"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0lb3p"]
+atlas = ExtResource("2_e27w3")
+region = Rect2(266, 604, 177, 124)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_frply"]
+atlas = ExtResource("2_e27w3")
+region = Rect2(460, 605, 175, 123)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yomyc"]
+atlas = ExtResource("2_e27w3")
+region = Rect2(653, 478, 170, 119)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_46os4"]
+atlas = ExtResource("2_e27w3")
+region = Rect2(842, 478, 171, 120)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xggxn"]
+atlas = ExtResource("2_e27w3")
+region = Rect2(654, 608, 169, 119)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b6nam"]
+atlas = ExtResource("2_e27w3")
+region = Rect2(842, 608, 170, 120)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e27w3"]
+atlas = ExtResource("2_e27w3")
+region = Rect2(266, 604, 177, 124)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s5kks"]
+atlas = SubResource("AtlasTexture_e27w3")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e27w3"]
+size = Vector2(152, 60)
+
+[node name="Camion" type="Area2D" unique_id=206663252 groups=["vehiculos"]]
+z_index = 2
+z_as_relative = false
+y_sort_enabled = true
+script = ExtResource("1_we4qe")
+texturas_derecha = Array[Texture2D]([SubResource("AtlasTexture_0lb3p"), SubResource("AtlasTexture_frply"), SubResource("AtlasTexture_yomyc"), SubResource("AtlasTexture_46os4")])
+texturas_izquierda = Array[Texture2D]([null, null, SubResource("AtlasTexture_xggxn"), SubResource("AtlasTexture_b6nam")])
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=482849701]
+z_index = 2
+z_as_relative = false
+y_sort_enabled = true
+position = Vector2(0, 32)
+texture = SubResource("AtlasTexture_s5kks")
+offset = Vector2(-1, -61)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=663829926]
+z_index = 2
+shape = SubResource("RectangleShape2D_e27w3")
