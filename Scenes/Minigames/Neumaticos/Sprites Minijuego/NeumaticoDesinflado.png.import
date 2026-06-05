@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d138n7tisp7mg"
-path="res://.godot/imported/Indicador.png-877c1a94d7c0cdc6f9c4f917ec1b6bd8.ctex"
+uid="uid://do46uuuci0hus"
+path="res://.godot/imported/NeumaticoDesinflado.png-0b1ddede4db0fc3a5b64a34aaee4098c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/UI/Indicador.png"
-dest_files=["res://.godot/imported/Indicador.png-877c1a94d7c0cdc6f9c4f917ec1b6bd8.ctex"]
+source_file="res://Scenes/Minigames/Neumaticos/Sprites Minijuego/NeumaticoDesinflado.png"
+dest_files=["res://.godot/imported/NeumaticoDesinflado.png-0b1ddede4db0fc3a5b64a34aaee4098c.ctex"]
 
 [params]
 

@@ -1,0 +1,295 @@
+[gd_scene format=3 uid="uid://pkdi2cbvnps4"]
+
+[ext_resource type="Script" uid="uid://dmrcpsorpmcsy" path="res://Scenes/Minigames/Neumaticos/minijuego_neumatico.gd" id="1_md1ki"]
+[ext_resource type="Texture2D" uid="uid://baeffdt1ey3pt" path="res://Scenes/Minigames/Neumaticos/Sprites Minijuego/BarraBase.png" id="2_8hs81"]
+[ext_resource type="Texture2D" uid="uid://dtq1clrt0hp1r" path="res://Scenes/Minigames/Neumaticos/Sprites Minijuego/Indicador.png" id="2_8lgja"]
+[ext_resource type="Texture2D" uid="uid://cbwokfuu3quy0" path="res://Scenes/Minigames/Neumaticos/Sprites Minijuego/FondoTaller.png" id="2_ija6x"]
+[ext_resource type="Texture2D" uid="uid://cv8iyj8ikv3av" path="res://Scenes/Minigames/Neumaticos/Sprites Minijuego/AreaVerde.png" id="3_ija6x"]
+[ext_resource type="Texture2D" uid="uid://bbhj6vpldkhmg" path="res://Scenes/Minigames/Neumaticos/Sprites Minijuego/Cable.png" id="3_trxfn"]
+[ext_resource type="Texture2D" uid="uid://co81w8xxx6mkk" path="res://Scenes/Minigames/Neumaticos/Sprites Minijuego/VidaTuercas.png" id="5_8hs81"]
+[ext_resource type="Texture2D" uid="uid://do46uuuci0hus" path="res://Scenes/Minigames/Neumaticos/Sprites Minijuego/NeumaticoDesinflado.png" id="7_ija6x"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xrnwy"]
+atlas = ExtResource("5_8hs81")
+region = Rect2(150, 75, 75, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1dbkf"]
+atlas = ExtResource("5_8hs81")
+region = Rect2(150, 75, 75, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xi774"]
+atlas = ExtResource("5_8hs81")
+region = Rect2(300, 75, 75, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f37eh"]
+atlas = ExtResource("5_8hs81")
+region = Rect2(450, 75, 75, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4nbr0"]
+atlas = ExtResource("5_8hs81")
+region = Rect2(150, 150, 75, 75)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1j17g"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xrnwy")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1dbkf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xi774")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f37eh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4nbr0")
+}],
+"loop": false,
+"name": &"Romper",
+"speed": 10.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ija6x"]
+atlas = ExtResource("7_ija6x")
+region = Rect2(0, 0, 172, 174)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_trxfn"]
+atlas = ExtResource("7_ija6x")
+region = Rect2(172, 0, 172, 174)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v74x8"]
+atlas = ExtResource("7_ija6x")
+region = Rect2(344, 0, 172, 174)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1j17g"]
+atlas = ExtResource("7_ija6x")
+region = Rect2(507, 0, 169, 174)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_xrnwy"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ija6x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_trxfn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v74x8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1j17g")
+}],
+"loop": false,
+"name": &"Inflar",
+"speed": 4.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e2ey8"]
+atlas = ExtResource("7_ija6x")
+region = Rect2(507, 0, 169, 174)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kn8ba"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e2ey8")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="MinijuegoNeumatico" type="Control" unique_id=121450491]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_md1ki")
+
+[node name="Fondo" type="ColorRect" parent="." unique_id=2023782361]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.07683582, 0.07683582, 0.07683582, 1)
+
+[node name="FondoImagen" type="TextureRect" parent="." unique_id=2126629665]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 480.0
+grow_horizontal = 2
+texture = ExtResource("2_ija6x")
+expand_mode = 1
+
+[node name="Cable" type="TextureRect" parent="." unique_id=110154492]
+layout_mode = 0
+offset_left = 765.0
+offset_top = 319.0
+offset_right = 1070.0
+offset_bottom = 405.0
+texture = ExtResource("3_trxfn")
+expand_mode = 1
+
+[node name="BarraBase" type="TextureRect" parent="." unique_id=43064667]
+layout_mode = 0
+offset_left = -40.0
+offset_top = 512.0
+offset_right = 1208.0
+offset_bottom = 680.0
+texture = ExtResource("2_8hs81")
+expand_mode = 1
+
+[node name="AreaMovimiento" type="Control" parent="." unique_id=1614972752]
+anchors_preset = 0
+offset_left = 56.0
+offset_top = 552.0
+offset_right = 1104.0
+offset_bottom = 624.0
+
+[node name="ZonaVerde" type="TextureRect" parent="AreaMovimiento" unique_id=2010497627]
+layout_mode = 0
+offset_left = 400.0
+offset_top = -8.0
+offset_right = 704.0
+offset_bottom = 80.0
+texture = ExtResource("3_ija6x")
+expand_mode = 1
+
+[node name="Indicador" type="TextureRect" parent="AreaMovimiento" unique_id=1183268623]
+layout_mode = 0
+offset_left = 520.0
+offset_top = -64.0
+offset_right = 584.0
+offset_bottom = 96.0
+texture = ExtResource("2_8lgja")
+expand_mode = 1
+
+[node name="Vidas" type="Label" parent="." unique_id=2103372476]
+layout_mode = 0
+offset_left = 83.0
+offset_top = 399.0
+offset_right = 123.0
+offset_bottom = 448.0
+text = "
+"
+
+[node name="Tuerca1" type="AnimatedSprite2D" parent="Vidas" unique_id=88883279]
+position = Vector2(-50.999996, -327.00003)
+scale = Vector2(0.64000005, 0.6399999)
+sprite_frames = SubResource("SpriteFrames_1j17g")
+animation = &"Romper"
+centered = false
+
+[node name="Tuerca2" type="AnimatedSprite2D" parent="Vidas" unique_id=133579218]
+position = Vector2(5, -327)
+scale = Vector2(0.64, 0.64000005)
+sprite_frames = SubResource("SpriteFrames_1j17g")
+animation = &"Romper"
+centered = false
+
+[node name="Tuerca3" type="AnimatedSprite2D" parent="Vidas" unique_id=1724222193]
+position = Vector2(61, -327)
+scale = Vector2(0.64, 0.6399999)
+sprite_frames = SubResource("SpriteFrames_1j17g")
+animation = &"Romper"
+centered = false
+
+[node name="Tuerca4" type="AnimatedSprite2D" parent="Vidas" unique_id=422233803]
+position = Vector2(117, -327.00003)
+scale = Vector2(0.6399995, 0.6399999)
+sprite_frames = SubResource("SpriteFrames_1j17g")
+animation = &"Romper"
+centered = false
+
+[node name="Tiempo" type="Label" parent="." unique_id=496573484]
+layout_mode = 0
+offset_left = 1032.0
+offset_top = 80.0
+offset_right = 1112.0
+offset_bottom = 103.0
+text = "30"
+
+[node name="Neumatico" type="AnimatedSprite2D" parent="." unique_id=842019133]
+position = Vector2(737.00006, 343.00003)
+scale = Vector2(0.9118754, 0.8023158)
+sprite_frames = SubResource("SpriteFrames_xrnwy")
+animation = &"Inflar"
+
+[node name="Neumaticos" type="Label" parent="." unique_id=998306052]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="Neumatico1" type="AnimatedSprite2D" parent="Neumaticos" unique_id=1961764149]
+visible = false
+position = Vector2(96, 216)
+scale = Vector2(0.59911245, 0.40804595)
+sprite_frames = SubResource("SpriteFrames_kn8ba")
+
+[node name="Neumatico2" type="AnimatedSprite2D" parent="Neumaticos" unique_id=1212677372]
+visible = false
+position = Vector2(127.99999, 216)
+scale = Vector2(0.59911245, 0.40804595)
+sprite_frames = SubResource("SpriteFrames_kn8ba")
+
+[node name="Neumatico3" type="AnimatedSprite2D" parent="Neumaticos" unique_id=1933898824]
+visible = false
+position = Vector2(159.99998, 216)
+scale = Vector2(0.59911245, 0.40804595)
+sprite_frames = SubResource("SpriteFrames_kn8ba")
+
+[node name="Neumatico4" type="AnimatedSprite2D" parent="Neumaticos" unique_id=1572078728]
+visible = false
+position = Vector2(96, 303.99997)
+scale = Vector2(0.59911245, 0.40804595)
+sprite_frames = SubResource("SpriteFrames_kn8ba")
+
+[node name="Neumatico5" type="AnimatedSprite2D" parent="Neumaticos" unique_id=1316377734]
+visible = false
+position = Vector2(127.99999, 304)
+scale = Vector2(0.59911245, 0.40804595)
+sprite_frames = SubResource("SpriteFrames_kn8ba")
+
+[node name="Neumatico6" type="AnimatedSprite2D" parent="Neumaticos" unique_id=1926703537]
+visible = false
+position = Vector2(159.99998, 304)
+scale = Vector2(0.59911245, 0.40804595)
+sprite_frames = SubResource("SpriteFrames_kn8ba")
+
+[node name="Neumatico7" type="AnimatedSprite2D" parent="Neumaticos" unique_id=192043057]
+visible = false
+position = Vector2(96, 391.99997)
+scale = Vector2(0.59911245, 0.40804595)
+sprite_frames = SubResource("SpriteFrames_kn8ba")
+
+[node name="Neumatico8" type="AnimatedSprite2D" parent="Neumaticos" unique_id=1724309354]
+visible = false
+position = Vector2(96, 392)
+scale = Vector2(0.59911245, 0.40804595)
+sprite_frames = SubResource("SpriteFrames_kn8ba")
+
+[node name="Neumatico9" type="AnimatedSprite2D" parent="Neumaticos" unique_id=1691164436]
+visible = false
+position = Vector2(127.999985, 391.99997)
+scale = Vector2(0.59911245, 0.40804595)
+sprite_frames = SubResource("SpriteFrames_kn8ba")
+
+[node name="Neumatico10" type="AnimatedSprite2D" parent="Neumaticos" unique_id=1928131353]
+visible = false
+position = Vector2(160, 392)
+scale = Vector2(0.59911245, 0.40804595)
+sprite_frames = SubResource("SpriteFrames_kn8ba")
