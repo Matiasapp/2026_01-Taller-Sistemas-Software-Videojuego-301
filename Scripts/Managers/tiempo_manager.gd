@@ -66,6 +66,7 @@ func reset_day(start_h: int = 8) -> void:
 	time_accumulator = 0.0
 	time_changed.emit(current_hour, current_minute)
 	has_initialized = true
+	
 func avanzar_dia():
 	DATOSGLOBALES.dia_actual += 1
 	print("Ahora es el día: ", DATOSGLOBALES.dia_actual)
