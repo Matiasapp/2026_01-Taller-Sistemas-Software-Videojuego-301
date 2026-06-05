@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://baeffdt1ey3pt"
-path="res://.godot/imported/BarraBase.png-733ac22acb463745feedfb0dd7f71fe9.ctex"
+uid="uid://do46uuuci0hus"
+path="res://.godot/imported/NeumaticoDesinflado.png-d4ce389f5f9d2e8576f0ecb288c12956.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/Minigames/Neumaticos/Sprites Minijuego/BarraBase.png"
-dest_files=["res://.godot/imported/BarraBase.png-733ac22acb463745feedfb0dd7f71fe9.ctex"]
+source_file="res://Assets/Sprites/inflado_neumatico/NeumaticoDesinflado.png"
+dest_files=["res://.godot/imported/NeumaticoDesinflado.png-d4ce389f5f9d2e8576f0ecb288c12956.ctex"]
 
 [params]
 

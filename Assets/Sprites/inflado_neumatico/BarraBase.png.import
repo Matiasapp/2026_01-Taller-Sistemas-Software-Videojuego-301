@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bbhj6vpldkhmg"
-path="res://.godot/imported/Cable.png-728b966ee3a50b66df8fae5098476e45.ctex"
+uid="uid://baeffdt1ey3pt"
+path="res://.godot/imported/BarraBase.png-d031d38db01bfc3ab475ae196090633c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/Minigames/Neumaticos/Sprites Minijuego/Cable.png"
-dest_files=["res://.godot/imported/Cable.png-728b966ee3a50b66df8fae5098476e45.ctex"]
+source_file="res://Assets/Sprites/inflado_neumatico/BarraBase.png"
+dest_files=["res://.godot/imported/BarraBase.png-d031d38db01bfc3ab475ae196090633c.ctex"]
 
 [params]
 

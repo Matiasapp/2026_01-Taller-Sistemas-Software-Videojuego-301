@@ -1,13 +1,13 @@
 [gd_scene format=3 uid="uid://pkdi2cbvnps4"]
 
 [ext_resource type="Script" uid="uid://dmrcpsorpmcsy" path="res://Scenes/Minigames/Neumaticos/minijuego_neumatico.gd" id="1_md1ki"]
-[ext_resource type="Texture2D" uid="uid://baeffdt1ey3pt" path="res://Scenes/Minigames/Neumaticos/Sprites Minijuego/BarraBase.png" id="2_8hs81"]
-[ext_resource type="Texture2D" uid="uid://dtq1clrt0hp1r" path="res://Scenes/Minigames/Neumaticos/Sprites Minijuego/Indicador.png" id="2_8lgja"]
-[ext_resource type="Texture2D" uid="uid://cbwokfuu3quy0" path="res://Scenes/Minigames/Neumaticos/Sprites Minijuego/FondoTaller.png" id="2_ija6x"]
-[ext_resource type="Texture2D" uid="uid://cv8iyj8ikv3av" path="res://Scenes/Minigames/Neumaticos/Sprites Minijuego/AreaVerde.png" id="3_ija6x"]
-[ext_resource type="Texture2D" uid="uid://bbhj6vpldkhmg" path="res://Scenes/Minigames/Neumaticos/Sprites Minijuego/Cable.png" id="3_trxfn"]
-[ext_resource type="Texture2D" uid="uid://co81w8xxx6mkk" path="res://Scenes/Minigames/Neumaticos/Sprites Minijuego/VidaTuercas.png" id="5_8hs81"]
-[ext_resource type="Texture2D" uid="uid://do46uuuci0hus" path="res://Scenes/Minigames/Neumaticos/Sprites Minijuego/NeumaticoDesinflado.png" id="7_ija6x"]
+[ext_resource type="Texture2D" uid="uid://baeffdt1ey3pt" path="res://Assets/Sprites/inflado_neumatico/BarraBase.png" id="2_8hs81"]
+[ext_resource type="Texture2D" uid="uid://dtq1clrt0hp1r" path="res://Assets/Sprites/inflado_neumatico/Indicador.png" id="2_8lgja"]
+[ext_resource type="Texture2D" uid="uid://cbwokfuu3quy0" path="res://Assets/Sprites/inflado_neumatico/FondoTaller.png" id="2_ija6x"]
+[ext_resource type="Texture2D" uid="uid://cv8iyj8ikv3av" path="res://Assets/Sprites/inflado_neumatico/AreaVerde.png" id="3_ija6x"]
+[ext_resource type="Texture2D" uid="uid://bbhj6vpldkhmg" path="res://Assets/Sprites/inflado_neumatico/Cable.png" id="3_trxfn"]
+[ext_resource type="Texture2D" uid="uid://co81w8xxx6mkk" path="res://Assets/Sprites/inflado_neumatico/VidaTuercas.png" id="5_8hs81"]
+[ext_resource type="Texture2D" uid="uid://do46uuuci0hus" path="res://Assets/Sprites/inflado_neumatico/NeumaticoDesinflado.png" id="7_ija6x"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xrnwy"]
 atlas = ExtResource("5_8hs81")

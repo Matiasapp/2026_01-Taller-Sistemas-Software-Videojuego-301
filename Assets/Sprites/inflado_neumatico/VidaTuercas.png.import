@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dtq1clrt0hp1r"
-path="res://.godot/imported/Indicador.png-b76ac4b13939717b8ab915ab847dc63e.ctex"
+uid="uid://co81w8xxx6mkk"
+path="res://.godot/imported/VidaTuercas.png-bab8978bed4541dfb334f26b3ee80598.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/Minigames/Neumaticos/Sprites Minijuego/Indicador.png"
-dest_files=["res://.godot/imported/Indicador.png-b76ac4b13939717b8ab915ab847dc63e.ctex"]
+source_file="res://Assets/Sprites/inflado_neumatico/VidaTuercas.png"
+dest_files=["res://.godot/imported/VidaTuercas.png-bab8978bed4541dfb334f26b3ee80598.ctex"]
 
 [params]
 

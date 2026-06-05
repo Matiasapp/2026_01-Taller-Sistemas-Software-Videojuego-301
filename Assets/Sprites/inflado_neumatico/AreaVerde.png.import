@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://co81w8xxx6mkk"
-path="res://.godot/imported/VidaTuercas.png-f009e6fdb51fa76e8efd046e65d2d8b5.ctex"
+uid="uid://cv8iyj8ikv3av"
+path="res://.godot/imported/AreaVerde.png-367796a33eb03f4fd2c622ca9c2ddd60.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/Minigames/Neumaticos/Sprites Minijuego/VidaTuercas.png"
-dest_files=["res://.godot/imported/VidaTuercas.png-f009e6fdb51fa76e8efd046e65d2d8b5.ctex"]
+source_file="res://Assets/Sprites/inflado_neumatico/AreaVerde.png"
+dest_files=["res://.godot/imported/AreaVerde.png-367796a33eb03f4fd2c622ca9c2ddd60.ctex"]
 
 [params]
 
