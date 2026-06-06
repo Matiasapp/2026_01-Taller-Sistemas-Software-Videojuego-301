@@ -23,6 +23,7 @@ extends Node2D
 @onready var car_sprite: AnimatedSprite2D = $Car/AnimatedSprite2D
 
 @onready var panel_tutorial := $CanvasLayer/Tutorial
+@onready var panel_tutorial_interno := $CanvasLayer/Tutorial/PanelTutorial
 @onready var label_parpadeo := $CanvasLayer/Tutorial/PanelTutorial/Comenzar
 
 var start_label: Label
@@ -34,12 +35,14 @@ var direction := Vector2i.RIGHT
 
 var lava_cells := {}
 
+var tutorial_can_start := false
 var game_started := false
 var tutorial_activo := true
 var is_game_over := false
 var has_won := false
 var elapsed_time := 0.0
 var dinero_obtenido := 0
+
 
 
 func _ready() -> void:
@@ -64,29 +67,28 @@ func _ready() -> void:
 func mostrar_tutorial() -> void:
 	game_started = false
 	tutorial_activo = true
+	tutorial_can_start = false
 	move_timer.stop()
 
 	time_label.visible = false
 
-	if panel_tutorial:
-		panel_tutorial.show()
-		panel_tutorial.visible = true
-		panel_tutorial.z_index = 5000
+	panel_tutorial.visible = true
+	panel_tutorial.show()
+	panel_tutorial.position = Vector2.ZERO
+	panel_tutorial.size = get_viewport_rect().size
+	panel_tutorial.z_index = 100
 
-		panel_tutorial.set_anchors_preset(Control.PRESET_FULL_RECT)
-		panel_tutorial.call_deferred("set_position", Vector2.ZERO)
-		panel_tutorial.call_deferred("set_size", get_viewport_rect().size)
-
-	var panel_interno := $CanvasLayer/HUD/Tutorial/PanelTutorial
-	if panel_interno:
-		panel_interno.show()
-		panel_interno.visible = true
-		panel_interno.z_index = 5001
+	panel_tutorial_interno.visible = true
+	panel_tutorial_interno.show()
+	panel_tutorial_interno.z_index = 101
 
 	if label_parpadeo:
 		var tween_blink := create_tween().set_loops()
 		tween_blink.tween_property(label_parpadeo, "modulate:a", 0.0, 0.6)
 		tween_blink.tween_property(label_parpadeo, "modulate:a", 1.0, 0.6)
+
+	await get_tree().create_timer(0.35).timeout
+	tutorial_can_start = true
 
 func setup_time_label() -> void:
 	time_label = Label.new()
@@ -101,7 +103,7 @@ func setup_time_label() -> void:
 	time_label.add_theme_font_size_override("font_size", 28)
 	time_label.add_theme_color_override("font_outline_color", Color.BLACK)
 	time_label.add_theme_constant_override("outline_size", 3)
-	time_label.z_index = 1000
+	time_label.z_index = 198
 	time_label.visible = true
 
 
@@ -117,7 +119,7 @@ func create_start_label() -> void:
 	start_label.add_theme_color_override("font_outline_color", Color.BLACK)
 	start_label.add_theme_constant_override("outline_size", 4)
 	start_label.modulate = Color(1.0, 0.95, 0.8)
-	start_label.z_index = 9000
+	start_label.z_index = 200
 	start_label.visible = false
 
 
@@ -133,7 +135,7 @@ func create_danger_label() -> void:
 	danger_label.add_theme_color_override("font_outline_color", Color.BLACK)
 	danger_label.add_theme_constant_override("outline_size", 5)
 	danger_label.modulate = Color.RED
-	danger_label.z_index = 998
+	danger_label.z_index = 199
 	danger_label.visible = false
 
 
@@ -143,7 +145,7 @@ func _process(delta: float) -> void:
 
 	if tutorial_activo:
 
-		if direction_input_pressed():
+		if tutorial_can_start and direction_input_pressed():
 
 			tutorial_activo = false
 
@@ -217,7 +219,7 @@ func start_countdown() -> void:
 	danger_label.visible = false
 
 	start_label.visible = true
-	start_label.z_index = 9000
+	start_label.z_index = 200
 	start_label.text = "3"
 
 	await get_tree().create_timer(1.0).timeout
@@ -364,14 +366,18 @@ func is_inside_board(cell: Vector2i) -> bool:
 
 
 func calcular_dinero_final() -> void:
-	dinero_obtenido = int(elapsed_time) * valor_por_segundo
+	var segundos_sobrevividos := int(elapsed_time)
+
+	dinero_obtenido = segundos_sobrevividos * valor_por_segundo
 
 	if has_won:
 		dinero_obtenido += bonus_victoria
-	else:
-		dinero_obtenido = max(0, dinero_obtenido - penalizacion_derrota)
+	elif is_game_over:
+		dinero_obtenido -= penalizacion_derrota
 
-	DATOSGLOBALES.dinero += dinero_obtenido
+	dinero_obtenido = max(0, dinero_obtenido)
+
+	print("Dinero obtenido: $", dinero_obtenido)
 
 
 func game_over() -> void:
@@ -402,6 +408,7 @@ func game_over() -> void:
 	calcular_dinero_final()
 
 	start_label.visible = true
+	calcular_dinero_final()
 	start_label.text = "GAME OVER\n+$" + str(dinero_obtenido)
 
 
@@ -424,4 +431,5 @@ func win_game() -> void:
 	calcular_dinero_final()
 
 	start_label.visible = true
+	calcular_dinero_final()
 	start_label.text = "¡GANASTE!\n+$" + str(dinero_obtenido)
