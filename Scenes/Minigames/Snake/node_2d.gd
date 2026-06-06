@@ -2,7 +2,7 @@ extends Node2D
 
 @export var board_origin := Vector2(4, -4)
 @export var cell_size := 80
-@export var board_size := 8
+@export var board_size := 9
 @export var show_grid := true
 
 func _draw():

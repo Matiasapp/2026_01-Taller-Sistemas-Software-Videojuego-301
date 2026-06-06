@@ -31,9 +31,10 @@ color_ramp = SubResource("GradientTexture1D_4frya")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=70832992]
 z_index = 1
-scale = Vector2(0.34765625, 0.34960935)
+position = Vector2(-0.50000304, 1.5)
+scale = Vector2(0.3320312, 0.31015623)
 sprite_frames = ExtResource("1_r8wut")
-animation = &"lava"
+animation = &"spawn_lava"
 
 [node name="SmokeParticles" type="GPUParticles2D" parent="." unique_id=128003845]
 z_index = 2

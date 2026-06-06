@@ -50,29 +50,14 @@ gravity = Vector3(0, -9, 0)
 scale_max = 2.0
 color_ramp = SubResource("GradientTexture1D_4frya")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yumc8"]
-bg_color = Color(0.92941177, 0.49803922, 0.16470589, 1)
-border_width_left = 6
-border_width_top = 6
-border_width_right = 6
-border_width_bottom = 6
-border_color = Color(1, 0.7294118, 0.36862746, 1)
-border_blend = true
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-corner_detail = 10
-shadow_color = Color(0, 0, 0, 1)
-shadow_size = 11
-
 [node name="SnakeMinigame" type="Node2D" unique_id=1131837256]
+position = Vector2(-921, -1113)
 script = ExtResource("1_esgbc")
 burn_mark_scene = ExtResource("2_yumc8")
 
 [node name="Background" type="Sprite2D" parent="." unique_id=1121329477]
-position = Vector2(-14.499998, 0)
-scale = Vector2(1.0735645, 1.0648249)
+position = Vector2(115.97822, -48.00007)
+scale = Vector2(1.0466769, 1.0648249)
 texture = ExtResource("3_faefq")
 
 [node name="GridOrigin" type="Marker2D" parent="." unique_id=1281786702]
@@ -157,102 +142,12 @@ text = "TEXT"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Tutorial" type="ColorRect" parent="CanvasLayer" unique_id=224879590]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -1865.0
-offset_top = -1698.0
-offset_right = -649.0
-offset_bottom = -970.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(1, 0.6, 0.14509805, 0.45882353)
-
-[node name="PanelTutorial" type="Panel" parent="CanvasLayer/Tutorial" unique_id=1166985925]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -392.0
-offset_top = -244.0
-offset_right = 392.0
-offset_bottom = 244.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_yumc8")
-
-[node name="Titulo" type="Label" parent="CanvasLayer/Tutorial/PanelTutorial" unique_id=72551404]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -240.0
-offset_top = 56.0
-offset_right = 238.0
-offset_bottom = 95.0
-grow_horizontal = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/shadow_offset_x = 1
-theme_override_constants/shadow_offset_y = 1
-theme_override_constants/outline_size = 5
-theme_override_constants/shadow_outline_size = 3
-theme_override_font_sizes/font_size = 28
-text = "¡EL PISO ES LAVA!"
-horizontal_alignment = 1
-
-[node name="Instrucciones" type="Label" parent="CanvasLayer/Tutorial/PanelTutorial" unique_id=82745026]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -232.0
-offset_top = -9.0
-offset_right = 189.0
-offset_bottom = 66.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "• Muévete con WASD o Flechas.
-• Las casillas con grietas indican dónde aparecerá lava.
-• Si tocas lava o sales del tablero, pierdes."
-
-[node name="Reglas" type="Label" parent="CanvasLayer/Tutorial/PanelTutorial" unique_id=408900631]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -248.0
-offset_top = -96.0
-offset_right = 274.0
-offset_bottom = -64.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Sobrevive durante 30 segundos evitando las casillas de lava."
-
-[node name="Comenzar" type="Label" parent="CanvasLayer/Tutorial/PanelTutorial" unique_id=1121324694]
-layout_mode = 0
-offset_left = 176.0
-offset_top = 392.0
-offset_right = 613.0
-offset_bottom = 415.0
-theme_override_colors/font_color = Color(1, 0.8862745, 0, 1)
-text = "[ Presiona cualquier tecla de movimiento para empezar ]"
-
 [node name="Camera2D" type="Camera2D" parent="." unique_id=790007625]
+position = Vector2(55.85, -50)
 zoom = Vector2(0.8, 0.8)
 
 [node name="GridDebug" type="Node2D" parent="." unique_id=511540467]
 visible = false
-position = Vector2(-380, -350)
+position = Vector2(-249, -394.99997)
 scale = Vector2(1, 1.008)
 script = ExtResource("3_yumc8")
