@@ -1,0 +1,76 @@
+[gd_scene format=3 uid="uid://chyfxn8kct54"]
+
+[ext_resource type="Script" uid="uid://b70uk0b1usa17" path="res://minijuego soldadura/Script/soldadura.gd" id="1_duqhs"]
+[ext_resource type="Texture2D" uid="uid://bf2nk63ft67p4" path="res://minijuego soldadura/Imagenes/soldadura.png" id="2_310yo"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ml5y2"]
+radius = 95.049515
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xvc4d"]
+atlas = ExtResource("2_310yo")
+region = Rect2(0, 341, 384, 341)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0xi5b"]
+atlas = ExtResource("2_310yo")
+region = Rect2(768, 341, 384, 341)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4u7fh"]
+atlas = ExtResource("2_310yo")
+region = Rect2(1152, 341, 384, 341)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1oar5"]
+atlas = ExtResource("2_310yo")
+region = Rect2(0, 341, 384, 341)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7uyc4"]
+atlas = ExtResource("2_310yo")
+region = Rect2(1152, 341, 384, 341)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_e1ii6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xvc4d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0xi5b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4u7fh")
+}],
+"loop": true,
+"name": &"encender",
+"speed": 15.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1oar5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7uyc4")
+}],
+"loop": true,
+"name": &"reposo",
+"speed": 12.0
+}]
+
+[node name="Soldadura" type="Area2D" unique_id=1291004349]
+script = ExtResource("1_duqhs")
+
+[node name="AreaSoldadura" type="CollisionShape2D" parent="." unique_id=386031984]
+light_mask = 2
+position = Vector2(-17, 2.0000005)
+scale = Vector2(0.2630208, 0.34457475)
+shape = SubResource("CircleShape2D_ml5y2")
+
+[node name="ChispaSprite" type="AnimatedSprite2D" parent="." unique_id=1321025761]
+visibility_layer = 5
+position = Vector2(-24.999992, -3.9999962)
+scale = Vector2(0.26302084, 0.34457478)
+sprite_frames = SubResource("SpriteFrames_e1ii6")
+animation = &"encender"
+frame_progress = 0.20181096
+
+[node name="TimerSoldadura" type="Timer" parent="." unique_id=1497355922]
+wait_time = 0.2
+autostart = true
