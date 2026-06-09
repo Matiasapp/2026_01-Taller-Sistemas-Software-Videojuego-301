@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://bbhj6vpldkhmg" path="res://Assets/Sprites/inflado_neumatico/Cable.png" id="3_trxfn"]
 [ext_resource type="Texture2D" uid="uid://co81w8xxx6mkk" path="res://Assets/Sprites/inflado_neumatico/VidaTuercas.png" id="5_8hs81"]
 [ext_resource type="Texture2D" uid="uid://do46uuuci0hus" path="res://Assets/Sprites/inflado_neumatico/NeumaticoDesinflado.png" id="7_ija6x"]
+[ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="9_v74x8"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xrnwy"]
 atlas = ExtResource("5_8hs81")
@@ -107,6 +108,38 @@ animations = [{
 "name": &"default",
 "speed": 5.0
 }]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v74x8"]
+bg_color = Color(0.92941177, 0.49803922, 0.16470589, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(1, 0.7294118, 0.36862746, 1)
+border_blend = true
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+corner_detail = 10
+shadow_color = Color(0, 0, 0, 1)
+shadow_size = 11
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_trxfn"]
+bg_color = Color(0.92941177, 0.49803922, 0.16470589, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(1, 0.7294118, 0.36862746, 1)
+border_blend = true
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+corner_detail = 10
+shadow_color = Color(0, 0, 0, 1)
+shadow_size = 11
 
 [node name="MinijuegoNeumatico" type="Control" unique_id=121450491]
 layout_mode = 3
@@ -293,3 +326,163 @@ visible = false
 position = Vector2(160, 392)
 scale = Vector2(0.59911245, 0.40804595)
 sprite_frames = SubResource("SpriteFrames_kn8ba")
+
+[node name="Resumen" type="ColorRect" parent="." unique_id=629025858]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -608.0
+offset_top = -364.0
+offset_right = 608.0
+offset_bottom = 364.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 0.6, 0.14509805, 0.45882353)
+
+[node name="PanelFinal" type="Panel" parent="Resumen" unique_id=1802932442]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -210.0
+offset_top = -148.0
+offset_right = 210.0
+offset_bottom = 180.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_v74x8")
+
+[node name="PuntajeFinal" type="Label" parent="Resumen/PanelFinal" unique_id=1767653000]
+layout_mode = 0
+offset_left = 66.0
+offset_top = 56.0
+offset_right = 171.0
+offset_bottom = 79.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 5
+theme_override_constants/shadow_outline_size = 3
+text = "Puntaje Final: 0"
+
+[node name="Button" type="Button" parent="Resumen/PanelFinal" unique_id=876740829]
+layout_mode = 0
+offset_left = 314.0
+offset_top = 280.0
+offset_right = 402.0
+offset_bottom = 312.0
+theme = ExtResource("9_v74x8")
+text = "Continuar
+"
+
+[node name="DineroObtenido" type="Label" parent="Resumen/PanelFinal" unique_id=1464478374]
+layout_mode = 0
+offset_left = 66.0
+offset_top = 88.0
+offset_right = 200.0
+offset_bottom = 111.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 5
+theme_override_constants/shadow_outline_size = 3
+text = "Dinero Obtenido: 0"
+
+[node name="Tutorial" type="ColorRect" parent="." unique_id=611989632]
+process_mode = 2
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -608.0
+offset_top = -364.0
+offset_right = 608.0
+offset_bottom = 364.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 0.6, 0.14509805, 0.45882353)
+
+[node name="PanelTutorial" type="Panel" parent="Tutorial" unique_id=1388779804]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -392.0
+offset_top = -244.0
+offset_right = 392.0
+offset_bottom = 244.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_trxfn")
+
+[node name="Titulo" type="Label" parent="Tutorial/PanelTutorial" unique_id=1212421464]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -208.0
+offset_top = 56.0
+offset_right = 270.0
+offset_bottom = 95.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 5
+theme_override_constants/shadow_outline_size = 3
+theme_override_font_sizes/font_size = 28
+text = "¡INFLA LO QUE MAS PUEDAS!"
+
+[node name="Instrucciones" type="Label" parent="Tutorial/PanelTutorial" unique_id=69458775]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -280.0
+offset_top = 12.0
+offset_right = 307.0
+offset_bottom = 36.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Pulsa el espacio justo en el área verde para progresar inflando neumáticos ."
+
+[node name="Reglas" type="Label" parent="Tutorial/PanelTutorial" unique_id=1533351474]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -320.0
+offset_top = -68.0
+offset_right = 346.0
+offset_bottom = -36.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Tienes 30 segundos. ¡Inflada todos los neumáticos que puedas para ganar puntuacion!"
+
+[node name="Comenzar" type="Label" parent="Tutorial/PanelTutorial" unique_id=1973646582]
+layout_mode = 0
+offset_left = 272.0
+offset_top = 392.0
+offset_right = 533.0
+offset_bottom = 415.0
+theme_override_colors/font_color = Color(1, 0.8862745, 0, 1)
+text = "[ Presiona espacio para empezar ]"
