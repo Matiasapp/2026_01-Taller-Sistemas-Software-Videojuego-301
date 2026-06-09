@@ -122,7 +122,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"lava",
-"speed": 7.0
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -136,7 +136,12 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_gsnhs")
+}],
+"loop": false,
+"name": &"spawn_burn",
+"speed": 4.0
 }, {
+"frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_fpu7j")
 }, {
@@ -185,7 +190,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_0g3di")
 }],
-"loop": false,
-"name": &"spawn_burn",
-"speed": 7.0
+"loop": true,
+"name": &"spawn_lava",
+"speed": 10.0
 }]
