@@ -5,9 +5,9 @@ extends Node2D
 @export var move_interval := 0.35
 @export var survival_time := 30.0
 
-@export var lava_spawn_interval := 0.7
-@export var lava_lifetime := 2.8
-@export var lava_amount_per_wave := 2
+@export var lava_spawn_interval := 0.62
+@export var lava_lifetime := 2.2
+@export var lava_amount_per_wave := 1
 
 @export var valor_por_segundo := 2
 @export var bonus_victoria := 30
@@ -26,6 +26,13 @@ extends Node2D
 @onready var panel_tutorial_interno := $CanvasLayer/Tutorial/PanelTutorial
 @onready var label_parpadeo := $CanvasLayer/Tutorial/PanelTutorial/Comenzar
 
+@onready var panel_final := $CanvasLayer/Resumen
+@onready var label_resultado_final := $CanvasLayer/Resumen/PanelFinal/PuntajeFinal
+@onready var label_dinero_final := $CanvasLayer/Resumen/PanelFinal/DineroObtenido
+@onready var boton_continuar := $CanvasLayer/Resumen/PanelFinal/Button
+
+
+
 var start_label: Label
 var danger_label: Label
 var time_label: Label
@@ -35,6 +42,7 @@ var direction := Vector2i.RIGHT
 
 var lava_cells := {}
 
+var countdown_activo := false
 var tutorial_can_start := false
 var game_started := false
 var tutorial_activo := true
@@ -53,6 +61,14 @@ func _ready() -> void:
 	setup_time_label()
 
 	time_label.visible = false
+	danger_label.visible = false
+	start_label.visible = false
+
+	if panel_final:
+		panel_final.hide()
+
+	if boton_continuar:
+		boton_continuar.pressed.connect(_on_boton_continuar_pressed)
 
 	car_sprite.play("avanzar")
 
@@ -60,7 +76,6 @@ func _ready() -> void:
 	move_timer.timeout.connect(_move_car)
 
 	spawn_car_random()
-
 	mostrar_tutorial()
 
 
@@ -81,11 +96,6 @@ func mostrar_tutorial() -> void:
 	panel_tutorial_interno.visible = true
 	panel_tutorial_interno.show()
 	panel_tutorial_interno.z_index = 101
-
-	if label_parpadeo:
-		var tween_blink := create_tween().set_loops()
-		tween_blink.tween_property(label_parpadeo, "modulate:a", 0.0, 0.6)
-		tween_blink.tween_property(label_parpadeo, "modulate:a", 1.0, 0.6)
 
 	await get_tree().create_timer(0.35).timeout
 	tutorial_can_start = true
@@ -140,13 +150,10 @@ func create_danger_label() -> void:
 
 
 func _process(delta: float) -> void:
-
 	handle_direction_input()
 
 	if tutorial_activo:
-
 		if tutorial_can_start and direction_input_pressed():
-
 			tutorial_activo = false
 
 			if panel_tutorial:
@@ -170,7 +177,7 @@ func _process(delta: float) -> void:
 	else:
 		danger_label.visible = false
 
-	if elapsed_time >= survival_time:
+	if elapsed_time >= survival_time and not is_game_over:
 		win_game()
 		return
 
@@ -208,36 +215,49 @@ func direction_input_pressed() -> bool:
 
 func start_countdown() -> void:
 	game_started = false
+	countdown_activo = true
 	move_timer.stop()
+
+	time_label.visible = false
+	danger_label.visible = false
 
 	if panel_tutorial:
 		panel_tutorial.hide()
-		panel_tutorial.visible = false
-		panel_tutorial.mouse_filter = Control.MOUSE_FILTER_IGNORE
-
-	time_label.visible = true
-	danger_label.visible = false
 
 	start_label.visible = true
-	start_label.z_index = 200
 	start_label.text = "3"
 
 	await get_tree().create_timer(1.0).timeout
+	if is_game_over or has_won or not countdown_activo:
+		return
+
 	start_label.text = "2"
 
 	await get_tree().create_timer(1.0).timeout
+	if is_game_over or has_won or not countdown_activo:
+		return
+
 	start_label.text = "1"
 
 	await get_tree().create_timer(1.0).timeout
+	if is_game_over or has_won or not countdown_activo:
+		return
+
 	start_label.text = "¡YA!"
 
 	await get_tree().create_timer(0.5).timeout
+	if is_game_over or has_won or not countdown_activo:
+		return
 
 	start_label.visible = false
+	time_label.visible = true
+
 	elapsed_time = 0.0
 	time_label.text = "Tiempo restante: %ds" % int(survival_time)
 
+	countdown_activo = false
 	game_started = true
+
 	move_timer.start()
 	start_lava_loop()
 
@@ -385,7 +405,9 @@ func game_over() -> void:
 		return
 
 	is_game_over = true
+	has_won = false
 	game_started = false
+	countdown_activo = false
 
 	move_timer.stop()
 	car_sprite.stop()
@@ -408,16 +430,18 @@ func game_over() -> void:
 	calcular_dinero_final()
 
 	start_label.visible = true
-	calcular_dinero_final()
-	start_label.text = "GAME OVER\n+$" + str(dinero_obtenido)
+	start_label.text = "GAME OVER"
 
+	mostrar_pantalla_final(false)
 
 func win_game() -> void:
 	if has_won or is_game_over:
 		return
 
 	has_won = true
+	is_game_over = false
 	game_started = false
+	countdown_activo = false
 
 	move_timer.stop()
 	car_sprite.stop()
@@ -431,5 +455,25 @@ func win_game() -> void:
 	calcular_dinero_final()
 
 	start_label.visible = true
-	calcular_dinero_final()
-	start_label.text = "¡GANASTE!\n+$" + str(dinero_obtenido)
+	start_label.text = "¡GANASTE!"
+
+	mostrar_pantalla_final(true)
+
+func mostrar_pantalla_final(gano: bool) -> void:
+	await get_tree().create_timer(1.0).timeout
+
+	start_label.visible = false
+	danger_label.visible = false
+	time_label.visible = false
+
+	panel_final.visible = true
+	panel_final.show()
+	panel_final.position = panel_tutorial.position
+	panel_final.size = panel_tutorial.size
+	panel_final.z_index = panel_tutorial.z_index + 10
+
+	label_resultado_final.text = "¡GANASTE!" if gano else "GAME OVER"
+	label_dinero_final.text = "Dinero obtenido: $" + str(dinero_obtenido)
+		
+func _on_boton_continuar_pressed() -> void:
+	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")		
