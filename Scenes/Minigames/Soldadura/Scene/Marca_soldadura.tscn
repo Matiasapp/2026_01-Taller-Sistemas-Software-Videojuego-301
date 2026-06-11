@@ -1,0 +1,75 @@
+[gd_scene format=3 uid="uid://bglbyvw8gl8hc"]
+
+[ext_resource type="Texture2D" uid="uid://8y7bhhytws6s" path="res://Scenes/Minigames/Soldadura/Imagenes/sodado.png" id="1_eurjb"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fnep1"]
+atlas = ExtResource("1_eurjb")
+region = Rect2(256, 0, 128, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p1i8f"]
+atlas = ExtResource("1_eurjb")
+region = Rect2(384, 0, 128, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ysm00"]
+atlas = ExtResource("1_eurjb")
+region = Rect2(512, 0, 128, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8odwt"]
+atlas = ExtResource("1_eurjb")
+region = Rect2(640, 0, 128, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w1f7o"]
+atlas = ExtResource("1_eurjb")
+region = Rect2(768, 0, 128, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h1wue"]
+atlas = ExtResource("1_eurjb")
+region = Rect2(896, 0, 128, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pvon0"]
+atlas = ExtResource("1_eurjb")
+region = Rect2(1024, 0, 128, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1t6e1"]
+atlas = ExtResource("1_eurjb")
+region = Rect2(1152, 0, 128, 256)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_rghx7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fnep1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p1i8f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ysm00")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8odwt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w1f7o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h1wue")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pvon0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1t6e1")
+}],
+"loop": true,
+"name": &"marca",
+"speed": 5.0
+}]
+
+[node name="Area2D" type="Node2D" unique_id=677337206]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1829735305]
+position = Vector2(6.000001, 1.2500062)
+scale = Vector2(0.5, 0.45507813)
+sprite_frames = SubResource("SpriteFrames_rghx7")
+animation = &"marca"

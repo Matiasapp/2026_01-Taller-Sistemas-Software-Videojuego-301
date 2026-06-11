@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://byra8s7qn0ulk"
-path="res://.godot/imported/checkboard.png-73842331a7389165ede7a7bb5a9dc549.ctex"
+uid="uid://s1rivcqk1gr"
+path="res://.godot/imported/pieza soldada.png-dd456430d499904207393588b2b331e3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/Minigames/Snake/Background/checkboard.png"
-dest_files=["res://.godot/imported/checkboard.png-73842331a7389165ede7a7bb5a9dc549.ctex"]
+source_file="res://Scenes/Minigames/Soldadura/Imagenes/pieza soldada.png"
+dest_files=["res://.godot/imported/pieza soldada.png-dd456430d499904207393588b2b331e3.ctex"]
 
 [params]
 
