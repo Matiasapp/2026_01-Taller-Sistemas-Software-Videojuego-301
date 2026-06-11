@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://bk38ipu4ymsoo"]
+
+[ext_resource type="Texture2D" uid="uid://c3dacvm42g81q" path="res://minijuego soldadura/fondo minijuego.png" id="1_jybnu"]
+[ext_resource type="PackedScene" uid="uid://chyfxn8kct54" path="res://minijuego soldadura/Soldadura.tscn" id="2_i3dfk"]
+[ext_resource type="PackedScene" uid="uid://ddjyyxfbp0hwr" path="res://minijuego soldadura/PiezaMetal.tscn" id="3_i3dfk"]
+
+[node name="Node2D" type="Node2D" unique_id=997942648]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1110295672]
+position = Vector2(507, 348)
+texture = ExtResource("1_jybnu")
+
+[node name="Soldadura" parent="." unique_id=1291004349 instance=ExtResource("2_i3dfk")]
+
+[node name="PiezaMetal" parent="." unique_id=1975928199 instance=ExtResource("3_i3dfk")]
+position = Vector2(-90, -92)

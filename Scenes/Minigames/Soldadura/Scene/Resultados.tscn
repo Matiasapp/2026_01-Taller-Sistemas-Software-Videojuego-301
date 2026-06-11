@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://btpvov7obpn5j"]
+
+[ext_resource type="Script" uid="uid://dt2nn7ky8k378" path="res://Scenes/Minigames/Soldadura/Script/resultados.gd" id="1_atjc4"]
+[ext_resource type="Texture2D" uid="uid://c3dacvm42g81q" path="res://Scenes/Minigames/Soldadura/Imagenes/fondo minijuego.png" id="2_yqkg3"]
+
+[node name="Node2D" type="Node2D" unique_id=2133097898]
+script = ExtResource("1_atjc4")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=313298436]
+position = Vector2(587, 372)
+texture = ExtResource("2_yqkg3")
+
+[node name="LabelPiezas" type="Label" parent="." unique_id=1797633554]
+offset_left = 432.0
+offset_top = 8.0
+offset_right = 678.0
+offset_bottom = 102.0
+
+[node name="LabelDinero" type="Label" parent="." unique_id=1895888830]
+offset_left = 449.0
+offset_top = 184.0
+offset_right = 633.0
+offset_bottom = 286.0

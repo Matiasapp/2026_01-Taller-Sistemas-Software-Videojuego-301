@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://dyij6s1tu6ehk"]
+
+[ext_resource type="Script" uid="uid://dhovlcirilba" path="res://Scenes/Minigames/Soldadura/Script/tutorial.gd" id="1_lajqj"]
+[ext_resource type="Texture2D" uid="uid://c3dacvm42g81q" path="res://Scenes/Minigames/Soldadura/Imagenes/fondo minijuego.png" id="2_lhyic"]
+
+[node name="Node2D" type="Node2D" unique_id=365663170]
+script = ExtResource("1_lajqj")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=208361363]
+position = Vector2(600, 383)
+texture = ExtResource("2_lhyic")
+
+[node name="Info Tutorial" type="Label" parent="." unique_id=362696469]
+offset_left = 148.0
+offset_top = 69.0
+offset_right = 1000.0
+offset_bottom = 417.0
+text = "Objetivo principal: El jugador debe soldar piezas metálicas dentro de un tiempo límite.
+
+📊 Porcentaje de completado: esquina superior izquierda, muestra el avance de la pieza actual.
+🔩 Cantidad de piezas completadas: contador que refleja cuántas piezas se han terminado correctamente.
+⏱️ Tiempo restante: cronómetro que indica cuánto queda antes de que termine la partida.
+
+Se debe mantener presionado el clic izquierdo del mouse sobre las áreas indicadas.
+Al soldar correctamente, aparece una animación de chispa/efecto visual que confirma que el área fue soldada.
+Cada área completada aumenta el porcentaje de progreso de la pieza.
+
+Cuando se acaba el tiempo o se completan todas las piezas, se muestra la escena de Resultados, 
+con el número de piezas soldadas y el dinero ganado."
+
+[node name="Ir_a_jugar" type="Button" parent="." unique_id=542856328]
+offset_left = 932.0
+offset_top = 515.0
+offset_right = 1107.0
+offset_bottom = 582.0
+text = "Comenzar"
+
+[connection signal="pressed" from="Ir_a_jugar" to="." method="_on_ir_a_jugar_pressed"]

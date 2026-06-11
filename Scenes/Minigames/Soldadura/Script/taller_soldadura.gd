@@ -1,0 +1,121 @@
+extends Node2D
+
+@onready var progress = $CanvasLayer/ProgressBar
+@onready var label_piezas = $CanvasLayer/LabelPiezas
+@onready var timer = $CanvasLayer/Timer
+@onready var label_tiempo = $CanvasLayer/LabelTiempo
+@onready var start_label = $CanvasLayer/start_label
+@onready var pieza_container = $PiezaContainer
+
+var piezas_completadas := 0
+
+var dinero_por_pieza := 100
+
+var indice_pieza := 0
+
+
+var escenas_piezas = [
+	preload("res://Scenes/Minigames/Soldadura/Scene/PiezasMetal/PiezaMetal.tscn"),
+	preload("res://Scenes/Minigames/Soldadura/Scene/PiezasMetal/pieza_metal_2.tscn"),
+	preload("res://Scenes/Minigames/Soldadura/Scene/PiezasMetal/pieza_metal_3.tscn"),
+	preload("res://Scenes/Minigames/Soldadura/Scene/PiezasMetal/pieza_metal_4.tscn"),
+	preload("res://Scenes/Minigames/Soldadura/Scene/PiezasMetal/pieza_metal_5.tscn"),
+	preload("res://Scenes/Minigames/Soldadura/Scene/PiezasMetal/pieza_metal_6.tscn"),
+	preload("res://Scenes/Minigames/Soldadura/Scene/PiezasMetal/pieza_metal_7.tscn")
+]
+
+var pieza_actual
+
+var game_started = false
+
+
+func start_countdown() -> void:
+	game_started = false
+	timer.stop()
+
+	start_label.visible = true
+	start_label.text = "Comienza a soldar"
+
+	await get_tree().create_timer(1.0).timeout
+	start_label.text = "3"
+
+	await get_tree().create_timer(1.0).timeout
+	start_label.text = "2"
+
+	await get_tree().create_timer(1.0).timeout
+	start_label.text = "1"
+
+	await get_tree().create_timer(1.0).timeout
+	start_label.text = "¡YA!"
+
+	await get_tree().create_timer(0.5).timeout
+
+	start_label.visible = false
+	game_started = true
+	timer.start()
+	cargar_pieza()
+
+
+func _ready():
+	
+	$Sprite2D.position = Vector2(600, 383)
+	start_countdown()
+	timer.wait_time = 15
+	
+	timer.timeout.connect(_on_timer_timeout)
+
+
+func _process(_delta):
+	if not game_started:
+		return
+	label_tiempo.text = "Tiempo: " + str(int(ceil(timer.time_left))) 
+
+
+func cargar_pieza():	
+	
+	if pieza_actual:
+		pieza_actual.queue_free()
+
+	if indice_pieza >= escenas_piezas.size():
+
+		terminar_juego()
+		return
+
+	pieza_actual = escenas_piezas[indice_pieza].instantiate()
+
+	pieza_container.add_child(pieza_actual)
+
+	pieza_actual.progreso_actualizado.connect(actualizar_barra)
+
+	pieza_actual.pieza_completada.connect(_on_pieza_completada)
+
+	progress.value = 0
+
+func actualizar_barra(valor):
+
+	progress.value = valor
+	
+
+func _on_pieza_completada():
+
+	piezas_completadas += 1
+
+	label_piezas.text = "Piezas: " + str(piezas_completadas)
+
+	indice_pieza += 1
+
+	cargar_pieza()
+
+func _on_timer_timeout():
+
+	terminar_juego()
+
+func terminar_juego():
+
+	GlobalSoldadura.piezas_completadas = piezas_completadas
+
+	GlobalSoldadura.dinero = piezas_completadas * dinero_por_pieza
+
+	get_tree().change_scene_to_file(
+		"res://Scenes/Minigames/Soldadura/Scene/Resultados.tscn"
+	)
