@@ -4,6 +4,6 @@ func _ready():
 	
 	$Sprite2D.position = Vector2(600, 383)
 	
-	$LabelPiezas.text = "Piezas completadas: " + str(GlobalSoldadura.piezas_completadas)
+	$Resumen/PanelFinal/LabelPiezas.text = "Piezas completadas: " + str(GLOBALSOLDADURA.piezas_completadas)
 
-	$LabelDinero.text = "Dinero ganado: $" + str(GlobalSoldadura.dinero)
+	$Resumen/PanelFinal/LabelDinero.text = "Dinero ganado: $" + str(GLOBALSOLDADURA.dinero)

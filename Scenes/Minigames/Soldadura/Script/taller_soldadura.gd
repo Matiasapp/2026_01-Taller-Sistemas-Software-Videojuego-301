@@ -12,7 +12,7 @@ var piezas_completadas := 0
 var dinero_por_pieza := 100
 
 var indice_pieza := 0
-
+var escena_anterior
 
 var escenas_piezas = [
 	preload("res://Scenes/Minigames/Soldadura/Scene/PiezasMetal/PiezaMetal.tscn"),
@@ -58,9 +58,8 @@ func start_countdown() -> void:
 
 func _ready():
 	
-	$Sprite2D.position = Vector2(600, 383)
 	start_countdown()
-	timer.wait_time = 15
+	timer.wait_time = 30
 	
 	timer.timeout.connect(_on_timer_timeout)
 
@@ -72,25 +71,28 @@ func _process(_delta):
 
 
 func cargar_pieza():	
-	
 	if pieza_actual:
 		pieza_actual.queue_free()
 
-	if indice_pieza >= escenas_piezas.size():
+	# Elegimos una pieza al azar por primera vez
+	var escena_elegida = escenas_piezas.pick_random()
 
-		terminar_juego()
-		return
+	# Si la elegida es exactamente igual a la anterior, elige otra de nuevo.
+	# Repetirá esto hasta que saque una diferente.
+	while escena_elegida == escena_anterior:
+		escena_elegida = escenas_piezas.pick_random()
 
-	pieza_actual = escenas_piezas[indice_pieza].instantiate()
+	# Guardamos la que acaba de salir como la "nueva" escena anterior
+	# para que no se repita en el siguiente turno.
+	escena_anterior = escena_elegida
+
+	# Instanciamos la pieza
+	pieza_actual = escena_elegida.instantiate()
 
 	pieza_container.add_child(pieza_actual)
-
 	pieza_actual.progreso_actualizado.connect(actualizar_barra)
-
 	pieza_actual.pieza_completada.connect(_on_pieza_completada)
-
 	progress.value = 0
-
 func actualizar_barra(valor):
 
 	progress.value = valor
@@ -112,9 +114,9 @@ func _on_timer_timeout():
 
 func terminar_juego():
 
-	GlobalSoldadura.piezas_completadas = piezas_completadas
+	GLOBALSOLDADURA.piezas_completadas = piezas_completadas
 
-	GlobalSoldadura.dinero = piezas_completadas * dinero_por_pieza
+	GLOBALSOLDADURA.dinero = piezas_completadas * dinero_por_pieza
 
 	get_tree().change_scene_to_file(
 		"res://Scenes/Minigames/Soldadura/Scene/Resultados.tscn"

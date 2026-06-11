@@ -4,6 +4,10 @@
 [ext_resource type="Texture2D" uid="uid://dg2q2187aryrg" path="res://Scenes/Minigames/Soldadura/Imagenes/placa trianngular.png" id="2_367tv"]
 [ext_resource type="PackedScene" uid="uid://bglbyvw8gl8hc" path="res://Scenes/Minigames/Soldadura/Scene/Marca_soldadura.tscn" id="3_tpbcs"]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_od52r"]
+atlas = ExtResource("2_367tv")
+region = Rect2(109, 108, 797, 715)
+
 [node name="PiezaMetal" type="Node2D" unique_id=409267960]
 script = ExtResource("1_367tv")
 
@@ -11,10 +15,10 @@ script = ExtResource("1_367tv")
 visibility_layer = 2
 position = Vector2(504, 324)
 scale = Vector2(0.44970703, 0.31396487)
-texture = ExtResource("2_367tv")
+texture = SubResource("AtlasTexture_od52r")
 
 [node name="Trayectoria" type="Line2D" parent="." unique_id=1626430727]
 position = Vector2(6.1035156e-05, 0)
-points = PackedVector2Array(445.99994, 283, 473.99994, 296, 500.99994, 314, 525.99994, 336, 547.99994, 350, 566.99994, 356, 597.99994, 370)
+points = PackedVector2Array(423.99994, 368, 437.45648, 348.6226, 451.66785, 328.15826, 461.9489, 313.35345, 473.99994, 296, 500.99994, 314, 524.6011, 330.09247, 519.99994, 360, 566.99994, 356, 597.99994, 370)
 
 [node name="Marca_soldadura" parent="." unique_id=2143935098 instance=ExtResource("3_tpbcs")]
