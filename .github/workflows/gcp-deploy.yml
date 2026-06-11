@@ -38,7 +38,16 @@ jobs:
       - name: Exportar juego para HTML5
         run: |
           mkdir -p dist
+          
+          echo "Importando assets del proyecto..."
+          # Al abrir y cerrar el editor una vez, Godot genera la carpeta .godot/ necesaria
+          godot --headless --editor --quit || true
+          
+          echo "Exportando versión Web..."
           godot --headless --export-release "Web" dist/index.html
+          
+          echo "Verificando qué archivos se generaron:"
+          ls -la dist
 
       - name: Autenticar en Google Cloud vía WIF
         id: auth
