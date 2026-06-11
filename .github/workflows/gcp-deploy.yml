@@ -63,4 +63,4 @@ jobs:
           fi
           
           echo "Sincronizando binarios y assets de Godot en la ruta: $DEST_FINAL"
-          gcloud storage rsync ./dist $DEST_FINAL -d
+          gcloud storage rsync ./dist $DEST_FINAL --delete-unmatched-destination-objects
