@@ -1,4 +1,4 @@
-name: Despliegue CI/CD a GCP (Multi-entorno)
+name: Despliegue CI/CD de Videojuego (Godot a GCP)
 
 on:
   push:
@@ -19,15 +19,26 @@ jobs:
       - name: Obtener el código
         uses: actions/checkout@v4
 
-      - name: Configurar Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-
-      - name: Instalar dependencias y compilar
+      - name: Configurar Godot Headless
         run: |
-          npm ci
-          npm run build
+          GODOT_VERSION="4.6.2"
+          
+          echo "Descargando Godot Engine v${GODOT_VERSION}..."
+          wget -q https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip
+          unzip -q Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip
+          sudo mv Godot_v${GODOT_VERSION}-stable_linux.x86_64 /usr/local/bin/godot
+          sudo chmod +x /usr/local/bin/godot
+          
+          echo "Descargando plantillas de exportación..."
+          wget -q https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_export_templates.tpz
+          unzip -q Godot_v${GODOT_VERSION}-stable_export_templates.tpz
+          mkdir -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
+          mv templates/* ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable/
+
+      - name: Exportar juego para HTML5
+        run: |
+          mkdir -p dist
+          godot --headless --export-release "Web" dist/index.html
 
       - name: Autenticar en Google Cloud vía WIF
         id: auth
@@ -39,15 +50,17 @@ jobs:
       - name: Configurar Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
-      - name: Desplegar al Bucket correspondiente
+      - name: Desplegar al Bucket
         run: |
+          BUCKET_BASE="gs://infb6070-301-taller-en-crisis-2026-1"
+          
           if [ "${{ github.ref }}" == "refs/heads/main" ]; then
-            DEST_BUCKET="gs://infb6070-301-taller-en-crisis-2026-1"
+            DEST_FINAL="$BUCKET_BASE/prod"
           elif [ "${{ github.ref }}" == "refs/heads/QA" ]; then
-            DEST_BUCKET="gs://infb6070-301-taller-en-crisis-2026-1-qa"
+            DEST_FINAL="$BUCKET_BASE/qa"
           elif [ "${{ github.ref }}" == "refs/heads/develop" ]; then
-            DEST_BUCKET="gs://infb6070-301-taller-en-crisis-2026-1-dev"
+            DEST_FINAL="$BUCKET_BASE/dev"
           fi
           
-          echo "Sincronizando cambios con $DEST_BUCKET"
-          gcloud storage rsync ./dist $DEST_BUCKET --delete
+          echo "Sincronizando binarios y assets de Godot en la ruta: $DEST_FINAL"
+          gcloud storage rsync ./dist $DEST_FINAL --delete
