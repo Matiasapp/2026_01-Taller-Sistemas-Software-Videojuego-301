@@ -1,0 +1,53 @@
+name: Despliegue CI/CD a GCP (Multi-entorno)
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - QA
+
+permissions:
+  contents: 'read'
+  id-token: 'write'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Obtener el código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Instalar dependencias y compilar
+        run: |
+          npm ci
+          npm run build
+
+      - name: Autenticar en Google Cloud vía WIF
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: 'projects/706450394717/locations/global/workloadIdentityPools/github-actions-pool/providers/github-provider'
+          service_account: 'github-actions-deploy@project-b6032d06-ae91-486b-836.iam.gserviceaccount.com'
+
+      - name: Configurar Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Desplegar al Bucket correspondiente
+        run: |
+          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            DEST_BUCKET="gs://infb6070-301-taller-en-crisis-2026-1"
+          elif [ "${{ github.ref }}" == "refs/heads/QA" ]; then
+            DEST_BUCKET="gs://infb6070-301-taller-en-crisis-2026-1-qa"
+          elif [ "${{ github.ref }}" == "refs/heads/develop" ]; then
+            DEST_BUCKET="gs://infb6070-301-taller-en-crisis-2026-1-dev"
+          fi
+          
+          echo "Sincronizando cambios con $DEST_BUCKET"
+          gcloud storage rsync ./dist $DEST_BUCKET --delete
