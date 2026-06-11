@@ -61,15 +61,16 @@ jobs:
 
       - name: Desplegar al Bucket
         run: |
-          BUCKET_BASE="gs://infb6070-301-taller-en-crisis-2026-1"
+          # Convertimos el nombre de la rama a minúsculas para evitar errores (ej. QA vs qa)
+          BRANCH_NAME=$(echo "${{ github.ref_name }}" | tr '[:upper:]' '[:lower:]')
           
-          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
-            DEST_FINAL="$BUCKET_BASE/prod"
-          elif [ "${{ github.ref }}" == "refs/heads/QA" ]; then
-            DEST_FINAL="$BUCKET_BASE/qa"
-          elif [ "${{ github.ref }}" == "refs/heads/develop" ]; then
-            DEST_FINAL="$BUCKET_BASE/dev"
+          if [ "$BRANCH_NAME" == "main" ]; then
+            DEST_FINAL="gs://infb6070-301-taller-en-crisis-2026-1"
+          elif [ "$BRANCH_NAME" == "qa" ]; then
+            DEST_FINAL="gs://infb6070-301-taller-en-crisis-2026-1-qa"
+          elif [ "$BRANCH_NAME" == "develop" ] || [ "$BRANCH_NAME" == "dev" ]; then
+            DEST_FINAL="gs://infb6070-301-taller-en-crisis-2026-1-dev"
           fi
           
-          echo "Sincronizando binarios y assets de Godot en la ruta: $DEST_FINAL"
+          echo "Sincronizando binarios y assets de Godot en el bucket: $DEST_FINAL"
           gcloud storage rsync ./dist $DEST_FINAL --delete-unmatched-destination-objects
