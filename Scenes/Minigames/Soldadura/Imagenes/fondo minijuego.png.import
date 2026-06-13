@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://byra8s7qn0ulk"
-path="res://.godot/imported/checkboard.png-73842331a7389165ede7a7bb5a9dc549.ctex"
+uid="uid://c3dacvm42g81q"
+path="res://.godot/imported/fondo minijuego.png-701f4a6b99fd60fb070668c5c5d75c15.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/Minigames/Snake/Background/checkboard.png"
-dest_files=["res://.godot/imported/checkboard.png-73842331a7389165ede7a7bb5a9dc549.ctex"]
+source_file="res://Scenes/Minigames/Soldadura/Imagenes/fondo minijuego.png"
+dest_files=["res://.godot/imported/fondo minijuego.png-701f4a6b99fd60fb070668c5c5d75c15.ctex"]
 
 [params]
 

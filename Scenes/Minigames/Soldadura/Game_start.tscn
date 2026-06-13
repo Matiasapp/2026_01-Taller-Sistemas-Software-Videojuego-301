@@ -1,0 +1,112 @@
+[gd_scene format=3 uid="uid://dyij6s1tu6ehk"]
+
+[ext_resource type="Script" uid="uid://dhovlcirilba" path="res://Scenes/Minigames/Soldadura/Script/tutorial.gd" id="1_lajqj"]
+[ext_resource type="Texture2D" uid="uid://c3dacvm42g81q" path="res://Scenes/Minigames/Soldadura/Imagenes/fondo minijuego.png" id="2_lhyic"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2af1q"]
+bg_color = Color(0.92941177, 0.49803922, 0.16470589, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(1, 0.7294118, 0.36862746, 1)
+border_blend = true
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+corner_detail = 10
+shadow_color = Color(0, 0, 0, 1)
+shadow_size = 11
+
+[node name="Node2D" type="Node2D" unique_id=365663170]
+script = ExtResource("1_lajqj")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=208361363]
+position = Vector2(600, 383)
+texture = ExtResource("2_lhyic")
+
+[node name="Tutorial" type="ColorRect" parent="." unique_id=1985784839]
+offset_right = 1216.0
+offset_bottom = 728.0
+size_flags_horizontal = 4
+color = Color(1, 0.6, 0.14509805, 0.45882353)
+
+[node name="PanelTutorial" type="Panel" parent="Tutorial" unique_id=1739584138]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -390.0
+offset_top = -282.0
+offset_right = 394.0
+offset_bottom = 206.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_2af1q")
+
+[node name="Titulo" type="Label" parent="Tutorial/PanelTutorial" unique_id=269170728]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -184.0
+offset_top = 59.0
+offset_right = 213.0
+offset_bottom = 98.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 5
+theme_override_constants/shadow_outline_size = 3
+theme_override_font_sizes/font_size = 28
+text = "¡LLEGO LA HORA DE SOLDAR!"
+
+[node name="Instrucciones" type="Label" parent="Tutorial/PanelTutorial" unique_id=469078517]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -296.0
+offset_top = -33.0
+offset_right = 332.0
+offset_bottom = 68.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Se debe mantener presionado el clic izquierdo del mouse sobre las áreas indicadas.
+Al soldar correctamente, aparece una animación de chispa/efecto visual que confirma que el área fue soldada."
+autowrap_mode = 3
+
+[node name="Reglas" type="Label" parent="Tutorial/PanelTutorial" unique_id=2110261030]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -298.0
+offset_top = -79.0
+offset_right = 297.0
+offset_bottom = -47.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Debes soldar la mayor cantidad de piezas metálicas dentro del tiempo límite."
+
+[node name="Comenzar" type="Label" parent="Tutorial/PanelTutorial" unique_id=1917331648]
+layout_mode = 0
+offset_left = 257.0
+offset_top = 377.0
+offset_right = 544.0
+offset_bottom = 400.0
+theme_override_colors/font_color = Color(1, 0.8862745, 0, 1)
+text = "[ Presiona la pantalla para empezar ]"
+
+[connection signal="gui_input" from="Tutorial" to="." method="_on_tutorial_gui_input"]
+[connection signal="gui_input" from="Tutorial/PanelTutorial" to="." method="_on_panel_tutorial_gui_input"]
