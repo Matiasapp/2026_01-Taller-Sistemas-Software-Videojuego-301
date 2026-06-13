@@ -22,6 +22,10 @@ var juego_iniciado: bool = false
 @onready var raycast = $RayCast2D
 @onready var camara = $Camera2D 
 
+@onready var audio_salto: AudioStreamPlayer = $SaltoAudio
+@onready var audio_muerte: AudioStreamPlayer = $MuerteAudio
+@onready var audio_atropello: AudioStreamPlayer = $AtropelloAudio
+
 
 var frames_hombre = preload("res://Assets/Sprites/animaciones_hombre.tres")
 var frames_mujer = preload("res://Assets/Sprites/animaciones_mujer.tres")
@@ -145,6 +149,10 @@ func _unhandled_input(event: InputEvent) -> void:
 			dar_salto(direccion)
 
 func dar_salto(direccion: Vector2) -> void:
+	if audio_salto:
+		audio_salto.pitch_scale = randf_range(0.9, 1.2)
+		audio_salto.play()
+
 	se_esta_moviendo = true
 	posicion_logica = posicion_logica + (direccion * tamaño_casilla)
 	
@@ -170,6 +178,11 @@ func morir() -> void:
 	esta_muerto = true
 	se_esta_moviendo = true 
 	anim.play("atropellado")
+	
+	
+
+	if audio_muerte:
+		audio_muerte.play()
 	
 	if tween_actual and tween_actual.is_running():
 		tween_actual.kill()
@@ -206,11 +219,17 @@ func actualizar_idle() -> void:
 		anim.play("idle_abajo")
 
 func _on_area_2d_area_entered(area: Area2D) -> void:
+	if esta_muerto:
+		return
+
 	if area.is_in_group("vehiculos"):
 		atropellado = true
 		z_index = 1
-		morir()
 		
+		if audio_atropello:
+			audio_atropello.play()
+			
+		morir()
 		
 func calculo_dinero_final() -> void:
 	dinero_obtenido = (maximas_casillas_avanzadas * valor_por_casilla)

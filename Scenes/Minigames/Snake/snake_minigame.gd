@@ -22,16 +22,29 @@ extends Node2D
 @onready var death_particles := $Car/DeathParticles
 @onready var car_sprite: AnimatedSprite2D = $Car/AnimatedSprite2D
 
+#Tutorial
+
 @onready var panel_tutorial := $CanvasLayer/Tutorial
 @onready var panel_tutorial_interno := $CanvasLayer/Tutorial/PanelTutorial
 @onready var label_parpadeo := $CanvasLayer/Tutorial/PanelTutorial/Comenzar
+
+#Panel Final
 
 @onready var panel_final := $CanvasLayer/Resumen
 @onready var label_resultado_final := $CanvasLayer/Resumen/PanelFinal/PuntajeFinal
 @onready var label_dinero_final := $CanvasLayer/Resumen/PanelFinal/DineroObtenido
 @onready var boton_continuar := $CanvasLayer/Resumen/PanelFinal/Button
 
+#Sonidos
 
+@onready var lava_spawn_sound := $LavaSpawnSound
+@onready var fire_loop_sound := $FireLoopSound
+@onready var turn_sound := $TurnSound
+@onready var death_sound := $DeathSound
+@onready var countdown_sound := $CountdownSound
+
+var rapid_turn_count := 0
+var last_turn_time := 0.0
 
 var start_label: Label
 var danger_label: Label
@@ -56,6 +69,9 @@ var dinero_obtenido := 0
 func _ready() -> void:
 	randomize()
 
+	if fire_loop_sound:
+		fire_loop_sound.play()
+		
 	create_start_label()
 	create_danger_label()
 	setup_time_label()
@@ -183,22 +199,44 @@ func _process(delta: float) -> void:
 
 
 func handle_direction_input() -> void:
+	var changed := false
+
 	if Input.is_action_just_pressed("ui_up") or Input.is_action_just_pressed("mover_arriba"):
 		direction = Vector2i.UP
 		car.rotation_degrees = -90
+		changed = true
 
 	elif Input.is_action_just_pressed("ui_down") or Input.is_action_just_pressed("mover_abajo"):
 		direction = Vector2i.DOWN
 		car.rotation_degrees = 90
+		changed = true
 
 	elif Input.is_action_just_pressed("ui_left") or Input.is_action_just_pressed("mover_izquierda"):
 		direction = Vector2i.LEFT
 		car.rotation_degrees = 180
+		changed = true
 
 	elif Input.is_action_just_pressed("ui_right") or Input.is_action_just_pressed("mover_derecha"):
 		direction = Vector2i.RIGHT
 		car.rotation_degrees = 0
+		changed = true
 
+	if changed:
+		var now := Time.get_ticks_msec() / 1000.0
+
+		if now - last_turn_time < 0.25:
+			rapid_turn_count += 1
+		else:
+			rapid_turn_count = 1
+
+		last_turn_time = now
+
+		if rapid_turn_count >= 3 and turn_sound:
+			turn_sound.pitch_scale = randf_range(0.7, 1.1)
+			turn_sound.volume_db = randf_range(-15.0, -10.0)
+			turn_sound.play()
+
+			rapid_turn_count = 0
 
 func direction_input_pressed() -> bool:
 	return (
@@ -212,7 +250,6 @@ func direction_input_pressed() -> bool:
 		or Input.is_action_just_pressed("mover_derecha")
 	)
 
-
 func start_countdown() -> void:
 	game_started = false
 	countdown_activo = true
@@ -225,25 +262,30 @@ func start_countdown() -> void:
 		panel_tutorial.hide()
 
 	start_label.visible = true
+
 	start_label.text = "3"
+	play_countdown_sound(0)
 
 	await get_tree().create_timer(1.0).timeout
 	if is_game_over or has_won or not countdown_activo:
 		return
 
 	start_label.text = "2"
+	play_countdown_sound(0)
 
 	await get_tree().create_timer(1.0).timeout
 	if is_game_over or has_won or not countdown_activo:
 		return
 
 	start_label.text = "1"
+	play_countdown_sound(0)
 
 	await get_tree().create_timer(1.0).timeout
 	if is_game_over or has_won or not countdown_activo:
 		return
 
 	start_label.text = "¡YA!"
+	play_countdown_sound(12)
 
 	await get_tree().create_timer(0.5).timeout
 	if is_game_over or has_won or not countdown_activo:
@@ -254,6 +296,9 @@ func start_countdown() -> void:
 
 	elapsed_time = 0.0
 	time_label.text = "Tiempo restante: %ds" % int(survival_time)
+
+	if fire_loop_sound:
+		fire_loop_sound.play()
 
 	countdown_activo = false
 	game_started = true
@@ -315,18 +360,17 @@ func spawn_random_lava() -> void:
 
 	# Fase 2: lava inicial, YA mata
 	lava_cells[cell] = true
+
+	if lava_spawn_sound:
+		lava_spawn_sound.pitch_scale = randf_range(0.85, 1.20)
+		lava_spawn_sound.volume_db = randf_range(-2.0, 1.0)
+		lava_spawn_sound.global_position = cell_to_world(cell)
+		lava_spawn_sound.play()
+
 	lava_sprite.play("spawn_lava")
 
 	if cell == car_cell:
 		game_over()
-		return
-
-	await lava_sprite.animation_finished
-
-	if is_game_over or has_won:
-		if is_instance_valid(lava):
-			lava_cells.erase(cell)
-			lava.queue_free()
 		return
 
 	# Fase 3: lava en loop, sigue matando
@@ -412,6 +456,13 @@ func game_over() -> void:
 	move_timer.stop()
 	car_sprite.stop()
 
+	if fire_loop_sound:
+		fire_loop_sound.stop()
+
+	if death_sound:
+		death_sound.pitch_scale = randf_range(0.95, 1.08)
+		death_sound.play()
+
 	time_label.text = "Tiempo restante: X"
 	time_label.modulate = Color.RED
 	danger_label.visible = false
@@ -476,4 +527,13 @@ func mostrar_pantalla_final(gano: bool) -> void:
 	label_dinero_final.text = "Dinero obtenido: $" + str(dinero_obtenido)
 		
 func _on_boton_continuar_pressed() -> void:
-	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")		
+	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")	
+	
+func play_countdown_sound(semitones := 0) -> void:
+	if not countdown_sound:
+		return
+
+	countdown_sound.stream = preload("res://Assets/Audio/MinigameAudio/TheFloorIsLava/countdown.wav")
+	countdown_sound.pitch_scale = pow(2.0, semitones / 12.0)
+	countdown_sound.stop()
+	countdown_sound.play()

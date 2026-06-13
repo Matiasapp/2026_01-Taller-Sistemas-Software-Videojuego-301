@@ -7,12 +7,18 @@ extends Node2D
 
 # NUEVO: Necesitamos saber dónde está el jugador para generar el mapa frente a él
 @export var jugador: Node2D 
+#Audio Ambiente
+@onready var ambiente_mapa: AudioStreamPlayer = $AmbienteMapa
 
 var posicion_y_actual: int = 0 
 var franjas_activas: Array[Node] = [] # NUEVO: Lista para guardar y borrar las franjas viejas
 
 func _ready() -> void:
-	randomize() 
+	randomize()
+
+	if ambiente_mapa:
+		ambiente_mapa.process_mode = Node.PROCESS_MODE_ALWAYS
+		ambiente_mapa.play()
 	
 	for i in range(3):
 		generar_franja_segura()

@@ -2,6 +2,8 @@
 
 [ext_resource type="Texture2D" uid="uid://bdixjhy47kutr" path="res://Assets/Sprites/crossy_road/assets.png" id="1_7bg77"]
 [ext_resource type="Script" uid="uid://dbr5418n2jf0s" path="res://Scripts/CrossyRoad/vehiculo_manager.gd" id="1_mri3w"]
+[ext_resource type="AudioStream" uid="uid://p34fjlpklue3" path="res://Assets/Audio/MinigameAudio/Crossy Road/carhorn.wav" id="3_jxf3x"]
+[ext_resource type="AudioStream" uid="uid://bbvm2elc4g2f1" path="res://Assets/Audio/MinigameAudio/Crossy Road/policecar.wav" id="4_5ajfa"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mri3w"]
 atlas = ExtResource("1_7bg77")
@@ -48,6 +50,8 @@ z_as_relative = false
 y_sort_enabled = true
 script = ExtResource("1_mri3w")
 texturas_derecha = Array[Texture2D]([SubResource("AtlasTexture_mri3w"), SubResource("AtlasTexture_xewu1"), SubResource("AtlasTexture_jxf3x"), SubResource("AtlasTexture_5ajfa"), SubResource("AtlasTexture_bjeje"), SubResource("AtlasTexture_wyq28"), SubResource("AtlasTexture_sonar"), SubResource("AtlasTexture_2pe66")])
+sonido_normal = ExtResource("3_jxf3x")
+sonido_policia = ExtResource("4_5ajfa")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=549841757]
 z_index = 2
@@ -61,3 +65,5 @@ offset = Vector2(0, -26)
 position = Vector2(2.861023e-06, -0.50000036)
 scale = Vector2(11.016491, 4.3508267)
 shape = SubResource("RectangleShape2D_xewu1")
+
+[node name="AudioVocina" type="AudioStreamPlayer2D" parent="." unique_id=171721920]

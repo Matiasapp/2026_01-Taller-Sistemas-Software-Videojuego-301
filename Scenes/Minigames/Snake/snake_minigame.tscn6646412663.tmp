@@ -9,7 +9,6 @@
 [ext_resource type="AudioStream" uid="uid://dcjasma1c0uyk" path="res://Assets/Audio/MinigameAudio/TheFloorIsLava/lavaspawn.wav" id="7_arn3d"]
 [ext_resource type="AudioStream" uid="uid://vupbpt4ewj8b" path="res://Assets/Audio/MinigameAudio/TheFloorIsLava/lavaloop.ogg" id="8_cmk70"]
 [ext_resource type="AudioStream" uid="uid://c5vxi8mwnt5ca" path="res://Assets/Audio/MinigameAudio/TheFloorIsLava/carskid.wav" id="9_5heag"]
-[ext_resource type="AudioStream" uid="uid://ddxxtqhwiogwg" path="res://Assets/Audio/MinigameAudio/TheFloorIsLava/lavadead.wav" id="10_cmk70"]
 
 [sub_resource type="Gradient" id="Gradient_yumc8"]
 offsets = PackedFloat32Array(0, 0.4949495, 1)
@@ -356,7 +355,5 @@ volume_db = -10.0
 stream = ExtResource("9_5heag")
 
 [node name="DeathSound" type="AudioStreamPlayer" parent="." unique_id=915119006]
-stream = ExtResource("10_cmk70")
-volume_db = -5.0
 
 [node name="CountdownSound" type="AudioStreamPlayer" parent="." unique_id=138248690]

@@ -1,42 +1,74 @@
 extends Area2D
 
-# Cambiamos las variables individuales por Listas (Arrays)
 @export var texturas_derecha: Array[Texture2D]
 @export var texturas_izquierda: Array[Texture2D]
 @export var velocidad: float = 250.0
 
+@export var probabilidad_sonido: float = 0.25
+@export var distancia_maxima_sonido: float = 500.0
+@export var indice_policia: int = 7
+@export var sonido_normal: AudioStream
+@export var sonido_policia: AudioStream
+
 var direccion: int = 1
-@onready var sprite = $Sprite2D
+var sonido_activado: bool = false
+
+@onready var sprite: Sprite2D = $Sprite2D
+@onready var audio_vocina: AudioStreamPlayer2D = get_node_or_null("AudioVocina")
+@onready var jugador: Node2D = get_tree().get_first_node_in_group("jugador")
 
 func _ready() -> void:
-	# Verificamos que al menos haya una textura cargada
+	# Selección aleatoria del vehículo
 	if texturas_derecha.size() > 0:
-		# Elegimos un "índice" al azar (ejemplo: 0 para el auto rojo, 1 para el azul)
 		var indice_aleatorio = randi() % texturas_derecha.size()
-		
+
 		if direccion == 1:
-			# Si vamos a la derecha, le ponemos la textura correspondiente a ese número
 			sprite.texture = texturas_derecha[indice_aleatorio]
-			
+
 		elif direccion == -1:
-			# Si vamos a la izquierda, revisamos si tenemos la textura izquierda para ese mismo número
 			if texturas_izquierda.size() > indice_aleatorio and texturas_izquierda[indice_aleatorio] != null:
 				sprite.texture = texturas_izquierda[indice_aleatorio]
 			else:
-				# PLAN B (Para tus autos): Si no le pusiste texturas izquierdas, 
-				# usa la derecha elegida y la voltea
 				sprite.texture = texturas_derecha[indice_aleatorio]
 				sprite.flip_h = true
 
+		# Sonido del vehículo
+		if audio_vocina and randf() <= probabilidad_sonido:
+
+			if indice_aleatorio == indice_policia:
+				audio_vocina.stream = sonido_policia
+			else:
+				audio_vocina.stream = sonido_normal
+
+			audio_vocina.pitch_scale = randf_range(1.00, 1.05)
+			audio_vocina.play()
+
+			sonido_activado = true
+
+			print("Sonido vehiculo:", indice_aleatorio)
+
 func _process(delta: float) -> void:
-	# El movimiento constante
 	position.x += velocidad * direccion * delta
-	
-	# La zona de autodestrucción
-	# Si va hacia la derecha y pasa el límite derecho (750)
+
+	# Si el jugador murió, apagamos el audio y no hacemos nada más
+	if jugador and "esta_muerto" in jugador and jugador.esta_muerto:
+		detener_audio()
+
+	elif sonido_activado and audio_vocina and jugador:
+		var distancia = global_position.distance_to(jugador.global_position)
+
+		if distancia > distancia_maxima_sonido:
+			audio_vocina.stop()
+		elif not audio_vocina.playing:
+			audio_vocina.play()
+
+	# La lógica de destrucción se mantiene igual
 	if direccion == 1 and position.x > 650:
 		queue_free()
-		
-	# Si va hacia la izquierda y pasa el límite izquierdo (-750)
 	elif direccion == -1 and position.x < -650:
 		queue_free()
+func detener_audio() -> void:
+	sonido_activado = false
+	
+	if audio_vocina:
+		audio_vocina.stop()		

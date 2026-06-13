@@ -9,7 +9,11 @@
 [ext_resource type="PackedScene" uid="uid://0l8f5dotsieg" path="res://Scenes/Crossy_Road/arbol.tscn" id="7_ijbgn"]
 [ext_resource type="PackedScene" uid="uid://cu0ssuik4848n" path="res://Scenes/Crossy_Road/CartelTallerEnCrisis.tscn" id="8_mfv65"]
 [ext_resource type="PackedScene" uid="uid://cyl73mjtc24ao" path="res://Scenes/UI/HUD.tscn" id="9_8s0oy"]
+[ext_resource type="AudioStream" uid="uid://cv2aaoesql834" path="res://Assets/Audio/MinigameAudio/Crossy Road/hop.wav" id="9_fpi7r"]
 [ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="10_4j6am"]
+[ext_resource type="AudioStream" uid="uid://b8u6eyn1c1mgo" path="res://Assets/Audio/MinigameAudio/Crossy Road/atropello.wav" id="10_k3elq"]
+[ext_resource type="AudioStream" uid="uid://ckssv244g63lg" path="res://Assets/Audio/MinigameAudio/Crossy Road/dead.wav" id="10_nh0ng"]
+[ext_resource type="AudioStream" uid="uid://b0jv72gjvmr2c" path="res://Assets/Audio/MinigameAudio/Crossy Road/ciudadambient.ogg" id="12_k3elq"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_d0mq6"]
 atlas = ExtResource("1_hw670")
@@ -96,7 +100,7 @@ scale = Vector2(1.0064815, 1.0018868)
 texture = SubResource("AtlasTexture_d0mq6")
 offset = Vector2(0, 121.77024)
 
-[node name="Player" parent="." unique_id=332878050 node_paths=PackedStringArray("label_parpadeo", "pantalla_final", "label_puntaje_final") instance=ExtResource("2_3x3vj")]
+[node name="Player" parent="." unique_id=332878050 node_paths=PackedStringArray("label_parpadeo", "pantalla_final", "label_puntaje_final") groups=["jugador"] instance=ExtResource("2_3x3vj")]
 physics_interpolation_mode = 1
 z_index = 2
 z_as_relative = false
@@ -134,6 +138,22 @@ position = Vector2(2.0000002, 5)
 enabled = false
 target_position = Vector2(-1.5894572e-07, 21.666672)
 collision_mask = 2
+
+[node name="SaltoAudio" type="AudioStreamPlayer" parent="Player" unique_id=1969883524]
+process_mode = 3
+stream = ExtResource("9_fpi7r")
+volume_db = -5.0
+bus = &"SFX"
+
+[node name="MuerteAudio" type="AudioStreamPlayer" parent="Player" unique_id=1040600682]
+process_mode = 3
+stream = ExtResource("10_nh0ng")
+bus = &"SFX"
+
+[node name="AtropelloAudio" type="AudioStreamPlayer" parent="Player" unique_id=1980688837]
+process_mode = 3
+stream = ExtResource("10_k3elq")
+bus = &"SFX"
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=2025136447]
 collision_layer = 2
@@ -350,5 +370,9 @@ offset_right = 613.0
 offset_bottom = 415.0
 theme_override_colors/font_color = Color(1, 0.8862745, 0, 1)
 text = "[ Presiona cualquier tecla de movimiento para empezar ]"
+
+[node name="AmbienteMapa" type="AudioStreamPlayer" parent="." unique_id=873459744]
+stream = ExtResource("12_k3elq")
+volume_db = -5.0
 
 [connection signal="area_entered" from="Player/Area2D" to="Player" method="_on_area_2d_area_entered"]
