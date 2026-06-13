@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c80byqtkm0rum"]
 
-[ext_resource type="SpriteFrames" uid="uid://dac86tcx622kn" path="res://Scenes/Minigames/Snake/Burn/burn_sprite_frames.tres" id="1_r8wut"]
+[ext_resource type="SpriteFrames" uid="uid://dac86tcx622kn" path="res://Scenes/Minigames/TheFloorIsLava/Burn/burn_sprite_frames.tres" id="1_r8wut"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_r8wut"]
 specular_color = Color(0.42365062, 0.42365065, 0.42365062, 1)
