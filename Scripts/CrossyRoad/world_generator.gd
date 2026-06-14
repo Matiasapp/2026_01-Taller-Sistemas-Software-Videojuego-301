@@ -9,6 +9,8 @@ extends Node2D
 @export var jugador: Node2D 
 #Audio Ambiente
 @onready var ambiente_mapa: AudioStreamPlayer = $AmbienteMapa
+#Musica
+@onready var musica_loop: AudioStreamPlayer = $MusicLoop
 
 var posicion_y_actual: int = 0 
 var franjas_activas: Array[Node] = [] # NUEVO: Lista para guardar y borrar las franjas viejas
@@ -19,6 +21,10 @@ func _ready() -> void:
 	if ambiente_mapa:
 		ambiente_mapa.process_mode = Node.PROCESS_MODE_ALWAYS
 		ambiente_mapa.play()
+		
+	if musica_loop:
+		musica_loop.process_mode = Node.PROCESS_MODE_ALWAYS
+		musica_loop.play()
 	
 	for i in range(3):
 		generar_franja_segura()

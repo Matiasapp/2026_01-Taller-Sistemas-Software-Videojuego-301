@@ -1,20 +1,23 @@
 extends Node2D
-
+#Grilla
 @export var grid_size := 80
 @export var board_size := 9
 @export var move_interval := 0.35
 @export var survival_time := 30.0
 
-@export var lava_spawn_interval := 0.62
-@export var lava_lifetime := 2.2
+#Spawn rate
+@export var lava_spawn_interval := 0.35
+@export var lava_lifetime := 10.0
 @export var lava_amount_per_wave := 1
 
+#Dinero
 @export var valor_por_segundo := 2
 @export var bonus_victoria := 30
 @export var penalizacion_derrota := 20
 
-@export var burn_mark_scene: PackedScene
 
+#Sprites
+@export var burn_mark_scene: PackedScene
 @onready var car := $Car
 @onready var grid_debug := $GridDebug
 @onready var move_timer := $MoveTimer
@@ -23,25 +26,25 @@ extends Node2D
 @onready var car_sprite: AnimatedSprite2D = $Car/AnimatedSprite2D
 
 #Tutorial
-
 @onready var panel_tutorial := $CanvasLayer/Tutorial
 @onready var panel_tutorial_interno := $CanvasLayer/Tutorial/PanelTutorial
 @onready var label_parpadeo := $CanvasLayer/Tutorial/PanelTutorial/Comenzar
 
 #Panel Final
-
 @onready var panel_final := $CanvasLayer/Resumen
 @onready var label_resultado_final := $CanvasLayer/Resumen/PanelFinal/PuntajeFinal
 @onready var label_dinero_final := $CanvasLayer/Resumen/PanelFinal/DineroObtenido
 @onready var boton_continuar := $CanvasLayer/Resumen/PanelFinal/Button
 
-#Sonidos
-
+#Sfx
 @onready var lava_spawn_sound := $LavaSpawnSound
 @onready var fire_loop_sound := $FireLoopSound
 @onready var turn_sound := $TurnSound
 @onready var death_sound := $DeathSound
 @onready var countdown_sound := $CountdownSound
+
+#Musica
+@onready var music_loop = $MusicLoop
 
 var rapid_turn_count := 0
 var last_turn_time := 0.0
@@ -64,14 +67,15 @@ var has_won := false
 var elapsed_time := 0.0
 var dinero_obtenido := 0
 
+var ultimo_segundo_anunciado := -1
+
 
 
 func _ready() -> void:
 	randomize()
+	
+	music_loop.play()
 
-	if fire_loop_sound:
-		fire_loop_sound.play()
-		
 	create_start_label()
 	create_danger_label()
 	setup_time_label()
@@ -190,6 +194,10 @@ func _process(delta: float) -> void:
 	if remaining <= 3:
 		danger_label.visible = true
 		danger_label.text = str(remaining)
+
+		if remaining > 0 and remaining != ultimo_segundo_anunciado:
+			ultimo_segundo_anunciado = remaining
+			play_countdown_sound(0)
 	else:
 		danger_label.visible = false
 
@@ -295,6 +303,8 @@ func start_countdown() -> void:
 	time_label.visible = true
 
 	elapsed_time = 0.0
+	ultimo_segundo_anunciado = -1
+
 	time_label.text = "Tiempo restante: %ds" % int(survival_time)
 
 	if fire_loop_sound:

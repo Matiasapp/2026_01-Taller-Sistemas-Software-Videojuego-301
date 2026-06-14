@@ -13,6 +13,7 @@
 [ext_resource type="AudioStream" uid="uid://cpr027gd7615q" path="res://Assets/Audio/MinigameAudio/Neumaticos/hit.wav" id="11_f37eh"]
 [ext_resource type="AudioStream" uid="uid://3lvr8kb4vatu" path="res://Assets/Audio/MinigameAudio/Neumaticos/inflate.wav" id="12_4nbr0"]
 [ext_resource type="AudioStream" uid="uid://cytnoh8w72o5v" path="res://Assets/Audio/MinigameAudio/Neumaticos/complete.wav" id="13_f37eh"]
+[ext_resource type="AudioStream" uid="uid://c8xoch5vohqlk" path="res://Assets/Audio/MinigameAudio/Neumaticos/neumaticosloop.ogg" id="14_4nbr0"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xrnwy"]
 atlas = ExtResource("5_8hs81")
@@ -502,3 +503,7 @@ stream = ExtResource("12_4nbr0")
 
 [node name="CompleteSound" type="AudioStreamPlayer" parent="." unique_id=1979186773]
 stream = ExtResource("13_f37eh")
+
+[node name="MusicLoop" type="AudioStreamPlayer" parent="." unique_id=2035088671]
+stream = ExtResource("14_4nbr0")
+volume_db = -10.0

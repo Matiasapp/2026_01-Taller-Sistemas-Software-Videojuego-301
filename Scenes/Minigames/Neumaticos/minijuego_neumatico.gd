@@ -40,12 +40,14 @@ extends Control
 	$Neumaticos/Neumatico10
 ]
 
-#Audio
+#AUDIO
 
 @onready var sfx_break = $BreakSound
 @onready var sfx_hit = $HitSound
 @onready var sfx_inflate = $InflateSound
 @onready var sfx_complete = $CompleteSound
+#MUSICA
+@onready var music_loop = $MusicLoop
 
 # MOVIMIENTO
 var velocidad = 650.0
@@ -84,6 +86,8 @@ var ancho_inicial_zona = 190
 func _ready():
 
 	randomize()
+	
+	music_loop.play()
 
 	# OCULTAR RESUMEN
 	panel_final.visible = false
@@ -322,7 +326,7 @@ func iniciar_juego():
 
 
 func calcular_dinero_final():
-
+	
 	# CALCULAR DINERO
 	dinero_obtenido = (
 		neumaticos_inflados
