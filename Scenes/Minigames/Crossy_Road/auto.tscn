@@ -67,3 +67,4 @@ scale = Vector2(11.016491, 4.3508267)
 shape = SubResource("RectangleShape2D_xewu1")
 
 [node name="AudioVocina" type="AudioStreamPlayer2D" parent="." unique_id=171721920]
+bus = &"SFX"

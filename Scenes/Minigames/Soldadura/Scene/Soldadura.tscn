@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://b70uk0b1usa17" path="res://Scenes/Minigames/Soldadura/Script/soldadura.gd" id="1_duqhs"]
 [ext_resource type="Texture2D" uid="uid://bf2nk63ft67p4" path="res://Scenes/Minigames/Soldadura/Imagenes/soldadura.png" id="2_310yo"]
+[ext_resource type="AudioStream" uid="uid://clufobdmrg6p3" path="res://Assets/Audio/MinigameAudio/Soldadura/welding.wav" id="3_f3p2b"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ml5y2"]
 radius = 95.049515
@@ -73,3 +74,7 @@ animation = &"reposo"
 [node name="TimerSoldadura" type="Timer" parent="." unique_id=1497355922]
 wait_time = 0.2
 autostart = true
+
+[node name="WeldingSound" type="AudioStreamPlayer" parent="." unique_id=780401406]
+stream = ExtResource("3_f3p2b")
+bus = &"SFX"

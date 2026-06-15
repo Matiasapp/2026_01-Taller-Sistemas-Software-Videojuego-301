@@ -6,6 +6,8 @@ extends Node2D
 @onready var label_tiempo = $CanvasLayer/LabelTiempo
 @onready var start_label = $CanvasLayer/start_label
 @onready var pieza_container = $PiezaContainer
+#Audio
+@onready var complete_sound = $CompleteSound
 
 var piezas_completadas := 0
 
@@ -100,6 +102,9 @@ func actualizar_barra(valor):
 
 func _on_pieza_completada():
 
+	if complete_sound:
+		complete_sound.play()
+
 	piezas_completadas += 1
 
 	label_piezas.text = "Piezas: " + str(piezas_completadas)
@@ -115,7 +120,6 @@ func _on_timer_timeout():
 func terminar_juego():
 
 	GLOBALSOLDADURA.piezas_completadas = piezas_completadas
-
 	GLOBALSOLDADURA.dinero = piezas_completadas * dinero_por_pieza
 
 	get_tree().change_scene_to_file(

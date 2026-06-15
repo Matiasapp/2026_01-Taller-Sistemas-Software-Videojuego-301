@@ -495,6 +495,7 @@ dialog_text = "Lo sentimos, esta función se encuentra en desarrollo !!"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1400608411]
 position = Vector2(880, 872)
 shape = SubResource("RectangleShape2D_u8dp7")
+
 [node name="AmbientFX" type="AudioStreamPlayer" parent="." unique_id=874564267]
 process_mode = 3
 stream = ExtResource("13_imsci")
@@ -503,6 +504,7 @@ bus = &"SFX"
 [node name="MusicLoop" type="AudioStreamPlayer" parent="." unique_id=1205667077]
 process_mode = 3
 stream = ExtResource("14_h5ghc")
+bus = &"Music"
 
 [node name="PCSoundin" type="AudioStreamPlayer" parent="." unique_id=1059407186]
 stream = ExtResource("17_vuvpm")

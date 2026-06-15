@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://dtc8u5lkkxjhs"]
 
 [ext_resource type="Texture2D" uid="uid://bdixjhy47kutr" path="res://Assets/Sprites/crossy_road/assets.png" id="1_mblyo"]
-[ext_resource type="PackedScene" uid="uid://c138ghqp6mqxv" path="res://Scenes/Crossy_Road/camion.tscn" id="2_chym7"]
+[ext_resource type="PackedScene" uid="uid://c138ghqp6mqxv" path="res://Scenes/Minigames/Crossy_Road/camion.tscn" id="2_chym7"]
 [ext_resource type="Script" uid="uid://bp1oawlmvvg3p" path="res://Scripts/CrossyRoad/calle_manager.gd" id="2_ffyqn"]
-[ext_resource type="PackedScene" uid="uid://bwwh5kfu2vilw" path="res://Scenes/Crossy_Road/auto.tscn" id="3_uj17p"]
-[ext_resource type="PackedScene" uid="uid://0l8f5dotsieg" path="res://Scenes/Crossy_Road/arbol.tscn" id="5_uj17p"]
+[ext_resource type="PackedScene" uid="uid://bwwh5kfu2vilw" path="res://Scenes/Minigames/Crossy_Road/auto.tscn" id="3_uj17p"]
+[ext_resource type="PackedScene" uid="uid://0l8f5dotsieg" path="res://Scenes/Minigames/Crossy_Road/arbol.tscn" id="5_uj17p"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_chym7"]
 atlas = ExtResource("1_mblyo")

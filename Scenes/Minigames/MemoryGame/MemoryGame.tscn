@@ -1,7 +1,10 @@
 [gd_scene format=3 uid="uid://cm6qptlpis012"]
 
-[ext_resource type="Script" uid="uid://c1kuwjbbvsy0" path="res://Scripts/memory_game.gd" id="1_game"]
-[ext_resource type="Script" uid="uid://r05p6wyv77mp" path="res://Scripts/memory_decoration.gd" id="2_decoration"]
+[ext_resource type="Script" uid="uid://dpfitycnkyiam" path="res://Scripts/memory_game.gd" id="1_game"]
+[ext_resource type="Script" uid="uid://cyyyx5vo0rvl4" path="res://Scripts/memory_decoration.gd" id="2_decoration"]
+[ext_resource type="AudioStream" uid="uid://c2lxpg60tyflj" path="res://Assets/Audio/MinigameAudio/MemoryGame/memoryloop.ogg" id="3_ws1so"]
+[ext_resource type="AudioStream" uid="uid://bd70o16yeox1q" path="res://Assets/Audio/MinigameAudio/MemoryGame/cardflip.wav" id="4_63w7e"]
+[ext_resource type="AudioStream" uid="uid://dojpag0buidym" path="res://Assets/Audio/MinigameAudio/MemoryGame/matchsound.wav" id="5_eohb8"]
 
 [node name="MemoryGame" type="Node2D" unique_id=291353999]
 script = ExtResource("1_game")
@@ -214,3 +217,16 @@ custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "CONTINUAR →"
+
+[node name="MusicLoop" type="AudioStreamPlayer" parent="." unique_id=195818257]
+stream = ExtResource("3_ws1so")
+volume_db = -20.0
+bus = &"Music"
+
+[node name="CardFlipSound" type="AudioStreamPlayer" parent="." unique_id=484024872]
+stream = ExtResource("4_63w7e")
+bus = &"SFX"
+
+[node name="MatchSound" type="AudioStreamPlayer" parent="." unique_id=1567476839]
+stream = ExtResource("5_eohb8")
+bus = &"SFX"

@@ -60,3 +60,4 @@ shape = SubResource("RectangleShape2D_e27w3")
 
 [node name="AudioVocina" type="AudioStreamPlayer2D" parent="." unique_id=207691032]
 stream = ExtResource("3_0lb3p")
+bus = &"SFX"

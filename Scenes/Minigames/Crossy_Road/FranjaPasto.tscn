@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://43eaehpmc00w"]
 
 [ext_resource type="Script" uid="uid://oigt73dpawfp" path="res://Scripts/CrossyRoad/franja_pasto_manager.gd" id="1_etem3"]
-[ext_resource type="PackedScene" uid="uid://0l8f5dotsieg" path="res://Scenes/Crossy_Road/arbol.tscn" id="2_etem3"]
+[ext_resource type="PackedScene" uid="uid://0l8f5dotsieg" path="res://Scenes/Minigames/Crossy_Road/arbol.tscn" id="2_etem3"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_orsij"]
 load_path = "res://.godot/imported/assets.png-0aec246d8063b188dacd6ec41875ad52.ctex"
