@@ -2,55 +2,71 @@ extends Node
 
 var music_player: AudioStreamPlayer
 
-
-func _enter_tree() -> void:
+func _ready() -> void:
 	music_player = AudioStreamPlayer.new()
 	add_child(music_player)
-
-	music_player.name = "GlobalMusicPlayer"
 	music_player.bus = "Music"
-	music_player.volume_db = 0.0
-	music_player.autoplay = false
 
 
-func play_music(stream: AudioStream) -> void:
-	if stream == null:
-		push_warning("GlobalMusic.play_music recibió un stream null.")
+func play_music(music) -> void:
+	if music_player == null:
 		return
 
-	if music_player == null:
-		push_warning("music_player todavía no existe.")
+	var stream: AudioStream = null
+
+	if music is AudioStream:
+		stream = music
+	elif music is String:
+		stream = load(music)
+
+	if stream == null:
+		push_warning("No se pudo cargar la música.")
 		return
 
 	if music_player.stream == stream and music_player.playing:
 		return
 
 	music_player.stream = stream
-	music_player.volume_db = 0.0
 	music_player.play()
 
 
-func set_menu_volume() -> void:
-	if music_player == null:
-		return
+func stop_music() -> void:
+	if music_player and music_player.playing:
+		music_player.stop()
 
-	music_player.volume_db = 0.0
+
+func set_menu_volume() -> void:
+	if music_player:
+		music_player.volume_db = -8.0
 
 
 func set_intro_volume() -> void:
-	if music_player == null:
-		return
-
-	music_player.volume_db = -10.0
+	if music_player:
+		music_player.volume_db = -16.0
 
 
-func fade_out_and_stop(duration := 1.0) -> void:
-	if music_player == null:
+func set_game_volume() -> void:
+	if music_player:
+		music_player.volume_db = -14.0
+
+
+func set_minigame_volume() -> void:
+	if music_player:
+		music_player.volume_db = -10.0
+		
+func fade_out_and_stop(duration := 0.5) -> void:
+	if not music_player or not music_player.playing:
 		return
 
 	var tween := create_tween()
-	tween.tween_property(music_player, "volume_db", -40.0, duration)
+	tween.tween_property(
+		music_player,
+		"volume_db",
+		-40.0,
+		duration
+	)
+
 	await tween.finished
 
 	music_player.stop()
-	music_player.volume_db = 0.0
+	music_player.volume_db = -10.0		
