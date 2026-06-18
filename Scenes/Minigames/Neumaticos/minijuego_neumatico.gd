@@ -40,6 +40,15 @@ extends Control
 	$Neumaticos/Neumatico10
 ]
 
+#AUDIO
+
+@onready var sfx_break = $BreakSound
+@onready var sfx_hit = $HitSound
+@onready var sfx_inflate = $InflateSound
+@onready var sfx_complete = $CompleteSound
+#MUSICA
+@onready var music_loop = $MusicLoop
+
 # MOVIMIENTO
 var velocidad = 650.0
 var direccion = 1
@@ -77,6 +86,8 @@ var ancho_inicial_zona = 190
 func _ready():
 
 	randomize()
+	
+	music_loop.play()
 
 	# OCULTAR RESUMEN
 	panel_final.visible = false
@@ -147,12 +158,10 @@ func _process(delta):
 
 func mover_indicador(delta):
 
-	# MOVIMIENTO HORIZONTAL
 	indicador.position.x += (
 		velocidad * direccion * delta
 	)
 
-	# LIMITE DERECHO
 	if indicador.position.x >= (
 		barra.size.x - indicador.size.x
 	):
@@ -162,13 +171,14 @@ func mover_indicador(delta):
 		)
 
 		direccion = -1
+		reproducir_hit()
 
-	# LIMITE IZQUIERDO
 	if indicador.position.x <= 0:
 
 		indicador.position.x = 0
 
 		direccion = 1
+		reproducir_hit()
 
 
 func evaluar_golpe():
@@ -195,14 +205,15 @@ func evaluar_golpe():
 	# GOLPE CORRECTO
 	if dentro:
 
+		sfx_inflate.play()
+
 		nivel_inflado += 1
 
 		# CAMBIAR FRAME
 		if nivel_inflado <= 3:
-
 			neumatico.frame = nivel_inflado
 
-		# MOVER ZONA
+		# MOVER ZONAA
 		cambiar_zona()
 
 		# DIFICULTAD
@@ -210,6 +221,8 @@ func evaluar_golpe():
 
 		# COMPLETAR NEUMATICO
 		if nivel_inflado >= 4:
+
+			sfx_complete.play()
 
 			neumaticos_inflados += 1
 
@@ -236,6 +249,8 @@ func evaluar_golpe():
 
 	# GOLPE FALLIDO
 	else:
+
+		sfx_break.play()
 
 		vidas -= 1
 
@@ -311,7 +326,7 @@ func iniciar_juego():
 
 
 func calcular_dinero_final():
-
+	
 	# CALCULAR DINERO
 	dinero_obtenido = (
 		neumaticos_inflados
@@ -340,3 +355,8 @@ func calcular_dinero_final():
 		"Dinero Obtenido: $"
 		+ str(dinero_obtenido)
 	)
+	
+	#ALTERNAR PITCH EN HIT
+func reproducir_hit():
+	sfx_hit.pitch_scale = randf_range(0.95, 1.05)
+	sfx_hit.play()

@@ -1,5 +1,10 @@
 extends Node2D
 
+#Audio
+@onready var music_loop = $MusicLoop
+@onready var card_flip_sound = $CardFlipSound
+@onready var match_sound = $MatchSound
+
 const COLS := 5
 const ROWS := 4
 const TOTAL_PAIRS := 10
@@ -48,6 +53,9 @@ var bg: ColorRect
 
 func _ready() -> void:
 	randomize()
+
+	if music_loop:
+		music_loop.play()
 
 	_configurar_mouse_filters()
 	_setup_background()
@@ -206,6 +214,10 @@ func _on_card_clicked(card: MemoryCard) -> void:
 	if card.is_flipped or card.is_matched:
 		return
 
+	if card_flip_sound:
+		card_flip_sound.pitch_scale = randf_range(0.95, 1.05)
+		card_flip_sound.play()
+
 	await card.flip(true)
 	selected.append(card)
 
@@ -234,9 +246,12 @@ func check_match() -> void:
 	var b := selected[1]
 
 	if a.icon_type == b.icon_type:
+
+		if match_sound:
+			match_sound.play()
+
 		a.set_matched()
 		b.set_matched()
-
 		matched_pairs += 1
 		pairs_label.text = "PARES: %d/%d" % [matched_pairs, TOTAL_PAIRS]
 
@@ -324,6 +339,10 @@ func _mostrar_resultado(gano: bool, pares: int, t_restante: float, monto: int) -
 func _on_btn_continuar_pressed() -> void:
 	if estado_actual != Estado.RESULTADO:
 		return
+		
+	if music_loop:
+		music_loop.stop()
+	
 
 	btn_continuar.disabled = true
 

@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://doowsmrd45t0u"
+path="res://.godot/imported/crossyroadloop.ogg-ea49ad9788181f0560e9a989dc8b4c96.oggvorbisstr"
+
+[deps]
+
+source_file="res://Assets/Audio/MinigameAudio/Crossy Road/crossyroadloop.ogg"
+dest_files=["res://.godot/imported/crossyroadloop.ogg-ea49ad9788181f0560e9a989dc8b4c96.oggvorbisstr"]
+
+[params]
+
+loop=true
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

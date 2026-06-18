@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://cs6ra5g8h1xqp" path="res://Scenes/Minigames/Soldadura/Script/taller_soldadura.gd" id="1_xe4cr"]
 [ext_resource type="PackedScene" uid="uid://chyfxn8kct54" path="res://Scenes/Minigames/Soldadura/Scene/Soldadura.tscn" id="2_i3dfk"]
 [ext_resource type="PackedScene" uid="uid://d3vfdqw6s3e50" path="res://Scenes/Minigames/Soldadura/Scene/PiezaContainer.tscn" id="3_xe4cr"]
+[ext_resource type="AudioStream" uid="uid://c1svypuy6rqke" path="res://Assets/Audio/MinigameAudio/Soldadura/completesound.wav" id="5_t1okg"]
 
 [node name="Node2D" type="Node2D" unique_id=997942648]
 script = ExtResource("1_xe4cr")
@@ -57,3 +58,7 @@ theme_override_font_sizes/font_size = 102
 text = "3"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="CompleteSound" type="AudioStreamPlayer" parent="." unique_id=1919188017]
+stream = ExtResource("5_t1okg")
+bus = &"SFX"

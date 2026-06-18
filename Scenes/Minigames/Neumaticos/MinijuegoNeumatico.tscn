@@ -9,6 +9,11 @@
 [ext_resource type="Texture2D" uid="uid://co81w8xxx6mkk" path="res://Assets/Sprites/inflado_neumatico/VidaTuercas.png" id="5_8hs81"]
 [ext_resource type="Texture2D" uid="uid://do46uuuci0hus" path="res://Assets/Sprites/inflado_neumatico/NeumaticoDesinflado.png" id="7_ija6x"]
 [ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="9_v74x8"]
+[ext_resource type="AudioStream" uid="uid://ckdcsitnq35ym" path="res://Assets/Audio/MinigameAudio/Neumaticos/break.wav" id="10_xi774"]
+[ext_resource type="AudioStream" uid="uid://cpr027gd7615q" path="res://Assets/Audio/MinigameAudio/Neumaticos/hit.wav" id="11_f37eh"]
+[ext_resource type="AudioStream" uid="uid://3lvr8kb4vatu" path="res://Assets/Audio/MinigameAudio/Neumaticos/inflate.wav" id="12_4nbr0"]
+[ext_resource type="AudioStream" uid="uid://cytnoh8w72o5v" path="res://Assets/Audio/MinigameAudio/Neumaticos/complete.wav" id="13_f37eh"]
+[ext_resource type="AudioStream" uid="uid://c8xoch5vohqlk" path="res://Assets/Audio/MinigameAudio/Neumaticos/neumaticosloop.ogg" id="14_4nbr0"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xrnwy"]
 atlas = ExtResource("5_8hs81")
@@ -486,3 +491,24 @@ offset_right = 533.0
 offset_bottom = 415.0
 theme_override_colors/font_color = Color(1, 0.8862745, 0, 1)
 text = "[ Presiona espacio para empezar ]"
+
+[node name="BreakSound" type="AudioStreamPlayer" parent="." unique_id=1397499049]
+stream = ExtResource("10_xi774")
+bus = &"SFX"
+
+[node name="HitSound" type="AudioStreamPlayer" parent="." unique_id=1533301797]
+stream = ExtResource("11_f37eh")
+bus = &"SFX"
+
+[node name="InflateSound" type="AudioStreamPlayer" parent="." unique_id=1218217973]
+stream = ExtResource("12_4nbr0")
+bus = &"SFX"
+
+[node name="CompleteSound" type="AudioStreamPlayer" parent="." unique_id=1979186773]
+stream = ExtResource("13_f37eh")
+bus = &"SFX"
+
+[node name="MusicLoop" type="AudioStreamPlayer" parent="." unique_id=2035088671]
+stream = ExtResource("14_4nbr0")
+volume_db = -20.0
+bus = &"Music"

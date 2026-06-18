@@ -1,6 +1,6 @@
 extends Node2D
 
-var arbol_escena = preload("res://Scenes/Crossy_Road/arbol.tscn")
+var arbol_escena = preload("res://Scenes/Minigames/Crossy_Road/arbol.tscn")
 
 @export var alto_en_casillas: int = 2
 @export var tamaño_casilla = 64
