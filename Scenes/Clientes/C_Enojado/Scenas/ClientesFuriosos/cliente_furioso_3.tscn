@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://bfbtjt1qr1gqv"]
 
 [ext_resource type="Script" uid="uid://bhh5xusnrc5y1" path="res://Scenes/Clientes/C_Enojado/Scripts/clientefurioso.gd" id="1_ghxcw"]
+[ext_resource type="Texture2D" uid="uid://b728xwoghpf2c" path="res://Scenes/Clientes/Imagenes_Fondo_auto/Fondo_llegada_auto_1.png" id="2_1r0x8"]
 [ext_resource type="Texture2D" uid="uid://bnc6wdttxs34d" path="res://Scenes/Clientes/C_Enojado/Imagenes/MujerFuriosa.png" id="2_5wqes"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_y5q0i"]
@@ -35,18 +36,23 @@ corner_radius_bottom_left = 14
 [node name="ClienteFurioso_1" type="Node2D" unique_id=1156141758]
 script = ExtResource("1_ghxcw")
 
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2051733876]
+position = Vector2(579, 325)
+scale = Vector2(0.7526041, 0.70117193)
+texture = ExtResource("2_1r0x8")
+
 [node name="SpriteCliente" type="AnimatedSprite2D" parent="." unique_id=1242923094]
-position = Vector2(881, 398)
+position = Vector2(896.99994, 420)
 scale = Vector2(1.0783132, 1.0195313)
 sprite_frames = SubResource("SpriteFrames_2eufn")
 animation = &"ClienteMov"
 frame_progress = 0.481842
 
 [node name="TextEdit" type="Label" parent="." unique_id=981756229]
-offset_left = 52.0
-offset_top = 177.0
-offset_right = 621.0
-offset_bottom = 352.0
+offset_left = 75.0
+offset_top = 448.0
+offset_right = 644.0
+offset_bottom = 623.0
 theme_override_colors/font_color = Color(0.9354673, 0.08574965, 0.089784585, 1)
 theme_override_font_sizes/font_size = 17
 theme_override_styles/normal = SubResource("StyleBoxFlat_l44mk")

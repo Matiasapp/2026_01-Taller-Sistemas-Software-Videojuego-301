@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bhh5xusnrc5y1" path="res://Scenes/Clientes/C_Enojado/Scripts/clientefurioso.gd" id="1_mcr4w"]
 [ext_resource type="Texture2D" uid="uid://cqrbv3mmvx003" path="res://Scenes/Clientes/C_Enojado/Imagenes/AncianoFurioso.png" id="2_mcr4w"]
+[ext_resource type="Texture2D" uid="uid://c5dp6oa4umtvu" path="res://Scenes/Clientes/Imagenes_Fondo_auto/Fondo_llegada_auto_3.png" id="2_myu5i"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_pqa80"]
 atlas = ExtResource("2_mcr4w")
@@ -35,6 +36,11 @@ corner_radius_bottom_left = 14
 [node name="ClienteFurioso_1" type="Node2D" unique_id=1156141758]
 script = ExtResource("1_mcr4w")
 
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=443154375]
+position = Vector2(581, 327)
+scale = Vector2(0.75, 0.6269531)
+texture = ExtResource("2_myu5i")
+
 [node name="SpriteCliente" type="AnimatedSprite2D" parent="." unique_id=1242923094]
 position = Vector2(872.99994, 447)
 scale = Vector2(1.0783132, 1.0195313)
@@ -43,10 +49,10 @@ animation = &"ClienteMov"
 frame_progress = 0.481842
 
 [node name="TextEdit" type="Label" parent="." unique_id=903613317]
-offset_left = 54.0
-offset_top = 183.0
-offset_right = 599.0
-offset_bottom = 353.0
+offset_left = 82.0
+offset_top = 452.0
+offset_right = 627.0
+offset_bottom = 622.0
 theme_override_colors/font_color = Color(0.9372549, 0.08627451, 0.09019608, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_7d55f")
 text = " Yo no entiendo de mecánica, pero sí entiendo que el auto

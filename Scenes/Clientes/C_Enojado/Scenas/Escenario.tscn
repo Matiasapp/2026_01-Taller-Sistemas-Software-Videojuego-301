@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://mgmt1o0sbper"]
 
 [ext_resource type="Script" uid="uid://6noi2nawfo8h" path="res://Scenes/Clientes/C_Enojado/Scripts/CargaClientefuriosos.gd" id="1_bbxl0"]
-[ext_resource type="Texture2D" uid="uid://cuuqyt8tvhi6y" path="res://Assets/Sprites/background_main_menu.png" id="2_8trxh"]
 [ext_resource type="PackedScene" uid="uid://c2t0cpd8tbn5s" path="res://Scenes/Clientes/C_Enojado/Scenas/ClienteContainer.tscn" id="2_bbxl0"]
 
 [node name="Node2D" type="Node2D" unique_id=233989687]
@@ -10,25 +9,22 @@ script = ExtResource("1_bbxl0")
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1170680515]
 offset_right = 1147.0
 offset_bottom = 646.0
-
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=937663499]
-position = Vector2(465, 295.00003)
-scale = Vector2(0.8682528, 0.8671875)
-texture = ExtResource("2_8trxh")
-
-[node name="Continuar" type="Label" parent="." unique_id=2015719485]
-anchors_preset = -1
-anchor_right = 0.14600001
-anchor_bottom = 0.24400002
-offset_left = 129.0
-offset_top = 556.0
-offset_right = 509.0
-offset_bottom = 614.0
-text = "[pulsa la pantalla para continuar]
-"
+color = Color(1, 1, 1, 0.35686275)
 
 [node name="ClienteContainer" parent="." unique_id=318923171 instance=ExtResource("2_bbxl0")]
 position = Vector2(870.5585, 343.73898)
+
+[node name="Continuar" type="Label" parent="." unique_id=2015719485]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 845.0
+offset_top = 56.0
+offset_right = 1102.0
+offset_bottom = 105.0
+grow_horizontal = 0
+text = "[pulsa la pantalla para continuar]
+"
 
 [connection signal="gui_input" from="ColorRect" to="." method="_on_color_rect_gui_input"]
 [connection signal="gui_input" from="Continuar" to="." method="_on_continuar_gui_input"]

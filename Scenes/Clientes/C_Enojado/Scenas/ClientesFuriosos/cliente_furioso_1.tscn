@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bhh5xusnrc5y1" path="res://Scenes/Clientes/C_Enojado/Scripts/clientefurioso.gd" id="1_1ejup"]
 [ext_resource type="Texture2D" uid="uid://c6pww3xmk2kpv" path="res://Scenes/Clientes/C_Enojado/Imagenes/ClienteFurMov1.png" id="1_p3vv5"]
+[ext_resource type="Texture2D" uid="uid://ggcqlrjnpudm" path="res://Scenes/Clientes/Imagenes_Fondo_auto/Fondo_llegada_auto_2.png" id="2_oawey"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1ejup"]
 atlas = ExtResource("1_p3vv5")
@@ -42,6 +43,11 @@ corner_radius_bottom_left = 14
 [node name="ClienteFurioso_1" type="Node2D" unique_id=1156141758]
 script = ExtResource("1_1ejup")
 
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1707688458]
+position = Vector2(574.5, 326.5)
+scale = Vector2(0.7506511, 0.6396485)
+texture = ExtResource("2_oawey")
+
 [node name="SpriteCliente" type="AnimatedSprite2D" parent="." unique_id=1242923094]
 position = Vector2(860, 505)
 scale = Vector2(1.0783132, 1.0195313)
@@ -50,10 +56,10 @@ animation = &"ClienteMov"
 frame_progress = 0.481842
 
 [node name="TextEdit" type="Label" parent="." unique_id=213368249]
-offset_left = 45.0
-offset_top = 180.0
-offset_right = 627.0
-offset_bottom = 352.0
+offset_left = 30.0
+offset_top = 454.0
+offset_right = 612.0
+offset_bottom = 626.0
 theme_override_colors/font_color = Color(0.94493127, 0, 0.16805008, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_yp2xu")
 text = " Necesito el auto para trabajar todos los días,
