@@ -1,8 +1,9 @@
-[gd_scene format=3 uid="uid://c2nkml6b4geer"]
+[gd_scene format=3 uid="uid://dfog5r660qjd0"]
 
-[ext_resource type="Script" uid="uid://bhh5xusnrc5y1" path="res://Scenes/Clientes/C_Enojado/Scripts/clientefurioso.gd" id="1_mcr4w"]
-[ext_resource type="Texture2D" uid="uid://cqrbv3mmvx003" path="res://Scenes/Clientes/C_Enojado/Imagenes/AncianoFurioso.png" id="2_mcr4w"]
-[ext_resource type="Texture2D" uid="uid://c5dp6oa4umtvu" path="res://Scenes/Clientes/Imagenes_Fondo_auto/Fondo_llegada_auto_3.png" id="2_myu5i"]
+[ext_resource type="Script" uid="uid://bhh5xusnrc5y1" path="res://Scripts/Eventos/C_enojado/clientefurioso.gd" id="1_mcr4w"]
+[ext_resource type="Texture2D" uid="uid://cqrbv3mmvx003" path="res://Assets/Sprites/AncianoFurioso.png" id="2_mcr4w"]
+[ext_resource type="Texture2D" uid="uid://c5dp6oa4umtvu" path="res://Assets/Sprites/Imagenes_Fondo_auto/Fondo_llegada_auto_3.png" id="2_myu5i"]
+[ext_resource type="PackedScene" uid="uid://b6b5m55mdcbwx" path="res://Scenes/Clientes/C_Enojado/Scenas/Texto_cliente_furioso.tscn" id="4_a16h3"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_pqa80"]
 atlas = ExtResource("2_mcr4w")
@@ -26,19 +27,12 @@ animations = [{
 "speed": 1.0
 }]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7d55f"]
-bg_color = Color(0.062616155, 0.69710237, 0.59351194, 1)
-corner_radius_top_left = 14
-corner_radius_top_right = 14
-corner_radius_bottom_right = 14
-corner_radius_bottom_left = 14
-
 [node name="ClienteFurioso_1" type="Node2D" unique_id=1156141758]
 script = ExtResource("1_mcr4w")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=443154375]
-position = Vector2(581, 327)
-scale = Vector2(0.75, 0.6269531)
+position = Vector2(576, 324.99997)
+scale = Vector2(0.75651044, 0.63085943)
 texture = ExtResource("2_myu5i")
 
 [node name="SpriteCliente" type="AnimatedSprite2D" parent="." unique_id=1242923094]
@@ -48,16 +42,8 @@ sprite_frames = SubResource("SpriteFrames_2eufn")
 animation = &"ClienteMov"
 frame_progress = 0.481842
 
-[node name="TextEdit" type="Label" parent="." unique_id=903613317]
-offset_left = 82.0
-offset_top = 452.0
-offset_right = 627.0
-offset_bottom = 622.0
-theme_override_colors/font_color = Color(0.9372549, 0.08627451, 0.09019608, 1)
-theme_override_styles/normal = SubResource("StyleBoxFlat_7d55f")
-text = " Yo no entiendo de mecánica, pero sí entiendo que el auto
-no funciona como debería. Cada vez que lo traigo me hablan
-de repuestos, de diagnósticos y de cosas que no sé ni pronunciar,
-pero al final sigo con el mismo problema. Me siento impotente 
-porque dependo de ustedes para que el vehículo ande, y lo único
- que recibo son explicaciones confusas y cuentas cada vez más altas."
+[node name="Control" parent="." unique_id=491733114 instance=ExtResource("4_a16h3")]
+offset_left = -1.0
+offset_top = -11.0
+offset_right = 1164.0
+offset_bottom = 651.00006

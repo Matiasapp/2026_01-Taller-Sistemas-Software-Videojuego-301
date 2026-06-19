@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://mgmt1o0sbper"]
 
-[ext_resource type="Script" uid="uid://6noi2nawfo8h" path="res://Scenes/Clientes/C_Enojado/Scripts/CargaClientefuriosos.gd" id="1_bbxl0"]
+[ext_resource type="Script" uid="uid://6noi2nawfo8h" path="res://Scripts/Eventos/C_enojado/CargaClientefuriosos.gd" id="1_bbxl0"]
 [ext_resource type="PackedScene" uid="uid://c2t0cpd8tbn5s" path="res://Scenes/Clientes/C_Enojado/Scenas/ClienteContainer.tscn" id="2_bbxl0"]
 
 [node name="Node2D" type="Node2D" unique_id=233989687]
@@ -9,10 +9,9 @@ script = ExtResource("1_bbxl0")
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1170680515]
 offset_right = 1147.0
 offset_bottom = 646.0
-color = Color(1, 1, 1, 0.35686275)
+color = Color(0, 0, 0, 0.95686275)
 
 [node name="ClienteContainer" parent="." unique_id=318923171 instance=ExtResource("2_bbxl0")]
-position = Vector2(870.5585, 343.73898)
 
 [node name="Continuar" type="Label" parent="." unique_id=2015719485]
 anchors_preset = 1
@@ -23,8 +22,5 @@ offset_top = 56.0
 offset_right = 1102.0
 offset_bottom = 105.0
 grow_horizontal = 0
-text = "[pulsa la pantalla para continuar]
+text = "[pulsa espacio para continuar]
 "
-
-[connection signal="gui_input" from="ColorRect" to="." method="_on_color_rect_gui_input"]
-[connection signal="gui_input" from="Continuar" to="." method="_on_continuar_gui_input"]

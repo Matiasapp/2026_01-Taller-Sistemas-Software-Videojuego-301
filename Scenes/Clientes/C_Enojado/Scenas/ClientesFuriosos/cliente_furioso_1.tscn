@@ -1,8 +1,9 @@
 [gd_scene format=3 uid="uid://b2xx56lkpjrns"]
 
-[ext_resource type="Script" uid="uid://bhh5xusnrc5y1" path="res://Scenes/Clientes/C_Enojado/Scripts/clientefurioso.gd" id="1_1ejup"]
-[ext_resource type="Texture2D" uid="uid://c6pww3xmk2kpv" path="res://Scenes/Clientes/C_Enojado/Imagenes/ClienteFurMov1.png" id="1_p3vv5"]
-[ext_resource type="Texture2D" uid="uid://ggcqlrjnpudm" path="res://Scenes/Clientes/Imagenes_Fondo_auto/Fondo_llegada_auto_2.png" id="2_oawey"]
+[ext_resource type="Script" uid="uid://bhh5xusnrc5y1" path="res://Scripts/Eventos/C_enojado/clientefurioso.gd" id="1_1ejup"]
+[ext_resource type="Texture2D" uid="uid://c6pww3xmk2kpv" path="res://Assets/Sprites/ClienteFurMov1.png" id="1_p3vv5"]
+[ext_resource type="Texture2D" uid="uid://ggcqlrjnpudm" path="res://Assets/Sprites/Imagenes_Fondo_auto/Fondo_llegada_auto_2.png" id="2_oawey"]
+[ext_resource type="PackedScene" uid="uid://b6b5m55mdcbwx" path="res://Scenes/Clientes/C_Enojado/Scenas/Texto_cliente_furioso.tscn" id="4_ns0cu"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1ejup"]
 atlas = ExtResource("1_p3vv5")
@@ -33,13 +34,6 @@ animations = [{
 "speed": 1.0
 }]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yp2xu"]
-bg_color = Color(0.39563078, 0.6316272, 0.7808611, 1)
-corner_radius_top_left = 14
-corner_radius_top_right = 14
-corner_radius_bottom_right = 14
-corner_radius_bottom_left = 14
-
 [node name="ClienteFurioso_1" type="Node2D" unique_id=1156141758]
 script = ExtResource("1_1ejup")
 
@@ -55,16 +49,10 @@ sprite_frames = SubResource("SpriteFrames_2eufn")
 animation = &"ClienteMov"
 frame_progress = 0.481842
 
-[node name="TextEdit" type="Label" parent="." unique_id=213368249]
-offset_left = 30.0
-offset_top = 454.0
-offset_right = 612.0
-offset_bottom = 626.0
-theme_override_colors/font_color = Color(0.94493127, 0, 0.16805008, 1)
-theme_override_styles/normal = SubResource("StyleBoxFlat_yp2xu")
-text = " Necesito el auto para trabajar todos los días,
- y llevo semanas esperando una solución.
- Cada vez que vengo me hablan con términos técnicos
- que no entiendo, y mientras tanto sigo perdiendo tiempo y dinero.
- No me interesa la teoría, quiero resultados, quiero que el auto funcione
- y que me digan exactamente cuándo estará listo."
+[node name="Control" parent="." unique_id=491733114 instance=ExtResource("4_ns0cu")]
+custom_minimum_size = Vector2(100, 100)
+offset_left = -1.0
+offset_top = -11.0
+offset_right = 1164.0
+offset_bottom = 651.0
+size_flags_horizontal = 8

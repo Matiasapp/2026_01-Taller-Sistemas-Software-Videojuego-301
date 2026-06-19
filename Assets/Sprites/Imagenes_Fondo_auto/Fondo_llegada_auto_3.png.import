@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c5dp6oa4umtvu"
-path="res://.godot/imported/Fondo_llegada_auto_3.png-b50805d264cf8e9b2f37428a1c521ea1.ctex"
+path="res://.godot/imported/Fondo_llegada_auto_3.png-da63a001567bda5fdf2eea4b4c418458.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/Clientes/Imagenes_Fondo_auto/Fondo_llegada_auto_3.png"
-dest_files=["res://.godot/imported/Fondo_llegada_auto_3.png-b50805d264cf8e9b2f37428a1c521ea1.ctex"]
+source_file="res://Assets/Sprites/Imagenes_Fondo_auto/Fondo_llegada_auto_3.png"
+dest_files=["res://.godot/imported/Fondo_llegada_auto_3.png-da63a001567bda5fdf2eea4b4c418458.ctex"]
 
 [params]
 

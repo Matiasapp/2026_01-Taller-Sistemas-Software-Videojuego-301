@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c6pww3xmk2kpv"
-path="res://.godot/imported/ClienteFurMov1.png-292cb11a203f0863e0e1c84aa91a5b1a.ctex"
+path="res://.godot/imported/ClienteFurMov1.png-67b26d3c6307a68d783062a1c1160d69.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/Clientes/C_Enojado/Imagenes/ClienteFurMov1.png"
-dest_files=["res://.godot/imported/ClienteFurMov1.png-292cb11a203f0863e0e1c84aa91a5b1a.ctex"]
+source_file="res://Assets/Sprites/ClienteFurMov1.png"
+dest_files=["res://.godot/imported/ClienteFurMov1.png-67b26d3c6307a68d783062a1c1160d69.ctex"]
 
 [params]
 

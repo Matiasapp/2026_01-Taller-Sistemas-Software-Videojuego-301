@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://rq67xcdu5naa"]
 
-[ext_resource type="Script" uid="uid://cbh5tpe2l4u45" path="res://Scenes/Clientes/C_Enojado/Scripts/bandera_clientefurioso.gd" id="1_gtqxd"]
+[ext_resource type="Script" uid="uid://cbh5tpe2l4u45" path="res://Scripts/Eventos/C_enojado/bandera_clientefurioso.gd" id="1_gtqxd"]
 
 [sub_resource type="Animation" id="Animation_6u807"]
 length = 0.001

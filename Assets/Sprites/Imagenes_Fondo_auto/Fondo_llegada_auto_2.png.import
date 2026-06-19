@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dxknwbqe2mm5y"
-path="res://.godot/imported/Fondo_llegada_auto_4.png-1fe7892b00e5ef16c6191ba976d594a3.ctex"
+uid="uid://ggcqlrjnpudm"
+path="res://.godot/imported/Fondo_llegada_auto_2.png-ad08fa5e1ca30fd58028b68de35057c0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/Clientes/Imagenes_Fondo_auto/Fondo_llegada_auto_4.png"
-dest_files=["res://.godot/imported/Fondo_llegada_auto_4.png-1fe7892b00e5ef16c6191ba976d594a3.ctex"]
+source_file="res://Assets/Sprites/Imagenes_Fondo_auto/Fondo_llegada_auto_2.png"
+dest_files=["res://.godot/imported/Fondo_llegada_auto_2.png-ad08fa5e1ca30fd58028b68de35057c0.ctex"]
 
 [params]
 

@@ -1,0 +1,91 @@
+[gd_scene format=3 uid="uid://b6b5m55mdcbwx"]
+
+[ext_resource type="Script" uid="uid://clsbppyhwfaj7" path="res://Scripts/Eventos/C_enojado/texto_cliente_furioso.gd" id="1_kds3w"]
+
+[sub_resource type="Animation" id="Animation_6j07w"]
+resource_name = "MostrarTextoAnimado"
+length = 5.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("RichTextLabel:visible_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.033299923, 4.9666667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("..")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"finalizar_texto"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_tjs6w"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("RichTextLabel:visible_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ak38e"]
+_data = {
+&"MostrarTextoAnimado": SubResource("Animation_6j07w"),
+&"RESET": SubResource("Animation_tjs6w")
+}
+
+[node name="Control" type="Control" unique_id=491733114]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 14.0
+offset_top = 14.0
+offset_right = 14.0
+offset_bottom = 14.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_kds3w")
+
+[node name="Panel" type="Panel" parent="." unique_id=1512646694]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 48.0
+offset_top = 465.0
+offset_right = -517.0
+offset_bottom = 625.0
+grow_horizontal = 2
+
+[node name="RichTextLabel" type="Label" parent="Panel" unique_id=781202077]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_alignment = 1
+visible_characters = 0
+visible_ratio = 0.0
+
+[node name="AnimationPlayer2" type="AnimationPlayer" parent="Panel" unique_id=1117861305]
+libraries/ = SubResource("AnimationLibrary_ak38e")

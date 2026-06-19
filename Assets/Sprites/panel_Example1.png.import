@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bnc6wdttxs34d"
-path="res://.godot/imported/MujerFuriosa.png-1ab57efb5a2a7801a7f7320000a1f9f1.ctex"
+uid="uid://cyxldmert6mib"
+path="res://.godot/imported/panel_Example1.png-9c89f26896640aef6878039f59932136.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/Clientes/C_Enojado/Imagenes/MujerFuriosa.png"
-dest_files=["res://.godot/imported/MujerFuriosa.png-1ab57efb5a2a7801a7f7320000a1f9f1.ctex"]
+source_file="res://Assets/Sprites/panel_Example1.png"
+dest_files=["res://.godot/imported/panel_Example1.png-9c89f26896640aef6878039f59932136.ctex"]
 
 [params]
 

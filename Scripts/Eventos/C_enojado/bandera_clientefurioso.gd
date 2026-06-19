@@ -8,3 +8,6 @@ func _ready() -> void:
 	await animacion.animation_finished
 	
 	get_tree().change_scene_to_file("res://Scenes/Clientes/C_Enojado/Scenas/Escenario.tscn")
+
+# Ubicacion del archivo que redirecciona a la pantalla principal
+# "res://Scripts/Eventos/C_enojado/texto_cliente_furioso.gd"
