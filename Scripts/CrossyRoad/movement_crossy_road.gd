@@ -200,10 +200,11 @@ func morir() -> void:
 	get_tree().create_timer(1.5, true, false, true).timeout.connect(mostrar_pantalla_final)
 
 func mostrar_pantalla_final() -> void:
-	Engine.time_scale = 0.0 # Congelamos el juego
+	Engine.time_scale = 0.0
 	
 	if pantalla_final:
 		pantalla_final.show()
+	
 	if label_puntaje_final:
 		label_dinero_obtenido.text = "Dinero Obtenido: $" + str(dinero_obtenido)
 		label_puntaje_final.text = "PUNTAJE MÁXIMO: " + str(maximas_casillas_avanzadas)
@@ -235,3 +236,11 @@ func calculo_dinero_final() -> void:
 	dinero_obtenido = (maximas_casillas_avanzadas * valor_por_casilla)
 	if atropellado:
 		dinero_obtenido = dinero_obtenido - 50
+
+
+func _on_button_continuar_pressed() -> void:
+	Engine.time_scale = 1.0
+	get_tree().paused = false
+	
+	print("Volviendo al taller desde Crossy Road")
+	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")

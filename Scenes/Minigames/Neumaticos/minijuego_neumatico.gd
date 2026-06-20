@@ -360,3 +360,10 @@ func calcular_dinero_final():
 func reproducir_hit():
 	sfx_hit.pitch_scale = randf_range(0.95, 1.05)
 	sfx_hit.play()
+
+func _on_boton_continuar_pressed() -> void:
+	Engine.time_scale = 1.0
+	get_tree().paused = false
+	
+	print("Volviendo al taller desde Crossy Road")
+	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")

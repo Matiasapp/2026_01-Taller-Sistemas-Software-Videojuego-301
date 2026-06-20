@@ -356,8 +356,15 @@ func _on_btn_continuar_pressed() -> void:
 	else:
 		monto = -30
 
-	EVENTMANAGER.minigame_completed(gano, monto)
-	queue_free()
+	print("Memory terminado. Ganó:", gano, " Monto:", monto)
+
+	# TODO: cuando exista GameState:
+	# GameState.dinero += monto
+	# GameState.ultimo_minijuego_ganado = gano
+
+	Engine.time_scale = 1.0
+	get_tree().paused = false
+	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")
 
 
 func _process(delta: float) -> void:
@@ -385,3 +392,5 @@ func _process(delta: float) -> void:
 
 	if time_elapsed >= TIEMPO_LIMITE:
 		on_time_out()
+		
+		
