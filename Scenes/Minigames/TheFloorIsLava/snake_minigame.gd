@@ -88,7 +88,8 @@ func _ready() -> void:
 		panel_final.hide()
 
 	if boton_continuar:
-		boton_continuar.pressed.connect(_on_boton_continuar_pressed)
+		if not boton_continuar.pressed.is_connected(_on_boton_continuar_pressed):
+			boton_continuar.pressed.connect(_on_boton_continuar_pressed)
 
 	car_sprite.play("avanzar")
 

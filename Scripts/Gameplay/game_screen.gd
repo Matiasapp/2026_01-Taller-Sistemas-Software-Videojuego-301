@@ -155,7 +155,6 @@ func abrir_taller() -> void:
 	if TIEMPOMANAGER:
 		TIEMPOMANAGER.reset_day()
 		TIEMPOMANAGER.start_timer()
-		TIEMPOMANAGER.avanzar_dia()
 	
 	print("Taller abierto. Clientes del día: 0/%d" % CLIENTMANAGER.MAX_CLIENTES_DIA)
 	actualizar_mensaje_puerta()
@@ -210,6 +209,7 @@ func cerrar_dia() -> void:
 	
 	if TIEMPOMANAGER:
 		TIEMPOMANAGER.stop_timer()
+		TIEMPOMANAGER.avanzar_dia()
 	
 	get_tree().paused = true
 	
