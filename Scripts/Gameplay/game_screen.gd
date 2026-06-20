@@ -172,15 +172,19 @@ func atender_cliente() -> void:
 	
 	CLIENTMANAGER.registrar_cliente_atendido()
 	clientes_atendidos = CLIENTMANAGER.clientes_atendidos
+	
 	print("Cliente atendido: %d/%d" % [clientes_atendidos, MAX_CLIENTES_DIA])
 	
-	# TODO: mostrar falla mecánica del cliente
-	# TODO: responder pregunta de diagnóstico
-	# TODO: elegir pieza buena/barata/dudosa
-	# TODO: descontar pieza seleccionada del inventario
-	# TODO: recibir resultado del minijuego y actualizar dinero/reputación
+	# TODO: Integrar sistema de diagnóstico.
+	# Aquí debería mostrarse la falla del cliente y la pregunta con 4 alternativas.
 	
-	if clientes_atendidos >= MAX_CLIENTES_DIA:
+	# TODO: Integrar selección de pieza.
+	# Aquí debería elegirse/descontarse una pieza buena, barata o dudosa.
+	
+	# TODO: Integrar resultado del servicio.
+	# El resultado del minijuego debería afectar dinero/reputación.
+	
+	if CLIENTMANAGER.dia_completo():
 		cerrar_dia()
 	else:
 		lanzar_minijuego_random()

@@ -371,3 +371,6 @@ bus = &"SFX"
 stream = ExtResource("11_tyt8e")
 volume_db = -20.0
 bus = &"Music"
+
+[connection signal="mouse_entered" from="CanvasLayer/Resumen/PanelFinal/Button" to="." method="_on_boton_continuar_mouse_entered"]
+[connection signal="pressed" from="CanvasLayer/Resumen/PanelFinal/Button" to="." method="_on_boton_continuar_pressed"]

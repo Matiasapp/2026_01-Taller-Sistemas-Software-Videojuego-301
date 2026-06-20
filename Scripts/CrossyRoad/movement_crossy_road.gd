@@ -25,6 +25,7 @@ var juego_iniciado: bool = false
 @onready var audio_salto: AudioStreamPlayer = $SaltoAudio
 @onready var audio_muerte: AudioStreamPlayer = $MuerteAudio
 @onready var audio_atropello: AudioStreamPlayer = $AtropelloAudio
+@onready var boton_continuar: Button = $"../Hud/Resumen/PanelFinal/Button"
 
 
 var frames_hombre = preload("res://Assets/Sprites/animaciones_hombre.tres")
@@ -39,36 +40,50 @@ var tween_actual: Tween
 var posicion_inicial_y: float
 var maximas_casillas_avanzadas: int = 0
 
+
 func _ready() -> void:
 	if panel_tutorial:
 		panel_tutorial.show()
-		
-		# Efecto de parpadeo (Blink) infinito
+
 		if label_parpadeo:
-			var tween_blink = create_tween().set_loops() 
-			tween_blink.tween_property(label_parpadeo, "modulate:a", 0.0, 0.6) 
+			var tween_blink = create_tween().set_loops()
+			tween_blink.tween_property(label_parpadeo, "modulate:a", 0.0, 0.6)
 			tween_blink.tween_property(label_parpadeo, "modulate:a", 1.0, 0.6)
-			
+
 	z_index = 2
 	entorno_visual.adjustment_saturation = 1.0
 	Engine.time_scale = 1.0
-	
+
 	if genero == "Masculino":
 		anim.sprite_frames = frames_hombre
 	else:
 		anim.sprite_frames = frames_mujer
-		
+
 	posicion_logica = position
-	posicion_inicial_y = position.y 
+	posicion_inicial_y = position.y
 	actualizar_idle()
-	
+
 	if camara:
 		camara.top_level = true
 		camara.global_position = global_position
-		
+
 	# Sincronizar UI al iniciar
-	if puntaje: puntaje.text = str(maximas_casillas_avanzadas)
-	if pantalla_final: pantalla_final.hide()
+	if puntaje:
+		puntaje.text = str(maximas_casillas_avanzadas)
+
+	if pantalla_final:
+		pantalla_final.hide()
+
+	# ======================
+	# CONECTAR BOTÓN FINAL
+	# ======================
+
+	if boton_continuar:
+		if not boton_continuar.pressed.is_connected(_on_button_continuar_pressed):
+			boton_continuar.pressed.connect(_on_button_continuar_pressed)
+
+		if not boton_continuar.mouse_entered.is_connected(_on_button_continuar_mouse_entered):
+			boton_continuar.mouse_entered.connect(_on_button_continuar_mouse_entered)
 
 func _process(delta: float) -> void:
 	if camara and not esta_muerto:
@@ -239,6 +254,10 @@ func calculo_dinero_final() -> void:
 
 
 func _on_button_continuar_pressed() -> void:
+	AUDIOMANAGER.play_ui_click()
+	
+	await get_tree().create_timer(0.15, true, false, true).timeout
+	
 	Engine.time_scale = 1.0
 	get_tree().paused = false
 	
@@ -246,3 +265,7 @@ func _on_button_continuar_pressed() -> void:
 	
 	print("Volviendo al taller desde Crossy Road. Dinero obtenido: $", dinero_obtenido)
 	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")
+
+
+func _on_button_continuar_mouse_entered() -> void:
+	AUDIOMANAGER.play_ui_hover()

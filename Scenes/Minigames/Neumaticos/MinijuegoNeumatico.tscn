@@ -513,4 +513,5 @@ stream = ExtResource("14_4nbr0")
 volume_db = -20.0
 bus = &"Music"
 
+[connection signal="mouse_entered" from="Resumen/PanelFinal/Button" to="." method="_on_boton_continuar_mouse_entered"]
 [connection signal="pressed" from="Resumen/PanelFinal/Button" to="." method="_on_boton_continuar_pressed"]

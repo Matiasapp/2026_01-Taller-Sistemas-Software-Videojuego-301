@@ -537,10 +537,14 @@ func mostrar_pantalla_final(gano: bool) -> void:
 	label_dinero_final.text = "Dinero obtenido: $" + str(dinero_obtenido)
 		
 func _on_boton_continuar_pressed() -> void:
+	AUDIOMANAGER.play_ui_click()
+	
+	await get_tree().create_timer(0.15).timeout
+	
 	DATOSGLOBALES.sumar_dinero(dinero_obtenido)
 	Engine.time_scale = 1.0
 	get_tree().paused = false
-	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")	
+	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")
 	
 func play_countdown_sound(semitones := 0) -> void:
 	if not countdown_sound:
@@ -550,3 +554,6 @@ func play_countdown_sound(semitones := 0) -> void:
 	countdown_sound.pitch_scale = pow(2.0, semitones / 12.0)
 	countdown_sound.stop()
 	countdown_sound.play()
+	
+func _on_boton_continuar_mouse_entered() -> void:
+	AUDIOMANAGER.play_ui_hover()
