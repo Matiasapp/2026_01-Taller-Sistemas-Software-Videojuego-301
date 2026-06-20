@@ -143,7 +143,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_rc3w2")
 }],
-"loop": true,
+"loop": 1,
 "name": &"giro_ventilador",
 "speed": 30.0
 }]

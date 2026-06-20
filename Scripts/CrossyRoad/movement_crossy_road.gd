@@ -242,5 +242,7 @@ func _on_button_continuar_pressed() -> void:
 	Engine.time_scale = 1.0
 	get_tree().paused = false
 	
-	print("Volviendo al taller desde Crossy Road")
+	DATOSGLOBALES.sumar_dinero(dinero_obtenido)
+	
+	print("Volviendo al taller desde Crossy Road. Dinero obtenido: $", dinero_obtenido)
 	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")

@@ -220,7 +220,7 @@ text = "CONTINUAR →"
 
 [node name="MusicLoop" type="AudioStreamPlayer" parent="." unique_id=195818257]
 stream = ExtResource("3_ws1so")
-volume_db = -20.0
+volume_db = -30.0
 bus = &"Music"
 
 [node name="CardFlipSound" type="AudioStreamPlayer" parent="." unique_id=484024872]
@@ -229,4 +229,5 @@ bus = &"SFX"
 
 [node name="MatchSound" type="AudioStreamPlayer" parent="." unique_id=1567476839]
 stream = ExtResource("5_eohb8")
+volume_db = -10.0
 bus = &"SFX"

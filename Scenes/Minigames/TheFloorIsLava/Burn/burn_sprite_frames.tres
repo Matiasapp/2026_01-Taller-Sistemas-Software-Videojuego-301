@@ -120,7 +120,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_62di5")
 }],
-"loop": true,
+"loop": 1,
 "name": &"lava",
 "speed": 10.0
 }, {
@@ -137,7 +137,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_gsnhs")
 }],
-"loop": false,
+"loop": 0,
 "name": &"spawn_burn",
 "speed": 4.0
 }, {
@@ -190,7 +190,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_0g3di")
 }],
-"loop": true,
+"loop": 1,
 "name": &"spawn_lava",
 "speed": 10.0
 }]

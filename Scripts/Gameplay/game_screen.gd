@@ -53,6 +53,11 @@ func _ready() -> void:
 	if resumen_dia:
 		resumen_dia.visible = false
 	
+	# Recuperar estado del flujo al volver desde un minijuego
+	if CLIENTMANAGER:
+		taller_abierto = CLIENTMANAGER.taller_abierto
+		clientes_atendidos = CLIENTMANAGER.clientes_atendidos
+	
 	iniciar_audio_taller()
 	
 	$Node2D/ventilador.play("giro_ventilador")
@@ -73,15 +78,20 @@ func _ready() -> void:
 	if pc_sound_out:
 		pc_sound_out.process_mode = Node.PROCESS_MODE_ALWAYS
 	
-	if GLOBALSIGNALS:
+	if GLOBALSIGNALS and not GLOBALSIGNALS.cerrar_pc.is_connected(play_pc_out):
 		GLOBALSIGNALS.cerrar_pc.connect(play_pc_out)
 	
-	if TIEMPOMANAGER:
+	if TIEMPOMANAGER and not TIEMPOMANAGER.day_ended.is_connected(_on_day_ended):
 		TIEMPOMANAGER.day_ended.connect(_on_day_ended)
 	
 	if TIEMPOMANAGER and not TIEMPOMANAGER.has_initialized:
 		TIEMPOMANAGER.stop_timer()
 		TIEMPOMANAGER.has_initialized = true
+	
+	if taller_abierto and TIEMPOMANAGER:
+		TIEMPOMANAGER.start_timer()
+	
+	actualizar_mensaje_puerta()
 
 
 func iniciar_audio_taller() -> void:
@@ -138,15 +148,16 @@ func _input(event):
 # =========================
 
 func abrir_taller() -> void:
-	taller_abierto = true
-	clientes_atendidos = 0
+	CLIENTMANAGER.abrir_taller()
+	taller_abierto = CLIENTMANAGER.taller_abierto
+	clientes_atendidos = CLIENTMANAGER.clientes_atendidos
 	
 	if TIEMPOMANAGER:
 		TIEMPOMANAGER.reset_day()
 		TIEMPOMANAGER.start_timer()
 		TIEMPOMANAGER.avanzar_dia()
 	
-	print("Taller abierto. Clientes del día: 0/%d" % MAX_CLIENTES_DIA)
+	print("Taller abierto. Clientes del día: 0/%d" % CLIENTMANAGER.MAX_CLIENTES_DIA)
 	actualizar_mensaje_puerta()
 
 
@@ -155,11 +166,12 @@ func atender_cliente() -> void:
 		print("Primero debes abrir el taller")
 		return
 	
-	if clientes_atendidos >= MAX_CLIENTES_DIA:
+	if CLIENTMANAGER.dia_completo():
 		cerrar_dia()
 		return
 	
-	clientes_atendidos += 1
+	CLIENTMANAGER.registrar_cliente_atendido()
+	clientes_atendidos = CLIENTMANAGER.clientes_atendidos
 	print("Cliente atendido: %d/%d" % [clientes_atendidos, MAX_CLIENTES_DIA])
 	
 	# TODO: mostrar falla mecánica del cliente
@@ -186,7 +198,11 @@ func lanzar_minijuego_random() -> void:
 
 func cerrar_dia() -> void:
 	print("Día terminado")
+	
 	taller_abierto = false
+	
+	if CLIENTMANAGER:
+		CLIENTMANAGER.cerrar_taller()
 	
 	if TIEMPOMANAGER:
 		TIEMPOMANAGER.stop_timer()
@@ -196,7 +212,6 @@ func cerrar_dia() -> void:
 	if resumen_dia:
 		resumen_dia.visible = true
 	
-	# Evento aleatorio al finalizar el día
 	if randf() <= 0.35:
 		ejecutar_evento_robo()
 	

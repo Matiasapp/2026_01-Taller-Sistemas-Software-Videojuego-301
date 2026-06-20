@@ -343,7 +343,6 @@ func _on_btn_continuar_pressed() -> void:
 	if music_loop:
 		music_loop.stop()
 	
-
 	btn_continuar.disabled = true
 
 	var gano := matched_pairs == TOTAL_PAIRS
@@ -358,9 +357,7 @@ func _on_btn_continuar_pressed() -> void:
 
 	print("Memory terminado. Ganó:", gano, " Monto:", monto)
 
-	# TODO: cuando exista GameState:
-	# GameState.dinero += monto
-	# GameState.ultimo_minijuego_ganado = gano
+	DATOSGLOBALES.sumar_dinero(monto)
 
 	Engine.time_scale = 1.0
 	get_tree().paused = false

@@ -10,8 +10,12 @@ func _ready():
 
 
 func _on_boton_continuar_pressed() -> void:
-	Engine.time_scale = 0.8
+	Engine.time_scale = 1.0
 	get_tree().paused = false
 	
-	print("Volviendo al taller desde Crossy Road")
+	if GlobalMusic:
+		GlobalMusic.stop_music()
+	
+	print("Volviendo al taller desde Soldadura")
+	DATOSGLOBALES.sumar_dinero(GLOBALSOLDADURA.dinero)
 	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")

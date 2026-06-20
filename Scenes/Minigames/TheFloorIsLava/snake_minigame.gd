@@ -537,6 +537,9 @@ func mostrar_pantalla_final(gano: bool) -> void:
 	label_dinero_final.text = "Dinero obtenido: $" + str(dinero_obtenido)
 		
 func _on_boton_continuar_pressed() -> void:
+	DATOSGLOBALES.sumar_dinero(dinero_obtenido)
+	Engine.time_scale = 1.0
+	get_tree().paused = false
 	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")	
 	
 func play_countdown_sound(semitones := 0) -> void:
