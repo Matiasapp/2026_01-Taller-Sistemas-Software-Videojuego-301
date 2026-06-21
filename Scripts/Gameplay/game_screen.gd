@@ -201,60 +201,61 @@ func lanzar_minijuego_random() -> void:
 
 func cerrar_dia() -> void:
 	print("Día terminado")
-	
+
 	taller_abierto = false
-	
+
 	if CLIENTMANAGER:
 		CLIENTMANAGER.cerrar_taller()
-	
+
 	if TIEMPOMANAGER:
 		TIEMPOMANAGER.stop_timer()
 		TIEMPOMANAGER.avanzar_dia()
-	
+
+	# Evento robo
+	if randf() <= 0.30:
+		ejecutar_evento_robo()
+		return
+
 	get_tree().paused = true
-	
+
 	if resumen_dia:
 		resumen_dia.visible = true
-	
-	if randf() <= 0.35:
-		ejecutar_evento_robo()
-	
-	actualizar_mensaje_puerta()
 
 
 func ejecutar_evento_robo() -> void:
 	print("EVENTO: Entraron a robar")
-	
+
 	var piezas_disponibles := []
-	
+
 	for pieza in inventario.keys():
 		if inventario[pieza] > 0:
 			piezas_disponibles.append(pieza)
-	
+
 	if piezas_disponibles.is_empty():
 		print("No había piezas para robar")
+		mostrar_resumen_dia()
 		return
-	
+
 	var cantidad_robada := randi_range(1, 3)
 	var piezas_robadas := []
-	
+
 	for i in cantidad_robada:
 		if piezas_disponibles.is_empty():
 			break
-		
+
 		var pieza = piezas_disponibles.pick_random()
 		inventario[pieza] -= 1
 		piezas_robadas.append(pieza)
-		
+
 		if inventario[pieza] <= 0:
 			piezas_disponibles.erase(pieza)
-	
+
 	print("Piezas robadas:", piezas_robadas)
 	print("Inventario actualizado:", inventario)
-	
-	# TODO: mostrar pantalla visual tipo Papers Please
-	# TODO: reproducir sonido de alarma/robo
-	# TODO: mostrar resumen visual con las piezas robadas
+
+	get_tree().paused = false
+	Engine.time_scale = 1.0
+	get_tree().change_scene_to_file("res://Scenes/Events/EventoRobo.tscn")
 
 
 func _on_day_ended():
@@ -332,3 +333,9 @@ func _on_area_atender_cliente_body_exited(body):
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.name == "Player":
 		jugador_en_rango_easter_egg = true
+		
+func mostrar_resumen_dia() -> void:
+	get_tree().paused = true
+
+	if resumen_dia:
+		resumen_dia.visible = true		

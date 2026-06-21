@@ -1,11 +1,10 @@
 extends Node
 
+const EVENTO_ROBO_SCENE := "res://Scenes/Events/EventoRobo.tscn"
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+func intentar_evento_fin_dia() -> bool:
+	if randf() <= 0.35:
+		get_tree().change_scene_to_file(EVENTO_ROBO_SCENE)
+		return true
+	
+	return false
