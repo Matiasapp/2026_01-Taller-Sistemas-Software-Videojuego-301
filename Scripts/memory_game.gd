@@ -97,6 +97,8 @@ func _conectar_botones() -> void:
 	if not btn_continuar.pressed.is_connected(_on_btn_continuar_pressed):
 		btn_continuar.pressed.connect(_on_btn_continuar_pressed)
 
+	if not btn_continuar.mouse_entered.is_connected(_on_btn_continuar_mouse_entered):
+		btn_continuar.mouse_entered.connect(_on_btn_continuar_mouse_entered)
 
 func _reset_game_values() -> void:
 	time_elapsed = 0.0
@@ -339,11 +341,14 @@ func _mostrar_resultado(gano: bool, pares: int, t_restante: float, monto: int) -
 func _on_btn_continuar_pressed() -> void:
 	if estado_actual != Estado.RESULTADO:
 		return
+	
+	AUDIOMANAGER.play_ui_click()
+	
+	await get_tree().create_timer(0.15).timeout
 		
 	if music_loop:
 		music_loop.stop()
 	
-
 	btn_continuar.disabled = true
 
 	var gano := matched_pairs == TOTAL_PAIRS
@@ -356,9 +361,13 @@ func _on_btn_continuar_pressed() -> void:
 	else:
 		monto = -30
 
-	EVENTMANAGER.minigame_completed(gano, monto)
-	queue_free()
+	print("Memory terminado. Ganó:", gano, " Monto:", monto)
 
+	DATOSGLOBALES.sumar_dinero(monto)
+
+	Engine.time_scale = 1.0
+	get_tree().paused = false
+	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")
 
 func _process(delta: float) -> void:
 	if estado_actual != Estado.JUGANDO:
@@ -385,3 +394,8 @@ func _process(delta: float) -> void:
 
 	if time_elapsed >= TIEMPO_LIMITE:
 		on_time_out()
+		
+func _on_btn_continuar_mouse_entered() -> void:
+	AUDIOMANAGER.play_ui_hover()		
+		
+		

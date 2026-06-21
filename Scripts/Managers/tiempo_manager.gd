@@ -1,4 +1,3 @@
-# TimeManager.gd (Configurado como Autoload en los ajustes del proyecto)
 extends Node
 
 # Señales para avisar a otras partes del juego cuando cambia el tiempo
@@ -11,7 +10,7 @@ var current_minute: int = 0
 var end_hour: int = 18         # El taller cierra a las 18:00
 
 # Parámetros de velocidad
-var minute_duration: float = 0.1 # ¿Cuántos segundos reales dura 1 minuto en el juego?
+var minute_duration: float = 0.5 # ¿Cuántos segundos reales dura 1 minuto en el juego?
 # Si minute_duration = 0.5, un día de 10 horas en el juego (de 8:00 a 18:00 = 600 minutos de juego) durará 5 minutos reales.
 # Ahora está en 1 por lo que un día dura 10 minutos reales.
 
