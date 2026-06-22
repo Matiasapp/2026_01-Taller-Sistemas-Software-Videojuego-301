@@ -3,6 +3,22 @@
 [ext_resource type="Script" uid="uid://c1kuwjbbvsy0" path="res://Scripts/memory_game.gd" id="1_game"]
 [ext_resource type="Script" uid="uid://r05p6wyv77mp" path="res://Scripts/memory_decoration.gd" id="2_decoration"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_intro"]
+bg_color = Color(0.92941177, 0.49803922, 0.16470589, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(1, 0.7294118, 0.36862746, 1)
+border_blend = true
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+corner_detail = 10
+shadow_color = Color(0, 0, 0, 1)
+shadow_size = 11
+
 [node name="MemoryGame" type="Node2D" unique_id=291353999]
 script = ExtResource("1_game")
 
@@ -61,7 +77,7 @@ text = "PARES: 0/10"
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color(0.05, 0.067, 0.09, 0.96)
+color = Color(1, 0.6, 0.14509805, 0.45882353)
 
 [node name="Panel" type="PanelContainer" parent="CanvasLayer/PantallaIntro" unique_id=1761068915]
 layout_mode = 0
@@ -69,25 +85,35 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -240.0
-offset_top = -220.0
-offset_right = 240.0
-offset_bottom = 220.0
+offset_left = -392.0
+offset_top = -244.0
+offset_right = 392.0
+offset_bottom = 244.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_intro")
 
 [node name="VBox" type="VBoxContainer" parent="CanvasLayer/PantallaIntro/Panel" unique_id=389768804]
 layout_mode = 2
 
 [node name="Icono" type="Label" parent="CanvasLayer/PantallaIntro/Panel/VBox" unique_id=949629243]
 layout_mode = 2
-theme_override_font_sizes/font_size = 42
+theme_override_colors/font_color = Color(1, 0.8862745, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 22
 text = "🔧"
 horizontal_alignment = 1
 
 [node name="Titulo" type="Label" parent="CanvasLayer/PantallaIntro/Panel/VBox" unique_id=1557629270]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.882, 0.686, 0.18, 1)
-theme_override_font_sizes/font_size = 24
-text = "MINIJUEGO: MEMORIA DEL TALLER"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 5
+theme_override_constants/shadow_outline_size = 3
+theme_override_font_sizes/font_size = 28
+text = "MEMORIA DEL TALLER"
 horizontal_alignment = 1
 
 [node name="Separador" type="HSeparator" parent="CanvasLayer/PantallaIntro/Panel/VBox" unique_id=955920480]
@@ -95,7 +121,9 @@ layout_mode = 2
 
 [node name="LblInstrucciones" type="Label" parent="CanvasLayer/PantallaIntro/Panel/VBox" unique_id=1574742488]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
 theme_override_font_sizes/font_size = 14
 text = "Encuentra los 10 pares de cartas del taller antes de que se acabe el tiempo.
 
@@ -110,14 +138,18 @@ layout_mode = 2
 
 [node name="LblRecompensa" type="Label" parent="CanvasLayer/PantallaIntro/Panel/VBox" unique_id=2018576539]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.55, 0.85, 0.55, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0.35, 0, 1)
+theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 13
 text = "✓ Si ganas, recibiras una recompensa."
 autowrap_mode = 3
 
 [node name="LblPenitencia" type="Label" parent="CanvasLayer/PantallaIntro/Panel/VBox" unique_id=730143631]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.95, 0.4, 0.4, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.45, 0, 0, 1)
+theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 13
 text = "✗ Si pierdes: Penitencia de $30"
 autowrap_mode = 3
