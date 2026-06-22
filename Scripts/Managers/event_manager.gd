@@ -1,11 +1,16 @@
 extends Node
 
-
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
+signal minigame_finished(exito: bool, monto: int)
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+func minigame_completed(exito: bool, monto: int) -> void:
+	if exito:
+		DATOSGLOBALES.sumar_dinero(monto)
+	else:
+		DATOSGLOBALES.restar_dinero(abs(monto))
+
+	SERVICEMANAGER.completar_reparacion(exito, monto)
+	minigame_finished.emit(exito, monto)
+
+	get_tree().paused = false
+	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")

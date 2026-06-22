@@ -82,6 +82,11 @@ func play_pc_out() -> void:
 		pc_sound_out.play()
 
 
+func _asegurar_servicio_inicial() -> void:
+	if not SERVICEMANAGER.hay_servicio_activo():
+		SERVICEMANAGER.crear_servicio()
+
+
 func _process(_delta: float) -> void:
 	pass
 
@@ -107,6 +112,7 @@ func _input(event):
 			print("¡Se abrió el taller!")
 			TIEMPOMANAGER.start_timer()
 			TIEMPOMANAGER.avanzar_dia()
+			_asegurar_servicio_inicial()
 			actualizar_mensaje_puerta()
 		else: 
 			print("día ya iniciado")
@@ -117,6 +123,8 @@ func _input(event):
 		
 	if jugador_en_rango_atender_cliente and event.is_action_pressed("interactuar"):
 		print("¡Se atendió cliente!")
+		_asegurar_servicio_inicial()
+		en_desarrollo.dialog_text = "Cliente registrado. Revisa el PC para ver el diagnostico y las pistas."
 		en_desarrollo.popup_centered()
 	
 	if jugador_en_rango_interactuar_pc and event.is_action_pressed("interactuar"):

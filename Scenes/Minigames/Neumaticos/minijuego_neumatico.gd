@@ -12,6 +12,7 @@ extends Control
 @onready var label_dinero = (
 	$Resumen/PanelFinal/DineroObtenido
 )
+@onready var boton_continuar = $Resumen/PanelFinal/Button
 
 @onready var barra = $AreaMovimiento
 @onready var zona = $AreaMovimiento/ZonaVerde
@@ -83,6 +84,9 @@ func _ready():
 
 	# MOSTRAR TUTORIAL
 	tutorial.visible = true
+
+	if boton_continuar and not boton_continuar.pressed.is_connected(_on_boton_continuar_pressed):
+		boton_continuar.pressed.connect(_on_boton_continuar_pressed)
 
 	Tuerca1.play("Idle")
 	Tuerca2.play("Idle")
@@ -340,3 +344,10 @@ func calcular_dinero_final():
 		"Dinero Obtenido: $"
 		+ str(dinero_obtenido)
 	)
+
+
+func _on_boton_continuar_pressed():
+	var exito: bool = neumaticos_inflados > 0
+	var monto: int = dinero_obtenido if exito else -30
+
+	EVENTMANAGER.minigame_completed(exito, monto)
