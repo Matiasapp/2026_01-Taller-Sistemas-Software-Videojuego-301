@@ -93,9 +93,11 @@ func _ready():
 	
 	animacion_continuar.play("MasTexto")
 	animacion_titulo.play("ColorComentarios")
+	
+	#se disminuye la reputacion segun la cantidad de comentarios negativos
+	DATOSGLOBALES.restar_reputacion(num_comentarios * 5)
+	
 
 func _process(float):
 	if Input.is_key_pressed(KEY_SPACE):
 		get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")
-
-	
