@@ -41,7 +41,8 @@ var minijuegos := [
 @onready var fan_sound: AudioStreamPlayer2D = $Node2D/ventilador/AudioStreamPlayer2D
 @onready var pc_sound_in: AudioStreamPlayer = $PCSoundin
 @onready var pc_sound_out: AudioStreamPlayer = $PCSoundout
-
+@onready var open_sound: AudioStreamPlayer = $OpenSound
+@onready var fade_rect: ColorRect = $CanvasLayer/FadeRect
 
 func _ready() -> void:
 	randomize()
@@ -52,11 +53,6 @@ func _ready() -> void:
 	
 	if resumen_dia:
 		resumen_dia.visible = false
-	
-	# Recuperar estado del flujo al volver desde un minijuego
-	if CLIENTMANAGER:
-		taller_abierto = CLIENTMANAGER.taller_abierto
-		clientes_atendidos = CLIENTMANAGER.clientes_atendidos
 	
 	iniciar_audio_taller()
 	
@@ -87,6 +83,52 @@ func _ready() -> void:
 	if TIEMPOMANAGER and not TIEMPOMANAGER.has_initialized:
 		TIEMPOMANAGER.stop_timer()
 		TIEMPOMANAGER.has_initialized = true
+
+	# =========================================================
+	# SI VOLVIMOS DESDE EVENTOROBO / TRANSICIONDIA,
+	# MOSTRAMOS EL RESUMEN ENCIMA DEL TALLER
+	# =========================================================
+	if DATOSGLOBALES.mostrar_resumen_dia_al_volver:
+		DATOSGLOBALES.mostrar_resumen_dia_al_volver = false
+		
+		if CLIENTMANAGER:
+			CLIENTMANAGER.cerrar_taller()
+		
+		taller_abierto = false
+		clientes_atendidos = 0
+		
+		if resumen_dia:
+			resumen_dia.visible = true
+		
+		get_tree().paused = true
+		return
+	
+	# Recuperar estado del flujo al volver desde un minijuego
+	if CLIENTMANAGER:
+		taller_abierto = CLIENTMANAGER.taller_abierto
+		clientes_atendidos = CLIENTMANAGER.clientes_atendidos
+		
+		# Si volvimos desde el minijuego del último cliente,
+		# ahora sí corresponde cerrar el día.
+		if taller_abierto and CLIENTMANAGER.dia_completo():
+			cerrar_dia()
+			return
+	
+	if taller_abierto and TIEMPOMANAGER:
+		TIEMPOMANAGER.start_timer()
+	
+	actualizar_mensaje_puerta()
+	
+	# Recuperar estado del flujo al volver desde un minijuego
+	if CLIENTMANAGER:
+		taller_abierto = CLIENTMANAGER.taller_abierto
+		clientes_atendidos = CLIENTMANAGER.clientes_atendidos
+		
+		# Si volvimos desde el minijuego del último cliente,
+		# ahora sí corresponde cerrar el día.
+		if taller_abierto and CLIENTMANAGER.dia_completo():
+			cerrar_dia()
+			return
 	
 	if taller_abierto and TIEMPOMANAGER:
 		TIEMPOMANAGER.start_timer()
@@ -148,14 +190,20 @@ func _input(event):
 # =========================
 
 func abrir_taller() -> void:
+	if taller_abierto:
+		return
+
+	if open_sound:
+		open_sound.play()
+
 	CLIENTMANAGER.abrir_taller()
 	taller_abierto = CLIENTMANAGER.taller_abierto
 	clientes_atendidos = CLIENTMANAGER.clientes_atendidos
-	
+
 	if TIEMPOMANAGER:
 		TIEMPOMANAGER.reset_day()
 		TIEMPOMANAGER.start_timer()
-	
+
 	print("Taller abierto. Clientes del día: 0/%d" % CLIENTMANAGER.MAX_CLIENTES_DIA)
 	actualizar_mensaje_puerta()
 
@@ -165,28 +213,78 @@ func atender_cliente() -> void:
 		print("Primero debes abrir el taller")
 		return
 	
+	# Si por alguna razón ya se completó el día y el jugador vuelve a interactuar,
+	# cerramos el día directamente.
 	if CLIENTMANAGER.dia_completo():
 		cerrar_dia()
 		return
 	
+	# Registramos que este cliente ya fue atendido en el flujo del día.
+	# Ojo: esto incluye también al cliente 5.
 	CLIENTMANAGER.registrar_cliente_atendido()
 	clientes_atendidos = CLIENTMANAGER.clientes_atendidos
 	
 	print("Cliente atendido: %d/%d" % [clientes_atendidos, MAX_CLIENTES_DIA])
 	
-	# TODO: Integrar sistema de diagnóstico.
-	# Aquí debería mostrarse la falla del cliente y la pregunta con 4 alternativas.
+	# =========================================================
+	# TODO 1: DIAGNÓSTICO DEL CLIENTE
+	# ---------------------------------------------------------
+	# Aquí debería mostrarse la falla del cliente junto con una
+	# pregunta de diagnóstico y sus 4 alternativas.
+	#
+	# Ejemplo futuro:
+	# - "El auto vibra al frenar"
+	# - Pregunta: "¿Qué componente revisar primero?"
+	# - Alternativas: frenos / batería / aceite / neumáticos
+	# =========================================================
 	
-	# TODO: Integrar selección de pieza.
-	# Aquí debería elegirse/descontarse una pieza buena, barata o dudosa.
 	
-	# TODO: Integrar resultado del servicio.
-	# El resultado del minijuego debería afectar dinero/reputación.
+	# =========================================================
+	# TODO 2: SELECCIÓN DE PIEZA / DECISIÓN DEL SERVICIO
+	# ---------------------------------------------------------
+	# Después del diagnóstico, aquí debería elegirse la pieza
+	# que se usará en la reparación.
+	#
+	# Idealmente más adelante:
+	# - pieza nueva
+	# - pieza gastada
+	# - pieza dudosa
+	#
+	# En este punto también se podría descontar del inventario
+	# la pieza seleccionada.
+	# =========================================================
 	
-	if CLIENTMANAGER.dia_completo():
-		cerrar_dia()
-	else:
-		lanzar_minijuego_random()
+	
+	# =========================================================
+	# TODO 3: LANZAR MINIJUEGO DEL SERVICIO
+	# ---------------------------------------------------------
+	# El minijuego representa la ejecución práctica del trabajo
+	# mecánico para este cliente.
+	#
+	# IMPORTANTE:
+	# El cliente 5 también debe jugar su minijuego. Por eso NO
+	# cerramos el día aquí aunque ya se haya alcanzado el máximo.
+	# El cierre del día ocurrirá cuando el jugador vuelva al
+	# GameScreen después del minijuego.
+	# =========================================================
+	lanzar_minijuego_random()
+	
+	
+	# =========================================================
+	# TODO 4: RESULTADO DEL SERVICIO
+	# ---------------------------------------------------------
+	# Cuando el minijuego termine y se regrese al taller, ahí
+	# debería resolverse el resultado final del cliente:
+	#
+	# - ganar o perder dinero
+	# - afectar reputación
+	# - validar si la pieza elegida fue correcta
+	# - aplicar penalización si hubo error en diagnóstico
+	#
+	# Ese flujo probablemente conviene manejarlo al volver desde
+	# la escena del minijuego, no justo aquí antes del cambio
+	# de escena.
+	# =========================================================
 
 
 func lanzar_minijuego_random() -> void:
@@ -211,16 +309,23 @@ func cerrar_dia() -> void:
 		TIEMPOMANAGER.stop_timer()
 		TIEMPOMANAGER.avanzar_dia()
 
-	# Evento robo
 	if randf() <= 0.30:
-		ejecutar_evento_robo()
-		return
+		DATOSGLOBALES.siguiente_evento_dia = "robo"
+	else:
+		DATOSGLOBALES.siguiente_evento_dia = "transicion"
 
-	get_tree().paused = true
+	DATOSGLOBALES.mostrar_resumen_dia_al_volver = true
 
-	if resumen_dia:
-		resumen_dia.visible = true
+	get_tree().paused = false
+	Engine.time_scale = 1.0
 
+	await fade_to_black(0.6)
+
+	match DATOSGLOBALES.siguiente_evento_dia:
+		"robo":
+			get_tree().change_scene_to_file("res://Scenes/Events/EventoRobo/EventoRobo.tscn")
+		"transicion":
+			get_tree().change_scene_to_file("res://Scenes/Events/TransicionDia/transicion_dia.tscn")
 
 func ejecutar_evento_robo() -> void:
 	print("EVENTO: Entraron a robar")
@@ -255,16 +360,18 @@ func ejecutar_evento_robo() -> void:
 
 	get_tree().paused = false
 	Engine.time_scale = 1.0
-	get_tree().change_scene_to_file("res://Scenes/Events/EventoRobo.tscn")
+	get_tree().change_scene_to_file("res://Scenes/Events/EventoRobo/EventoRobo.tscn")
 
 
 func _on_day_ended():
 	cerrar_dia()
 
-
 func _on_botón_resumen_dia_pressed() -> void:
-	resumen_dia.visible = false
+	if resumen_dia:
+		resumen_dia.visible = false
+
 	get_tree().paused = false
+	Engine.time_scale = 1.0
 	actualizar_mensaje_puerta()
 
 
@@ -339,3 +446,13 @@ func mostrar_resumen_dia() -> void:
 
 	if resumen_dia:
 		resumen_dia.visible = true		
+		
+func fade_to_black(duration := 0.6) -> void:
+	fade_rect.visible = true
+	fade_rect.modulate.a = 0.0
+	fade_rect.mouse_filter = Control.MOUSE_FILTER_STOP
+
+	var tween := create_tween()
+	tween.tween_property(fade_rect, "modulate:a", 1.0, duration)
+
+	await tween.finished		

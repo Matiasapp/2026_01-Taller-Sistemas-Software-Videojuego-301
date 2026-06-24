@@ -49,33 +49,27 @@ func _ready() -> void:
 
 func configurar_evento() -> void:
 	mensajes = [
-		"Al llegar al taller, notas algo extraño. La cortina metálica está forzada.",
-		"Adentro, el desorden confirma lo peor: alguien entró durante la noche.",
-		"Revisas el inventario. Varias cajas están abiertas y algunas piezas desaparecieron.",
-		"No sirve lamentarse. Tendrás que seguir adelante con menos recursos."
+		"El taller por fin queda en silencio. Guardas las herramientas y cierras la jornada.",
+		"Ha sido un día largo: clientes, reparaciones, decisiones apresuradas y cuentas que todavía pesan en la cabeza.",
+		"Intentas descansar unas horas, sabiendo que mañana tendrás que volver a empezar con lo poco que queda en pie.",
+		"Un nuevo día te espera. Tal vez no sea más fácil... pero el taller sigue abierto."
 	]
 
-	if DATOSGLOBALES.genero_jugador == "Femenino":
-		imagenes = [
-			imagen_mujer_1,
-			imagen_mujer_2,
-			imagen_mujer_3,
-			imagen_mujer_4
-		]
-	else:
-		imagenes = [
-			imagen_hombre_1,
-			imagen_hombre_2,
-			imagen_hombre_3,
-			imagen_hombre_4
-		]
+	var es_mujer := DATOSGLOBALES.genero_jugador == "Femenino"
 
+	imagenes = [
+		imagen_mujer_1 if es_mujer else imagen_hombre_1,
+		imagen_mujer_2 if es_mujer else imagen_hombre_2,
+		imagen_mujer_3 if es_mujer else imagen_hombre_3,
+		imagen_mujer_4 if es_mujer else imagen_hombre_4
+	]
 
 func _input(event) -> void:
 	if not vista_evento.visible:
 		return
 
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		# Si el botón ya está habilitado, no avanzar con click global
 		if not continuar_button.disabled:
 			return
 
@@ -92,7 +86,11 @@ func mostrar_mensaje_actual() -> void:
 		continuar_button.modulate.a = 1.0
 		return
 
-	imagen.texture = imagenes[indice_mensaje]
+	if indice_mensaje < imagenes.size() and imagenes[indice_mensaje]:
+		imagen.texture = imagenes[indice_mensaje]
+	else:
+		push_warning("Falta asignar imagen de transición día en índice: " + str(indice_mensaje))
+
 	animar_texto(mensajes[indice_mensaje])
 
 

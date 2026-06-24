@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dnvyef2cb1boc"
-path="res://.godot/imported/4m.png-ef8b225f8406efa06c03d32f31079639.ctex"
+uid="uid://tn7nnwnmg7qd"
+path="res://.godot/imported/imagen_mujer_3.png-520230f6114b1a6f406d7ad82d97c2a1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Events/EventoRobo/4m.png"
-dest_files=["res://.godot/imported/4m.png-ef8b225f8406efa06c03d32f31079639.ctex"]
+source_file="res://Assets/Events/TransicionDia/imagen_mujer_3.png"
+dest_files=["res://.godot/imported/imagen_mujer_3.png-520230f6114b1a6f406d7ad82d97c2a1.ctex"]
 
 [params]
 
