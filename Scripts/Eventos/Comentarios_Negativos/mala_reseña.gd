@@ -52,6 +52,7 @@ var comentarios = [
 var rng = RandomNumberGenerator.new()
 
 func _ready():
+	
 	var num_comentarios = rng.randi_range(1,labels.size())
 	
 	# Ocultar los paneles

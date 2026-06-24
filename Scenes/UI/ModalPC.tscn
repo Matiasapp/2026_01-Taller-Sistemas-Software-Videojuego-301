@@ -38,7 +38,7 @@ offset_bottom = -199.0
 theme = ExtResource("1_3eavq")
 text = "X"
 
-[node name="Label" type="Label" parent="." unique_id=1361053236]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1186958897]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -46,11 +46,20 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -297.0
-offset_top = -13.0
+offset_top = -184.5
 offset_right = 297.0
-offset_bottom = 13.0
+offset_bottom = 184.5
 grow_horizontal = 2
 grow_vertical = 2
-text = "Acá estará el control de gastos del jugador y las ganacias de los distintos días"
+
+[node name="Sin_dia_registrado" type="Label" parent="MarginContainer" unique_id=1897533664]
+layout_mode = 2
+horizontal_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer" unique_id=1177392887]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/ScrollContainer" unique_id=2046970195]
+layout_mode = 2
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

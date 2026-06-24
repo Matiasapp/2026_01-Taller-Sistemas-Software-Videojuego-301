@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://olle5wgxtdma"]
+
+[ext_resource type="Script" uid="uid://gkj3npw3anph" path="res://Scripts/UI/fila_dia.gd" id="1_g34ax"]
+
+[node name="Panel" type="Panel" unique_id=696010995]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_g34ax")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1319170708]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 23.0
+grow_horizontal = 2
+rotation = 0.00014142842
+
+[node name="Dia" type="Label" parent="HBoxContainer" unique_id=795703651]
+layout_mode = 2
+
+[node name="Ingreso" type="Label" parent="HBoxContainer" unique_id=1113747705]
+layout_mode = 2
+
+[node name="Gastos" type="Label" parent="HBoxContainer" unique_id=180956650]
+layout_mode = 2
+
+[node name="Dinero" type="Label" parent="HBoxContainer" unique_id=1145461232]
+layout_mode = 2
+
+[node name="Cliente" type="Label" parent="HBoxContainer" unique_id=1391510487]
+layout_mode = 2

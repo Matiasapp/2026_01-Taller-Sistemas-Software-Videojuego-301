@@ -18,6 +18,8 @@ func _ready() -> void:
 	# Asegúrate de que TIEMPOMANAGER tenga la señal time_changed(hours, minutes)
 	if TIEMPOMANAGER:
 		TIEMPOMANAGER.time_changed.connect(actualizar_hora)
+		
+	
 
 func actualizar_dinero(nuevo_monto: int) -> void:
 	label_dinero.text = "$" + str(nuevo_monto)

@@ -8,6 +8,7 @@ func _ready() -> void:
 	panel_pc.visible = false
 	panel_pc.process_mode = Node.PROCESS_MODE_ALWAYS # Vital para que funcione en pausa
 	
+
 func _on_abrir_pc():
 	# 1. EL ESCUDO: Si el panel ya está visible, ignoramos el spam por completo
 	if panel_pc.visible:
