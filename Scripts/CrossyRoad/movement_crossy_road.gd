@@ -6,8 +6,20 @@ extends Node2D
 @export var limite_retroceso: int = 3 
 @onready var puntaje = $"../Hud/Puntaje"
 @onready var label_tiempo_restante = $"../Hud/TiempoRestante"
-var tiempo_restante: float = 60.0
+
+# META: distancia (en casillas) que el jugador debe recorrer para llegar a la tienda y ganar.
+# Debe coincidir con "meta_casillas" del generador para que la franja meta quede alineada.
+@export var meta_casillas: int = 80
+# Dinero extra que se otorga por completar el recorrido (reparación exitosa).
+@export var bonus_meta: int = 200
+# Dinero que se pierde si la reparación fracasa (no se llega a la tienda).
+@export var penalizacion_fracaso: int = 100
+# Tiempo límite (en segundos) para llegar a la tienda antes de que cierre.
+@export var tiempo_limite: float = 45.0
+var tiempo_restante: float = 45.0
+var ha_ganado: bool = false
 @onready var label_dinero_obtenido = $"../Hud/Resumen/PanelFinal/DineroObtenido"
+@onready var label_descripcion = $"../Hud/Resumen/PanelFinal/Descripcion"
 @onready var dinero_obtenido: int = 0
 @onready var panel_tutorial = $"../Hud/Tutorial"
 var juego_iniciado: bool = false
@@ -59,6 +71,8 @@ func _ready() -> void:
 	else:
 		anim.sprite_frames = frames_mujer
 
+	tiempo_restante = tiempo_limite
+
 	posicion_logica = position
 	posicion_inicial_y = position.y
 	actualizar_idle()
@@ -69,7 +83,7 @@ func _ready() -> void:
 
 	# Sincronizar UI al iniciar
 	if puntaje:
-		puntaje.text = str(maximas_casillas_avanzadas)
+		puntaje.text = str(maximas_casillas_avanzadas) + " / " + str(meta_casillas)
 
 	if pantalla_final:
 		pantalla_final.hide()
@@ -97,7 +111,7 @@ func _process(delta: float) -> void:
 		var posicion_destino = Vector2(destino_x, destino_y)
 		camara.global_position = camara.global_position.lerp(posicion_destino, 8.0 * delta)
 		
-		if juego_iniciado and tiempo_restante > 0:
+		if juego_iniciado and tiempo_restante > 0 and not ha_ganado:
 			tiempo_restante -= delta # Restamos el tiempo que pasó en este frame
 			
 			if label_tiempo_restante:
@@ -113,7 +127,7 @@ func _process(delta: float) -> void:
 				morir()
 
 func _unhandled_input(event: InputEvent) -> void:
-	if se_esta_moviendo or esta_muerto:
+	if se_esta_moviendo or esta_muerto or ha_ganado:
 		return
 		
 	if not juego_iniciado:
@@ -159,9 +173,13 @@ func _unhandled_input(event: InputEvent) -> void:
 				if (casillas_actuales + 1) > maximas_casillas_avanzadas:
 					maximas_casillas_avanzadas = casillas_actuales + 1
 					if puntaje:
-						puntaje.text = str(maximas_casillas_avanzadas)
-			
+						puntaje.text = str(maximas_casillas_avanzadas) + " / " + str(meta_casillas)
+
 			dar_salto(direccion)
+
+			# Si este salto nos hizo alcanzar la tienda, ganamos.
+			if maximas_casillas_avanzadas >= meta_casillas:
+				ganar()
 
 func dar_salto(direccion: Vector2) -> void:
 	if audio_salto:
@@ -188,7 +206,7 @@ func dar_salto(direccion: Vector2) -> void:
 # --- DETECCIÓN DE ATROPELLO ---
 
 func morir() -> void:
-	if esta_muerto: return 
+	if esta_muerto or ha_ganado: return
 	
 	esta_muerto = true
 	se_esta_moviendo = true 
@@ -214,15 +232,50 @@ func morir() -> void:
 	# Vamos directo a la pantalla final
 	get_tree().create_timer(1.5, true, false, true).timeout.connect(mostrar_pantalla_final)
 
+# --- VICTORIA: el jugador llegó a la tienda de repuestos ---
+func ganar() -> void:
+	if ha_ganado or esta_muerto: return
+
+	ha_ganado = true # Bloquea el input y detiene el temporizador (ver _process y _unhandled_input)
+
+	print("¡Llegaste a la tienda de repuestos!")
+	calculo_dinero_final()
+
+	# Dejamos que el último salto se vea y luego mostramos la pantalla de victoria.
+	get_tree().create_timer(1.2, true, false, true).timeout.connect(mostrar_pantalla_final)
+
 func mostrar_pantalla_final() -> void:
 	Engine.time_scale = 0.0
-	
+
 	if pantalla_final:
 		pantalla_final.show()
-	
-	if label_puntaje_final:
-		label_dinero_obtenido.text = "Dinero Obtenido: $" + str(dinero_obtenido)
-		label_puntaje_final.text = "PUNTAJE MÁXIMO: " + str(maximas_casillas_avanzadas)
+
+	if ha_ganado:
+		if label_dinero_obtenido:
+			label_dinero_obtenido.add_theme_color_override("font_color", Color(0.4, 1.0, 0.4, 1)) # Verde: ganancia
+		if label_puntaje_final:
+			label_puntaje_final.text = "¡REPARACIÓN EXITOSA!"
+		if label_descripcion:
+			var mensajes_exito = [
+				"Conseguiste el repuesto justo a tiempo y dejaste el auto como nuevo. El cliente sonríe y promete volver.",
+				"¡Misión cumplida! Volviste con la pieza correcta y el taller recupera su prestigio.",
+				"Esquivaste el tráfico y llegaste a la tienda antes del cierre. Otro cliente satisfecho para el taller."
+			]
+			label_descripcion.text = mensajes_exito.pick_random()
+		label_dinero_obtenido.text = "El cliente te paga: $" + str(dinero_obtenido)
+	else:
+		if label_dinero_obtenido:
+			label_dinero_obtenido.add_theme_color_override("font_color", Color(1.0, 0.35, 0.35, 1)) # Rojo: pérdida
+		if label_puntaje_final:
+			label_puntaje_final.text = "REPARACIÓN FALLIDA"
+		if atropellado:
+			if label_descripcion:
+				label_descripcion.text = "Un auto te embistió en plena avenida. Sin el repuesto, la reparación quedó a medias y el cliente se marcha furioso."
+			label_dinero_obtenido.text = "Perdiste $" + str(penalizacion_fracaso) + " en gastos médicos y compensación al cliente"
+		else:
+			if label_descripcion:
+				label_descripcion.text = "La tienda cerró antes de que llegaras. Volviste con las manos vacías y tuviste que compensar al cliente molesto."
+			label_dinero_obtenido.text = "Perdiste $" + str(penalizacion_fracaso) + " en compensación al cliente"
 
 func actualizar_idle() -> void:
 	if ultima_direccion.x > 0:
@@ -235,7 +288,7 @@ func actualizar_idle() -> void:
 		anim.play("idle_abajo")
 
 func _on_area_2d_area_entered(area: Area2D) -> void:
-	if esta_muerto:
+	if esta_muerto or ha_ganado:
 		return
 
 	if area.is_in_group("vehiculos"):
@@ -248,9 +301,12 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 		morir()
 		
 func calculo_dinero_final() -> void:
-	dinero_obtenido = (maximas_casillas_avanzadas * valor_por_casilla)
-	if atropellado:
-		dinero_obtenido = dinero_obtenido - 50
+	if ha_ganado:
+		# Reparación exitosa: conseguiste el repuesto. Cobras la reparación + bonus.
+		dinero_obtenido = (maximas_casillas_avanzadas * valor_por_casilla) + bonus_meta
+	else:
+		# Reparación fallida: no llegaste a la tienda, el cliente se va y pierdes dinero.
+		dinero_obtenido = -penalizacion_fracaso
 
 
 func _on_button_continuar_pressed() -> void:

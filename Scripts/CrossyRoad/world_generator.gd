@@ -6,17 +6,30 @@ extends Node2D
 @export var buffer_generacion: int = 20 # Mantiene siempre 25 casillas por delante del jugador
 
 # NUEVO: Necesitamos saber dónde está el jugador para generar el mapa frente a él
-@export var jugador: Node2D 
+@export var jugador: Node2D
+
+# META: distancia (en casillas) a la que se coloca la tienda de repuestos.
+# Debe coincidir con "meta_casillas" del jugador para que la victoria y la franja queden alineadas.
+@export var meta_casillas: int = 80
+@export var franja_meta_escena: PackedScene
 #Audio Ambiente
 @onready var ambiente_mapa: AudioStreamPlayer = $AmbienteMapa
 #Musica
 @onready var musica_loop: AudioStreamPlayer = $MusicLoop
 
-var posicion_y_actual: int = 0 
+var posicion_y_actual: int = 0
 var franjas_activas: Array[Node] = [] # NUEVO: Lista para guardar y borrar las franjas viejas
+
+# Coordenada Y (mundo) donde debe quedar la franja meta. Se calcula desde la posición inicial del jugador.
+var meta_y: float = 0.0
+var meta_generada: bool = false
 
 func _ready() -> void:
 	randomize()
+
+	# Calculamos a qué altura del mundo quedará la meta, partiendo de la posición del jugador.
+	if jugador:
+		meta_y = jugador.position.y - (meta_casillas * tamaño_casilla)
 
 	if ambiente_mapa:
 		ambiente_mapa.process_mode = Node.PROCESS_MODE_ALWAYS
@@ -47,9 +60,18 @@ func _process(_delta: float) -> void:
 		limpiar_franjas_viejas()
 
 func generar_franja_aleatoria() -> void:
+	# Si ya llegamos a la distancia de la meta, colocamos la franja final y dejamos de generar.
+	if meta_generada:
+		return
+
+	if franja_meta_escena and meta_y < 0.0 and posicion_y_actual <= meta_y:
+		instanciar_y_posicionar(franja_meta_escena)
+		meta_generada = true
+		return
+
 	if franjas_posibles.size() < 2:
 		return
-		
+
 	var escena_elegida: PackedScene
 	var probabilidad = randi_range(1, 100)
 	
@@ -84,9 +106,24 @@ func instanciar_y_posicionar(escena: PackedScene) -> void:
 
 # NUEVO: Destructor de memoria
 func limpiar_franjas_viejas() -> void:
-	# Si hay más de 40 franjas en la pantalla, empezamos a borrar las que quedaron atrás
-	if franjas_activas.size() > 10:
-		# pop_front() saca el elemento más viejo de la lista (el que quedó hasta abajo)
-		var franja_vieja = franjas_activas.pop_front() 
-		if is_instance_valid(franja_vieja):
-			franja_vieja.queue_free() # Destruye el nodo de la escena liberando la memoria
+	if not jugador:
+		return
+
+	# Distancia (en píxeles) por DEBAJO del jugador a partir de la cual una franja ya no se ve.
+	# Recuerda: "arriba" es Y negativa, así que las franjas viejas tienen Y MAYOR que el jugador.
+	var margen_limpieza := tamaño_casilla * 12
+
+	# La lista está ordenada de la más vieja (abajo) a la más nueva (arriba).
+	# Solo borramos desde el frente mientras esa franja siga muy por detrás del jugador.
+	while franjas_activas.size() > 0:
+		var franja_vieja = franjas_activas[0]
+
+		if not is_instance_valid(franja_vieja):
+			franjas_activas.pop_front()
+			continue
+
+		if franja_vieja.position.y - jugador.position.y > margen_limpieza:
+			franjas_activas.pop_front()
+			franja_vieja.queue_free() # Destruye el nodo liberando memoria
+		else:
+			break
