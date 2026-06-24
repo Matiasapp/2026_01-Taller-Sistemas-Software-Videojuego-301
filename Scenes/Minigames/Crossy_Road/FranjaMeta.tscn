@@ -1,0 +1,73 @@
+[gd_scene format=3 uid="uid://vuy4bk71txai"]
+
+[ext_resource type="Texture2D" uid="uid://bdixjhy47kutr" path="res://Assets/Sprites/crossy_road/assets.png" id="1_assets"]
+[ext_resource type="PackedScene" uid="uid://0l8f5dotsieg" path="res://Scenes/Minigames/Crossy_Road/arbol.tscn" id="2_arbol"]
+[ext_resource type="Texture2D" uid="uid://cqipdhkrrrgbm" path="res://Assets/Sprites/crossy_road/tienda_de_respuestos.png" id="3_tienda"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_grass"]
+atlas = ExtResource("1_assets")
+region = Rect2(8, 912, 1072, 140)
+
+[node name="FranjaMeta" type="Node2D" unique_id=441968528]
+z_index = -1
+z_as_relative = false
+y_sort_enabled = true
+
+[node name="Sprite2D2" type="Sprite2D" parent="." unique_id=1835553806]
+z_index = -1
+z_as_relative = false
+position = Vector2(0, -161)
+scale = Vector2(1.0121269, 1)
+texture = SubResource("AtlasTexture_grass")
+
+[node name="Sprite2D3" type="Sprite2D" parent="." unique_id=164018282]
+z_index = -1
+z_as_relative = false
+position = Vector2(0, -288)
+scale = Vector2(1.0121269, 1)
+texture = SubResource("AtlasTexture_grass")
+
+[node name="Sprite2D4" type="Sprite2D" parent="." unique_id=250236626]
+z_index = -1
+z_as_relative = false
+position = Vector2(0, -392)
+scale = Vector2(1.0121269, 1)
+texture = SubResource("AtlasTexture_grass")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2144745229]
+z_index = -1
+z_as_relative = false
+position = Vector2(0, -34)
+scale = Vector2(1.0121269, 1)
+texture = SubResource("AtlasTexture_grass")
+
+[node name="Tienda" type="Sprite2D" parent="." unique_id=1347499354]
+z_index = 1
+z_as_relative = false
+position = Vector2(-7.9999995, -80)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("3_tienda")
+
+[node name="Arbol" parent="." unique_id=1708110777 instance=ExtResource("2_arbol")]
+position = Vector2(-584, -56)
+
+[node name="Arbol7" parent="." unique_id=444513490 instance=ExtResource("2_arbol")]
+position = Vector2(320, -88)
+
+[node name="Arbol8" parent="." unique_id=287685969 instance=ExtResource("2_arbol")]
+position = Vector2(-312, -72)
+
+[node name="Arbol5" parent="." unique_id=1385009933 instance=ExtResource("2_arbol")]
+position = Vector2(-424, -112)
+
+[node name="Arbol6" parent="." unique_id=684449818 instance=ExtResource("2_arbol")]
+position = Vector2(448, -88)
+
+[node name="Arbol2" parent="." unique_id=599731326 instance=ExtResource("2_arbol")]
+position = Vector2(-584, 8)
+
+[node name="Arbol3" parent="." unique_id=280804625 instance=ExtResource("2_arbol")]
+position = Vector2(584, 0)
+
+[node name="Arbol4" parent="." unique_id=710770079 instance=ExtResource("2_arbol")]
+position = Vector2(584, -64)
