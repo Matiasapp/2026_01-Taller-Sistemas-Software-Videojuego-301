@@ -1,12 +1,12 @@
 [gd_scene format=3 uid="uid://bfrcla3yjhdkg"]
 
-[ext_resource type="Script" uid="uid://kl67iltbha5h" path="res://Scenes/Eventos/EventoApagon.gd" id="1_jbsty"]
-[ext_resource type="Texture2D" uid="uid://dxh5ombtp3kit" path="res://Assets/Sprites/MainMenu/PanelEnergia.png" id="2_4uk72"]
-[ext_resource type="AudioStream" uid="uid://d0gi4bt0pnf6h" path="res://Assets/Audio/GameScreen/PowerOutage.wav" id="2_hbj5e"]
-[ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="3_weg86"]
+[ext_resource type="Script" uid="uid://kl67iltbha5h" path="res://Scenes/Events/EventoDelApagon/EventoApagon.gd" id="1_s7jvp"]
+[ext_resource type="Texture2D" uid="uid://dxh5ombtp3kit" path="res://Assets/Sprites/MainMenu/PanelEnergia.png" id="2_1urc6"]
+[ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="3_c2hvs"]
+[ext_resource type="AudioStream" uid="uid://d0gi4bt0pnf6h" path="res://Assets/Audio/GameScreen/PowerOutage.wav" id="4_kcvss"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_weg86"]
-texture = ExtResource("2_4uk72")
+texture = ExtResource("2_1urc6")
 
 [sub_resource type="Animation" id="Animation_yl154"]
 resource_name = "Apagon"
@@ -70,7 +70,7 @@ _data = {
 }
 
 [node name="EventoApagon" type="CanvasLayer" unique_id=1884400066]
-script = ExtResource("1_jbsty")
+script = ExtResource("1_s7jvp")
 
 [node name="Oscuridad" type="ColorRect" parent="." unique_id=1743902185]
 anchors_preset = 15
@@ -136,7 +136,7 @@ offset_left = 197.0
 offset_top = 223.5
 offset_right = 283.0
 offset_bottom = 254.5
-theme = ExtResource("3_weg86")
+theme = ExtResource("3_c2hvs")
 text = "Continuar
 "
 
@@ -144,7 +144,7 @@ text = "Continuar
 libraries/ = SubResource("AnimationLibrary_hbj5e")
 
 [node name="AudioApagon" type="AudioStreamPlayer2D" parent="." unique_id=1768985677]
-stream = ExtResource("2_hbj5e")
+stream = ExtResource("4_kcvss")
 max_distance = 4096.0
 bus = &"SFX"
 
