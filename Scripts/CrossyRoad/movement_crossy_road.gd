@@ -9,7 +9,7 @@ extends Node2D
 
 # META: distancia (en casillas) que el jugador debe recorrer para llegar a la tienda y ganar.
 # Debe coincidir con "meta_casillas" del generador para que la franja meta quede alineada.
-@export var meta_casillas: int = 80
+@onready var meta_casillas: int = 80
 # Dinero extra que se otorga por completar el recorrido (reparación exitosa).
 @export var bonus_meta: int = 200
 # Dinero que se pierde si la reparación fracasa (no se llega a la tienda).

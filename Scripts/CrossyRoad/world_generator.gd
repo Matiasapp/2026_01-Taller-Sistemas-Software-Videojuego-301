@@ -10,7 +10,7 @@ extends Node2D
 
 # META: distancia (en casillas) a la que se coloca la tienda de repuestos.
 # Debe coincidir con "meta_casillas" del jugador para que la victoria y la franja queden alineadas.
-@export var meta_casillas: int = 80
+@onready var meta_casillas: int = 79
 @export var franja_meta_escena: PackedScene
 #Audio Ambiente
 @onready var ambiente_mapa: AudioStreamPlayer = $AmbienteMapa
@@ -26,6 +26,12 @@ var meta_generada: bool = false
 
 func _ready() -> void:
 	randomize()
+
+	# La meta la define el JUGADOR (única fuente de verdad). El generador coloca la franja UNA
+	# casilla antes (meta_casillas - 1) para que el jugador gane justo al PISAR la franja, no
+	# una casilla después. Así basta cambiar meta_casillas en el Player y todo queda alineado.
+	if jugador and "meta_casillas" in jugador:
+		meta_casillas = jugador.meta_casillas - 1
 
 	# Calculamos a qué altura del mundo quedará la meta, partiendo de la posición del jugador.
 	if jugador:
