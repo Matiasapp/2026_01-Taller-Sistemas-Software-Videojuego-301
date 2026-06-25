@@ -31,8 +31,14 @@ var minijuegos := [
 	"res://Scenes/Minigames/TheFloorIsLava/the_floor_is_lava.tscn"
 ]
 
+# Pantalla de atención al cliente (diálogo + diagnóstico + minijuego según la falla).
+const ATENCION_CLIENTE_SCENE := "res://Scenes/Gameplay/AtencionCliente.tscn"
+# Evento que se muestra al volver del minijuego si el cliente era un estafador.
+const EVENTO_ESTAFA_SCENE := "res://Scenes/Events/EventoEstafa.tscn"
+
 @onready var en_desarrollo = $en_desarrollo
 @onready var resumen_dia = $PantallaResumenDia
+@onready var hud = $Hud
 @onready var mensaje_abrir_taller = $Marker2DAbrirTaller/LabelAbrirTaller
 @onready var mensaje_interactuar_pc = $Marker2DInteractuarPc/LabelInteractuarPc
 @onready var mensaje_atender_cliente = $Marker2DAtenderCliente/LabelAtenderCliente
@@ -53,6 +59,30 @@ func _ready() -> void:
 	
 	if resumen_dia:
 		resumen_dia.visible = false
+	
+	# Recuperar estado del flujo al volver desde un minijuego
+	if CLIENTMANAGER:
+		taller_abierto = CLIENTMANAGER.taller_abierto
+		clientes_atendidos = CLIENTMANAGER.clientes_atendidos
+
+	# Si el cliente recién atendido era un estafador, la estafa solo tiene sentido si hubo
+	# un pago real que falsificar (buen desempeño). Si jugó mal y no ganó nada, se cancela:
+	# no se puede "estafar" un pago que no existió.
+	if DATOSGLOBALES.estafa_pendiente:
+		var pago_estafa: int = DATOSGLOBALES.dinero - DATOSGLOBALES.dinero_antes_estafa
+		if pago_estafa > 0:
+			get_tree().change_scene_to_file(EVENTO_ESTAFA_SCENE)
+			return
+		else:
+			DATOSGLOBALES.estafa_pendiente = false
+			print("Estafa cancelada: el mal desempeño no dejó un pago que estafar.")
+
+	# Al volver de atender un cliente, mostramos en el HUD cuánto cambió el dinero (neto).
+	if DATOSGLOBALES.volviendo_de_atencion:
+		DATOSGLOBALES.volviendo_de_atencion = false
+		var delta_dinero: int = DATOSGLOBALES.dinero - DATOSGLOBALES.dinero_antes_atencion
+		if delta_dinero != 0 and hud:
+			hud.mostrar_popup_dinero(delta_dinero)
 	
 	iniciar_audio_taller()
 	
@@ -226,72 +256,29 @@ func atender_cliente() -> void:
 	
 	print("Cliente atendido: %d/%d" % [clientes_atendidos, MAX_CLIENTES_DIA])
 	
-	# =========================================================
-	# TODO 1: DIAGNÓSTICO DEL CLIENTE
-	# ---------------------------------------------------------
-	# Aquí debería mostrarse la falla del cliente junto con una
-	# pregunta de diagnóstico y sus 4 alternativas.
-	#
-	# Ejemplo futuro:
-	# - "El auto vibra al frenar"
-	# - Pregunta: "¿Qué componente revisar primero?"
-	# - Alternativas: frenos / batería / aceite / neumáticos
-	# =========================================================
-	
-	
-	# =========================================================
-	# TODO 2: SELECCIÓN DE PIEZA / DECISIÓN DEL SERVICIO
-	# ---------------------------------------------------------
-	# Después del diagnóstico, aquí debería elegirse la pieza
-	# que se usará en la reparación.
-	#
-	# Idealmente más adelante:
-	# - pieza nueva
-	# - pieza gastada
-	# - pieza dudosa
-	#
-	# En este punto también se podría descontar del inventario
-	# la pieza seleccionada.
-	# =========================================================
-	
-	
-	# =========================================================
-	# TODO 3: LANZAR MINIJUEGO DEL SERVICIO
-	# ---------------------------------------------------------
-	# El minijuego representa la ejecución práctica del trabajo
-	# mecánico para este cliente.
-	#
-	# IMPORTANTE:
-	# El cliente 5 también debe jugar su minijuego. Por eso NO
-	# cerramos el día aquí aunque ya se haya alcanzado el máximo.
-	# El cierre del día ocurrirá cuando el jugador vuelva al
-	# GameScreen después del minijuego.
-	# =========================================================
-	lanzar_minijuego_random()
-	
-	
-	# =========================================================
-	# TODO 4: RESULTADO DEL SERVICIO
-	# ---------------------------------------------------------
-	# Cuando el minijuego termine y se regrese al taller, ahí
-	# debería resolverse el resultado final del cliente:
-	#
-	# - ganar o perder dinero
-	# - afectar reputación
-	# - validar si la pieza elegida fue correcta
-	# - aplicar penalización si hubo error en diagnóstico
-	#
-	# Ese flujo probablemente conviene manejarlo al volver desde
-	# la escena del minijuego, no justo aquí antes del cambio
-	# de escena.
-	# =========================================================
+	# TODO: Integrar selección de pieza.
+	# Aquí debería elegirse/descontarse una pieza buena, barata o dudosa.
+
+	# TODO: Integrar resultado del servicio.
+	# El resultado del minijuego debería afectar dinero/reputación.
+
+	if CLIENTMANAGER.dia_completo():
+		cerrar_dia()
+	else:
+		# Guardamos el dinero actual para, al volver, mostrar en el HUD cuánto cambió.
+		DATOSGLOBALES.dinero_antes_atencion = DATOSGLOBALES.dinero
+		DATOSGLOBALES.volviendo_de_atencion = true
+
+		# Abre la pantalla de atención: ahí el cliente da la pista, el jugador
+		# diagnostica la falla y se lanza el minijuego correspondiente.
+		get_tree().change_scene_to_file(ATENCION_CLIENTE_SCENE)
 
 
 func lanzar_minijuego_random() -> void:
 	if minijuegos.is_empty():
 		print("No hay minijuegos disponibles")
 		return
-	
+
 	var escena_random = minijuegos.pick_random()
 	print("Cargando minijuego:", escena_random)
 	get_tree().change_scene_to_file(escena_random)

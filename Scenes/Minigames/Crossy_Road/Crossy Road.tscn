@@ -53,7 +53,6 @@ y_sort_enabled = true
 script = ExtResource("1_d0mq6")
 franjas_posibles = Array[PackedScene]([ExtResource("2_cfljh"), ExtResource("3_ijbgn")])
 jugador = NodePath("Player")
-meta_casillas = 79
 franja_meta_escena = ExtResource("3_meta1")
 
 [node name="objetos inicio" type="Node2D" parent="." unique_id=65350012]
@@ -115,7 +114,6 @@ script = ExtResource("3_3x3vj")
 "tamaño_casilla" = 64
 velocidad_movimiento = 0.15
 limite_retroceso = 3
-meta_casillas = 80
 bonus_meta = 200
 penalizacion_fracaso = 100
 tiempo_limite = 45.0
@@ -294,7 +292,6 @@ theme_override_constants/shadow_offset_y = 1
 theme_override_constants/outline_size = 4
 theme_override_constants/shadow_outline_size = 3
 theme_override_font_sizes/font_size = 18
-text = ""
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
