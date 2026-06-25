@@ -397,8 +397,7 @@ position = Vector2(944.375, -746.5)
 scale = Vector2(1.5156255, 1.453125)
 sprite_frames = SubResource("SpriteFrames_ev6y3")
 animation = &"giro_ventilador"
-frame = 7
-frame_progress = 0.23566177
+frame_progress = 0.91331476
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Node2D/ventilador" unique_id=1168291353]
 stream = ExtResource("6_ue0ap")

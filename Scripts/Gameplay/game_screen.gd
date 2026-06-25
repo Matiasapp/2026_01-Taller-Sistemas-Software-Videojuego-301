@@ -5,6 +5,7 @@ var jugador_en_rango_interactuar_pc = false
 var jugador_en_rango_atender_cliente = false
 var puede_interactuar = true
 var jugador_en_rango_easter_egg = false
+var evento_apagon = preload("res://Scenes/Eventos/EventoApagon.tscn")
 
 @onready var en_desarrollo = $en_desarrollo
 @onready var resumen_dia = $PantallaResumenDia
@@ -95,12 +96,20 @@ func _on_day_ended():
 
 
 func _input(event):
-	if get_tree().paused: 
+
+	# PRUEBA DEL APAGÓN CON LA TECLA P
+	if event is InputEventKey and event.pressed and event.keycode == KEY_P:
+		var evento = evento_apagon.instantiate()
+		add_child(evento)
+		evento.iniciar()
 		return
-	
+
+	if get_tree().paused:
+		return
+
 	if not puede_interactuar:
 		return
-	
+
 	if jugador_en_rango_abrir_taller and event.is_action_pressed("interactuar"):
 		if not TIEMPOMANAGER.is_timer_running:
 			TIEMPOMANAGER.reset_day()
@@ -108,17 +117,17 @@ func _input(event):
 			TIEMPOMANAGER.start_timer()
 			TIEMPOMANAGER.avanzar_dia()
 			actualizar_mensaje_puerta()
-		else: 
+		else:
 			print("día ya iniciado")
-		
+
 	if jugador_en_rango_easter_egg and event.is_action_pressed("interactuar"):
 		print("¡Se atendió cliente!")
 		get_tree().change_scene_to_file("res://Scenes/Crossy_Road/Crossy Road.tscn")
-		
+
 	if jugador_en_rango_atender_cliente and event.is_action_pressed("interactuar"):
 		print("¡Se atendió cliente!")
 		en_desarrollo.popup_centered()
-	
+
 	if jugador_en_rango_interactuar_pc and event.is_action_pressed("interactuar"):
 		play_pc_in()
 		GLOBALSIGNALS.abrir_pc.emit()
