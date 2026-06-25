@@ -5,7 +5,6 @@ var jugador_en_rango_interactuar_pc = false
 var jugador_en_rango_atender_cliente = false
 var puede_interactuar = true
 var jugador_en_rango_easter_egg = false
-var evento_apagon = preload("res://Scenes/Eventos/EventoApagon.tscn")
 
 @onready var en_desarrollo = $en_desarrollo
 @onready var resumen_dia = $PantallaResumenDia
@@ -96,13 +95,6 @@ func _on_day_ended():
 
 
 func _input(event):
-
-	# PRUEBA DEL APAGÓN CON LA TECLA P
-	if event is InputEventKey and event.pressed and event.keycode == KEY_P:
-		var evento = evento_apagon.instantiate()
-		add_child(evento)
-		evento.iniciar()
-		return
 
 	if get_tree().paused:
 		return
