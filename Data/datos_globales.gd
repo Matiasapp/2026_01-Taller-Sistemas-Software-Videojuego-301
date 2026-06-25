@@ -1,6 +1,8 @@
 extends Node
 
 var genero_jugador: String = ""
+var siguiente_evento_dia: String = ""
+var mostrar_resumen_dia_al_volver: bool = false
 
 ## Índices de los clientes (filas del atlas) que ya aparecieron en la partida.
 ## Persiste entre escenas para que un mismo cliente no se repita durante todo el juego.
@@ -31,8 +33,6 @@ var dinero: int = 150:
 
 func sumar_dinero(cantidad: int):
 	dinero += cantidad
-	dinero_cambiado.emit(dinero)
 
 func restar_dinero(cantidad: int):
 	dinero -= cantidad
-	dinero_cambiado.emit(dinero)

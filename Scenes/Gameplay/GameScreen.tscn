@@ -14,10 +14,12 @@
 [ext_resource type="PackedScene" uid="uid://cyl73mjtc24ao" path="res://Scenes/UI/HUD.tscn" id="10_hi6fo"]
 [ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="11_4i3ym"]
 [ext_resource type="PackedScene" uid="uid://ponv4684dx6a" path="res://Scenes/UI/pause_menu.tscn" id="12_u8dp7"]
+[ext_resource type="Script" uid="uid://6djhw1vij6nr" path="res://Scenes/UI/pantalla_resumen_dia.gd" id="13_fiqrm"]
 [ext_resource type="AudioStream" uid="uid://oow22vmaxdqq" path="res://Assets/Audio/GameScreen/ambientfx.wav" id="13_imsci"]
 [ext_resource type="AudioStream" uid="uid://dsmrbqe7w6n7u" path="res://Assets/Audio/GameScreen/songloop.wav" id="14_h5ghc"]
 [ext_resource type="AudioStream" uid="uid://b0sfqmvnpypyl" path="res://Assets/Audio/GameScreen/PCin.wav" id="17_vuvpm"]
 [ext_resource type="AudioStream" uid="uid://3u0kjs1x3ovr" path="res://Assets/Audio/GameScreen/PCout.wav" id="18_x4ih4"]
+[ext_resource type="AudioStream" uid="uid://dyccise5p44i7" path="res://Assets/Audio/GameScreen/opensound.wav" id="19_x4ih4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oeeqd"]
 size = Vector2(230.57608, 1161.1431)
@@ -473,8 +475,10 @@ texture = SubResource("AtlasTexture_ev6y3")
 [node name="PantallaResumenDia" parent="." unique_id=1139403389 instance=ExtResource("10_4i3ym")]
 process_mode = 3
 visible = false
+script = ExtResource("13_fiqrm")
 
 [node name="BotónResumenDia" type="Button" parent="PantallaResumenDia" unique_id=256500136]
+process_mode = 3
 offset_left = 803.0
 offset_top = 501.0
 offset_right = 938.0
@@ -515,6 +519,21 @@ bus = &"SFX"
 stream = ExtResource("18_x4ih4")
 volume_db = 10.0
 bus = &"SFX"
+
+[node name="OpenSound" type="AudioStreamPlayer" parent="." unique_id=1774960755]
+stream = ExtResource("19_x4ih4")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=446820249]
+
+[node name="FadeRect" type="ColorRect" parent="CanvasLayer" unique_id=1545501297]
+visible = false
+z_index = 100
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
 
 [connection signal="body_entered" from="AreaAbrirTaller" to="." method="_on_area_abrir_taller_body_entered"]
 [connection signal="body_exited" from="AreaAbrirTaller" to="." method="_on_area_abrir_taller_body_exited"]
