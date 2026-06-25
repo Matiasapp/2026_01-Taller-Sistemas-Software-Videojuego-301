@@ -125,3 +125,5 @@ func terminar_juego():
 	get_tree().change_scene_to_file(
 		"res://Scenes/Minigames/Soldadura/Scene/Resultados.tscn"
 	)
+	
+	
