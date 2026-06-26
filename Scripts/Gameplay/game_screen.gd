@@ -187,8 +187,17 @@ func play_pc_out() -> void:
 
 
 func _process(_delta: float) -> void:
-	pass
 
+	if Input.is_key_pressed(KEY_P) and not debug_apagon_lanzado:
+
+		debug_apagon_lanzado = true
+
+		var apagon = preload("res://Scenes/Events/EventoDelApagon/EventoApagon.tscn").instantiate()
+
+		add_child(apagon)
+
+	if not Input.is_key_pressed(KEY_P):
+		debug_apagon_lanzado = false
 
 func _input(event):
 	if get_tree().paused: 
@@ -443,3 +452,5 @@ func fade_to_black(duration := 0.6) -> void:
 	tween.tween_property(fade_rect, "modulate:a", 1.0, duration)
 
 	await tween.finished		
+	
+var debug_apagon_lanzado := false

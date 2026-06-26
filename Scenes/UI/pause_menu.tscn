@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://ponv4684dx6a"]
 
 [ext_resource type="Script" uid="uid://csmk1x00yjwu2" path="res://Scripts/UI/pause_menu.gd" id="1_rrvs5"]
+[ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="2_8rf44"]
 
 [node name="Pause_menu" type="Control" unique_id=2038693485]
 process_mode = 2
@@ -28,16 +29,19 @@ size_flags_vertical = 4
 
 [node name="Continuar" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1112313251]
 layout_mode = 2
+theme = ExtResource("2_8rf44")
 text = "Continuar
 "
 
 [node name="Configuracion" type="Button" parent="MarginContainer/VBoxContainer" unique_id=215441485]
 layout_mode = 2
+theme = ExtResource("2_8rf44")
 text = "Configuracion
 "
 
 [node name="Salir" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1830107151]
 layout_mode = 2
+theme = ExtResource("2_8rf44")
 text = "Salir
 "
 
