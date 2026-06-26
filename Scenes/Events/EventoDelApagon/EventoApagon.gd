@@ -11,6 +11,8 @@ signal evento_terminado
 func _ready() -> void:
 	panel.visible = false
 
+	iniciar()
+
 
 func iniciar() -> void:
 
@@ -77,10 +79,8 @@ func _on_continuar_pressed() -> void:
 
 	panel.visible = false
 
-	if game.has_node("PantallaResumenDia"):
-		game.get_node("PantallaResumenDia").visible = true
-
-	get_tree().paused = true
+	if game.has_method("cerrar_dia"):
+		game.cerrar_dia()
 
 	evento_terminado.emit()
 

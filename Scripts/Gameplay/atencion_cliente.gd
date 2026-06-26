@@ -143,6 +143,7 @@ var indice_actual: int = 0
 var cliente_actual: ClienteData = null
 var tween_texto: Tween = null
 var escribiendo: bool = false
+var ruta_minijuego_pendiente := ""
 
 func _ready() -> void:
 	if modal_diagnostico:
@@ -312,11 +313,29 @@ func _on_diagnostico_resuelto(correcto: bool) -> void:
 		push_warning("AtencionCliente: no hay minijuego mapeado para la falla '%s'." % cliente_actual.falla)
 		return
 
-	# Si el cliente es un estafador, marcamos la estafa: al volver del minijuego (en GameScreen)
-	# se revelará que pagó con billetes falsos y se revertirá lo que "pagó".
+	# Guardamos la ruta para usarla después de elegir la pieza
+	ruta_minijuego_pendiente = ruta
+
+	# Si el cliente es estafador dejamos la lógica igual
 	DATOSGLOBALES.estafa_pendiente = cliente_actual.estafador
 	if cliente_actual.estafador:
 		DATOSGLOBALES.dinero_antes_estafa = DATOSGLOBALES.dinero
 		DATOSGLOBALES.nombre_estafador = cliente_actual.nombre.capitalize()
 
-	get_tree().change_scene_to_file(ruta)
+	# Abrir pantalla de selección de pieza
+	var seleccion = preload(
+		"res://Scenes/UI/seleccion_pieza.tscn"
+	).instantiate()
+
+	add_child(seleccion)
+
+	# Esperar elección
+	seleccion.pieza_elegida.connect(_on_pieza_elegida)
+
+func _on_pieza_elegida(tipo: String) -> void:
+
+	print("Pieza elegida:", tipo)
+
+	get_tree().change_scene_to_file(
+		ruta_minijuego_pendiente
+	)
