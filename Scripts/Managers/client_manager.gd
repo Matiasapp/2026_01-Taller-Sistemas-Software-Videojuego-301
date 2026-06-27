@@ -1,5 +1,11 @@
 extends Node
 
+## Se emite cada vez que el taller abre o cierra (para que el HUD u otros reaccionen).
+signal estado_taller_cambiado(abierto: bool)
+
+## Se emite cada vez que cambia la cantidad de clientes atendidos (para el HUD).
+signal clientes_atendidos_cambiado(atendidos: int, total: int)
+
 const MAX_CLIENTES_DIA := 5
 
 var taller_abierto := false
@@ -10,6 +16,8 @@ func abrir_taller() -> void:
 	taller_abierto = true
 	clientes_atendidos = 0
 	clientes_llegados = 0
+	estado_taller_cambiado.emit(true)
+	clientes_atendidos_cambiado.emit(clientes_atendidos, MAX_CLIENTES_DIA)
 
 func puede_llegar_cliente() -> bool:
 	return taller_abierto and clientes_llegados < MAX_CLIENTES_DIA
@@ -24,9 +32,11 @@ func registrar_llegada_cliente() -> void:
 func registrar_cliente_atendido() -> void:
 	clientes_atendidos += 1
 	print("Cliente atendido:", clientes_atendidos, "/", MAX_CLIENTES_DIA)
+	clientes_atendidos_cambiado.emit(clientes_atendidos, MAX_CLIENTES_DIA)
 
 func dia_completo() -> bool:
 	return clientes_atendidos >= MAX_CLIENTES_DIA
 
 func cerrar_taller() -> void:
 	taller_abierto = false
+	estado_taller_cambiado.emit(false)

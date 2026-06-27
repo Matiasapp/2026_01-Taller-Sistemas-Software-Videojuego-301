@@ -11,9 +11,17 @@ var jugador_en_rango_easter_egg = false
 # =========================
 
 const MAX_CLIENTES_DIA := 5
+# Segundos (tiempo real) que tarda en llegar el próximo cliente tras abrir / tras atender uno.
+const TIEMPO_LLEGADA_CLIENTE := 12.0
 
 var taller_abierto := false
 var clientes_atendidos := 0
+# true cuando este _ready se ejecuta justo tras volver de atender a un cliente.
+var venimos_de_atender := false
+# Temporizador (uno a la vez) para la llegada de clientes.
+var timer_llegada: Timer
+# Sonido de campana que suena cuando llega un cliente.
+var campana_sound: AudioStreamPlayer
 
 # Placeholder hasta que exista el sistema real de inventario/piezas
 var inventario := {
@@ -52,7 +60,20 @@ const EVENTO_ESTAFA_SCENE := "res://Scenes/Events/EventoEstafa.tscn"
 
 func _ready() -> void:
 	randomize()
-	
+
+	# Temporizador de llegada de clientes (uno a la vez).
+	timer_llegada = Timer.new()
+	timer_llegada.one_shot = true
+	add_child(timer_llegada)
+	timer_llegada.timeout.connect(_on_llegada_cliente)
+
+	# Sonido de campana al llegar un cliente.
+	campana_sound = AudioStreamPlayer.new()
+	campana_sound.stream = preload("res://Assets/Audio/GameScreen/campana.wav")
+	campana_sound.bus = &"SFX"
+	campana_sound.volume_db = -12.0
+	add_child(campana_sound)
+
 	mensaje_abrir_taller.visible = false
 	mensaje_interactuar_pc.visible = false
 	mensaje_atender_cliente.visible = false
@@ -80,6 +101,7 @@ func _ready() -> void:
 	# Al volver de atender un cliente, mostramos en el HUD cuánto cambió el dinero (neto).
 	if DATOSGLOBALES.volviendo_de_atencion:
 		DATOSGLOBALES.volviendo_de_atencion = false
+		venimos_de_atender = true
 		var delta_dinero: int = DATOSGLOBALES.dinero - DATOSGLOBALES.dinero_antes_atencion
 		if delta_dinero != 0 and hud:
 			hud.mostrar_popup_dinero(delta_dinero)
@@ -115,55 +137,38 @@ func _ready() -> void:
 		TIEMPOMANAGER.has_initialized = true
 
 	# =========================================================
-	# SI VOLVIMOS DESDE EVENTOROBO / TRANSICIONDIA,
-	# MOSTRAMOS EL RESUMEN ENCIMA DEL TALLER
+	# SI VOLVIMOS DESDE EVENTOROBO / TRANSICIONDIA, preparamos el nuevo día.
+	# (Las estadísticas YA se mostraron tras atender al 5º cliente.)
 	# =========================================================
 	if DATOSGLOBALES.mostrar_resumen_dia_al_volver:
 		DATOSGLOBALES.mostrar_resumen_dia_al_volver = false
-		
+
 		if CLIENTMANAGER:
 			CLIENTMANAGER.cerrar_taller()
-		
+
 		taller_abierto = false
 		clientes_atendidos = 0
-		
-		if resumen_dia:
-			resumen_dia.visible = true
-		
-		get_tree().paused = true
-		return
-	
-	# Recuperar estado del flujo al volver desde un minijuego
+
+	# Recuperar estado del flujo al volver desde un minijuego.
+	# NO cerramos el día aquí aunque ya se hayan atendido los 5 clientes:
+	# el cierre es manual, el jugador debe acercarse a la cortina e interactuar.
 	if CLIENTMANAGER:
 		taller_abierto = CLIENTMANAGER.taller_abierto
 		clientes_atendidos = CLIENTMANAGER.clientes_atendidos
-		
-		# Si volvimos desde el minijuego del último cliente,
-		# ahora sí corresponde cerrar el día.
-		if taller_abierto and CLIENTMANAGER.dia_completo():
-			cerrar_dia()
-			return
-	
+
 	if taller_abierto and TIEMPOMANAGER:
 		TIEMPOMANAGER.start_timer()
-	
+
 	actualizar_mensaje_puerta()
-	
-	# Recuperar estado del flujo al volver desde un minijuego
-	if CLIENTMANAGER:
-		taller_abierto = CLIENTMANAGER.taller_abierto
-		clientes_atendidos = CLIENTMANAGER.clientes_atendidos
-		
-		# Si volvimos desde el minijuego del último cliente,
-		# ahora sí corresponde cerrar el día.
-		if taller_abierto and CLIENTMANAGER.dia_completo():
-			cerrar_dia()
-			return
-	
-	if taller_abierto and TIEMPOMANAGER:
-		TIEMPOMANAGER.start_timer()
-	
-	actualizar_mensaje_puerta()
+
+	# Si volvimos de atender al ÚLTIMO cliente del día (el 5º), mostramos las
+	# estadísticas del día. Luego el jugador cerrará el taller en la cortina.
+	if venimos_de_atender and taller_abierto and CLIENTMANAGER and CLIENTMANAGER.dia_completo():
+		mostrar_resumen_dia()
+
+	# Al volver de atender, programamos la llegada del siguiente cliente (si quedan).
+	if taller_abierto:
+		programar_llegada_cliente()
 
 
 func iniciar_audio_taller() -> void:
@@ -209,6 +214,9 @@ func _input(event):
 	if jugador_en_rango_abrir_taller and event.is_action_pressed("interactuar"):
 		if not taller_abierto:
 			abrir_taller()
+		elif CLIENTMANAGER.dia_completo():
+			# Jornada terminada (5 clientes / 18:00): cierre manual en la cortina.
+			cerrar_dia()
 		else:
 			print("El taller ya está abierto")
 	
@@ -246,41 +254,102 @@ func abrir_taller() -> void:
 	print("Taller abierto. Clientes del día: 0/%d" % CLIENTMANAGER.MAX_CLIENTES_DIA)
 	actualizar_mensaje_puerta()
 
+	# Los clientes no se atienden enseguida: el primero llega tras una espera.
+	programar_llegada_cliente()
+
 
 func atender_cliente() -> void:
 	if not taller_abierto:
 		print("Primero debes abrir el taller")
 		return
 	
-	# Si por alguna razón ya se completó el día y el jugador vuelve a interactuar,
-	# cerramos el día directamente.
+	# Si ya se atendieron los 5 clientes, no hay más por atender: el jugador debe
+	# acercarse a la cortina metálica para cerrar el taller (NO se cierra solo).
 	if CLIENTMANAGER.dia_completo():
-		cerrar_dia()
+		print("Ya atendiste a los 5 clientes. Acércate a la cortina para cerrar el taller.")
 		return
-	
-	# Registramos que este cliente ya fue atendido en el flujo del día.
-	# Ojo: esto incluye también al cliente 5.
+
+	# No se puede atender hasta que haya llegado un cliente (no se atiende enseguida).
+	if not hay_cliente_esperando():
+		print("Aún no ha llegado ningún cliente. Espera a que llegue.")
+		return
+
+	# Registramos al cliente (incluye también al 5º) y consumimos 2 horas del día.
 	CLIENTMANAGER.registrar_cliente_atendido()
 	clientes_atendidos = CLIENTMANAGER.clientes_atendidos
-	
+
+	# La reparación consume 1 hora (la espera/llegada del cliente consumió la otra).
+	# Así cada cliente suma 2 h y 5 clientes llenan la jornada; al 5º el reloj llega
+	# a 18:00 y se emite day_ended.
+	if TIEMPOMANAGER:
+		TIEMPOMANAGER.avanzar_horas(1)
+
 	print("Cliente atendido: %d/%d" % [clientes_atendidos, MAX_CLIENTES_DIA])
-	
+
 	# TODO: Integrar selección de pieza.
-	# Aquí debería elegirse/descontarse una pieza buena, barata o dudosa.
-
 	# TODO: Integrar resultado del servicio.
-	# El resultado del minijuego debería afectar dinero/reputación.
 
-	if CLIENTMANAGER.dia_completo():
-		cerrar_dia()
+	# Guardamos el dinero actual para, al volver, mostrar en el HUD cuánto cambió.
+	DATOSGLOBALES.dinero_antes_atencion = DATOSGLOBALES.dinero
+	DATOSGLOBALES.volviendo_de_atencion = true
+
+	# Siempre se atiende al cliente (también al 5º): pantalla de atención + minijuego.
+	get_tree().change_scene_to_file(ATENCION_CLIENTE_SCENE)
+
+
+# =========================
+# LLEGADA DE CLIENTES (uno a la vez)
+# =========================
+
+## ¿Hay un cliente que ya llegó y todavía no fue atendido?
+func hay_cliente_esperando() -> bool:
+	return CLIENTMANAGER.clientes_llegados > CLIENTMANAGER.clientes_atendidos
+
+## Programa la llegada del próximo cliente tras una espera, si corresponde.
+func programar_llegada_cliente() -> void:
+	if not taller_abierto:
+		return
+	if hay_cliente_esperando():
+		return  # ya hay un cliente esperando ser atendido
+	if CLIENTMANAGER.clientes_llegados >= CLIENTMANAGER.MAX_CLIENTES_DIA:
+		return  # ya llegaron todos los clientes del día
+	if timer_llegada.time_left > 0:
+		return  # ya hay una llegada en curso
+	timer_llegada.start(TIEMPO_LLEGADA_CLIENTE)
+
+## Cuando se cumple el tiempo, llega un cliente al taller.
+func _on_llegada_cliente() -> void:
+	if not taller_abierto:
+		return
+	CLIENTMANAGER.registrar_llegada_cliente()
+
+	# Suena la campana para avisar la llegada.
+	if campana_sound:
+		campana_sound.play()
+
+	# Esperar a que llegue el cliente consume 1 hora del día.
+	if TIEMPOMANAGER:
+		TIEMPOMANAGER.avanzar_horas(1)
+	print("Llegó un cliente al taller.")
+
+	# Avisamos al jugador en pantalla (pasó 1 hora y llegó un cliente).
+	if hud:
+		var hora_txt := "%02d:%02d" % [TIEMPOMANAGER.current_hour, TIEMPOMANAGER.current_minute]
+		hud.mostrar_aviso("🔔 ¡Llegó un cliente! El tiempo avanzó hasta las [color=yellow]%s[/color]" % hora_txt)
+
+	actualizar_mensaje_atender()
+
+## Texto del cartel de atención según haya o no un cliente esperando.
+func actualizar_mensaje_atender() -> void:
+	if not jugador_en_rango_atender_cliente:
+		return
+	if hay_cliente_esperando():
+		mensaje_atender_cliente.text = "Presiona [E] para Atender Cliente"
+		mensaje_atender_cliente.modulate = Color.WHITE
 	else:
-		# Guardamos el dinero actual para, al volver, mostrar en el HUD cuánto cambió.
-		DATOSGLOBALES.dinero_antes_atencion = DATOSGLOBALES.dinero
-		DATOSGLOBALES.volviendo_de_atencion = true
-
-		# Abre la pantalla de atención: ahí el cliente da la pista, el jugador
-		# diagnostica la falla y se lanza el minijuego correspondiente.
-		get_tree().change_scene_to_file(ATENCION_CLIENTE_SCENE)
+		mensaje_atender_cliente.text = "Aún no llega ningún cliente..."
+		mensaje_atender_cliente.modulate = Color.GRAY
+	mensaje_atender_cliente.visible = true
 
 
 func lanzar_minijuego_random() -> void:
@@ -360,7 +429,10 @@ func ejecutar_evento_robo() -> void:
 
 
 func _on_day_ended():
-	cerrar_dia()
+	# Terminó la jornada (18:00 / 5 clientes atendidos). NO cerramos solos:
+	# el jugador debe acercarse a la cortina metálica para cerrar el taller.
+	print("Jornada terminada. Acércate a la cortina para cerrar el taller.")
+	actualizar_mensaje_puerta()
 
 func _on_botón_resumen_dia_pressed() -> void:
 	if resumen_dia:
@@ -389,12 +461,15 @@ func _on_area_abrir_taller_body_exited(body):
 
 
 func actualizar_mensaje_puerta():
-	if taller_abierto:
-		mensaje_abrir_taller.text = "El Taller ya está Abierto"
-		mensaje_abrir_taller.modulate = Color.RED
-	else:
+	if not taller_abierto:
 		mensaje_abrir_taller.text = "Presiona [E] para Abrir Taller"
 		mensaje_abrir_taller.modulate = Color.WHITE
+	elif CLIENTMANAGER.dia_completo():
+		mensaje_abrir_taller.text = "Presiona [E] para Cerrar Taller"
+		mensaje_abrir_taller.modulate = Color.YELLOW
+	else:
+		mensaje_abrir_taller.text = "El Taller ya está Abierto"
+		mensaje_abrir_taller.modulate = Color.RED
 
 
 # =========================
@@ -420,7 +495,7 @@ func _on_area_interactuar_pc_body_exited(body):
 func _on_area_atender_cliente_body_entered(body: Node2D):
 	if body.name == "Player":
 		jugador_en_rango_atender_cliente = true
-		mensaje_atender_cliente.visible = true
+		actualizar_mensaje_atender()
 
 
 func _on_area_atender_cliente_body_exited(body):

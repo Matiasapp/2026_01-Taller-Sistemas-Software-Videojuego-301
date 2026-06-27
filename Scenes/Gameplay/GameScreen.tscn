@@ -339,10 +339,10 @@ shape = SubResource("CapsuleShape2D_oeeqd")
 position = Vector2(-206, -88)
 
 [node name="LabelAbrirTaller" type="Label" parent="Marker2DAbrirTaller" unique_id=613015327]
-offset_left = -92.0
-offset_top = -62.0
-offset_right = 133.0
-offset_bottom = -39.0
+offset_left = 54.0
+offset_top = -64.0
+offset_right = 279.0
+offset_bottom = -41.0
 text = "Presiona E para abrir el taller"
 
 [node name="Marker2DInteractuarPc" type="Marker2D" parent="." unique_id=1971615173]
