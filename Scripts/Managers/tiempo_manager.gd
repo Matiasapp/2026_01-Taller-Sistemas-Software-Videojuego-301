@@ -21,16 +21,24 @@ var has_initialized: bool = false
 func _ready() -> void:
 	has_initialized = false
 
-func _process(delta: float) -> void:
-	if not is_timer_running:
-		return
-		
-	time_accumulator += delta
-	
-	# Cuando el acumulador supera la duración de un minuto del juego
-	if time_accumulator >= minute_duration:
-		time_accumulator -= minute_duration
-		advance_minute()
+func _process(_delta: float) -> void:
+	# El tiempo ya NO corre en tiempo real: avanza 2 horas cada vez que se atiende
+	# a un cliente (ver avanzar_horas). Por eso el loop de minutos queda desactivado.
+	pass
+
+## Avanza el reloj del juego una cantidad de horas (se llama al atender a un cliente).
+## Llega como tope a la hora de cierre. El fin del día lo decide la cantidad de clientes.
+func avanzar_horas(horas: int) -> void:
+	current_hour += horas
+	current_minute = 0
+	if current_hour >= end_hour:
+		current_hour = end_hour
+	time_changed.emit(current_hour, current_minute)
+
+	# Al llegar a la hora de cierre (tras atender al 5º cliente) avisamos que terminó
+	# la jornada. No cierra el taller: el jugador debe hacerlo en la cortina.
+	if current_hour >= end_hour:
+		day_ended.emit()
 
 func advance_minute() -> void:
 	current_minute += 1
