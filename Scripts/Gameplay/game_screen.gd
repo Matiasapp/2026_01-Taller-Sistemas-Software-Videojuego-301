@@ -57,6 +57,11 @@ const EVENTO_ESTAFA_SCENE := "res://Scenes/Events/EventoEstafa.tscn"
 @onready var pc_sound_out: AudioStreamPlayer = $PCSoundout
 @onready var open_sound: AudioStreamPlayer = $OpenSound
 @onready var fade_rect: ColorRect = $CanvasLayer/FadeRect
+@onready var sprite_taller: Sprite2D = $Taller
+@onready var dust_particles: GPUParticles2D = $DustParticles
+
+# Textura del mapa cuando el taller está abierto (la cerrada es la que trae la escena).
+const TEXTURA_TALLER_ABIERTO: Texture2D = preload("res://Assets/Sprites/mapa final abierto.png")
 
 func _ready() -> void:
 	randomize()
@@ -159,6 +164,13 @@ func _ready() -> void:
 	if taller_abierto and TIEMPOMANAGER:
 		TIEMPOMANAGER.start_timer()
 
+	# Si volvemos con el taller abierto (p.ej. tras un minijuego), mantenemos el mapa abierto.
+	if taller_abierto and sprite_taller:
+		sprite_taller.texture = TEXTURA_TALLER_ABIERTO
+
+	# Las partículas solo se ven con el taller abierto.
+	_actualizar_particulas()
+
 	actualizar_mensaje_puerta()
 
 	# Si volvimos de atender al ÚLTIMO cliente del día (el 5º), mostramos las
@@ -251,11 +263,23 @@ func abrir_taller() -> void:
 		TIEMPOMANAGER.reset_day()
 		TIEMPOMANAGER.start_timer()
 
+	# Cambiamos el mapa al de "taller abierto".
+	if sprite_taller:
+		sprite_taller.texture = TEXTURA_TALLER_ABIERTO
+
+	_actualizar_particulas()
+
 	print("Taller abierto. Clientes del día: 0/%d" % CLIENTMANAGER.MAX_CLIENTES_DIA)
 	actualizar_mensaje_puerta()
 
 	# Los clientes no se atienden enseguida: el primero llega tras una espera.
 	programar_llegada_cliente()
+
+## Las partículas de polvo solo se muestran/emiten con el taller abierto.
+func _actualizar_particulas() -> void:
+	if dust_particles:
+		dust_particles.emitting = taller_abierto
+		dust_particles.visible = taller_abierto
 
 
 func atender_cliente() -> void:
@@ -374,6 +398,7 @@ func cerrar_dia() -> void:
 		TIEMPOMANAGER.stop_timer()
 		TIEMPOMANAGER.avanzar_dia()
 
+	# ¿Habrá robo esta noche? Se decide ahora, pero el robo se muestra DESPUÉS del cierre.
 	if randf() <= 0.30:
 		DATOSGLOBALES.siguiente_evento_dia = "robo"
 	else:
@@ -386,11 +411,9 @@ func cerrar_dia() -> void:
 
 	await fade_to_black(0.6)
 
-	match DATOSGLOBALES.siguiente_evento_dia:
-		"robo":
-			get_tree().change_scene_to_file("res://Scenes/Events/EventoRobo/EventoRobo.tscn")
-		"transicion":
-			get_tree().change_scene_to_file("res://Scenes/Events/TransicionDia/transicion_dia.tscn")
+	# Siempre se muestra primero la escena de cierre del taller (transición del día).
+	# Si esta noche hay robo, se encadena DESPUÉS de la transición (ver transicion_día.gd).
+	get_tree().change_scene_to_file("res://Scenes/Events/TransicionDia/transicion_dia.tscn")
 
 func ejecutar_evento_robo() -> void:
 	print("EVENTO: Entraron a robar")

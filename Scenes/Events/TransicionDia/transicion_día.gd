@@ -159,7 +159,12 @@ func finalizar_evento() -> void:
 
 	Engine.time_scale = 1.0
 	get_tree().paused = false
-	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")
+
+	# Si esta noche hay robo, se muestra DESPUÉS del cierre del taller; si no, al taller.
+	if DATOSGLOBALES.siguiente_evento_dia == "robo":
+		get_tree().change_scene_to_file("res://Scenes/Events/EventoRobo/EventoRobo.tscn")
+	else:
+		get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")
 
 
 func _on_comenzar_pressed() -> void:
