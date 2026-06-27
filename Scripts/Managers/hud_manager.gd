@@ -58,9 +58,10 @@ func _buscar_richtextlabel(nombre_contenedor: String) -> RichTextLabel:
 
 ## Actualiza el contador "Clientes atendidos: X/Y".
 func actualizar_clientes_atendidos(atendidos: int, total: int) -> void:
-	if label_clientes_atendidos == null:
-		return
-	label_clientes_atendidos.text = "Clientes atendidos: %d/%d" % [atendidos, total]
+	if label_clientes_atendidos:
+		label_clientes_atendidos.text = "Clientes atendidos: %d/%d" % [atendidos, total]
+	# Al completar los 5, el aviso debe pasar a "es hora de cerrar".
+	actualizar_aviso_taller()
 
 ## Actualiza el indicador "El taller está Abierto/Cerrado" (solo el estado va coloreado).
 ## Además muestra/oculta el aviso parpadeante de "abre el taller" según el estado.
@@ -71,14 +72,30 @@ func actualizar_estado_taller(abierto: bool) -> void:
 		else:
 			label_estado_taller.text = "El taller está [color=%s]Cerrado[/color]" % COLOR_CERRADO
 
-	# Aviso parpadeante: solo visible cuando el taller está cerrado.
-	if aviso_abrir_taller:
-		if abierto:
-			aviso_abrir_taller.visible = false
-			_detener_parpadeo()
-		else:
-			aviso_abrir_taller.visible = true
-			_iniciar_parpadeo()
+	actualizar_aviso_taller()
+
+## Decide qué muestra el aviso parpadeante según el estado del taller y los clientes atendidos:
+##  - Cerrado          → "abre el taller"
+##  - Abierto + 5/5    → "es hora de cerrar, vuelve a la cortina"
+##  - Abierto sin completar → oculto
+func actualizar_aviso_taller() -> void:
+	if aviso_abrir_taller == null or CLIENTMANAGER == null:
+		return
+
+	var abierto: bool = CLIENTMANAGER.taller_abierto
+	var dia_completo: bool = CLIENTMANAGER.clientes_atendidos >= CLIENTMANAGER.MAX_CLIENTES_DIA
+
+	if not abierto:
+		aviso_abrir_taller.text = "Tienes que abrir el taller para comenzar a atender clientes"
+		aviso_abrir_taller.visible = true
+		_iniciar_parpadeo()
+	elif dia_completo:
+		aviso_abrir_taller.text = "Es hora de cerrar el taller, vuelve a la cortina metálica"
+		aviso_abrir_taller.visible = true
+		_iniciar_parpadeo()
+	else:
+		aviso_abrir_taller.visible = false
+		_detener_parpadeo()
 
 func _iniciar_parpadeo() -> void:
 	if aviso_abrir_taller == null:
