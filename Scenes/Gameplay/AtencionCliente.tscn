@@ -1,0 +1,111 @@
+[gd_scene format=3 uid="uid://2ptkvdo4dhc3"]
+
+[ext_resource type="Script" uid="uid://d3k1iob21moyx" path="res://Scripts/Gameplay/atencion_cliente.gd" id="1_atc"]
+[ext_resource type="SpriteFrames" uid="uid://sebsn3n481hk" path="res://Assets/Sprites/clientes_atendidos/cliente_generico.tres" id="2_frames"]
+[ext_resource type="Texture2D" uid="uid://buxg2odqrvsi4" path="res://Assets/Sprites/clientes_atendidos/bg_clientes_atender.png" id="2_s08on"]
+[ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="3_theme"]
+[ext_resource type="Texture2D" uid="uid://cxqi1lh5nip8y" path="res://Assets/UI/button_style.png" id="4_panel"]
+[ext_resource type="AudioStream" uid="uid://cc2twnwdewko7" path="res://Assets/Audio/IntroScreen/talking.wav" id="5_talk"]
+[ext_resource type="Texture2D" uid="uid://em0uo8bxdp35" path="res://Assets/Sprites/clientes_atendidos/ventana_personajes.png" id="6_tjhhq"]
+[ext_resource type="PackedScene" uid="uid://ced7lrvkskxls" path="res://Scenes/Gameplay/DiagnosticoModal.tscn" id="7_diag"]
+[ext_resource type="AudioStream" uid="uid://dne61526r6hs" path="res://Assets/Audio/Gameplay/Diagnostico/workshoploop.ogg" id="9_ekr1c"]
+[ext_resource type="AudioStream" uid="uid://b2t66hdqmo381" path="res://Assets/Audio/Menu/click.wav" id="10_47gnd"]
+[ext_resource type="AudioStream" uid="uid://d0gkxqmj2s251" path="res://Assets/Audio/Menu/hoverclick.wav" id="11_s4ajt"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tjhhq"]
+atlas = ExtResource("2_s08on")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_panel"]
+texture = ExtResource("4_panel")
+texture_margin_top = 2.0
+texture_margin_bottom = 4.0
+region_rect = Rect2(173, 492, 771, 568)
+
+[node name="AtencionCliente" type="Node2D" unique_id=76788427]
+script = ExtResource("1_atc")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=75634323]
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer" unique_id=1810154325]
+offset_right = 1165.5273
+offset_bottom = 651.0
+texture = SubResource("AtlasTexture_tjhhq")
+expand_mode = 3
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/TextureRect" unique_id=1749004765]
+layout_mode = 0
+offset_left = 800.0
+offset_top = 253.0
+offset_right = 1114.0
+offset_bottom = 563.0
+color = Color(0.11534082, 0.05784232, 0.011730799, 1)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasLayer" unique_id=880657164]
+position = Vector2(962, 405)
+scale = Vector2(1.5599997, 1.5599997)
+sprite_frames = ExtResource("2_frames")
+animation = &"movimiento"
+
+[node name="PanelDialogo" type="Panel" parent="CanvasLayer" unique_id=1546545614]
+self_modulate = Color(1, 1, 1, 0.9254902)
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 30.0
+offset_top = -255.0
+offset_right = 730.0
+offset_bottom = -30.0
+grow_vertical = 0
+theme = ExtResource("3_theme")
+theme_override_styles/panel = SubResource("StyleBoxTexture_panel")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/PanelDialogo" unique_id=619710400]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 35.0
+offset_top = 20.0
+offset_right = -35.0
+offset_bottom = -20.0
+bbcode_enabled = true
+
+[node name="BotonAtender" type="Button" parent="CanvasLayer" unique_id=794576428]
+offset_left = 481.0
+offset_top = 561.0
+offset_right = 701.0
+offset_bottom = 599.0
+theme = ExtResource("3_theme")
+theme_override_font_sizes/font_size = 26
+text = "Atender cliente"
+
+[node name="TextureRect2" type="TextureRect" parent="CanvasLayer" unique_id=1473730921]
+offset_left = 697.0
+offset_top = 162.0
+offset_right = 1197.0
+offset_bottom = 662.0
+texture = ExtResource("6_tjhhq")
+
+[node name="DiagnosticoModal" parent="CanvasLayer" unique_id=2144266211 instance=ExtResource("7_diag")]
+visible = false
+
+[node name="TalkingSound" type="AudioStreamPlayer" parent="." unique_id=1693388991]
+stream = ExtResource("5_talk")
+volume_db = -8.0
+bus = &"SFX"
+
+[node name="WorkshopLoop" type="AudioStreamPlayer" parent="." unique_id=1419453772]
+stream = ExtResource("9_ekr1c")
+volume_db = -13.0
+autoplay = true
+bus = &"Music"
+parameters/looping = true
+
+[node name="ClickSound" type="AudioStreamPlayer" parent="." unique_id=1269066716]
+stream = ExtResource("10_47gnd")
+bus = &"SFX"
+
+[node name="HoverSound" type="AudioStreamPlayer" parent="." unique_id=2122237090]
+stream = ExtResource("11_s4ajt")
+bus = &"SFX"
+
+[connection signal="pressed" from="CanvasLayer/BotonAtender" to="." method="atender_cliente"]

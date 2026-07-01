@@ -10,7 +10,7 @@
 [ext_resource type="AudioStream" uid="uid://vupbpt4ewj8b" path="res://Assets/Audio/MinigameAudio/TheFloorIsLava/lavaloop.ogg" id="8_1hw8h"]
 [ext_resource type="AudioStream" uid="uid://c5vxi8mwnt5ca" path="res://Assets/Audio/MinigameAudio/TheFloorIsLava/carskid.wav" id="9_76irg"]
 [ext_resource type="AudioStream" uid="uid://ddxxtqhwiogwg" path="res://Assets/Audio/MinigameAudio/TheFloorIsLava/lavadead.wav" id="10_revgn"]
-[ext_resource type="AudioStream" uid="uid://b6tcuvrrui5ha" path="res://Assets/Audio/MinigameAudio/TheFloorIsLava/thefloorislavaloop.ogg" id="11_tyt8e"]
+[ext_resource type="AudioStream" uid="uid://bpa2uc3vpewfs" path="res://Assets/Audio/MinigameAudio/TheFloorIsLava/thefloorislavaloop.ogg" id="11_tyt8e"]
 
 [sub_resource type="Gradient" id="Gradient_yumc8"]
 offsets = PackedFloat32Array(0, 0.4949495, 1)
@@ -369,8 +369,9 @@ bus = &"SFX"
 
 [node name="MusicLoop" type="AudioStreamPlayer" parent="." unique_id=1878130425]
 stream = ExtResource("11_tyt8e")
-volume_db = -20.0
+volume_db = -15.0
 bus = &"Music"
+parameters/looping = true
 
 [connection signal="mouse_entered" from="CanvasLayer/Resumen/PanelFinal/Button" to="." method="_on_boton_continuar_mouse_entered"]
 [connection signal="pressed" from="CanvasLayer/Resumen/PanelFinal/Button" to="." method="_on_boton_continuar_pressed"]
