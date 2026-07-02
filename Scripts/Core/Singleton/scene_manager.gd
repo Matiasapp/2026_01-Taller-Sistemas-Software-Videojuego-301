@@ -6,6 +6,6 @@ func pause_game(pause: bool):
 	if pause:
 		var canvas: CanvasLayer = get_tree().current_scene.get_node("MenuPausa")
 		var pause_menu: Pause_menu = canvas.get_node("Pause_menu")
-		
-		pause_menu.visible = true 
+
+		pause_menu.abrir()
 		
