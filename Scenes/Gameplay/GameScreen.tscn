@@ -527,6 +527,9 @@ dialog_text = "Lo sentimos, esta función se encuentra en desarrollo !!"
 [node name="MenuPausa" type="CanvasLayer" parent="." unique_id=1314141683]
 
 [node name="Pause_menu" parent="MenuPausa" unique_id=2038693485 instance=ExtResource("12_u8dp7")]
+visible = false
+offset_top = 2.0
+offset_bottom = -3.0
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1087812777]
 
@@ -584,6 +587,7 @@ process_material = SubResource("ParticleProcessMaterial_fiqrm")
 [node name="ModalBienvenida" type="CanvasLayer" parent="." unique_id=1900000010]
 process_mode = 3
 layer = 10
+visible = false
 
 [node name="Fondo" type="ColorRect" parent="ModalBienvenida" unique_id=1900000011]
 anchors_preset = 15

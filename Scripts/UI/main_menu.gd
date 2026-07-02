@@ -72,7 +72,8 @@ func _on_button_exit_pressed() -> void:
 
 func _on_button_options_pressed() -> void:
 	play_click()
-	en_desarrollo.popup_centered()
+	var opciones := preload("res://Scenes/UI/Opciones.tscn").instantiate()
+	add_child(opciones)
 
 
 # =========================
