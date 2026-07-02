@@ -2,6 +2,10 @@
 
 [ext_resource type="Texture2D" uid="uid://vcdh73ijkq0y" path="res://Assets/Sprites/spritesheed_hombre.png" id="1_35n8f"]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_4rrtp"]
+atlas = ExtResource("1_35n8f")
+region = Rect2(320, 1280, 64, 64)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_m0x7a"]
 atlas = ExtResource("1_35n8f")
 region = Rect2(0, 1154, 64, 64)
@@ -380,6 +384,14 @@ region = Rect2(192, 1728, 64, 64)
 
 [resource]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4rrtp")
+}],
+"loop": true,
+"name": &"atropellado",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_m0x7a")

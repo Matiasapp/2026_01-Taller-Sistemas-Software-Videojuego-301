@@ -94,6 +94,9 @@ func _conectar_botones() -> void:
 	if not btn_iniciar.pressed.is_connected(_on_btn_iniciar_pressed):
 		btn_iniciar.pressed.connect(_on_btn_iniciar_pressed)
 
+	if not btn_iniciar.mouse_entered.is_connected(_on_btn_iniciar_mouse_entered):
+		btn_iniciar.mouse_entered.connect(_on_btn_iniciar_mouse_entered)
+
 	if not btn_continuar.pressed.is_connected(_on_btn_continuar_pressed):
 		btn_continuar.pressed.connect(_on_btn_continuar_pressed)
 
@@ -129,6 +132,8 @@ func _mostrar_instrucciones() -> void:
 func _on_btn_iniciar_pressed() -> void:
 	if estado_actual != Estado.INSTRUCCIONES:
 		return
+
+	AUDIOMANAGER.play_ui_click()
 
 	btn_iniciar.disabled = true
 
@@ -395,7 +400,11 @@ func _process(delta: float) -> void:
 	if time_elapsed >= TIEMPO_LIMITE:
 		on_time_out()
 		
+func _on_btn_iniciar_mouse_entered() -> void:
+	AUDIOMANAGER.play_ui_hover()
+
+
 func _on_btn_continuar_mouse_entered() -> void:
-	AUDIOMANAGER.play_ui_hover()		
+	AUDIOMANAGER.play_ui_hover()
 		
 		
