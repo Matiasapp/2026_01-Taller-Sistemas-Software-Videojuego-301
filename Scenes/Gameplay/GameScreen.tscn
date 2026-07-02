@@ -561,7 +561,7 @@ amount = 35
 lifetime = 6.0
 preprocess = 6.0
 collision_base_size = 69.92
-visibility_rect = Rect2(-700, -400, 1400, 800)
+visibility_rect = Rect2(-300, -400, 2400, 1300)
 process_material = SubResource("ParticleProcessMaterial_fiqrm")
 
 [connection signal="body_entered" from="AreaAbrirTaller" to="." method="_on_area_abrir_taller_body_entered"]

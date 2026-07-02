@@ -11,6 +11,7 @@
 [ext_resource type="AudioStream" uid="uid://c5vxi8mwnt5ca" path="res://Assets/Audio/MinigameAudio/TheFloorIsLava/carskid.wav" id="9_76irg"]
 [ext_resource type="AudioStream" uid="uid://ddxxtqhwiogwg" path="res://Assets/Audio/MinigameAudio/TheFloorIsLava/lavadead.wav" id="10_revgn"]
 [ext_resource type="AudioStream" uid="uid://b6tcuvrrui5ha" path="res://Assets/Audio/MinigameAudio/TheFloorIsLava/thefloorislavaloop.ogg" id="11_tyt8e"]
+[ext_resource type="Texture2D" uid="uid://cxqi1lh5nip8y" path="res://Assets/UI/button_style.png" id="12_hudnp"]
 
 [sub_resource type="Gradient" id="Gradient_yumc8"]
 offsets = PackedFloat32Array(0, 0.4949495, 1)
@@ -56,37 +57,9 @@ gravity = Vector3(0, -9, 0)
 scale_max = 2.0
 color_ramp = SubResource("GradientTexture1D_4frya")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yumc8"]
-bg_color = Color(0.92941177, 0.49803922, 0.16470589, 1)
-border_width_left = 6
-border_width_top = 6
-border_width_right = 6
-border_width_bottom = 6
-border_color = Color(1, 0.7294118, 0.36862746, 1)
-border_blend = true
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-corner_detail = 10
-shadow_color = Color(0, 0, 0, 1)
-shadow_size = 11
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_arn3d"]
-bg_color = Color(0.92941177, 0.49803922, 0.16470589, 1)
-border_width_left = 6
-border_width_top = 6
-border_width_right = 6
-border_width_bottom = 6
-border_color = Color(1, 0.7294118, 0.36862746, 1)
-border_blend = true
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-corner_detail = 10
-shadow_color = Color(0, 0, 0, 1)
-shadow_size = 11
+[sub_resource type="AtlasTexture" id="AtlasTexture_ninehud"]
+atlas = ExtResource("12_hudnp")
+region = Rect2(1873, 492, 769, 568)
 
 [node name="SnakeMinigame" type="Node2D" unique_id=1131837256]
 script = ExtResource("1_6shj8")
@@ -185,15 +158,15 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -1865.0
-offset_top = -1698.0
-offset_right = -649.0
-offset_bottom = -970.0
+offset_left = -1296.0
+offset_top = -732.0
+offset_right = 144.0
+offset_bottom = 84.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(1, 0.6, 0.14509805, 0.45882353)
+color = Color(0.16, 0.09, 0.04, 0.8)
 
-[node name="PanelTutorial" type="Panel" parent="CanvasLayer/Tutorial" unique_id=1166985925]
+[node name="PanelTutorial" type="NinePatchRect" parent="CanvasLayer/Tutorial" unique_id=1166985925]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -206,7 +179,12 @@ offset_right = 392.0
 offset_bottom = 244.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_yumc8")
+texture = SubResource("AtlasTexture_ninehud")
+region_rect = Rect2(0, 0, 769, 568)
+patch_margin_left = 110
+patch_margin_top = 100
+patch_margin_right = 110
+patch_margin_bottom = 110
 
 [node name="Titulo" type="Label" parent="CanvasLayer/Tutorial/PanelTutorial" unique_id=72551404]
 layout_mode = 1
@@ -274,35 +252,47 @@ text = "[ Presiona cualquier tecla de movimiento para empezar ]"
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -1289.0
-offset_top = -1374.0
-offset_right = -1289.0
-offset_bottom = -1374.0
+offset_left = -720.0
+offset_top = -408.0
+offset_right = -432.0
+offset_bottom = -240.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(1, 0.6, 0.14509805, 0.45882353)
+color = Color(0.16, 0.09, 0.04, 0.8)
 
-[node name="PanelFinal" type="Panel" parent="CanvasLayer/Resumen" unique_id=1825216563]
+[node name="PanelFinal" type="NinePatchRect" parent="CanvasLayer/Resumen" unique_id=1825216563]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -210.0
-offset_top = -148.0
-offset_right = 210.0
-offset_bottom = 180.0
+offset_left = -257.5
+offset_top = -202.0
+offset_right = 257.5
+offset_bottom = 202.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_arn3d")
+texture = SubResource("AtlasTexture_ninehud")
+region_rect = Rect2(0, 0, 769, 568)
+patch_margin_left = 110
+patch_margin_top = 100
+patch_margin_right = 110
+patch_margin_bottom = 110
 
 [node name="PuntajeFinal" type="Label" parent="CanvasLayer/Resumen/PanelFinal" unique_id=986407430]
-layout_mode = 0
-offset_left = 66.0
-offset_top = 56.0
-offset_right = 171.0
-offset_bottom = 79.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -62.5
+offset_top = -44.0
+offset_right = 56.5
+offset_bottom = -21.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -313,21 +303,28 @@ theme_override_constants/shadow_outline_size = 3
 text = "Puntaje Final: 0"
 
 [node name="Button" type="Button" parent="CanvasLayer/Resumen/PanelFinal" unique_id=1313374609]
-layout_mode = 0
-offset_left = 314.0
-offset_top = 280.0
-offset_right = 402.0
-offset_bottom = 312.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -46.5
+offset_top = 60.0
+offset_right = 41.5
+offset_bottom = 92.0
+grow_horizontal = 2
+grow_vertical = 2
 theme = ExtResource("5_y48l2")
 text = "Continuar
 "
 
 [node name="DineroObtenido" type="Label" parent="CanvasLayer/Resumen/PanelFinal" unique_id=578310294]
 layout_mode = 0
-offset_left = 66.0
-offset_top = 88.0
-offset_right = 200.0
-offset_bottom = 111.0
+offset_left = 179.0
+offset_top = 110.0
+offset_right = 326.0
+offset_bottom = 133.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
