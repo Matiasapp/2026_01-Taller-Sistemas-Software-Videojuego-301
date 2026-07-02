@@ -3,30 +3,47 @@
 [ext_resource type="Script" uid="uid://cx1y7ow3g0hcx" path="res://Scripts/Managers/hud_manager.gd" id="1_sd512"]
 [ext_resource type="Texture2D" uid="uid://cxqi1lh5nip8y" path="res://Assets/UI/button_style.png" id="2_jo1ms"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_psnte"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_qc5w2"]
 atlas = ExtResource("2_jo1ms")
 region = Rect2(1873, 492, 769, 568)
 
 [node name="Hud" type="CanvasLayer" unique_id=715583916]
 script = ExtResource("1_sd512")
 
-[node name="TextureRect" type="TextureRect" parent="." unique_id=1975738070]
-self_modulate = Color(1, 1, 1, 0.7921569)
-offset_left = 966.0
-offset_top = 540.0
-offset_right = 1137.0
-offset_bottom = 636.0
-texture = SubResource("AtlasTexture_psnte")
-expand_mode = 1
+[node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=1098160619]
+offset_left = 944.00006
+offset_top = 520.0
+offset_right = 1585.9353
+offset_bottom = 920.0
+scale = Vector2(0.31, 0.31)
+texture = SubResource("AtlasTexture_qc5w2")
+region_rect = Rect2(0, 0, 769, 568)
+patch_margin_left = 250
+patch_margin_top = 150
+patch_margin_right = 250
+patch_margin_bottom = 250
 
-[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1640203519]
+[node name="NinePatchRect2" type="NinePatchRect" parent="." unique_id=1009115055]
+offset_left = 8.000001
+offset_top = 88.0
+offset_right = 756.387
+offset_bottom = 488.0
+scale = Vector2(0.31, 0.31)
+texture = SubResource("AtlasTexture_qc5w2")
+region_rect = Rect2(0, 0, 769, 568)
+patch_margin_left = 250
+patch_margin_top = 150
+patch_margin_right = 250
+patch_margin_bottom = 250
+
+[node name="PlataHoraDia" type="MarginContainer" parent="." unique_id=1640203519]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -293.0
-offset_top = 513.0
-offset_right = 19.0
-offset_bottom = 698.0
+offset_left = -296.0
+offset_top = 504.0
+offset_right = 16.0
+offset_bottom = 689.0
 grow_horizontal = 0
 size_flags_vertical = 8
 theme_override_constants/margin_left = 51
@@ -34,12 +51,12 @@ theme_override_constants/margin_top = 36
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 20
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1230521768]
+[node name="VBoxContainer" type="VBoxContainer" parent="PlataHoraDia" unique_id=1230521768]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 
-[node name="LabelDinero" type="Label" parent="MarginContainer/VBoxContainer" unique_id=522878898]
+[node name="LabelDinero" type="Label" parent="PlataHoraDia/VBoxContainer" unique_id=522878898]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 1, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
@@ -51,14 +68,83 @@ theme_override_font_sizes/font_size = 33
 text = "$0"
 horizontal_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=684228979]
+[node name="HBoxContainer" type="HBoxContainer" parent="PlataHoraDia/VBoxContainer" unique_id=684228979]
 layout_mode = 2
 theme_override_constants/separation = 15
 
-[node name="LabelHora" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1645891486]
+[node name="LabelHora" type="Label" parent="PlataHoraDia/VBoxContainer/HBoxContainer" unique_id=1645891486]
 layout_mode = 2
 text = "Hora: 8:00"
 
-[node name="LabelDia" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=485410212]
+[node name="LabelDia" type="Label" parent="PlataHoraDia/VBoxContainer/HBoxContainer" unique_id=485410212]
 layout_mode = 2
 text = "Día: 0"
+
+[node name="TallerAbiertoCerrado" type="MarginContainer" parent="." unique_id=1148068106]
+offset_left = 32.0
+offset_top = 120.0
+offset_right = 208.0
+offset_bottom = 143.0
+
+[node name="Label" type="RichTextLabel" parent="TallerAbiertoCerrado" unique_id=566617542]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 7
+bbcode_enabled = true
+text = "El taller está "
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="ClientesAtendidos" type="MarginContainer" parent="." unique_id=1310501263]
+offset_left = 32.0
+offset_top = 160.0
+offset_right = 232.0
+offset_bottom = 183.0
+
+[node name="Label" type="RichTextLabel" parent="ClientesAtendidos" unique_id=1305981533]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 7
+bbcode_enabled = true
+text = "Clientes atendidos: 0/5"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="AvisoCliente" type="RichTextLabel" parent="." unique_id=470012001]
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 16.0
+offset_top = 224.0
+offset_right = -760.0
+offset_bottom = 320.0
+grow_horizontal = 2
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="AvisoAbrirTaller" type="Label" parent="." unique_id=470012050]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -560.0
+offset_top = -180.0
+offset_right = -296.0
+offset_bottom = 27.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 16
+text = "Tienes que abrir el taller para comenzar a atender clientes"
+vertical_alignment = 1
+autowrap_mode = 2

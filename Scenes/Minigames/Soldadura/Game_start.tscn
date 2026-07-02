@@ -3,22 +3,11 @@
 [ext_resource type="Script" uid="uid://dhovlcirilba" path="res://Scenes/Minigames/Soldadura/Script/tutorial.gd" id="1_lajqj"]
 [ext_resource type="Texture2D" uid="uid://c3dacvm42g81q" path="res://Scenes/Minigames/Soldadura/Imagenes/fondo minijuego.png" id="2_lhyic"]
 [ext_resource type="AudioStream" uid="uid://5u4uvyqeq57x" path="res://Assets/Audio/MinigameAudio/Soldadura/soldaduraloop.ogg" id="3_5jfx2"]
+[ext_resource type="Texture2D" uid="uid://cxqi1lh5nip8y" path="res://Assets/UI/button_style.png" id="4_hudnp"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2af1q"]
-bg_color = Color(0.92941177, 0.49803922, 0.16470589, 1)
-border_width_left = 6
-border_width_top = 6
-border_width_right = 6
-border_width_bottom = 6
-border_color = Color(1, 0.7294118, 0.36862746, 1)
-border_blend = true
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-corner_detail = 10
-shadow_color = Color(0, 0, 0, 1)
-shadow_size = 11
+[sub_resource type="AtlasTexture" id="AtlasTexture_ninehud"]
+atlas = ExtResource("4_hudnp")
+region = Rect2(1873, 492, 769, 568)
 
 [node name="Node2D" type="Node2D" unique_id=365663170]
 script = ExtResource("1_lajqj")
@@ -31,9 +20,9 @@ texture = ExtResource("2_lhyic")
 offset_right = 1216.0
 offset_bottom = 728.0
 size_flags_horizontal = 4
-color = Color(1, 0.6, 0.14509805, 0.45882353)
+color = Color(0.16, 0.09, 0.04, 0.8)
 
-[node name="PanelTutorial" type="Panel" parent="Tutorial" unique_id=1739584138]
+[node name="PanelTutorial" type="NinePatchRect" parent="Tutorial" unique_id=1739584138]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -46,7 +35,12 @@ offset_right = 394.0
 offset_bottom = 206.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_2af1q")
+texture = SubResource("AtlasTexture_ninehud")
+region_rect = Rect2(0, 0, 769, 568)
+patch_margin_left = 110
+patch_margin_top = 100
+patch_margin_right = 110
+patch_margin_bottom = 110
 
 [node name="Titulo" type="Label" parent="Tutorial/PanelTutorial" unique_id=269170728]
 layout_mode = 1

@@ -212,6 +212,24 @@ region = Rect2(1806, 1353, 205, 219)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u8dp7"]
 size = Vector2(42, 34)
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_dust"]
+blend_mode = 1
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_fiqrm"]
+particle_flag_disable_z = true
+emission_shape_offset = Vector3(900, 300, 0)
+emission_shape_scale = Vector3(1000, 400, 1)
+emission_shape = 3
+emission_box_extents = Vector3(1, 1, 1)
+direction = Vector3(0, -1, 0)
+spread = 100.0
+initial_velocity_min = 4.0
+initial_velocity_max = 14.0
+gravity = Vector3(0, -2, 0)
+scale_min = 0.19999999
+scale_max = 6.0
+color = Color(1.8, 1.65, 1.3, 1)
+
 [node name="GameScreen" type="Node2D" unique_id=1964637352]
 script = ExtResource("1_qy101")
 
@@ -339,10 +357,10 @@ shape = SubResource("CapsuleShape2D_oeeqd")
 position = Vector2(-206, -88)
 
 [node name="LabelAbrirTaller" type="Label" parent="Marker2DAbrirTaller" unique_id=613015327]
-offset_left = -92.0
-offset_top = -62.0
-offset_right = 133.0
-offset_bottom = -39.0
+offset_left = 54.0
+offset_top = -64.0
+offset_right = 279.0
+offset_bottom = -41.0
 text = "Presiona E para abrir el taller"
 
 [node name="Marker2DInteractuarPc" type="Marker2D" parent="." unique_id=1971615173]
@@ -399,8 +417,7 @@ position = Vector2(944.375, -746.5)
 scale = Vector2(1.5156255, 1.453125)
 sprite_frames = SubResource("SpriteFrames_ev6y3")
 animation = &"giro_ventilador"
-frame = 7
-frame_progress = 0.23566177
+frame_progress = 0.91331476
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Node2D/ventilador" unique_id=1168291353]
 stream = ExtResource("6_ue0ap")
@@ -534,6 +551,18 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
+
+[node name="DustParticles" type="GPUParticles2D" parent="." unique_id=792663366]
+modulate = Color(1, 0.9490196, 0.1882353, 1)
+material = SubResource("CanvasItemMaterial_dust")
+position = Vector2(-376.00006, 40)
+scale = Vector2(0.25292596, 1.2863395)
+amount = 35
+lifetime = 6.0
+preprocess = 6.0
+collision_base_size = 69.92
+visibility_rect = Rect2(-300, -400, 2400, 1300)
+process_material = SubResource("ParticleProcessMaterial_fiqrm")
 
 [connection signal="body_entered" from="AreaAbrirTaller" to="." method="_on_area_abrir_taller_body_entered"]
 [connection signal="body_exited" from="AreaAbrirTaller" to="." method="_on_area_abrir_taller_body_exited"]

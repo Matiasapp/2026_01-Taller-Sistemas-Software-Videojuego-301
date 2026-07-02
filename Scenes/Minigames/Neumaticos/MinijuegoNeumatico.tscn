@@ -14,6 +14,7 @@
 [ext_resource type="AudioStream" uid="uid://3lvr8kb4vatu" path="res://Assets/Audio/MinigameAudio/Neumaticos/inflate.wav" id="12_4nbr0"]
 [ext_resource type="AudioStream" uid="uid://cytnoh8w72o5v" path="res://Assets/Audio/MinigameAudio/Neumaticos/complete.wav" id="13_f37eh"]
 [ext_resource type="AudioStream" uid="uid://c8xoch5vohqlk" path="res://Assets/Audio/MinigameAudio/Neumaticos/neumaticosloop.ogg" id="14_4nbr0"]
+[ext_resource type="Texture2D" uid="uid://cxqi1lh5nip8y" path="res://Assets/UI/button_style.png" id="15_hudnp"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xrnwy"]
 atlas = ExtResource("5_8hs81")
@@ -114,37 +115,9 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v74x8"]
-bg_color = Color(0.92941177, 0.49803922, 0.16470589, 1)
-border_width_left = 6
-border_width_top = 6
-border_width_right = 6
-border_width_bottom = 6
-border_color = Color(1, 0.7294118, 0.36862746, 1)
-border_blend = true
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-corner_detail = 10
-shadow_color = Color(0, 0, 0, 1)
-shadow_size = 11
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_trxfn"]
-bg_color = Color(0.92941177, 0.49803922, 0.16470589, 1)
-border_width_left = 6
-border_width_top = 6
-border_width_right = 6
-border_width_bottom = 6
-border_color = Color(1, 0.7294118, 0.36862746, 1)
-border_blend = true
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-corner_detail = 10
-shadow_color = Color(0, 0, 0, 1)
-shadow_size = 11
+[sub_resource type="AtlasTexture" id="AtlasTexture_ninehud"]
+atlas = ExtResource("15_hudnp")
+region = Rect2(1873, 492, 769, 568)
 
 [node name="MinijuegoNeumatico" type="Control" unique_id=121450491]
 layout_mode = 3
@@ -345,29 +318,34 @@ offset_right = 608.0
 offset_bottom = 364.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(1, 0.6, 0.14509805, 0.45882353)
+color = Color(0.16, 0.09, 0.04, 0.8)
 
-[node name="PanelFinal" type="Panel" parent="Resumen" unique_id=1802932442]
+[node name="PanelFinal" type="NinePatchRect" parent="Resumen" unique_id=1802932442]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -210.0
-offset_top = -148.0
-offset_right = 210.0
-offset_bottom = 180.0
+offset_left = -269.54266
+offset_top = -210.5
+offset_right = 269.54266
+offset_bottom = 210.5
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_v74x8")
+texture = SubResource("AtlasTexture_ninehud")
+region_rect = Rect2(0, 0, 769, 568)
+patch_margin_left = 110
+patch_margin_top = 100
+patch_margin_right = 110
+patch_margin_bottom = 110
 
 [node name="PuntajeFinal" type="Label" parent="Resumen/PanelFinal" unique_id=1767653000]
 layout_mode = 0
-offset_left = 66.0
-offset_top = 56.0
-offset_right = 171.0
-offset_bottom = 79.0
+offset_left = 196.54266
+offset_top = 100.5
+offset_right = 315.54266
+offset_bottom = 123.5
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -379,20 +357,20 @@ text = "Puntaje Final: 0"
 
 [node name="Button" type="Button" parent="Resumen/PanelFinal" unique_id=876740829]
 layout_mode = 0
-offset_left = 314.0
-offset_top = 280.0
-offset_right = 402.0
-offset_bottom = 312.0
+offset_left = 225.54266
+offset_top = 286.5
+offset_right = 313.54266
+offset_bottom = 318.5
 theme = ExtResource("9_v74x8")
 text = "Continuar
 "
 
 [node name="DineroObtenido" type="Label" parent="Resumen/PanelFinal" unique_id=1464478374]
 layout_mode = 0
-offset_left = 66.0
-offset_top = 88.0
-offset_right = 200.0
-offset_bottom = 111.0
+offset_left = 184.54266
+offset_top = 146.5
+offset_right = 331.54266
+offset_bottom = 169.5
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -404,6 +382,7 @@ text = "Dinero Obtenido: 0"
 
 [node name="Tutorial" type="ColorRect" parent="." unique_id=611989632]
 process_mode = 2
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -416,9 +395,9 @@ offset_right = 608.0
 offset_bottom = 364.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(1, 0.6, 0.14509805, 0.45882353)
+color = Color(0.16, 0.09, 0.04, 0.8)
 
-[node name="PanelTutorial" type="Panel" parent="Tutorial" unique_id=1388779804]
+[node name="PanelTutorial" type="NinePatchRect" parent="Tutorial" unique_id=1388779804]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -431,17 +410,22 @@ offset_right = 392.0
 offset_bottom = 244.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_trxfn")
+texture = SubResource("AtlasTexture_ninehud")
+region_rect = Rect2(0, 0, 769, 568)
+patch_margin_left = 110
+patch_margin_top = 100
+patch_margin_right = 110
+patch_margin_bottom = 110
 
 [node name="Titulo" type="Label" parent="Tutorial/PanelTutorial" unique_id=1212421464]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -208.0
-offset_top = 56.0
-offset_right = 270.0
-offset_bottom = 95.0
+offset_left = -196.0
+offset_top = 65.0
+offset_right = 201.0
+offset_bottom = 104.0
 grow_horizontal = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
@@ -451,7 +435,7 @@ theme_override_constants/shadow_offset_y = 1
 theme_override_constants/outline_size = 5
 theme_override_constants/shadow_outline_size = 3
 theme_override_font_sizes/font_size = 28
-text = "¡INFLA LO QUE MAS PUEDAS!"
+text = "¡INFLA LO QUE MÁS PUEDAS!"
 
 [node name="Instrucciones" type="Label" parent="Tutorial/PanelTutorial" unique_id=69458775]
 layout_mode = 1
@@ -460,10 +444,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -280.0
-offset_top = 12.0
-offset_right = 307.0
-offset_bottom = 36.0
+offset_left = -283.0
+offset_top = 38.0
+offset_right = 304.0
+offset_bottom = 62.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Pulsa el espacio justo en el área verde para progresar inflando neumáticos ."
@@ -475,10 +459,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -320.0
-offset_top = -68.0
-offset_right = 346.0
-offset_bottom = -36.0
+offset_left = -331.0
+offset_top = -63.0
+offset_right = 335.0
+offset_bottom = -31.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Tienes 30 segundos. ¡Inflada todos los neumáticos que puedas para ganar puntuacion!"
