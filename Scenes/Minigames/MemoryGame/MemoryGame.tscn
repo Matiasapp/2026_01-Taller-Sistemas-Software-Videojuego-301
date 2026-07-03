@@ -271,6 +271,7 @@ bus = &"SFX"
 
 [node name="MatchSound" type="AudioStreamPlayer" parent="." unique_id=1567476839]
 stream = ExtResource("5_eohb8")
+volume_db = -7.0
 bus = &"SFX"
 
 [connection signal="mouse_entered" from="CanvasLayer/PantallaResultado/Panel/VBox/BtnContinuar" to="." method="_on_btn_continuar_mouse_entered"]

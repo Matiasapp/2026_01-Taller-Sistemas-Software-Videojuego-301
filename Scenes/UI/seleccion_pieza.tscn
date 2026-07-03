@@ -2,6 +2,9 @@
 
 [ext_resource type="Script" uid="uid://bw173jp8mygmt" path="res://Scripts/Gameplay/seleccion_pieza.gd" id="1_oe38y"]
 [ext_resource type="Texture2D" uid="uid://di44a3hwi77dx" path="res://Assets/Sprites/MainMenu/Piezas.png" id="2_oe38y"]
+[ext_resource type="AudioStream" uid="uid://d2txt8yf7fddh" path="res://Assets/Audio/Gameplay/Diagnostico/clickpieza.wav" id="3_dq7yn"]
+[ext_resource type="AudioStream" uid="uid://dekxqi0muv8nt" path="res://Assets/Audio/Gameplay/Diagnostico/hoverpieza.wav" id="4_2xpxw"]
+[ext_resource type="AudioStream" uid="uid://beevsopvjddwc" path="res://Assets/Audio/GameScreen/whoosh1.wav" id="5_2xpxw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mny8t"]
 size = Vector2(332, 462.75)
@@ -86,6 +89,24 @@ offset_top = 420.0
 offset_right = 1054.0
 offset_bottom = 443.0
 text = "Pieza"
+
+[node name="ClickSound" type="AudioStreamPlayer" parent="." unique_id=2093587348]
+stream = ExtResource("3_dq7yn")
+
+[node name="HoverSound" type="AudioStreamPlayer" parent="." unique_id=747173765]
+stream = ExtResource("4_2xpxw")
+
+[node name="TransitionWhoosh" type="AudioStreamPlayer" parent="." unique_id=501270874]
+stream = ExtResource("5_2xpxw")
+
+[node name="FadeRect" type="ColorRect" parent="." unique_id=2093372044]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
 
 [connection signal="input_event" from="AreaBuena" to="." method="_on_area_buena_input_event"]
 [connection signal="mouse_entered" from="AreaBuena" to="." method="_on_area_buena_mouse_entered"]

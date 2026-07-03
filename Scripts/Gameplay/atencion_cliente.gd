@@ -1,5 +1,9 @@
 extends Node2D
 
+# Audio
+@onready var click_sound: AudioStreamPlayer = $ClickSound
+@onready var hover_sound: AudioStreamPlayer = $HoverSound
+
 # --- Configuración del atlas de clientes (ss.png) ---
 const ATLAS_CLIENTES: Texture2D = preload("res://Assets/Sprites/clientes_atendidos/ss.png")
 const TAMANO_FRAME: int = 200            # Cada frame mide 200x200
@@ -149,10 +153,14 @@ func _ready() -> void:
 	if modal_diagnostico:
 		modal_diagnostico.diagnostico_resuelto.connect(_on_diagnostico_resuelto)
 
+	conectar_sonidos_botones(self)
+
 	generar_clientes()
+
 	if clientes.is_empty():
 		push_warning("AtencionCliente: no se generó ningún cliente desde el atlas.")
 		return
+
 	_mostrar_cliente_aleatorio()
 
 ## Elige un cliente al azar que NO haya aparecido aún en la partida y lo muestra.
@@ -278,18 +286,23 @@ func saltar_animacion() -> void:
 		boton_atender.modulate.a = 1.0
 
 ## Un clic izquierdo salta la animación si aún está escribiendo.
-func _unhandled_input(event: InputEvent) -> void:
+func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if escribiendo:
 			saltar_animacion()
+			get_viewport().set_input_as_handled()
 
 func _start_talking() -> void:
-	if talking_sound and not talking_sound.playing:
-		talking_sound.pitch_scale = randf_range(0.95, 1.05)
-		talking_sound.play()
+	if not talking_sound:
+		return
+
+	talking_sound.stop()
+	talking_sound.pitch_scale = randf_range(0.95, 1.05)
+	talking_sound.play()
+
 
 func _stop_talking() -> void:
-	if talking_sound and talking_sound.playing:
+	if talking_sound:
 		talking_sound.stop()
 
 ## Abre el modal de diagnóstico para el cliente actual.
@@ -306,30 +319,24 @@ func _on_diagnostico_resuelto(correcto: bool) -> void:
 
 	if not correcto:
 		DATOSGLOBALES.restar_dinero(PENALIZACION_DIAGNOSTICO)
-		print("Diagnóstico incorrecto: -$%d" % PENALIZACION_DIAGNOSTICO)
 
 	var ruta: String = FALLA_A_MINIJUEGO.get(cliente_actual.falla, "")
 	if ruta.is_empty():
 		push_warning("AtencionCliente: no hay minijuego mapeado para la falla '%s'." % cliente_actual.falla)
 		return
 
-	# Guardamos la ruta para usarla después de elegir la pieza
 	ruta_minijuego_pendiente = ruta
 
-	# Si el cliente es estafador dejamos la lógica igual
 	DATOSGLOBALES.estafa_pendiente = cliente_actual.estafador
 	if cliente_actual.estafador:
 		DATOSGLOBALES.dinero_antes_estafa = DATOSGLOBALES.dinero
 		DATOSGLOBALES.nombre_estafador = cliente_actual.nombre.capitalize()
 
-	# Abrir pantalla de selección de pieza
 	var seleccion = preload(
 		"res://Scenes/UI/seleccion_pieza.tscn"
 	).instantiate()
 
 	add_child(seleccion)
-
-	# Esperar elección
 	seleccion.pieza_elegida.connect(_on_pieza_elegida)
 
 func _on_pieza_elegida(tipo: String) -> void:
@@ -339,3 +346,35 @@ func _on_pieza_elegida(tipo: String) -> void:
 	get_tree().change_scene_to_file(
 		ruta_minijuego_pendiente
 	)
+	
+func play_click() -> void:
+	if not click_sound:
+		return
+
+	var semitones := randf_range(-2.0, 2.0)
+	click_sound.pitch_scale = pow(2.0, semitones / 12.0)
+
+	click_sound.volume_db = -7.0
+	click_sound.play()
+
+
+func play_hover() -> void:
+	if escribiendo:
+		return
+
+	if not hover_sound:
+		return
+
+	var semitones := randf_range(-1.5, 1.5)
+	hover_sound.pitch_scale = pow(2.0, semitones / 12.0)
+
+	hover_sound.volume_db = -15.0
+	hover_sound.play()
+
+func conectar_sonidos_botones(nodo: Node) -> void:
+	for hijo in nodo.get_children():
+		if hijo is Button:
+			hijo.pressed.connect(play_click)
+			hijo.mouse_entered.connect(play_hover)
+
+		conectar_sonidos_botones(hijo)
