@@ -30,6 +30,7 @@ SceneManager="*uid://cpnka51j1vlcx"
 GlobalMusic="*uid://3io18s88gsyf"
 GLOBALSOLDADURA="*uid://ca10f65h38tqe"
 AJUSTES="*res://Scripts/Managers/config_manager.gd"
+CARGADOR="*res://Scripts/UI/cargador.gd"
 
 [display]
 
@@ -108,3 +109,4 @@ Saltar={
 
 textures/canvas_textures/default_texture_filter=0
 rendering_device/driver.windows="d3d12"
+environment/defaults/default_clear_color=Color(0, 0, 0, 1)
