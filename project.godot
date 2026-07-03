@@ -31,6 +31,7 @@ GlobalMusic="*uid://3io18s88gsyf"
 GLOBALSOLDADURA="*uid://ca10f65h38tqe"
 AJUSTES="*res://Scripts/Managers/config_manager.gd"
 CARGADOR="*res://Scripts/UI/cargador.gd"
+PARTIDA="*res://Scripts/Managers/save_manager.gd"
 
 [display]
 
