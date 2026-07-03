@@ -303,9 +303,9 @@ alignment = 1
 [node name="BtnRestablecer" type="Button" parent="Marco/Contenido/FilaBotones" unique_id=170241974]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Restablecer"
+text = "  Restablecer  "
 
 [node name="BtnVolver" type="Button" parent="Marco/Contenido/FilaBotones" unique_id=1970552968]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Volver"
+text = "  Volver  "
