@@ -286,18 +286,23 @@ func saltar_animacion() -> void:
 		boton_atender.modulate.a = 1.0
 
 ## Un clic izquierdo salta la animación si aún está escribiendo.
-func _unhandled_input(event: InputEvent) -> void:
+func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if escribiendo:
 			saltar_animacion()
+			get_viewport().set_input_as_handled()
 
 func _start_talking() -> void:
-	if talking_sound and not talking_sound.playing:
-		talking_sound.pitch_scale = randf_range(0.95, 1.05)
-		talking_sound.play()
+	if not talking_sound:
+		return
+
+	talking_sound.stop()
+	talking_sound.pitch_scale = randf_range(0.95, 1.05)
+	talking_sound.play()
+
 
 func _stop_talking() -> void:
-	if talking_sound and talking_sound.playing:
+	if talking_sound:
 		talking_sound.stop()
 
 ## Abre el modal de diagnóstico para el cliente actual.
@@ -314,30 +319,24 @@ func _on_diagnostico_resuelto(correcto: bool) -> void:
 
 	if not correcto:
 		DATOSGLOBALES.restar_dinero(PENALIZACION_DIAGNOSTICO)
-		print("Diagnóstico incorrecto: -$%d" % PENALIZACION_DIAGNOSTICO)
 
 	var ruta: String = FALLA_A_MINIJUEGO.get(cliente_actual.falla, "")
 	if ruta.is_empty():
 		push_warning("AtencionCliente: no hay minijuego mapeado para la falla '%s'." % cliente_actual.falla)
 		return
 
-	# Guardamos la ruta para usarla después de elegir la pieza
 	ruta_minijuego_pendiente = ruta
 
-	# Si el cliente es estafador dejamos la lógica igual
 	DATOSGLOBALES.estafa_pendiente = cliente_actual.estafador
 	if cliente_actual.estafador:
 		DATOSGLOBALES.dinero_antes_estafa = DATOSGLOBALES.dinero
 		DATOSGLOBALES.nombre_estafador = cliente_actual.nombre.capitalize()
 
-	# Abrir pantalla de selección de pieza
 	var seleccion = preload(
 		"res://Scenes/UI/seleccion_pieza.tscn"
 	).instantiate()
 
 	add_child(seleccion)
-
-	# Esperar elección
 	seleccion.pieza_elegida.connect(_on_pieza_elegida)
 
 func _on_pieza_elegida(tipo: String) -> void:

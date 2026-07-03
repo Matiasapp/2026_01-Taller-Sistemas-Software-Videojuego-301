@@ -1,5 +1,8 @@
 extends Node2D
 
+#Audio
+@onready var transition_whoosh: AudioStreamPlayer = $TransitionWhoosh
+
 var jugador_en_rango_abrir_taller = false
 var jugador_en_rango_interactuar_pc = false
 var jugador_en_rango_atender_cliente = false
@@ -318,7 +321,7 @@ func atender_cliente() -> void:
 	DATOSGLOBALES.volviendo_de_atencion = true
 
 	# Siempre se atiende al cliente (también al 5º): pantalla de atención + minijuego.
-	get_tree().change_scene_to_file(ATENCION_CLIENTE_SCENE)
+	await transition_to_atencion_cliente()
 
 
 # =========================
@@ -552,3 +555,18 @@ func fade_to_black(duration := 0.6) -> void:
 	await tween.finished		
 	
 var debug_apagon_lanzado := false
+
+func transition_to_atencion_cliente() -> void:
+	puede_interactuar = false
+
+	if transition_whoosh:
+		transition_whoosh.volume_db = -4.0
+		transition_whoosh.pitch_scale = 1.0
+		transition_whoosh.play()
+
+	await fade_to_black(0.45)
+
+	if transition_whoosh and transition_whoosh.playing:
+		await transition_whoosh.finished
+
+	get_tree().change_scene_to_file(ATENCION_CLIENTE_SCENE)

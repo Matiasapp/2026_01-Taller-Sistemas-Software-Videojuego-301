@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cx1y7ow3g0hcx" path="res://Scripts/Managers/hud_manager.gd" id="1_sd512"]
 [ext_resource type="Texture2D" uid="uid://cxqi1lh5nip8y" path="res://Assets/UI/button_style.png" id="2_jo1ms"]
+[ext_resource type="AudioStream" uid="uid://bgojdqsxpecni" path="res://Assets/Audio/GameScreen/money.wav" id="3_xaom8"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qc5w2"]
 atlas = ExtResource("2_jo1ms")
@@ -148,3 +149,6 @@ theme_override_font_sizes/font_size = 16
 text = "Tienes que abrir el taller para comenzar a atender clientes"
 vertical_alignment = 1
 autowrap_mode = 2
+
+[node name="MoneySound" type="AudioStreamPlayer" parent="." unique_id=1134441224]
+stream = ExtResource("3_xaom8")

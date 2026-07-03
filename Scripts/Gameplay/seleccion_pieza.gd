@@ -22,6 +22,8 @@ var pieza_seleccionada := ""
 
 @onready var hover_sound: AudioStreamPlayer = $HoverSound
 @onready var click_sound: AudioStreamPlayer = $ClickSound
+@onready var transition_whoosh: AudioStreamPlayer = $TransitionWhoosh
+@onready var fade_rect: ColorRect = $FadeRect
 
 
 func _ready() -> void:
@@ -33,6 +35,8 @@ func _ready() -> void:
 func seleccionar_pieza(tipo: String) -> void:
 	if pieza_seleccionada != "":
 		return
+
+	pieza_seleccionada = tipo
 
 	play_click_pieza()
 
@@ -52,16 +56,11 @@ func seleccionar_pieza(tipo: String) -> void:
 		rect_dudosa.color.a = 0.25
 		DATOSGLOBALES.restar_dinero(COSTO_DUDOSA)
 
-	pieza_seleccionada = tipo
-
 	print("Pieza seleccionada: ", tipo)
 	print("Dinero actual: ", DATOSGLOBALES.dinero)
 
 	await click_sound.finished
-
-	pieza_elegida.emit(tipo)
-
-	queue_free()
+	await transition_to_minigame(tipo)
 
 
 func play_hover_pieza() -> void:
@@ -85,7 +84,34 @@ func play_click_pieza() -> void:
 	click_sound.pitch_scale = pow(2.0, semitones / 12.0)
 	click_sound.volume_db = -7.0
 	click_sound.play()
+	
+func fade_to_black(duration := 0.45) -> void:
+	if not fade_rect:
+		push_warning("SeleccionPieza: no se encontró FadeRect.")
+		return
 
+	fade_rect.visible = true
+	fade_rect.modulate.a = 0.0
+	fade_rect.mouse_filter = Control.MOUSE_FILTER_STOP
+
+	var tween := create_tween()
+	tween.tween_property(fade_rect, "modulate:a", 1.0, duration)
+
+	await tween.finished
+	
+func transition_to_minigame(tipo: String) -> void:
+	if transition_whoosh:
+		transition_whoosh.volume_db = -4.0
+		transition_whoosh.pitch_scale = 1.0
+		transition_whoosh.play()
+
+	await fade_to_black(0.45)
+
+	if transition_whoosh and transition_whoosh.playing:
+		await transition_whoosh.finished
+
+	pieza_elegida.emit(tipo)
+	queue_free()
 
 func _on_area_buena_mouse_entered() -> void:
 	if pieza_seleccionada != "buena":

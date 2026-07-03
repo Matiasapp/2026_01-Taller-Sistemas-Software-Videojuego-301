@@ -11,6 +11,7 @@
 [ext_resource type="AudioStream" uid="uid://dne61526r6hs" path="res://Assets/Audio/Gameplay/Diagnostico/workshoploop.ogg" id="9_ekr1c"]
 [ext_resource type="AudioStream" uid="uid://b2t66hdqmo381" path="res://Assets/Audio/Menu/click.wav" id="10_47gnd"]
 [ext_resource type="AudioStream" uid="uid://d0gkxqmj2s251" path="res://Assets/Audio/Menu/hoverclick.wav" id="11_s4ajt"]
+[ext_resource type="AudioStream" uid="uid://bi75mc32hh5jq" path="res://Assets/Audio/Gameplay/Diagnostico/correct.wav" id="12_s4ajt"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_tjhhq"]
 atlas = ExtResource("2_s08on")
@@ -106,6 +107,10 @@ bus = &"SFX"
 
 [node name="HoverSound" type="AudioStreamPlayer" parent="." unique_id=2122237090]
 stream = ExtResource("11_s4ajt")
+bus = &"SFX"
+
+[node name="CorrectSound" type="AudioStreamPlayer" parent="." unique_id=207859405]
+stream = ExtResource("12_s4ajt")
 bus = &"SFX"
 
 [connection signal="pressed" from="CanvasLayer/BotonAtender" to="." method="atender_cliente"]

@@ -19,7 +19,8 @@
 [ext_resource type="AudioStream" uid="uid://dsmrbqe7w6n7u" path="res://Assets/Audio/GameScreen/songloop.wav" id="14_h5ghc"]
 [ext_resource type="AudioStream" uid="uid://b0sfqmvnpypyl" path="res://Assets/Audio/GameScreen/PCin.wav" id="17_vuvpm"]
 [ext_resource type="AudioStream" uid="uid://3u0kjs1x3ovr" path="res://Assets/Audio/GameScreen/PCout.wav" id="18_x4ih4"]
-[ext_resource type="AudioStream" uid="uid://dyccise5p44i7" path="res://Assets/Audio/GameScreen/opensound.wav" id="19_x4ih4"]
+[ext_resource type="AudioStream" uid="uid://b0dou5eelgkjo" path="res://Assets/Audio/GameScreen/opensound.wav" id="19_x4ih4"]
+[ext_resource type="AudioStream" uid="uid://beevsopvjddwc" path="res://Assets/Audio/GameScreen/whoosh1.wav" id="21_8b3yb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oeeqd"]
 size = Vector2(230.57608, 1161.1431)
@@ -539,6 +540,7 @@ bus = &"SFX"
 
 [node name="OpenSound" type="AudioStreamPlayer" parent="." unique_id=1774960755]
 stream = ExtResource("19_x4ih4")
+bus = &"SFX"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=446820249]
 
@@ -563,6 +565,10 @@ preprocess = 6.0
 collision_base_size = 69.92
 visibility_rect = Rect2(-300, -400, 2400, 1300)
 process_material = SubResource("ParticleProcessMaterial_fiqrm")
+
+[node name="TransitionWhoosh" type="AudioStreamPlayer" parent="." unique_id=500344287]
+stream = ExtResource("21_8b3yb")
+bus = &"SFX"
 
 [connection signal="body_entered" from="AreaAbrirTaller" to="." method="_on_area_abrir_taller_body_entered"]
 [connection signal="body_exited" from="AreaAbrirTaller" to="." method="_on_area_abrir_taller_body_exited"]

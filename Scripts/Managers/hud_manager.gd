@@ -1,5 +1,8 @@
 extends CanvasLayer
 
+#Audio
+@onready var money_sound: AudioStreamPlayer = $MoneySound
+
 @onready var label_dia = $PlataHoraDia/VBoxContainer/HBoxContainer/LabelDia
 @onready var label_hora = $PlataHoraDia/VBoxContainer/HBoxContainer/LabelHora
 @onready var label_dinero = $PlataHoraDia/VBoxContainer/LabelDinero
@@ -134,24 +137,37 @@ func mostrar_popup_dinero(delta: int) -> void:
 	if delta == 0:
 		return
 
-	# Esperamos un frame para que el layout del HUD esté calculado (posición del label).
+	# Reproducir sonido según el cambio de dinero
+	if delta > 0:
+		play_gain_money()
+	else:
+		play_lose_money()
+
+	# Esperamos un frame para que el layout del HUD esté calculado
 	await get_tree().process_frame
 
 	var popup := Label.new()
 	popup.text = ("+$%d" % delta) if delta > 0 else ("-$%d" % absi(delta))
 	popup.add_theme_font_size_override("font_size", 30)
-	popup.add_theme_color_override("font_color", Color(0.45, 1.0, 0.45) if delta > 0 else Color(1.0, 0.4, 0.4))
+	popup.add_theme_color_override(
+		"font_color",
+		Color(0.45, 1.0, 0.45) if delta > 0 else Color(1.0, 0.4, 0.4)
+	)
 	popup.add_theme_color_override("font_outline_color", Color(0, 0, 0, 1))
 	popup.add_theme_constant_override("outline_size", 6)
 	add_child(popup)
 
-	# El contador de dinero está abajo-derecha, así que el popup va ARRIBA de él
-	# (a su derecha quedaría fuera de la pantalla).
 	popup.global_position = label_dinero.global_position + Vector2(0.0, -46.0)
 
 	var destino_y := popup.global_position.y - 40.0
 	var tween := create_tween()
-	tween.tween_property(popup, "global_position:y", destino_y, 1.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tween.tween_property(
+		popup,
+		"global_position:y",
+		destino_y,
+		1.0
+	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+
 	tween.parallel().tween_property(popup, "modulate:a", 0.0, 1.0)
 	tween.tween_callback(popup.queue_free)
 
@@ -182,3 +198,25 @@ func actualizar_hora(horas: int, minutos: int) -> void:
 	# Ejemplo: las 8:5 se verá como "08:05" en lugar de "8:5"
 	var hora_formateada = "%02d:%02d" % [horas, minutos]
 	label_hora.text = "Hora: " + hora_formateada
+	
+func play_gain_money() -> void:
+	if not money_sound:
+		return
+
+	money_sound.stop()
+	money_sound.pitch_scale = randf_range(0.98, 1.05)
+	money_sound.volume_db = -6.0
+	money_sound.play()
+		
+func play_lose_money() -> void:
+	if not money_sound:
+		return
+
+	money_sound.stop()
+	money_sound.pitch_scale = 1.0
+	money_sound.volume_db = -7.0
+	money_sound.play()
+
+	var tween := create_tween()
+	tween.tween_property(money_sound, "pitch_scale", 0.55, 0.35).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	
