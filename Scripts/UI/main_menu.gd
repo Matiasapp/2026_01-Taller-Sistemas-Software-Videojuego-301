@@ -38,6 +38,10 @@ func _ready() -> void:
 	else:
 		push_warning("No hay música asignada en Menu Music.")
 
+	# En navegador no se puede cerrar la pestaña desde el juego, así que ocultamos "Salir".
+	if OS.has_feature("web"):
+		$CanvasLayer/VBoxContainer/button_exit.hide()
+
 
 # ========================= 
 # BOTONES

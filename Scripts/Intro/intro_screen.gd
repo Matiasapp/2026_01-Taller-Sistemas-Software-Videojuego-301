@@ -185,7 +185,7 @@ func seleccionar_personaje(genero: String) -> void:
 	await fade_to_black(0.6)
 	await GlobalMusic.fade_out_and_stop(0.6)
 
-	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")
+	CARGADOR.cambiar_escena("res://Scenes/Gameplay/GameScreen.tscn")
 
 
 # =========================
