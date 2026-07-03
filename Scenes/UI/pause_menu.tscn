@@ -2,10 +2,14 @@
 
 [ext_resource type="Script" uid="uid://csmk1x00yjwu2" path="res://Scripts/UI/pause_menu.gd" id="1_rrvs5"]
 [ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="2_8rf44"]
+[ext_resource type="Texture2D" uid="uid://cxqi1lh5nip8y" path="res://Assets/UI/button_style.png" id="2_r2i2h"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oykix"]
+atlas = ExtResource("2_r2i2h")
+region = Rect2(1873, 492, 769, 568)
 
 [node name="Pause_menu" type="Control" unique_id=2038693485]
 process_mode = 2
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -14,36 +18,86 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_rrvs5")
 
-[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1792781909]
+[node name="ColorRect" type="ColorRect" parent="." unique_id=278250481]
+layout_mode = 0
+offset_right = 1153.0
+offset_bottom = 646.0
+color = Color(0.101960786, 0, 0, 0.3019608)
+
+[node name="Contenedor" type="Control" parent="." unique_id=1288400123]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=394288634]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
+[node name="NinePatchRect2" type="NinePatchRect" parent="Contenedor" unique_id=1129171308]
+layout_mode = 0
+offset_left = 415.00003
+offset_top = 226.0
+offset_right = 1444.032
+offset_bottom = 848.58057
+scale = Vector2(0.31, 0.31)
+texture = SubResource("AtlasTexture_oykix")
+region_rect = Rect2(0, 0, 769, 568)
+patch_margin_left = 250
+patch_margin_top = 150
+patch_margin_right = 250
+patch_margin_bottom = 250
 
-[node name="Continuar" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1112313251]
-layout_mode = 2
+[node name="Continuar" type="Button" parent="Contenedor" unique_id=1112313251]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -65.0
+offset_top = -58.0
+offset_right = 65.0
+offset_bottom = -28.0
+grow_horizontal = 2
+grow_vertical = 2
 theme = ExtResource("2_8rf44")
 text = "Continuar
 "
 
-[node name="Configuracion" type="Button" parent="MarginContainer/VBoxContainer" unique_id=215441485]
-layout_mode = 2
+[node name="Configuracion" type="Button" parent="Contenedor" unique_id=215441485]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -65.0
+offset_top = -15.0
+offset_right = 65.0
+offset_bottom = 15.0
+grow_horizontal = 2
+grow_vertical = 2
 theme = ExtResource("2_8rf44")
 text = "Configuracion
 "
 
-[node name="Salir" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1830107151]
-layout_mode = 2
+[node name="Salir" type="Button" parent="Contenedor" unique_id=1830107151]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -65.0
+offset_top = 25.0
+offset_right = 65.0
+offset_bottom = 55.0
+grow_horizontal = 2
+grow_vertical = 2
 theme = ExtResource("2_8rf44")
 text = "Salir
 "
 
-[connection signal="pressed" from="MarginContainer/VBoxContainer/Continuar" to="." method="_on_continuar_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/Salir" to="." method="_on_salir_pressed"]
+[connection signal="pressed" from="Contenedor/Continuar" to="." method="_on_continuar_pressed"]
+[connection signal="pressed" from="Contenedor/Configuracion" to="." method="_on_configuracion_pressed"]
+[connection signal="pressed" from="Contenedor/Salir" to="." method="_on_salir_pressed"]

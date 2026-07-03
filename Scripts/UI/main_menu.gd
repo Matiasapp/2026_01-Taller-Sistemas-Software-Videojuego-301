@@ -46,6 +46,9 @@ func _ready() -> void:
 func _on_button_new_game_pressed() -> void:
 	play_click()
 
+	# Nueva partida: reiniciamos el estado que debe empezar "de cero" cada partida.
+	DATOSGLOBALES.modal_bienvenida_mostrado = false
+
 	await get_tree().create_timer(0.15).timeout
 
 	GlobalMusic.set_intro_volume()
@@ -69,7 +72,8 @@ func _on_button_exit_pressed() -> void:
 
 func _on_button_options_pressed() -> void:
 	play_click()
-	en_desarrollo.popup_centered()
+	var opciones := preload("res://Scenes/UI/Opciones.tscn").instantiate()
+	add_child(opciones)
 
 
 # =========================

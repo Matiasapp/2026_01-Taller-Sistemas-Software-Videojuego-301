@@ -62,6 +62,7 @@ const EVENTO_ESTAFA_SCENE := "res://Scenes/Events/EventoEstafa.tscn"
 @onready var fade_rect: ColorRect = $CanvasLayer/FadeRect
 @onready var sprite_taller: Sprite2D = $Taller
 @onready var dust_particles: GPUParticles2D = $DustParticles
+@onready var modal_bienvenida: CanvasLayer = $ModalBienvenida
 
 # Textura del mapa cuando el taller está abierto (la cerrada es la que trae la escena).
 const TEXTURA_TALLER_ABIERTO: Texture2D = preload("res://Assets/Sprites/mapa final abierto.png")
@@ -184,6 +185,32 @@ func _ready() -> void:
 	# Al volver de atender, programamos la llegada del siguiente cliente (si quedan).
 	if taller_abierto:
 		programar_llegada_cliente()
+
+	# Modal de bienvenida: solo el día 1 a las 08:00, una única vez.
+	_verificar_modal_bienvenida()
+
+
+## Muestra el modal de bienvenida una sola vez, al iniciar el día 1 (08:00).
+func _verificar_modal_bienvenida() -> void:
+	if DATOSGLOBALES.modal_bienvenida_mostrado:
+		return
+	if DATOSGLOBALES.dia_actual != 1:
+		return
+	if TIEMPOMANAGER and TIEMPOMANAGER.current_hour != 8:
+		return
+
+	DATOSGLOBALES.modal_bienvenida_mostrado = true
+
+	if modal_bienvenida:
+		modal_bienvenida.visible = true
+		get_tree().paused = true
+
+
+func _on_modal_bienvenida_entendido() -> void:
+	AUDIOMANAGER.play_ui_click()
+	if modal_bienvenida:
+		modal_bienvenida.visible = false
+	get_tree().paused = false
 
 
 func iniciar_audio_taller() -> void:

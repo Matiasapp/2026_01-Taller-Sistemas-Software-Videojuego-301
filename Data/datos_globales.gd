@@ -4,6 +4,10 @@ var genero_jugador: String = ""
 var siguiente_evento_dia: String = ""
 var mostrar_resumen_dia_al_volver: bool = false
 
+## true una vez que se mostró el modal de bienvenida (día 1, 08:00) en la partida actual.
+## Se reinicia a false al empezar una Nueva Partida, para que aparezca una vez por partida.
+var modal_bienvenida_mostrado: bool = false
+
 ## Índices de los clientes (filas del atlas) que ya aparecieron en la partida.
 ## Persiste entre escenas para que un mismo cliente no se repita durante todo el juego.
 var clientes_usados: Array[int] = []

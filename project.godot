@@ -29,6 +29,7 @@ GLOBALSIGNALS="*uid://cqrp3iffc731p"
 SceneManager="*uid://cpnka51j1vlcx"
 GlobalMusic="*uid://3io18s88gsyf"
 GLOBALSOLDADURA="*uid://ca10f65h38tqe"
+AJUSTES="*res://Scripts/Managers/config_manager.gd"
 
 [display]
 
