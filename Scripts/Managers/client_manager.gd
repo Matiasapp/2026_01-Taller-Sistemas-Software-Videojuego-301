@@ -40,3 +40,11 @@ func dia_completo() -> bool:
 func cerrar_taller() -> void:
 	taller_abierto = false
 	estado_taller_cambiado.emit(false)
+
+## Reinicia el estado del taller/clientes (nueva partida o carga).
+func reiniciar() -> void:
+	taller_abierto = false
+	clientes_atendidos = 0
+	clientes_llegados = 0
+	estado_taller_cambiado.emit(false)
+	clientes_atendidos_cambiado.emit(clientes_atendidos, MAX_CLIENTES_DIA)
