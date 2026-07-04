@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://iv4yt7l4wc52"
-path="res://.godot/imported/8.png-c3a193bd89243fced7debcf51dd3bf9a.ctex"
+uid="uid://chraqx4bsqd72"
+path="res://.godot/imported/4m.png-4175e23681cf2bb2f1399d7a51f71079.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Events/EventoVictoria/8.png"
-dest_files=["res://.godot/imported/8.png-c3a193bd89243fced7debcf51dd3bf9a.ctex"]
+source_file="res://Assets/Events/EventoVictoria/4m.png"
+dest_files=["res://.godot/imported/4m.png-4175e23681cf2bb2f1399d7a51f71079.ctex"]
 
 [params]
 
