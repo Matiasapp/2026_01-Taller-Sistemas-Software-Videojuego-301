@@ -9,6 +9,7 @@
 [ext_resource type="AudioStream" uid="uid://b2t66hdqmo381" path="res://Assets/Audio/Menu/click.wav" id="5_df05h"]
 [ext_resource type="Script" path="res://Scenes/logo_group.gd" id="5_loo7a"]
 [ext_resource type="AudioStream" uid="uid://d0gkxqmj2s251" path="res://Assets/Audio/Menu/hoverclick.wav" id="6_8um5k"]
+[ext_resource type="PackedScene" path="res://Scenes/UI/ConfirmModal.tscn" id="10_confirm"]
 
 [sub_resource type="Animation" id="Animation_koqhg"]
 length = 0.001
@@ -112,6 +113,8 @@ oversampling_override = 1.0
 title = "Aviso"
 size = Vector2i(438, 100)
 dialog_text = "Lo sentimos, esta función se encuentra en desarrollo !!"
+
+[node name="ConfirmarNuevaPartida" parent="." instance=ExtResource("10_confirm")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=918920461]
 

@@ -40,3 +40,18 @@ func sumar_dinero(cantidad: int):
 
 func restar_dinero(cantidad: int):
 	dinero -= cantidad
+
+## Reinicia todo el estado de la partida a los valores iniciales (Nueva Partida).
+func reiniciar() -> void:
+	dia_actual = 1
+	dinero = 150
+	genero_jugador = ""
+	siguiente_evento_dia = ""
+	mostrar_resumen_dia_al_volver = false
+	modal_bienvenida_mostrado = false
+	clientes_usados.clear()
+	estafa_pendiente = false
+	dinero_antes_estafa = 0
+	nombre_estafador = ""
+	dinero_antes_atencion = 0
+	volviendo_de_atencion = false

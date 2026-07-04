@@ -428,6 +428,9 @@ func cerrar_dia() -> void:
 		TIEMPOMANAGER.stop_timer()
 		TIEMPOMANAGER.avanzar_dia()
 
+	# Autoguardado: se guarda el progreso al cerrar el día (ya con el nuevo día).
+	PARTIDA.guardar()
+
 	# ¿Habrá robo esta noche? Se decide ahora, pero el robo se muestra DESPUÉS del cierre.
 	if randf() <= 0.30:
 		DATOSGLOBALES.siguiente_evento_dia = "robo"
