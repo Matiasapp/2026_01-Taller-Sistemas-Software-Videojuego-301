@@ -5,6 +5,12 @@
 [ext_resource type="AudioStream" uid="uid://c2lxpg60tyflj" path="res://Assets/Audio/MinigameAudio/MemoryGame/memoryloop.ogg" id="3_ws1so"]
 [ext_resource type="AudioStream" uid="uid://bd70o16yeox1q" path="res://Assets/Audio/MinigameAudio/MemoryGame/cardflip.wav" id="4_63w7e"]
 [ext_resource type="AudioStream" uid="uid://dojpag0buidym" path="res://Assets/Audio/MinigameAudio/MemoryGame/matchsound.wav" id="5_eohb8"]
+[ext_resource type="Texture2D" uid="uid://cxqi1lh5nip8y" path="res://Assets/UI/button_style.png" id="6_hudnp"]
+[ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="7_theme"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ninehud"]
+atlas = ExtResource("6_hudnp")
+region = Rect2(1873, 492, 769, 568)
 
 [node name="MemoryGame" type="Node2D" unique_id=291353999]
 script = ExtResource("1_game")
@@ -64,21 +70,39 @@ text = "PARES: 0/10"
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color(0.05, 0.067, 0.09, 0.96)
+color = Color(0.16, 0.09, 0.04, 0.8)
 
-[node name="Panel" type="PanelContainer" parent="CanvasLayer/PantallaIntro" unique_id=1761068915]
-layout_mode = 0
+[node name="Panel" type="NinePatchRect" parent="CanvasLayer/PantallaIntro" unique_id=1761068915]
+layout_mode = 1
+anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -240.0
-offset_top = -220.0
-offset_right = 240.0
-offset_bottom = 220.0
+offset_left = -398.0
+offset_top = -262.0
+offset_right = 400.0
+offset_bottom = 260.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_ninehud")
+region_rect = Rect2(0, 0, 769, 568)
+patch_margin_left = 110
+patch_margin_top = 100
+patch_margin_right = 110
+patch_margin_bottom = 110
 
 [node name="VBox" type="VBoxContainer" parent="CanvasLayer/PantallaIntro/Panel" unique_id=389768804]
-layout_mode = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 130.0
+offset_top = 110.0
+offset_right = -130.0
+offset_bottom = -110.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Icono" type="Label" parent="CanvasLayer/PantallaIntro/Panel/VBox" unique_id=949629243]
 layout_mode = 2
@@ -132,30 +156,47 @@ layout_mode = 2
 [node name="BtnIniciar" type="Button" parent="CanvasLayer/PantallaIntro/Panel/VBox" unique_id=2065656393]
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.05, 0.067, 0.09, 1)
-theme_override_font_sizes/font_size = 18
+theme = ExtResource("7_theme")
+theme_override_font_sizes/font_size = 16
 text = "▶  INICIAR MINIJUEGO"
 
 [node name="PantallaResultado" type="ColorRect" parent="CanvasLayer" unique_id=1878677761]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color(0.05, 0.067, 0.09, 0.96)
+color = Color(0.16, 0.09, 0.04, 0.8)
 
-[node name="Panel" type="PanelContainer" parent="CanvasLayer/PantallaResultado" unique_id=1463322178]
-layout_mode = 0
+[node name="Panel" type="NinePatchRect" parent="CanvasLayer/PantallaResultado" unique_id=1463322178]
+layout_mode = 1
+anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -220.0
-offset_top = -190.0
-offset_right = 220.0
-offset_bottom = 190.0
+offset_left = -398.0
+offset_top = -262.0
+offset_right = 400.0
+offset_bottom = 260.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_ninehud")
+region_rect = Rect2(0, 0, 769, 568)
+patch_margin_left = 110
+patch_margin_top = 100
+patch_margin_right = 110
+patch_margin_bottom = 110
 
 [node name="VBox" type="VBoxContainer" parent="CanvasLayer/PantallaResultado/Panel" unique_id=1370112831]
-layout_mode = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 130.0
+offset_top = 110.0
+offset_right = -130.0
+offset_bottom = -110.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="LblTitulo" type="Label" parent="CanvasLayer/PantallaResultado/Panel/VBox" unique_id=1401923942]
 layout_mode = 2
@@ -212,9 +253,10 @@ custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
 
 [node name="BtnContinuar" type="Button" parent="CanvasLayer/PantallaResultado/Panel/VBox" unique_id=106157736]
-visible = false
 custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
+theme = ExtResource("7_theme")
+theme_type_variation = &"FlatButton"
 theme_override_font_sizes/font_size = 16
 text = "CONTINUAR →"
 
@@ -229,4 +271,8 @@ bus = &"SFX"
 
 [node name="MatchSound" type="AudioStreamPlayer" parent="." unique_id=1567476839]
 stream = ExtResource("5_eohb8")
+volume_db = -7.0
 bus = &"SFX"
+
+[connection signal="mouse_entered" from="CanvasLayer/PantallaResultado/Panel/VBox/BtnContinuar" to="." method="_on_btn_continuar_mouse_entered"]
+[connection signal="pressed" from="CanvasLayer/PantallaResultado/Panel/VBox/BtnContinuar" to="." method="_on_btn_continuar_pressed"]

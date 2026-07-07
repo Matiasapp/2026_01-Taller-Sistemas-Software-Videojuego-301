@@ -1,0 +1,119 @@
+[gd_scene format=3 uid="uid://ced7lrvkskxls"]
+
+[ext_resource type="Script" uid="uid://dw6wno5oorvd0" path="res://Scripts/Gameplay/diagnostico_modal.gd" id="1_diag"]
+[ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="2_theme"]
+[ext_resource type="Texture2D" uid="uid://cxqi1lh5nip8y" path="res://Assets/UI/button_style.png" id="3_panel"]
+[ext_resource type="AudioStream" uid="uid://bi75mc32hh5jq" path="res://Assets/Audio/Gameplay/Diagnostico/correct.wav" id="4_g3q34"]
+[ext_resource type="AudioStream" uid="uid://fbwpa3tm02nx" path="res://Assets/Audio/Gameplay/Diagnostico/wrong.wav" id="5_cn7mm"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_modal"]
+texture = ExtResource("3_panel")
+texture_margin_top = 2.0
+texture_margin_bottom = 4.0
+region_rect = Rect2(173, 492, 771, 568)
+
+[node name="DiagnosticoModal" type="Control" unique_id=1937336824]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_diag")
+
+[node name="Dimmer" type="ColorRect" parent="." unique_id=305215573]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6)
+
+[node name="Panel" type="Panel" parent="." unique_id=1974920360]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -350.0
+offset_top = -230.0
+offset_right = 350.0
+offset_bottom = 230.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_theme")
+theme_override_styles/panel = SubResource("StyleBoxTexture_modal")
+
+[node name="LabelPregunta" type="Label" parent="Panel" unique_id=692514535]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 26.0
+offset_right = 670.0
+offset_bottom = 78.0
+theme_override_font_sizes/font_size = 28
+text = "¿Cuál crees que es la falla?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBox" type="VBoxContainer" parent="Panel" unique_id=1644599000]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 96.0
+offset_right = 660.0
+offset_bottom = 372.0
+theme_override_constants/separation = 12
+
+[node name="Boton1" type="Button" parent="Panel/VBox" unique_id=1015499066]
+custom_minimum_size = Vector2(0, 56)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Opción 1"
+autowrap_mode = 2
+
+[node name="Boton2" type="Button" parent="Panel/VBox" unique_id=1968340710]
+custom_minimum_size = Vector2(0, 56)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Opción 2"
+autowrap_mode = 2
+
+[node name="Boton3" type="Button" parent="Panel/VBox" unique_id=1393143595]
+custom_minimum_size = Vector2(0, 56)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Opción 3"
+autowrap_mode = 2
+
+[node name="Boton4" type="Button" parent="Panel/VBox" unique_id=1377204826]
+custom_minimum_size = Vector2(0, 56)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Opción 4"
+autowrap_mode = 2
+
+[node name="LabelFeedback" type="Label" parent="Panel" unique_id=1169249466]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 360.0
+offset_right = 670.0
+offset_bottom = 392.0
+theme_override_font_sizes/font_size = 22
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BotonVolver" type="Button" parent="Panel" unique_id=562610670]
+layout_mode = 0
+offset_left = 250.0
+offset_top = 400.0
+offset_right = 450.0
+offset_bottom = 448.0
+theme_override_font_sizes/font_size = 20
+text = "Volver"
+
+[node name="CorrectSound" type="AudioStreamPlayer" parent="." unique_id=1040174059]
+stream = ExtResource("4_g3q34")
+
+[node name="WrongSound" type="AudioStreamPlayer" parent="." unique_id=1469059630]
+stream = ExtResource("5_cn7mm")

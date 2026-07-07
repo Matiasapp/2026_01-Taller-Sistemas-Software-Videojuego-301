@@ -14,10 +14,14 @@
 [ext_resource type="PackedScene" uid="uid://cyl73mjtc24ao" path="res://Scenes/UI/HUD.tscn" id="10_hi6fo"]
 [ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="11_4i3ym"]
 [ext_resource type="PackedScene" uid="uid://ponv4684dx6a" path="res://Scenes/UI/pause_menu.tscn" id="12_u8dp7"]
+[ext_resource type="Script" uid="uid://6djhw1vij6nr" path="res://Scenes/UI/pantalla_resumen_dia.gd" id="13_fiqrm"]
 [ext_resource type="AudioStream" uid="uid://oow22vmaxdqq" path="res://Assets/Audio/GameScreen/ambientfx.wav" id="13_imsci"]
 [ext_resource type="AudioStream" uid="uid://dsmrbqe7w6n7u" path="res://Assets/Audio/GameScreen/songloop.wav" id="14_h5ghc"]
 [ext_resource type="AudioStream" uid="uid://b0sfqmvnpypyl" path="res://Assets/Audio/GameScreen/PCin.wav" id="17_vuvpm"]
 [ext_resource type="AudioStream" uid="uid://3u0kjs1x3ovr" path="res://Assets/Audio/GameScreen/PCout.wav" id="18_x4ih4"]
+[ext_resource type="AudioStream" uid="uid://b0dou5eelgkjo" path="res://Assets/Audio/GameScreen/opensound.wav" id="19_x4ih4"]
+[ext_resource type="Texture2D" uid="uid://cxqi1lh5nip8y" path="res://Assets/UI/button_style.png" id="20_modal"]
+[ext_resource type="AudioStream" uid="uid://beevsopvjddwc" path="res://Assets/Audio/GameScreen/whoosh1.wav" id="21_8b3yb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oeeqd"]
 size = Vector2(230.57608, 1161.1431)
@@ -210,6 +214,40 @@ region = Rect2(1806, 1353, 205, 219)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u8dp7"]
 size = Vector2(42, 34)
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_dust"]
+blend_mode = 1
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_fiqrm"]
+particle_flag_disable_z = true
+emission_shape_offset = Vector3(900, 300, 0)
+emission_shape_scale = Vector3(1000, 400, 1)
+emission_shape = 3
+emission_box_extents = Vector3(1, 1, 1)
+direction = Vector3(0, -1, 0)
+spread = 100.0
+initial_velocity_min = 4.0
+initial_velocity_max = 14.0
+gravity = Vector3(0, -2, 0)
+scale_min = 0.19999999
+scale_max = 6.0
+color = Color(1.8, 1.65, 1.3, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_modal"]
+atlas = ExtResource("20_modal")
+region = Rect2(1873, 492, 769, 568)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8b3yb"]
+atlas = ExtResource("2_oeeqd")
+region = Rect2(123, -2, 438, 338)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0amcu"]
+atlas = ExtResource("6_oeeqd")
+region = Rect2(324, 839, 463, 357)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d4ukn"]
+atlas = ExtResource("6_oeeqd")
+region = Rect2(2222, 267, 395, 296)
+
 [node name="GameScreen" type="Node2D" unique_id=1964637352]
 script = ExtResource("1_qy101")
 
@@ -337,10 +375,10 @@ shape = SubResource("CapsuleShape2D_oeeqd")
 position = Vector2(-206, -88)
 
 [node name="LabelAbrirTaller" type="Label" parent="Marker2DAbrirTaller" unique_id=613015327]
-offset_left = -92.0
-offset_top = -62.0
-offset_right = 133.0
-offset_bottom = -39.0
+offset_left = 54.0
+offset_top = -64.0
+offset_right = 279.0
+offset_bottom = -41.0
 text = "Presiona E para abrir el taller"
 
 [node name="Marker2DInteractuarPc" type="Marker2D" parent="." unique_id=1971615173]
@@ -397,8 +435,7 @@ position = Vector2(944.375, -746.5)
 scale = Vector2(1.5156255, 1.453125)
 sprite_frames = SubResource("SpriteFrames_ev6y3")
 animation = &"giro_ventilador"
-frame = 7
-frame_progress = 0.23566177
+frame_progress = 0.91331476
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Node2D/ventilador" unique_id=1168291353]
 stream = ExtResource("6_ue0ap")
@@ -473,8 +510,10 @@ texture = SubResource("AtlasTexture_ev6y3")
 [node name="PantallaResumenDia" parent="." unique_id=1139403389 instance=ExtResource("10_4i3ym")]
 process_mode = 3
 visible = false
+script = ExtResource("13_fiqrm")
 
 [node name="BotónResumenDia" type="Button" parent="PantallaResumenDia" unique_id=256500136]
+process_mode = 3
 offset_left = 803.0
 offset_top = 501.0
 offset_right = 938.0
@@ -489,6 +528,9 @@ dialog_text = "Lo sentimos, esta función se encuentra en desarrollo !!"
 [node name="MenuPausa" type="CanvasLayer" parent="." unique_id=1314141683]
 
 [node name="Pause_menu" parent="MenuPausa" unique_id=2038693485 instance=ExtResource("12_u8dp7")]
+visible = false
+offset_top = 2.0
+offset_bottom = -3.0
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1087812777]
 
@@ -516,6 +558,204 @@ stream = ExtResource("18_x4ih4")
 volume_db = 10.0
 bus = &"SFX"
 
+[node name="OpenSound" type="AudioStreamPlayer" parent="." unique_id=1774960755]
+stream = ExtResource("19_x4ih4")
+bus = &"SFX"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=446820249]
+
+[node name="FadeRect" type="ColorRect" parent="CanvasLayer" unique_id=1545501297]
+visible = false
+z_index = 100
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="DustParticles" type="GPUParticles2D" parent="." unique_id=792663366]
+modulate = Color(1, 0.9490196, 0.1882353, 1)
+material = SubResource("CanvasItemMaterial_dust")
+position = Vector2(-376.00006, 40)
+scale = Vector2(0.25292596, 1.2863395)
+amount = 35
+lifetime = 6.0
+preprocess = 6.0
+collision_base_size = 69.92
+visibility_rect = Rect2(-300, -400, 2400, 1300)
+process_material = SubResource("ParticleProcessMaterial_fiqrm")
+
+[node name="ModalBienvenida" type="CanvasLayer" parent="." unique_id=1900000010]
+process_mode = 3
+layer = 10
+visible = false
+
+[node name="Fondo" type="ColorRect" parent="ModalBienvenida" unique_id=1900000011]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.16, 0.09, 0.04, 0.8)
+
+[node name="Panel" type="NinePatchRect" parent="ModalBienvenida" unique_id=1900000012]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -410.0
+offset_top = -271.0
+offset_right = 410.0
+offset_bottom = 271.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_modal")
+region_rect = Rect2(0, 0, 769, 568)
+patch_margin_left = 110
+patch_margin_top = 100
+patch_margin_right = 110
+patch_margin_bottom = 110
+
+[node name="Label" type="Label" parent="ModalBienvenida/Panel" unique_id=15360053]
+layout_mode = 0
+offset_left = 132.0
+offset_top = 394.0
+offset_right = 260.0
+offset_bottom = 417.0
+text = "Cortina metalica"
+
+[node name="Label2" type="Label" parent="ModalBienvenida/Panel" unique_id=1974526404]
+layout_mode = 0
+offset_left = 328.0
+offset_top = 394.0
+offset_right = 497.0
+offset_bottom = 417.0
+text = "Levantadora de autos"
+
+[node name="Label3" type="Label" parent="ModalBienvenida/Panel" unique_id=990281430]
+layout_mode = 0
+offset_left = 633.0
+offset_top = 397.0
+offset_right = 653.0
+offset_bottom = 420.0
+text = "PC"
+
+[node name="TextureRect3" type="TextureRect" parent="ModalBienvenida/Panel" unique_id=908935449]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -311.0
+offset_top = -31.0
+offset_right = -122.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_8b3yb")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="TextureRect" type="TextureRect" parent="ModalBienvenida/Panel" unique_id=1192004613]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -87.0
+offset_top = -35.0
+offset_right = 102.0
+offset_bottom = 116.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_0amcu")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="TextureRect2" type="TextureRect" parent="ModalBienvenida/Panel" unique_id=422816299]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 132.0
+offset_top = -22.0
+offset_right = 321.0
+offset_bottom = 129.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_d4ukn")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Titulo" type="Label" parent="ModalBienvenida/Panel" unique_id=1900000014]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -200.0
+offset_right = 250.0
+offset_bottom = -161.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.882, 0.686, 0.18, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 28
+text = "¡BIENVENIDO A TU TALLER!"
+horizontal_alignment = 1
+
+[node name="Cuerpo" type="Label" parent="ModalBienvenida/Panel" unique_id=1900000015]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -302.0
+offset_top = -145.0
+offset_right = 303.0
+offset_bottom = -42.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.85, 0.85, 0.85, 1)
+theme_override_font_sizes/font_size = 16
+text = "Es tu primer día. Abre el taller en la cortina metálica, atiende a los clientes en la levantadora de autos y usa el PC para revisar tus gastos y lograr pagar el alquiler de cada día ¡Buena suerte!"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="BtnEntendido" type="Button" parent="ModalBienvenida/Panel" unique_id=1900000016]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -92.0
+offset_top = 163.0
+offset_right = 92.0
+offset_bottom = 211.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("11_4i3ym")
+theme_override_font_sizes/font_size = 16
+text = "Entendido"
+
+[node name="TransitionWhoosh" type="AudioStreamPlayer" parent="." unique_id=500344287]
+stream = ExtResource("21_8b3yb")
+bus = &"SFX"
+
 [connection signal="body_entered" from="AreaAbrirTaller" to="." method="_on_area_abrir_taller_body_entered"]
 [connection signal="body_exited" from="AreaAbrirTaller" to="." method="_on_area_abrir_taller_body_exited"]
 [connection signal="body_entered" from="AreaInteractuarPc" to="." method="_on_area_interactuar_pc_body_entered"]
@@ -524,3 +764,4 @@ bus = &"SFX"
 [connection signal="body_exited" from="AreaAtenderCliente" to="." method="_on_area_atender_cliente_body_exited"]
 [connection signal="pressed" from="PantallaResumenDia/BotónResumenDia" to="." method="_on_botón_resumen_dia_pressed"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="pressed" from="ModalBienvenida/Panel/BtnEntendido" to="." method="_on_modal_bienvenida_entendido"]

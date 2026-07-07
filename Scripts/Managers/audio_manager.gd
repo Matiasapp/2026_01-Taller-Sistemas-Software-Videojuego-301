@@ -1,11 +1,26 @@
 extends Node
 
+var click_sound = preload("res://Assets/Audio/Menu/click.wav")
+var hover_sound = preload("res://Assets/Audio/Menu/hoverclick.wav")
 
-# Called when the node enters the scene tree for the first time.
+var ui_player := AudioStreamPlayer.new()
+
 func _ready() -> void:
-	pass # Replace with function body.
+	add_child(ui_player)
+	ui_player.bus = "SFX"
 
+func play_ui_click() -> void:
+	if not click_sound:
+		return
+	
+	ui_player.stream = click_sound
+	ui_player.pitch_scale = pow(2.0, randf_range(-2.0, 2.0) / 12.0)
+	ui_player.play()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+func play_ui_hover() -> void:
+	if not hover_sound:
+		return
+	
+	ui_player.stream = hover_sound
+	ui_player.pitch_scale = pow(2.0, randf_range(-5.0, 5.0) / 12.0)
+	ui_player.play()

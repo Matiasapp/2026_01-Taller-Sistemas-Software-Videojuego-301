@@ -3,22 +3,11 @@
 [ext_resource type="Script" uid="uid://dt2nn7ky8k378" path="res://Scenes/Minigames/Soldadura/Script/resultados.gd" id="1_atjc4"]
 [ext_resource type="Texture2D" uid="uid://c3dacvm42g81q" path="res://Scenes/Minigames/Soldadura/Imagenes/fondo minijuego.png" id="2_yqkg3"]
 [ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="3_2kgw7"]
+[ext_resource type="Texture2D" uid="uid://cxqi1lh5nip8y" path="res://Assets/UI/button_style.png" id="4_hudnp"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bgxoi"]
-bg_color = Color(0.92941177, 0.49803922, 0.16470589, 1)
-border_width_left = 6
-border_width_top = 6
-border_width_right = 6
-border_width_bottom = 6
-border_color = Color(1, 0.7294118, 0.36862746, 1)
-border_blend = true
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-corner_detail = 10
-shadow_color = Color(0, 0, 0, 1)
-shadow_size = 11
+[sub_resource type="AtlasTexture" id="AtlasTexture_ninehud"]
+atlas = ExtResource("4_hudnp")
+region = Rect2(1873, 492, 769, 568)
 
 [node name="Node2D" type="Node2D" unique_id=2133097898]
 script = ExtResource("1_atjc4")
@@ -30,45 +19,67 @@ texture = ExtResource("2_yqkg3")
 [node name="Resumen" type="ColorRect" parent="." unique_id=900204542]
 offset_right = 1216.0
 offset_bottom = 728.0
-color = Color(1, 0.6, 0.14509805, 0.45882353)
+color = Color(0.16, 0.09, 0.04, 0.8)
 
-[node name="PanelFinal" type="Panel" parent="Resumen" unique_id=1857994921]
+[node name="PanelFinal" type="NinePatchRect" parent="Resumen" unique_id=1857994921]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -210.0
-offset_top = -148.0
-offset_right = 210.0
-offset_bottom = 180.0
+offset_left = -284.90854
+offset_top = -222.5
+offset_right = 284.90854
+offset_bottom = 222.5
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_bgxoi")
+texture = SubResource("AtlasTexture_ninehud")
+region_rect = Rect2(0, 0, 769, 568)
+patch_margin_left = 110
+patch_margin_top = 100
+patch_margin_right = 110
+patch_margin_bottom = 110
 
 [node name="Button" type="Button" parent="Resumen/PanelFinal" unique_id=925347273]
 layout_mode = 0
-offset_left = 314.0
-offset_top = 280.0
-offset_right = 402.0
-offset_bottom = 312.0
+offset_left = 244.90857
+offset_top = 290.5
+offset_right = 332.90857
+offset_bottom = 322.5
 theme = ExtResource("3_2kgw7")
 text = "Continuar
 "
 
 [node name="LabelPiezas" type="Label" parent="Resumen/PanelFinal" unique_id=1797633554]
-layout_mode = 0
-offset_left = 76.0
-offset_top = 56.0
-offset_right = 322.0
-offset_bottom = 83.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -88.0
+offset_top = -60.0
+offset_right = 88.0
+offset_bottom = -36.0
+grow_horizontal = 2
+grow_vertical = 2
 text = "Piezas completadas: 0"
 
 [node name="LabelDinero" type="Label" parent="Resumen/PanelFinal" unique_id=1895888830]
-layout_mode = 0
-offset_left = 76.0
-offset_top = 88.0
-offset_right = 255.0
-offset_bottom = 116.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -80.0
+offset_top = -124.0
+offset_right = 72.0
+offset_bottom = -100.0
+grow_horizontal = 2
+grow_vertical = 2
 text = "Dinero ganado: $0"
+
+[connection signal="mouse_entered" from="Resumen/PanelFinal/Button" to="." method="_on_boton_continuar_mouse_entered"]
+[connection signal="pressed" from="Resumen/PanelFinal/Button" to="." method="_on_boton_continuar_pressed"]

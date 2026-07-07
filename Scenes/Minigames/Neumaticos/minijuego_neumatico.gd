@@ -360,3 +360,18 @@ func calcular_dinero_final():
 func reproducir_hit():
 	sfx_hit.pitch_scale = randf_range(0.95, 1.05)
 	sfx_hit.play()
+
+func _on_boton_continuar_pressed() -> void:
+	AUDIOMANAGER.play_ui_click()
+	
+	await get_tree().create_timer(0.15).timeout
+	
+	Engine.time_scale = 1.0
+	get_tree().paused = false
+	
+	print("Volviendo al taller desde Neumáticos")
+	DATOSGLOBALES.sumar_dinero(dinero_obtenido)
+	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")
+	
+func _on_boton_continuar_mouse_entered() -> void:
+	AUDIOMANAGER.play_ui_hover()	

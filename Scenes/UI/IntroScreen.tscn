@@ -1,0 +1,175 @@
+[gd_scene format=3 uid="uid://cfm4bc83x7av4"]
+
+[ext_resource type="Script" uid="uid://bepk0ocgdwr30" path="res://Scenes/Events/TransicionDia/transicion_día.gd" id="1_d2ggh"]
+[ext_resource type="Texture2D" uid="uid://dwuxd24ol4hjj" path="res://Assets/Sprites/background_game_screen.png" id="2_mco4c"]
+[ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="3_n3tw4"]
+[ext_resource type="Texture2D" uid="uid://cxqi1lh5nip8y" path="res://Assets/UI/button_style.png" id="4_uwbhx"]
+[ext_resource type="AudioStream" uid="uid://b2t66hdqmo381" path="res://Assets/Audio/Menu/click.wav" id="5_3u0mh"]
+[ext_resource type="AudioStream" uid="uid://d0gkxqmj2s251" path="res://Assets/Audio/Menu/hoverclick.wav" id="6_7520p"]
+[ext_resource type="AudioStream" uid="uid://c6ya5qvsib7as" path="res://Assets/Audio/IntroScreen/hover_character.wav" id="7_duyg6"]
+[ext_resource type="AudioStream" uid="uid://c6ksaho7s4f52" path="res://Assets/Audio/IntroScreen/select_character.wav" id="8_gqau7"]
+[ext_resource type="AudioStream" uid="uid://lnnltgws2f7" path="res://Assets/Audio/IntroScreen/whoosh.wav" id="9_yqoxs"]
+[ext_resource type="AudioStream" uid="uid://cc2twnwdewko7" path="res://Assets/Audio/IntroScreen/talking.wav" id="10_m71sh"]
+
+[sub_resource type="Animation" id="Animation_jy5sd"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-569, -307)]
+}
+
+[sub_resource type="Animation" id="Animation_qrjfm"]
+resource_name = "background_move"
+length = 3.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.5, 3, 8.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(-569, -307), Vector2(-576, -307), Vector2(-569, -307), Vector2(-569, -307)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_r6180"]
+_data = {
+&"RESET": SubResource("Animation_jy5sd"),
+&"background_move": SubResource("Animation_qrjfm")
+}
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_m4id3"]
+texture = ExtResource("4_uwbhx")
+texture_margin_top = 2.0
+texture_margin_bottom = 4.0
+region_rect = Rect2(173, 492, 771, 568)
+
+[node name="EventoRobo" type="Node2D" unique_id=1964637352]
+script = ExtResource("1_d2ggh")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1697874380]
+editor_description = "
+"
+
+[node name="VistaTextoIntroduccion" type="Control" parent="CanvasLayer" unique_id=1675659681]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/VistaTextoIntroduccion" unique_id=2012560446]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -569.0
+offset_top = -307.0
+offset_right = 669.96655
+offset_bottom = 320.9925
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.000419, 1.000419)
+size_flags_horizontal = 4
+texture = ExtResource("2_mco4c")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/VistaTextoIntroduccion/TextureRect" unique_id=544547519]
+libraries/ = SubResource("AnimationLibrary_r6180")
+
+[node name="Panel" type="Panel" parent="CanvasLayer/VistaTextoIntroduccion" unique_id=1047493940]
+self_modulate = Color(1, 1, 1, 0.5254902)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -130.0
+offset_top = 131.0
+offset_right = 531.0
+offset_bottom = 285.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+theme = ExtResource("3_n3tw4")
+theme_override_styles/panel = SubResource("StyleBoxTexture_m4id3")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/VistaTextoIntroduccion/Panel" unique_id=108439981]
+layout_mode = 0
+offset_left = 35.0
+offset_top = 15.0
+offset_right = 630.0
+offset_bottom = 136.0
+
+[node name="Comenzar" type="Button" parent="CanvasLayer/VistaTextoIntroduccion/Panel" unique_id=1813346369]
+layout_mode = 0
+offset_left = 541.0
+offset_top = 99.0
+offset_right = 639.0
+offset_bottom = 136.0
+theme = ExtResource("3_n3tw4")
+text = "Comenzar"
+
+[node name="FadeRect" type="ColorRect" parent="CanvasLayer" unique_id=1429713775]
+visible = false
+z_index = 100
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="ClickSound" type="AudioStreamPlayer" parent="." unique_id=859333656]
+stream = ExtResource("5_3u0mh")
+volume_db = -5.0
+bus = &"SFX"
+
+[node name="HoverSound" type="AudioStreamPlayer" parent="." unique_id=1848906443]
+stream = ExtResource("6_7520p")
+volume_db = -8.0
+bus = &"SFX"
+
+[node name="HoverCharacterSound" type="AudioStreamPlayer" parent="." unique_id=188759167]
+stream = ExtResource("7_duyg6")
+volume_db = -8.0
+bus = &"SFX"
+
+[node name="SelectCharacterSound" type="AudioStreamPlayer" parent="." unique_id=434965810]
+stream = ExtResource("8_gqau7")
+volume_db = -8.0
+bus = &"SFX"
+
+[node name="WhooshSound" type="AudioStreamPlayer" parent="." unique_id=1656864259]
+stream = ExtResource("9_yqoxs")
+volume_db = -8.0
+bus = &"SFX"
+
+[node name="TalkingSound" type="AudioStreamPlayer" parent="." unique_id=871199411]
+stream = ExtResource("10_m71sh")
+volume_db = -8.0
+bus = &"SFX"
+
+[connection signal="mouse_entered" from="CanvasLayer/VistaTextoIntroduccion/Panel/Comenzar" to="." method="_on_comenzar_mouse_entered"]
+[connection signal="pressed" from="CanvasLayer/VistaTextoIntroduccion/Panel/Comenzar" to="." method="_on_comenzar_pressed"]

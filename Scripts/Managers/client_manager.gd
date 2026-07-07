@@ -1,11 +1,50 @@
 extends Node
 
+## Se emite cada vez que el taller abre o cierra (para que el HUD u otros reaccionen).
+signal estado_taller_cambiado(abierto: bool)
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
+## Se emite cada vez que cambia la cantidad de clientes atendidos (para el HUD).
+signal clientes_atendidos_cambiado(atendidos: int, total: int)
 
+const MAX_CLIENTES_DIA := 5
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+var taller_abierto := false
+var clientes_atendidos := 0
+var clientes_llegados := 0
+
+func abrir_taller() -> void:
+	taller_abierto = true
+	clientes_atendidos = 0
+	clientes_llegados = 0
+	estado_taller_cambiado.emit(true)
+	clientes_atendidos_cambiado.emit(clientes_atendidos, MAX_CLIENTES_DIA)
+
+func puede_llegar_cliente() -> bool:
+	return taller_abierto and clientes_llegados < MAX_CLIENTES_DIA
+
+func registrar_llegada_cliente() -> void:
+	if not puede_llegar_cliente():
+		return
+	
+	clientes_llegados += 1
+	print("Llegó cliente:", clientes_llegados, "/", MAX_CLIENTES_DIA)
+
+func registrar_cliente_atendido() -> void:
+	clientes_atendidos += 1
+	print("Cliente atendido:", clientes_atendidos, "/", MAX_CLIENTES_DIA)
+	clientes_atendidos_cambiado.emit(clientes_atendidos, MAX_CLIENTES_DIA)
+
+func dia_completo() -> bool:
+	return clientes_atendidos >= MAX_CLIENTES_DIA
+
+func cerrar_taller() -> void:
+	taller_abierto = false
+	estado_taller_cambiado.emit(false)
+
+## Reinicia el estado del taller/clientes (nueva partida o carga).
+func reiniciar() -> void:
+	taller_abierto = false
+	clientes_atendidos = 0
+	clientes_llegados = 0
+	estado_taller_cambiado.emit(false)
+	clientes_atendidos_cambiado.emit(clientes_atendidos, MAX_CLIENTES_DIA)

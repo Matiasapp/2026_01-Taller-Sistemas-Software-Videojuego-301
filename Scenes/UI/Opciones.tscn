@@ -1,0 +1,311 @@
+[gd_scene format=3 uid="uid://b1gs7lro60x1"]
+
+[ext_resource type="Script" uid="uid://dkptpx4ukby7d" path="res://Scripts/UI/opciones.gd" id="1_opc"]
+[ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="2_theme"]
+[ext_resource type="Texture2D" uid="uid://cxqi1lh5nip8y" path="res://Assets/UI/button_style.png" id="3_frame"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_frame"]
+atlas = ExtResource("3_frame")
+region = Rect2(1873, 492, 769, 568)
+
+[node name="Opciones" type="CanvasLayer" unique_id=672649399]
+layer = 50
+script = ExtResource("1_opc")
+
+[node name="Fondo" type="ColorRect" parent="." unique_id=2008724868]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.16, 0.09, 0.04, 0.8)
+
+[node name="Marco" type="NinePatchRect" parent="." unique_id=2001092163]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -300.0
+offset_right = 400.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_frame")
+region_rect = Rect2(0, 0, 769, 568)
+patch_margin_left = 110
+patch_margin_top = 100
+patch_margin_right = 110
+patch_margin_bottom = 110
+
+[node name="Contenido" type="VBoxContainer" parent="Marco" unique_id=1076633032]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 135.0
+offset_top = 105.0
+offset_right = -135.0
+offset_bottom = -105.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_theme")
+theme_override_constants/separation = 12
+
+[node name="Titulo" type="Label" parent="Marco/Contenido" unique_id=1516107338]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.882, 0.686, 0.18, 1)
+theme_override_font_sizes/font_size = 30
+text = "OPCIONES"
+horizontal_alignment = 1
+
+[node name="Tabs" type="TabContainer" parent="Marco/Contenido" unique_id=2129666618]
+layout_mode = 2
+size_flags_vertical = 3
+current_tab = 0
+
+[node name="Audio" type="VBoxContainer" parent="Marco/Contenido/Tabs" unique_id=788560444]
+layout_mode = 2
+theme_override_constants/separation = 18
+metadata/_tab_index = 0
+
+[node name="Separador" type="HSeparator" parent="Marco/Contenido/Tabs/Audio" unique_id=703410586]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+
+[node name="FilaGeneral" type="HBoxContainer" parent="Marco/Contenido/Tabs/Audio" unique_id=71885509]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Marco/Contenido/Tabs/Audio/FilaGeneral" unique_id=1290583582]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "General"
+
+[node name="SliderMaster" type="HSlider" parent="Marco/Contenido/Tabs/Audio/FilaGeneral" unique_id=1209255045]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.01
+
+[node name="PorcMaster" type="Label" parent="Marco/Contenido/Tabs/Audio/FilaGeneral" unique_id=1218633266]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(55, 0)
+layout_mode = 2
+text = "100%"
+horizontal_alignment = 2
+
+[node name="FilaMusica" type="HBoxContainer" parent="Marco/Contenido/Tabs/Audio" unique_id=559927076]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Marco/Contenido/Tabs/Audio/FilaMusica" unique_id=1551753005]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Música"
+
+[node name="SliderMusica" type="HSlider" parent="Marco/Contenido/Tabs/Audio/FilaMusica" unique_id=1501192503]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.01
+
+[node name="PorcMusica" type="Label" parent="Marco/Contenido/Tabs/Audio/FilaMusica" unique_id=1793160013]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(55, 0)
+layout_mode = 2
+text = "100%"
+horizontal_alignment = 2
+
+[node name="FilaEfectos" type="HBoxContainer" parent="Marco/Contenido/Tabs/Audio" unique_id=1081036191]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Marco/Contenido/Tabs/Audio/FilaEfectos" unique_id=1972756483]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Efectos"
+
+[node name="SliderEfectos" type="HSlider" parent="Marco/Contenido/Tabs/Audio/FilaEfectos" unique_id=1342138690]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.01
+
+[node name="PorcEfectos" type="Label" parent="Marco/Contenido/Tabs/Audio/FilaEfectos" unique_id=1662930274]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(55, 0)
+layout_mode = 2
+text = "100%"
+horizontal_alignment = 2
+
+[node name="Video" type="VBoxContainer" parent="Marco/Contenido/Tabs" unique_id=2094923977]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 18
+metadata/_tab_index = 1
+
+[node name="Separador" type="HSeparator" parent="Marco/Contenido/Tabs/Video" unique_id=851826029]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+
+[node name="FilaPantalla" type="HBoxContainer" parent="Marco/Contenido/Tabs/Video" unique_id=130714172]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Marco/Contenido/Tabs/Video/FilaPantalla" unique_id=1555696315]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Pantalla completa"
+
+[node name="CheckPantalla" type="CheckButton" parent="Marco/Contenido/Tabs/Video/FilaPantalla" unique_id=1709120170]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="FilaVsync" type="HBoxContainer" parent="Marco/Contenido/Tabs/Video" unique_id=217471724]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Marco/Contenido/Tabs/Video/FilaVsync" unique_id=892930217]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "VSync"
+
+[node name="CheckVsync" type="CheckButton" parent="Marco/Contenido/Tabs/Video/FilaVsync" unique_id=308062150]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Juego" type="ScrollContainer" parent="Marco/Contenido/Tabs" unique_id=229927962]
+visible = false
+layout_mode = 2
+horizontal_scroll_mode = 0
+metadata/_tab_index = 2
+
+[node name="VBox" type="VBoxContainer" parent="Marco/Contenido/Tabs/Juego" unique_id=924851329]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="Separador" type="HSeparator" parent="Marco/Contenido/Tabs/Juego/VBox" unique_id=1675891940]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+
+[node name="LblControles" type="Label" parent="Marco/Contenido/Tabs/Juego/VBox" unique_id=971995065]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Controles"
+
+[node name="LblAyuda" type="Label" parent="Marco/Contenido/Tabs/Juego/VBox" unique_id=43758937]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
+theme_override_font_sizes/font_size = 12
+text = "Haz clic en una tecla y presiona la nueva (Esc para cancelar)."
+
+[node name="FilaMoverArriba" type="HBoxContainer" parent="Marco/Contenido/Tabs/Juego/VBox" unique_id=1161232299]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Marco/Contenido/Tabs/Juego/VBox/FilaMoverArriba" unique_id=765312578]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Mover arriba"
+
+[node name="BtnMoverArriba" type="Button" parent="Marco/Contenido/Tabs/Juego/VBox/FilaMoverArriba" unique_id=526206458]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+
+[node name="FilaMoverAbajo" type="HBoxContainer" parent="Marco/Contenido/Tabs/Juego/VBox" unique_id=1336465263]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Marco/Contenido/Tabs/Juego/VBox/FilaMoverAbajo" unique_id=75401449]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Mover abajo"
+
+[node name="BtnMoverAbajo" type="Button" parent="Marco/Contenido/Tabs/Juego/VBox/FilaMoverAbajo" unique_id=1872862978]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+
+[node name="FilaMoverIzquierda" type="HBoxContainer" parent="Marco/Contenido/Tabs/Juego/VBox" unique_id=453603068]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Marco/Contenido/Tabs/Juego/VBox/FilaMoverIzquierda" unique_id=2100057405]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Mover izquierda"
+
+[node name="BtnMoverIzquierda" type="Button" parent="Marco/Contenido/Tabs/Juego/VBox/FilaMoverIzquierda" unique_id=411699379]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+
+[node name="FilaMoverDerecha" type="HBoxContainer" parent="Marco/Contenido/Tabs/Juego/VBox" unique_id=24029997]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Marco/Contenido/Tabs/Juego/VBox/FilaMoverDerecha" unique_id=876188397]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Mover derecha"
+
+[node name="BtnMoverDerecha" type="Button" parent="Marco/Contenido/Tabs/Juego/VBox/FilaMoverDerecha" unique_id=1775847646]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+
+[node name="FilaInteractuar" type="HBoxContainer" parent="Marco/Contenido/Tabs/Juego/VBox" unique_id=340434980]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Marco/Contenido/Tabs/Juego/VBox/FilaInteractuar" unique_id=950941062]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Interactuar"
+
+[node name="BtnInteractuar" type="Button" parent="Marco/Contenido/Tabs/Juego/VBox/FilaInteractuar" unique_id=1210802575]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+
+[node name="FilaCorrer" type="HBoxContainer" parent="Marco/Contenido/Tabs/Juego/VBox" unique_id=1946961214]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Marco/Contenido/Tabs/Juego/VBox/FilaCorrer" unique_id=1964474450]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Correr"
+
+[node name="BtnCorrer" type="Button" parent="Marco/Contenido/Tabs/Juego/VBox/FilaCorrer" unique_id=1941569296]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+
+[node name="FilaBotones" type="HBoxContainer" parent="Marco/Contenido" unique_id=2075430280]
+layout_mode = 2
+theme_override_constants/separation = 24
+alignment = 1
+
+[node name="BtnRestablecer" type="Button" parent="Marco/Contenido/FilaBotones" unique_id=170241974]
+unique_name_in_owner = true
+layout_mode = 2
+text = "  Restablecer  "
+
+[node name="BtnVolver" type="Button" parent="Marco/Contenido/FilaBotones" unique_id=1970552968]
+unique_name_in_owner = true
+layout_mode = 2
+text = "  Volver  "
