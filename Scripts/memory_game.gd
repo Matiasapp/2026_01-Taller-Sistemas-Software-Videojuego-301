@@ -18,7 +18,7 @@ const BOARD_H := ROWS * (CARD_H + GAP) - GAP
 
 const TIEMPO_LIMITE := 60.0
 const TIEMPO_MEMORIZACION := 2.0
-const FONDO_MEMORY_PATH := "res://Assets/fondo_memory.png"
+const FONDO_MEMORY_PATH := "res://Assets/Sprites/MemorizeGame/fondo_memory.png"
 
 enum Estado {
 	INSTRUCCIONES,

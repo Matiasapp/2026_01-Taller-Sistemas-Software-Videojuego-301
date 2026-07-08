@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://6vykerghehsa"
-path="res://.godot/imported/sprites_taller.png-1139a4c359f17290d13c538c33455561.ctex"
+uid="uid://chj00pgl355kn"
+path="res://.godot/imported/fondo_memory.png-c8751ac1aea562df2177eaa47ea60623.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/sprites_taller.png"
-dest_files=["res://.godot/imported/sprites_taller.png-1139a4c359f17290d13c538c33455561.ctex"]
+source_file="res://Assets/Sprites/MemorizeGame/fondo_memory.png"
+dest_files=["res://.godot/imported/fondo_memory.png-c8751ac1aea562df2177eaa47ea60623.ctex"]
 
 [params]
 

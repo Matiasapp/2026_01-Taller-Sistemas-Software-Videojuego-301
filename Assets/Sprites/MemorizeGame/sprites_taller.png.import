@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://chj00pgl355kn"
-path="res://.godot/imported/fondo_memory.png-d3aa73747571846a47d5e01d345a3b22.ctex"
+uid="uid://6vykerghehsa"
+path="res://.godot/imported/sprites_taller.png-7aedc47a9df144bef22a31934a26397d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/fondo_memory.png"
-dest_files=["res://.godot/imported/fondo_memory.png-d3aa73747571846a47d5e01d345a3b22.ctex"]
+source_file="res://Assets/Sprites/MemorizeGame/sprites_taller.png"
+dest_files=["res://.godot/imported/sprites_taller.png-7aedc47a9df144bef22a31934a26397d.ctex"]
 
 [params]
 
@@ -23,7 +23,7 @@ compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=false
+mipmaps/generate=true
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
