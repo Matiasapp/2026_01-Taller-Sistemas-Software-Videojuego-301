@@ -27,6 +27,10 @@ var meta_generada: bool = false
 func _ready() -> void:
 	randomize()
 
+	# En este minijuego no aplica la economía del taller: ocultamos el dinero y el
+	# indicador de "taller abierto/cerrado" del HUD compartido (solo en esta escena).
+	_ocultar_hud_taller()
+
 	# La meta la define el JUGADOR (única fuente de verdad). El generador coloca la franja UNA
 	# casilla antes (meta_casillas - 1) para que el jugador gane justo al PISAR la franja, no
 	# una casilla después. Así basta cambiar meta_casillas en el Player y todo queda alineado.
@@ -50,6 +54,28 @@ func _ready() -> void:
 		
 	for i in range(franjas_iniciales - 3):
 		generar_franja_aleatoria()
+
+# Oculta los elementos del HUD compartido que no tienen sentido en el minijuego:
+# el dinero, la hora, el día, el estado "taller abierto/cerrado", el aviso
+# parpadeante de "abre el taller", el contador de clientes atendidos y los dos
+# paneles de fondo que los enmarcan. Solo afecta a esta escena.
+func _ocultar_hud_taller() -> void:
+	var hud := get_node_or_null("Hud")
+	if hud == null:
+		return
+
+	var rutas := [
+		"PlataHoraDia",         # bloque dinero + hora + día
+		"TallerAbiertoCerrado", # "El taller está Abierto/Cerrado"
+		"ClientesAtendidos",    # "Clientes atendidos: X/5"
+		"AvisoAbrirTaller",     # recordatorio parpadeante
+		"NinePatchRect",        # panel de fondo (dinero/hora/día)
+		"NinePatchRect2",       # panel de fondo (taller + clientes)
+	]
+	for ruta in rutas:
+		var nodo := hud.get_node_or_null(ruta)
+		if nodo:
+			nodo.visible = false
 
 # NUEVO: Vigila constantemente al jugador
 func _process(_delta: float) -> void:
