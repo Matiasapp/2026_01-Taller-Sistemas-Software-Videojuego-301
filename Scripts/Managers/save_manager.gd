@@ -21,6 +21,7 @@ func guardar() -> void:
 	cfg.set_value("partida", "genero_jugador", DATOSGLOBALES.genero_jugador)
 	cfg.set_value("partida", "clientes_usados", DATOSGLOBALES.clientes_usados)
 	cfg.set_value("partida", "modal_bienvenida_mostrado", DATOSGLOBALES.modal_bienvenida_mostrado)
+	cfg.set_value("partida", "estadisticas_dias", DATOSGLOBALES.estadisticas_dias)
 
 	var err := cfg.save(RUTA)
 	if err == OK:
@@ -39,6 +40,7 @@ func cargar() -> bool:
 	DATOSGLOBALES.dinero = cfg.get_value("partida", "dinero", 150)
 	DATOSGLOBALES.genero_jugador = cfg.get_value("partida", "genero_jugador", "")
 	DATOSGLOBALES.modal_bienvenida_mostrado = cfg.get_value("partida", "modal_bienvenida_mostrado", false)
+	DATOSGLOBALES.estadisticas_dias = cfg.get_value("partida", "estadisticas_dias", {})
 
 	# clientes_usados es Array[int]: lo reconstruimos con el tipo correcto.
 	DATOSGLOBALES.clientes_usados.clear()

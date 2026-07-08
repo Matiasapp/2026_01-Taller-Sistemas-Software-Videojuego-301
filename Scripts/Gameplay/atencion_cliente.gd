@@ -320,6 +320,14 @@ func _on_diagnostico_resuelto(correcto: bool) -> void:
 	if not correcto:
 		DATOSGLOBALES.restar_dinero(PENALIZACION_DIAGNOSTICO)
 
+	DATOSGLOBALES.registrar_diagnostico_dia(correcto)
+
+	var resultado_diagnostico: String = "correcto" if correcto else "incorrecto"
+	DATOSGLOBALES.registrar_evento_dia(
+		"Diagnostico %s: %s tenia falla de tipo %s."
+		% [resultado_diagnostico, cliente_actual.nombre.capitalize(), cliente_actual.falla]
+	)
+
 	var ruta: String = FALLA_A_MINIJUEGO.get(cliente_actual.falla, "")
 	if ruta.is_empty():
 		push_warning("AtencionCliente: no hay minijuego mapeado para la falla '%s'." % cliente_actual.falla)
