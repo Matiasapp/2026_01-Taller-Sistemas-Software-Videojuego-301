@@ -30,7 +30,7 @@ var dia_actual: int = 1:
 		dia_actual = value
 		dia_cambiado.emit(dia_actual)
 
-var dinero: int = 150:
+var dinero: int = 500:
 	set(value):
 		dinero = value
 		dinero_cambiado.emit(dinero)
@@ -44,7 +44,7 @@ func restar_dinero(cantidad: int):
 ## Reinicia todo el estado de la partida a los valores iniciales (Nueva Partida).
 func reiniciar() -> void:
 	dia_actual = 1
-	dinero = 150
+	dinero = 500
 	genero_jugador = ""
 	siguiente_evento_dia = ""
 	mostrar_resumen_dia_al_volver = false

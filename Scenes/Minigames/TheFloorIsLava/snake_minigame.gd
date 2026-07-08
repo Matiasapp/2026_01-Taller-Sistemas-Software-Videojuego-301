@@ -11,7 +11,7 @@ extends Node2D
 @export var lava_amount_per_wave := 1
 
 #Dinero
-@export var valor_por_segundo := 2
+@export var valor_por_segundo := 11
 @export var bonus_victoria := 30
 @export var penalizacion_derrota := 20
 
@@ -66,7 +66,6 @@ var is_game_over := false
 var has_won := false
 var elapsed_time := 0.0
 var dinero_obtenido := 0
-
 var ultimo_segundo_anunciado := -1
 
 
@@ -102,7 +101,7 @@ func _ready() -> void:
 
 func mostrar_tutorial() -> void:
 	game_started = false
-	tutorial_activo = true
+	tutorial_activo = true	
 	tutorial_can_start = false
 	move_timer.stop()
 
