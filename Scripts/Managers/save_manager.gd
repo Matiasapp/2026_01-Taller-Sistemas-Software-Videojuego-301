@@ -39,7 +39,8 @@ func cargar() -> bool:
 	DATOSGLOBALES.dinero = cfg.get_value("partida", "dinero", 150)
 	DATOSGLOBALES.genero_jugador = cfg.get_value("partida", "genero_jugador", "")
 	DATOSGLOBALES.modal_bienvenida_mostrado = cfg.get_value("partida", "modal_bienvenida_mostrado", false)
-
+	# Se agregan los datos diarios generales del juego
+	DATOSGLOBALES.historial_dias = cfg.get_value("partida","datos_del_dia",[0,0,0,0,0,0])
 	# clientes_usados es Array[int]: lo reconstruimos con el tipo correcto.
 	DATOSGLOBALES.clientes_usados.clear()
 	for c in cfg.get_value("partida", "clientes_usados", []):

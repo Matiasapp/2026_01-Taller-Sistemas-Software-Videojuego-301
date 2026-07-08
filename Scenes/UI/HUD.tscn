@@ -152,3 +152,33 @@ autowrap_mode = 2
 
 [node name="MoneySound" type="AudioStreamPlayer" parent="." unique_id=1134441224]
 stream = ExtResource("3_xaom8")
+
+[node name="Label" type="Label" parent="." unique_id=263348492]
+offset_left = 992.0
+offset_top = 19.0
+offset_right = 1080.0
+offset_bottom = 42.0
+text = "Reputación"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=2042598285]
+offset_left = 945.0
+offset_top = 51.0
+offset_right = 1033.0
+offset_bottom = 51.0
+scale = Vector2(0.1, 0.1)
+
+[node name="stars_1" type="TextureRect" parent="HBoxContainer" unique_id=349789477]
+layout_mode = 2
+
+[node name="stars_2" type="TextureRect" parent="HBoxContainer" unique_id=116009265]
+layout_mode = 2
+
+[node name="stars_3" type="TextureRect" parent="HBoxContainer" unique_id=169403820]
+layout_mode = 2
+
+[node name="stars_4" type="TextureRect" parent="HBoxContainer" unique_id=1565517688]
+layout_mode = 2
+
+[node name="stars_5" type="TextureRect" parent="HBoxContainer" unique_id=161927442]
+layout_mode = 2
