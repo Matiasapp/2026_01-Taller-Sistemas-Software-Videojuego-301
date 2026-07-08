@@ -288,7 +288,7 @@ func on_victory() -> void:
 	can_interact = false
 
 	var tiempo_restante: float = maxf(0.0, TIEMPO_LIMITE - time_elapsed)
-	var recompensa: int = int(matched_pairs * 10 + tiempo_restante * 0.5)
+	var recompensa: int = int(matched_pairs * 28 + tiempo_restante * 1.33)
 
 	_mostrar_resultado(true, matched_pairs, tiempo_restante, recompensa)
 
