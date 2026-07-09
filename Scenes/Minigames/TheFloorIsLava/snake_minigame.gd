@@ -2,18 +2,18 @@ extends Node2D
 #Grilla
 @export var grid_size := 80
 @export var board_size := 9
-@export var move_interval := 0.35
+@export var move_interval := 0.25
 @export var survival_time := 30.0
 
-#Spawn rate
-@export var lava_spawn_interval := 0.35
-@export var lava_lifetime := 10.0
-@export var lava_amount_per_wave := 1
+@export var gasolina_scene: PackedScene
+@export var trail_initial_length := 3
+@export var trail_extra_per_gas := 2
 
 #Dinero
-@export var valor_por_segundo := 11
-@export var bonus_victoria := 30
+@export var valor_por_segundo := 4
+@export var bonus_victoria := 35
 @export var penalizacion_derrota := 20
+@export var dinero_por_bidon := 12
 
 
 #Sprites
@@ -42,6 +42,8 @@ extends Node2D
 @onready var turn_sound := $TurnSound
 @onready var death_sound := $DeathSound
 @onready var countdown_sound := $CountdownSound
+@onready var collect_sound := $CollectSound
+@onready var clear_sound := $ClearSound
 
 #Musica
 @onready var music_loop = $MusicLoop
@@ -56,7 +58,14 @@ var time_label: Label
 var car_cell := Vector2i.ZERO
 var direction := Vector2i.RIGHT
 
+
+var trail_cells: Array[Vector2i] = []
+var trail_nodes := {}
+var trail_length := 3
 var lava_cells := {}
+
+var gasolina_cell := Vector2i(-1, -1)
+var gasolina_node: Node2D = null
 
 var countdown_activo := false
 var tutorial_can_start := false
@@ -67,6 +76,7 @@ var has_won := false
 var elapsed_time := 0.0
 var dinero_obtenido := 0
 var ultimo_segundo_anunciado := -1
+var bidones_recogidos := 0
 
 
 
@@ -304,6 +314,7 @@ func start_countdown() -> void:
 
 	elapsed_time = 0.0
 	ultimo_segundo_anunciado = -1
+	bidones_recogidos = 0
 
 	time_label.text = "Tiempo restante: %ds" % int(survival_time)
 
@@ -313,95 +324,19 @@ func start_countdown() -> void:
 	countdown_activo = false
 	game_started = true
 
+	trail_length = trail_initial_length
+	trail_cells.clear()
+	trail_nodes.clear()
+	spawn_gasolina()
+
 	move_timer.start()
-	start_lava_loop()
-
-
-func start_lava_loop() -> void:
-	while game_started and not is_game_over and not has_won:
-		spawn_lava_wave()
-		await get_tree().create_timer(lava_spawn_interval).timeout
-
-
-func spawn_lava_wave() -> void:
-	for i in range(lava_amount_per_wave):
-		spawn_random_lava()
-
-
-func spawn_random_lava() -> void:
-	if burn_mark_scene == null:
-		push_error("burn_mark_scene no asignado")
-		return
-
-	var attempts := 0
-	var cell := Vector2i.ZERO
-
-	while attempts < 30:
-		cell = Vector2i(
-			randi_range(0, board_size - 1),
-			randi_range(0, board_size - 1)
-		)
-
-		if cell != car_cell and not lava_cells.has(cell):
-			break
-
-		attempts += 1
-
-	if attempts >= 30:
-		return
-
-	var lava = burn_mark_scene.instantiate()
-	trail_container.add_child(lava)
-	lava.global_position = cell_to_world(cell)
-
-	var lava_sprite := lava.get_node_or_null("AnimatedSprite2D") as AnimatedSprite2D
-	if lava_sprite == null:
-		return
-
-	# Fase 1: aviso visual, NO mata
-	lava_sprite.play("spawn_burn")
-
-	await lava_sprite.animation_finished
-
-	if is_game_over or has_won:
-		if is_instance_valid(lava):
-			lava.queue_free()
-		return
-
-	# Fase 2: lava inicial, YA mata
-	lava_cells[cell] = true
-
-	if lava_spawn_sound:
-		lava_spawn_sound.pitch_scale = randf_range(0.85, 1.20)
-		lava_spawn_sound.volume_db = randf_range(-2.0, 1.0)
-		lava_spawn_sound.global_position = cell_to_world(cell)
-		lava_spawn_sound.play()
-
-	lava_sprite.play("spawn_lava")
-
-	if cell == car_cell:
-		game_over()
-		return
-
-	# Fase 3: lava en loop, sigue matando
-	lava_sprite.play("lava")
-
-	var smoke := lava.get_node_or_null("SmokeParticles") as GPUParticles2D
-	if smoke:
-		smoke.restart()
-		smoke.emitting = true
-
-	await get_tree().create_timer(lava_lifetime).timeout
-
-	if is_instance_valid(lava):
-		lava_cells.erase(cell)
-		lava.queue_free()
 
 
 func _move_car() -> void:
 	if is_game_over or has_won:
 		return
 
+	var previous_cell := car_cell
 	var next_cell := car_cell + direction
 
 	if not is_inside_board(next_cell):
@@ -414,6 +349,11 @@ func _move_car() -> void:
 
 	car_cell = next_cell
 	car.global_position = cell_to_world(car_cell)
+
+	create_trail_lava(previous_cell)
+
+	if car_cell == gasolina_cell:
+		collect_gasolina()
 
 	if not car_sprite.is_playing():
 		car_sprite.play("avanzar")
@@ -441,8 +381,10 @@ func is_inside_board(cell: Vector2i) -> bool:
 
 func calcular_dinero_final() -> void:
 	var segundos_sobrevividos := int(elapsed_time)
+	var dinero_tiempo := segundos_sobrevividos * valor_por_segundo
+	var dinero_bidones := bidones_recogidos * dinero_por_bidon
 
-	dinero_obtenido = segundos_sobrevividos * valor_por_segundo
+	dinero_obtenido = dinero_tiempo + dinero_bidones
 
 	if has_won:
 		dinero_obtenido += bonus_victoria
@@ -451,6 +393,8 @@ func calcular_dinero_final() -> void:
 
 	dinero_obtenido = max(0, dinero_obtenido)
 
+	print("Tiempo: ", segundos_sobrevividos)
+	print("Bidones: ", bidones_recogidos)
 	print("Dinero obtenido: $", dinero_obtenido)
 
 
@@ -507,6 +451,19 @@ func win_game() -> void:
 	move_timer.stop()
 	car_sprite.stop()
 
+	if fire_loop_sound:
+		fire_loop_sound.stop()
+
+	if music_loop:
+		var tween := create_tween()
+		tween.tween_property(music_loop, "volume_db", -20.0, 0.3)
+
+	await get_tree().create_timer(0.2).timeout
+
+	if clear_sound:
+		clear_sound.pitch_scale = 1.0
+		clear_sound.play()
+
 	time_label.text = "Tiempo restante: 0s"
 	time_label.modulate = Color.GREEN
 	danger_label.visible = false
@@ -535,6 +492,83 @@ func mostrar_pantalla_final(gano: bool) -> void:
 
 	label_resultado_final.text = "¡GANASTE!" if gano else "GAME OVER"
 	label_dinero_final.text = "Dinero obtenido: $" + str(dinero_obtenido)
+	
+	
+func create_trail_lava(cell: Vector2i) -> void:
+	if burn_mark_scene == null:
+		return
+
+	if lava_cells.has(cell):
+		return
+
+	var lava = burn_mark_scene.instantiate()
+	trail_container.add_child(lava)
+	lava.global_position = cell_to_world(cell)
+
+	var lava_sprite := lava.get_node_or_null("AnimatedSprite2D") as AnimatedSprite2D
+	if lava_sprite:
+		lava_sprite.play("lava")
+
+	lava_cells[cell] = true
+	trail_cells.append(cell)
+	trail_nodes[cell] = lava
+
+	while trail_cells.size() > trail_length:
+		var old_cell: Vector2i = trail_cells.pop_front()
+		lava_cells.erase(old_cell)
+
+		if trail_nodes.has(old_cell):
+			var old_lava = trail_nodes[old_cell]
+			if is_instance_valid(old_lava):
+				old_lava.queue_free()
+
+			trail_nodes.erase(old_cell)
+			
+func spawn_gasolina() -> void:
+	if gasolina_scene == null:
+		return
+
+	if is_instance_valid(gasolina_node):
+		gasolina_node.queue_free()
+
+	var attempts := 0
+	var cell := Vector2i.ZERO
+
+	while attempts < 50:
+		cell = Vector2i(
+			randi_range(0, board_size - 1),
+			randi_range(0, board_size - 1)
+		)
+
+		if cell != car_cell and not lava_cells.has(cell):
+			break
+
+		attempts += 1
+
+	if attempts >= 50:
+		gasolina_cell = Vector2i(-1, -1)
+		return
+
+	gasolina_cell = cell
+	gasolina_node = gasolina_scene.instantiate()
+	trail_container.add_child(gasolina_node)
+	gasolina_node.global_position = cell_to_world(cell)	
+	
+func collect_gasolina() -> void:
+	bidones_recogidos += 1
+	trail_length += trail_extra_per_gas
+
+	if collect_sound:
+		collect_sound.stop()
+		collect_sound.pitch_scale = randf_range(0.94, 1.06)
+		collect_sound.play()
+
+	if is_instance_valid(gasolina_node):
+		gasolina_node.queue_free()
+
+	gasolina_cell = Vector2i(-1, -1)
+	spawn_gasolina()
+	
 		
 func _on_boton_continuar_pressed() -> void:
 	AUDIOMANAGER.play_ui_click()
