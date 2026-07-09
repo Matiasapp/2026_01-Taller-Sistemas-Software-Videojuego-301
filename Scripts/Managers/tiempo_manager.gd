@@ -76,4 +76,7 @@ func reset_day(start_h: int = 8) -> void:
 	
 func avanzar_dia():
 	DATOSGLOBALES.dia_actual += 1
+	# Al pasar al día siguiente el reloj vuelve a la hora de apertura (08:00);
+	# si no, quedaría marcando la hora de cierre (18:00) del día anterior.
+	reset_day()
 	print("Ahora es el día: ", DATOSGLOBALES.dia_actual)

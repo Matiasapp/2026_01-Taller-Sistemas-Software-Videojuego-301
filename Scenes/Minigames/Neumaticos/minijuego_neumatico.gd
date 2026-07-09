@@ -74,7 +74,7 @@ var vidas_perdidas = 0
 # DINERO
 var dinero_obtenido = 0
 
-@export var dinero_por_neumatico = 20
+@export var dinero_por_neumatico = 40
 @export var costo_por_tuerca = 10
 
 # DIFICULTAD

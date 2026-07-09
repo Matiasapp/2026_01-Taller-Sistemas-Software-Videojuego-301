@@ -9,8 +9,8 @@ const COLS := 5
 const ROWS := 4
 const TOTAL_PAIRS := 10
 
-const CARD_W := 90
-const CARD_H := 120
+const CARD_W := 96
+const CARD_H := 118
 const GAP := 12
 
 const BOARD_W := COLS * (CARD_W + GAP) - GAP
@@ -18,6 +18,7 @@ const BOARD_H := ROWS * (CARD_H + GAP) - GAP
 
 const TIEMPO_LIMITE := 60.0
 const TIEMPO_MEMORIZACION := 2.0
+const FONDO_MEMORY_PATH := "res://Assets/Sprites/MemorizeGame/fondo_memory.png"
 
 enum Estado {
 	INSTRUCCIONES,
@@ -37,7 +38,7 @@ var time_elapsed := 0.0
 var moves := 0
 var matched_pairs := 0
 
-var bg: ColorRect
+var bg: Control
 
 @onready var timer_label: Label = $CanvasLayer/HUD/TimerLabel
 @onready var moves_label: Label = $CanvasLayer/HUD/MovesLabel
@@ -78,9 +79,18 @@ func _configurar_mouse_filters() -> void:
 
 
 func _setup_background() -> void:
-	bg = ColorRect.new()
+	if ResourceLoader.exists(FONDO_MEMORY_PATH):
+		var texture_bg := TextureRect.new()
+		texture_bg.texture = load(FONDO_MEMORY_PATH) as Texture2D
+		texture_bg.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		texture_bg.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+		bg = texture_bg
+	else:
+		var color_bg := ColorRect.new()
+		color_bg.color = Color("#0d1117")
+		bg = color_bg
+
 	bg.name = "Background"
-	bg.color = Color("#0d1117")
 	bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	bg.position = Vector2.ZERO
 	bg.size = get_viewport_rect().size
@@ -288,7 +298,7 @@ func on_victory() -> void:
 	can_interact = false
 
 	var tiempo_restante: float = maxf(0.0, TIEMPO_LIMITE - time_elapsed)
-	var recompensa: int = int(matched_pairs * 10 + tiempo_restante * 0.5)
+	var recompensa: int = int(matched_pairs * 28 + tiempo_restante * 1.33)
 
 	_mostrar_resultado(true, matched_pairs, tiempo_restante, recompensa)
 
@@ -316,20 +326,17 @@ func _mostrar_resultado(gano: bool, pares: int, t_restante: float, monto: int) -
 	var lbl_tiempo: Label = pantalla_result.get_node("Panel/VBox/LblTiempo")
 	var lbl_formula: Label = pantalla_result.get_node("Panel/VBox/LblFormula")
 	var lbl_total: Label = pantalla_result.get_node("Panel/VBox/LblTotal")
+	lbl_formula.hide()
 
 	if gano:
 		lbl_titulo.text = "¡TALLER REPARADO!"
 		lbl_titulo.modulate = Color("#3fb950")
-
-		lbl_formula.text = "(%d × 10) + (%.1fs × 0.5)" % [pares, t_restante]
 
 		lbl_total.text = "RECOMPENSA: +$%d" % monto
 		lbl_total.modulate = Color("#3fb950")
 	else:
 		lbl_titulo.text = "¡REPARACIÓN FALLIDA!"
 		lbl_titulo.modulate = Color("#f85149")
-
-		lbl_formula.text = "No completaste todos los pares."
 
 		lbl_total.text = "PENITENCIA: -$30"
 		lbl_total.modulate = Color("#f85149")

@@ -15,7 +15,7 @@ var jugador_en_rango_easter_egg = false
 
 const MAX_CLIENTES_DIA := 5
 # Segundos (tiempo real) que tarda en llegar el próximo cliente tras abrir / tras atender uno.
-const TIEMPO_LLEGADA_CLIENTE := 12.0
+const TIEMPO_LLEGADA_CLIENTE := 5
 
 var taller_abierto := false
 var clientes_atendidos := 0
@@ -63,6 +63,24 @@ const EVENTO_ESTAFA_SCENE := "res://Scenes/Events/EventoEstafa.tscn"
 @onready var sprite_taller: Sprite2D = $Taller
 @onready var dust_particles: GPUParticles2D = $DustParticles
 @onready var modal_bienvenida: CanvasLayer = $ModalBienvenida
+# Alzadora de autos: se muestra la "ocupada" (con un auto) cuando hay un cliente
+# esperando, y la "desocupada" (vacía) el resto del tiempo.
+@onready var alzadora_ocupada: Sprite2D = $"Node2D/alzadora de autos ocupada"
+@onready var alzadora_desocupada: Sprite2D = $"Node2D/alzadora de autos desocupada"
+
+# El sprite sheet "autos_clientes.png" tiene 25 autos en una grilla de 5x5. Estas
+# coordenadas (x/ancho por columna, y/alto por fila) se midieron desde el atlas real
+# porque las celdas no son perfectamente uniformes. Al llegar un cliente se elige uno
+# al azar y se recorta la región correspondiente sobre la alzadora ocupada.
+const AUTO_COLUMNAS_X := [9, 489, 968, 1447, 1923]
+const AUTO_COLUMNAS_ANCHO := [433, 432, 432, 432, 435]
+const AUTO_FILAS_Y := [65, 394, 720, 1047, 1366]
+const AUTO_FILAS_ALTO := [291, 290, 290, 283, 287]
+
+# Emisor de polvo que dispara un "puff" al cambiar la alzadora, para que la
+# aparición del auto no sea tan brusca. Es un nodo de la escena (ajustable en el
+# editor): GPUParticles2D "ParticulasAlzadora" con one_shot activado.
+@onready var particulas_alzadora: GPUParticles2D = $"Node2D/ParticulasAlzadora"
 
 # Textura del mapa cuando el taller está abierto (la cerrada es la que trae la escena).
 const TEXTURA_TALLER_ABIERTO: Texture2D = preload("res://Assets/Sprites/mapa final abierto.png")
@@ -190,6 +208,9 @@ func _ready() -> void:
 	# Al volver de atender, programamos la llegada del siguiente cliente (si quedan).
 	if taller_abierto:
 		programar_llegada_cliente()
+
+	# Dejamos la alzadora en el estado correcto según si hay un cliente esperando.
+	actualizar_alzadora()
 
 	# Modal de bienvenida: solo el día 1 a las 08:00, una única vez.
 	_verificar_modal_bienvenida()
@@ -396,7 +417,67 @@ func _on_llegada_cliente() -> void:
 		var hora_txt := "%02d:%02d" % [TIEMPOMANAGER.current_hour, TIEMPOMANAGER.current_minute]
 		hud.mostrar_aviso("🔔 ¡Llegó un cliente! El tiempo avanzó hasta las [color=yellow]%s[/color]" % hora_txt)
 
+	# El cliente trae su auto: mostramos la alzadora ocupada con un auto al azar.
+	mostrar_alzadora_ocupada()
+
 	actualizar_mensaje_atender()
+
+
+# =========================
+# ALZADORA DE AUTOS
+# =========================
+
+## Muestra la alzadora "ocupada" con un auto elegido al azar (de los 25 del atlas)
+## y oculta la alzadora vacía. Se llama al llegar un cliente.
+## Con 'con_efecto' se dispara un puff de polvo y un breve fundido para que el
+## cambio no sea brusco (se desactiva al restaurar el estado tras recargar la escena).
+func mostrar_alzadora_ocupada(con_efecto: bool = true) -> void:
+	if alzadora_ocupada == null or alzadora_desocupada == null:
+		return
+
+	var columna := randi() % AUTO_COLUMNAS_X.size()
+	var fila := randi() % AUTO_FILAS_Y.size()
+
+	var atlas := alzadora_ocupada.texture as AtlasTexture
+	if atlas:
+		atlas.region = Rect2(
+			AUTO_COLUMNAS_X[columna], AUTO_FILAS_Y[fila],
+			AUTO_COLUMNAS_ANCHO[columna], AUTO_FILAS_ALTO[fila]
+		)
+
+	alzadora_ocupada.visible = true
+	alzadora_desocupada.visible = false
+
+	if con_efecto:
+		_reproducir_polvo_alzadora()
+		# Fundido rápido del auto para acompañar el polvo.
+		alzadora_ocupada.modulate.a = 0.0
+		var tween := create_tween()
+		tween.tween_property(alzadora_ocupada, "modulate:a", 1.0, 0.35) \
+			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	else:
+		alzadora_ocupada.modulate.a = 1.0
+
+## Vuelve a mostrar la alzadora vacía (sin cliente/auto).
+func mostrar_alzadora_vacia() -> void:
+	if alzadora_ocupada:
+		alzadora_ocupada.visible = false
+	if alzadora_desocupada:
+		alzadora_desocupada.visible = true
+
+## Sincroniza el estado visual de la alzadora con si hay o no un cliente esperando.
+## Útil al (re)cargar la escena para no quedar con la alzadora en un estado incorrecto.
+## No usa efecto: es una restauración de estado, no una llegada real.
+func actualizar_alzadora() -> void:
+	if CLIENTMANAGER and hay_cliente_esperando():
+		mostrar_alzadora_ocupada(false)
+	else:
+		mostrar_alzadora_vacia()
+
+## Dispara el puff de polvo sobre la alzadora.
+func _reproducir_polvo_alzadora() -> void:
+	if particulas_alzadora:
+		particulas_alzadora.restart()
 
 ## Texto del cartel de atención según haya o no un cliente esperando.
 func actualizar_mensaje_atender() -> void:

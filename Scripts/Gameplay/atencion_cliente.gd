@@ -13,7 +13,7 @@ const VELOCIDAD_ANIMACION: float = 1.0   # FPS de la animación
 const DIALOGO_POR_DEFECTO: String = "Hola, necesito que reparen mi auto."
 const FALLA_POR_DEFECTO: String = "generica"
 const VELOCIDAD_TEXTO: float = 35.0   # Caracteres por segundo del efecto máquina de escribir
-const PENALIZACION_DIAGNOSTICO: int = 75   # Dinero perdido al diagnosticar mal la falla
+const PENALIZACION_DIAGNOSTICO: int = 50   # Dinero perdido al diagnosticar mal la falla
 
 ## Minijuego (reparación) que se lanza según la falla del cliente.
 const FALLA_A_MINIJUEGO: Dictionary = {
