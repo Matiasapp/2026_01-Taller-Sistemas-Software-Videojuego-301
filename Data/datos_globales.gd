@@ -24,6 +24,19 @@ var volviendo_de_atencion: bool = false
 
 var estadisticas_dias: Dictionary = {}
 
+# ============================================================
+# REPUTACION (única fuente de verdad)
+# ------------------------------------------------------------
+# La reputación es un único valor global (0-100) que persiste entre días y
+# alimenta las estrellas del HUD. Atender clientes, diagnosticar y los eventos
+# la modifican directamente; las estadísticas por día solo guardan una FOTO
+# de este valor para mostrarla en el resumen.
+# ============================================================
+const REPUTACION_INICIAL: int = 75
+const REP_DIAGNOSTICO_CORRECTO: int = 8
+const REP_DIAGNOSTICO_INCORRECTO: int = 7
+const REP_CLIENTE_ATENDIDO: int = 2
+
 signal dinero_cambiado(nuevo_monto: int)
 signal dia_cambiado(nuevo_dia: int)
 
@@ -57,7 +70,7 @@ func asegurar_estadistica_dia(dia: int) -> Dictionary:
 			"balance": 0,
 			"dinero_inicio": dinero,
 			"dinero_final": dinero,
-			"reputacion": 50,
+			"reputacion": reputacion,
 			"eventos": []
 		}
 	elif not estadisticas_dias[dia].has("eventos"):
@@ -73,10 +86,12 @@ func registrar_diagnostico_dia(correcto: bool, dia: int = -1) -> void:
 
 	if correcto:
 		stats["diagnosticos_correctos"] += 1
+		ajustar_reputacion(REP_DIAGNOSTICO_CORRECTO)
 	else:
 		stats["diagnosticos_incorrectos"] += 1
+		ajustar_reputacion(-REP_DIAGNOSTICO_INCORRECTO)
 
-	stats["reputacion"] = _calcular_reputacion(stats)
+	stats["reputacion"] = reputacion
 	estadisticas_dias[dia] = stats
 
 func registrar_evento_dia(texto: String, dia: int = -1) -> void:
@@ -105,8 +120,11 @@ func registrar_atencion_dia(delta_dinero: int, dia: int = -1) -> void:
 	else:
 		stats["gastos"] += abs(delta_dinero)
 
+	# Atender suma reputación base, más un ajuste según el balance de la reparación.
+	ajustar_reputacion(REP_CLIENTE_ATENDIDO + int(float(delta_dinero) / 100.0))
+
 	stats["dinero_final"] = dinero
-	stats["reputacion"] = _calcular_reputacion(stats)
+	stats["reputacion"] = reputacion
 	estadisticas_dias[dia] = stats
 
 func registrar_cierre_dia(dia: int = -1) -> void:
@@ -115,7 +133,7 @@ func registrar_cierre_dia(dia: int = -1) -> void:
 
 	var stats := asegurar_estadistica_dia(dia)
 	stats["dinero_final"] = dinero
-	stats["reputacion"] = _calcular_reputacion(stats)
+	stats["reputacion"] = reputacion
 	estadisticas_dias[dia] = stats
 
 func get_estadistica_dia(dia: int) -> Dictionary:
@@ -143,9 +161,6 @@ func get_estadisticas_generales() -> Dictionary:
 		total_gastos += int(stats.get("gastos", 0))
 		total_balance += int(stats.get("balance", 0))
 
-	var reputacion := 50 + total_correctos * 6 - total_incorrectos * 5 + int(float(total_balance) / 100.0)
-	reputacion = clampi(reputacion, 0, 100)
-
 	return {
 		"clientes_atendidos": total_clientes,
 		"diagnosticos_correctos": total_correctos,
@@ -157,14 +172,6 @@ func get_estadisticas_generales() -> Dictionary:
 		"reputacion": reputacion
 	}
 
-func _calcular_reputacion(stats: Dictionary) -> int:
-	var reputacion := 50
-	reputacion += int(stats.get("diagnosticos_correctos", 0)) * 8
-	reputacion -= int(stats.get("diagnosticos_incorrectos", 0)) * 7
-	reputacion += int(stats.get("clientes_atendidos", 0)) * 2
-	reputacion += int(float(int(stats.get("balance", 0))) / 100.0)
-	return clampi(reputacion, 0, 100)
-
 func formatear_monto(monto: int) -> String:
 	if monto >= 0:
 		return "+$%d" % monto
@@ -175,6 +182,7 @@ func formatear_monto(monto: int) -> String:
 func reiniciar() -> void:
 	dia_actual = 1
 	dinero = 500
+	reputacion = REPUTACION_INICIAL
 	genero_jugador = ""
 	siguiente_evento_dia = ""
 	mostrar_resumen_dia_al_volver = false
@@ -190,9 +198,9 @@ func reiniciar() -> void:
 # Datos asociados a la reputacion
 signal reputacion_cambiado(nuevo_reputacion:int)
 
-var reputacion: int = 75:
+var reputacion: int = REPUTACION_INICIAL:
 	set(value):
-		reputacion = value
+		reputacion = clampi(value, 0, 100)
 		reputacion_cambiado.emit(reputacion)
 
 
@@ -201,6 +209,11 @@ func sumar_reputacion(cantidad:int):
 
 func restar_reputacion(cantidad:int):
 	reputacion = maxi(0,reputacion - cantidad)
+
+## Ajusta la reputación con una cantidad con signo (+ sube, - baja). El setter
+## se encarga de mantenerla dentro de 0-100.
+func ajustar_reputacion(cantidad:int):
+	reputacion += cantidad
 
 # Ingreso y Gastos realizados
 
