@@ -68,7 +68,8 @@ var juego_terminado = false
 var juego_iniciado = false
 
 # VIDAS
-var vidas = 4
+const VIDAS_INICIALES := 4
+var vidas = VIDAS_INICIALES
 var vidas_perdidas = 0
 
 # DINERO
@@ -371,6 +372,13 @@ func _on_boton_continuar_pressed() -> void:
 	
 	print("Volviendo al taller desde Neumáticos")
 	DATOSGLOBALES.sumar_dinero(dinero_obtenido)
+
+	# Rendimiento: neumáticos inflados sobre el total, penalizado por vidas perdidas.
+	var progreso: float = float(neumaticos_inflados) / float(neumaticos_guardados.size())
+	var penal_vidas: float = float(vidas_perdidas) / float(VIDAS_INICIALES) * 0.4
+	var rendimiento: float = clampf(progreso - penal_vidas, 0.0, 1.0)
+	DATOSGLOBALES.reportar_rendimiento_minijuego(rendimiento)
+
 	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")
 	
 func _on_boton_continuar_mouse_entered() -> void:

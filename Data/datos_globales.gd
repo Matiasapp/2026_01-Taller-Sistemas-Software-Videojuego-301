@@ -22,6 +22,12 @@ var nombre_estafador: String = ""
 var dinero_antes_atencion: int = 0
 var volviendo_de_atencion: bool = false
 
+## Rendimiento (0.0 = peor resultado posible, 1.0 = mejor resultado posible) que cada
+## minijuego reporta antes de volver a GameScreen, vía reportar_rendimiento_minijuego().
+## -1.0 = "no reportado" (fallback neutro): sirve de defensa si algún minijuego no llega
+## a reportar (p. ej. una ruta de salida no contemplada).
+var rendimiento_minijuego_pendiente: float = -1.0
+
 var estadisticas_dias: Dictionary = {}
 
 # ============================================================
@@ -36,6 +42,11 @@ const REPUTACION_INICIAL: int = 75
 const REP_DIAGNOSTICO_CORRECTO: int = 8
 const REP_DIAGNOSTICO_INCORRECTO: int = 7
 const REP_CLIENTE_ATENDIDO: int = 2
+
+## Rango de ajuste de reputación según el rendimiento (0.0-1.0) reportado por el
+## minijuego de reparación: de -REP_MINIJUEGO_RANGO (rendimiento 0.0) a +REP_MINIJUEGO_RANGO
+## (rendimiento 1.0), interpolado linealmente y redondeado (sin truncar a 0 como antes).
+const REP_MINIJUEGO_RANGO: int = 6
 
 signal dinero_cambiado(nuevo_monto: int)
 signal dia_cambiado(nuevo_dia: int)
@@ -106,6 +117,11 @@ func registrar_evento_dia(texto: String, dia: int = -1) -> void:
 	stats["dinero_final"] = dinero
 	estadisticas_dias[dia] = stats
 
+## Los minijuegos llaman a esto (justo antes de volver a GameScreen) para reportar
+## qué tan bien les fue: 0.0 = peor resultado posible, 1.0 = mejor resultado posible.
+func reportar_rendimiento_minijuego(rendimiento: float) -> void:
+	rendimiento_minijuego_pendiente = clampf(rendimiento, 0.0, 1.0)
+
 func registrar_atencion_dia(delta_dinero: int, dia: int = -1) -> void:
 	if dia < 0:
 		dia = dia_actual
@@ -120,8 +136,13 @@ func registrar_atencion_dia(delta_dinero: int, dia: int = -1) -> void:
 	else:
 		stats["gastos"] += abs(delta_dinero)
 
-	# Atender suma reputación base, más un ajuste según el balance de la reparación.
-	ajustar_reputacion(REP_CLIENTE_ATENDIDO + int(float(delta_dinero) / 100.0))
+	# Atender suma reputación base, más un ajuste según qué tan bien te fue en el
+	# minijuego de reparación (no según el dinero: eso truncaba a 0 cualquier
+	# variación menor a $100 y dejaba el mal rendimiento sin castigo real).
+	var rendimiento: float = rendimiento_minijuego_pendiente if rendimiento_minijuego_pendiente >= 0.0 else 0.5
+	var ajuste_rendimiento: int = roundi(lerpf(-REP_MINIJUEGO_RANGO, REP_MINIJUEGO_RANGO, rendimiento))
+	ajustar_reputacion(REP_CLIENTE_ATENDIDO + ajuste_rendimiento)
+	rendimiento_minijuego_pendiente = -1.0
 
 	stats["dinero_final"] = dinero
 	stats["reputacion"] = reputacion
@@ -193,6 +214,7 @@ func reiniciar() -> void:
 	nombre_estafador = ""
 	dinero_antes_atencion = 0
 	volviendo_de_atencion = false
+	rendimiento_minijuego_pendiente = -1.0
 	estadisticas_dias.clear()
 
 # Datos asociados a la reputacion
