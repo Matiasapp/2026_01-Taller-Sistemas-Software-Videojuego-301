@@ -9,6 +9,16 @@ extends CanvasLayer
 @onready var aviso_cliente: RichTextLabel = $AvisoCliente
 @onready var aviso_abrir_taller: Label = $AvisoAbrirTaller
 
+@onready var estrellas = [
+	$HBoxContainer/stars_1,
+	$HBoxContainer/stars_2,
+	$HBoxContainer/stars_3,
+	$HBoxContainer/stars_4,
+	$HBoxContainer/stars_5,
+]
+
+var texturas = []
+
 var aviso_tween: Tween = null
 var parpadeo_tween: Tween = null
 
@@ -28,14 +38,25 @@ func _ready() -> void:
 	# 2. Conectamos las señales de los Autoloads a este script
 	DATOSGLOBALES.dinero_cambiado.connect(actualizar_dinero)
 	DATOSGLOBALES.dia_cambiado.connect(actualizar_dia)
-
+	DATOSGLOBALES.reputacion_cambiado.connect(actualizar_reputacion)
+	
 	# Asegúrate de que TIEMPOMANAGER tenga la señal time_changed(hours, minutes)
 	if TIEMPOMANAGER:
 		# Sincronizamos la hora actual al cargar el HUD (al volver de un minijuego, el
 		# reloj ya avanzó en el autoload pero este HUD es nuevo y mostraría 8:00).
 		actualizar_hora(TIEMPOMANAGER.current_hour, TIEMPOMANAGER.current_minute)
 		TIEMPOMANAGER.time_changed.connect(actualizar_hora)
-
+	
+	# Se cargan las estrellas de reputacion
+	texturas = [
+		preload("res://Assets/Sprites/estrellas_reputacion/estrella_0%.png"),
+		preload("res://Assets/Sprites/estrellas_reputacion/estrella_25%.png"),
+		preload("res://Assets/Sprites/estrellas_reputacion/estrella_50%.png"),
+		preload("res://Assets/Sprites/estrellas_reputacion/estrella_75%.png"),
+		preload("res://Assets/Sprites/estrellas_reputacion/estrella_100%.png")
+	]
+	
+	
 	# 3. Estado del taller y clientes atendidos (estado global en CLIENTMANAGER).
 	label_estado_taller = _buscar_richtextlabel("TallerAbiertoCerrado")
 	label_clientes_atendidos = _buscar_richtextlabel("ClientesAtendidos")
@@ -46,6 +67,9 @@ func _ready() -> void:
 			CLIENTMANAGER.estado_taller_cambiado.connect(actualizar_estado_taller)
 		if not CLIENTMANAGER.clientes_atendidos_cambiado.is_connected(actualizar_clientes_atendidos):
 			CLIENTMANAGER.clientes_atendidos_cambiado.connect(actualizar_clientes_atendidos)
+	
+	
+	actualizar_reputacion()
 
 ## Busca el primer RichTextLabel dentro de un contenedor por nombre (sin depender del nombre del label).
 func _buscar_richtextlabel(nombre_contenedor: String) -> RichTextLabel:
@@ -219,4 +243,21 @@ func play_lose_money() -> void:
 
 	var tween := create_tween()
 	tween.tween_property(money_sound, "pitch_scale", 0.55, 0.35).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
-	
+
+
+func actualizar_reputacion():
+	var reputacion = clamp(DATOSGLOBALES.reputacion, 0, 100)
+
+	for i in range(5):
+		var valor_estrella = reputacion - i * 20
+
+		if valor_estrella <= 0:
+			estrellas[i].texture = texturas[0] # vacía
+		elif valor_estrella <= 5:
+			estrellas[i].texture = texturas[1] # 25%
+		elif valor_estrella <= 10:
+			estrellas[i].texture = texturas[2] # 50%
+		elif valor_estrella <= 15:
+			estrellas[i].texture = texturas[3] # 75%
+		else: # 16–20 o más
+			estrellas[i].texture = texturas[4] # llena

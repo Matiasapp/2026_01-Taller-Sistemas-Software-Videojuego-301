@@ -519,6 +519,8 @@ func cerrar_dia() -> void:
 		TIEMPOMANAGER.stop_timer()
 		TIEMPOMANAGER.avanzar_dia()
 
+	# Se Guardan los datos diarios
+	DATOSGLOBALES.guardar_dia()
 	# Autoguardado: se guarda el progreso al cerrar el día (ya con el nuevo día).
 	PARTIDA.guardar()
 

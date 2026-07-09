@@ -39,9 +39,11 @@ var dinero: int = 500:
 
 func sumar_dinero(cantidad: int):
 	dinero += cantidad
+	ingresos_dia += cantidad
 
 func restar_dinero(cantidad: int):
 	dinero -= cantidad
+	gastos_dia -= cantidad
 
 func asegurar_estadistica_dia(dia: int) -> Dictionary:
 	if not estadisticas_dias.has(dia):
@@ -184,3 +186,66 @@ func reiniciar() -> void:
 	dinero_antes_atencion = 0
 	volviendo_de_atencion = false
 	estadisticas_dias.clear()
+
+# Datos asociados a la reputacion
+signal reputacion_cambiado(nuevo_reputacion:int)
+
+var reputacion: int = 75:
+	set(value):
+		reputacion = value
+		reputacion_cambiado.emit(reputacion)
+
+
+func sumar_reputacion(cantidad:int):
+	reputacion = mini(100,reputacion + cantidad)
+
+func restar_reputacion(cantidad:int):
+	reputacion = maxi(0,reputacion - cantidad)
+
+# Ingreso y Gastos realizados
+
+signal ingresos_dia_cambiado(nuevo_ingreso:int)
+signal gastos_dia_cambiado(nuevo_gasto:int)
+
+
+# Contenedor de datos diarios
+var historial_dias = []
+
+# Dinero ingresado por dia
+var ingresos_dia:int = 6:
+	set(value):
+		ingresos_dia = value
+		ingresos_dia_cambiado.emit(ingresos_dia)
+
+# Gastos por compra de piezas
+var gastos_dia:int = 100:
+	set(value):
+		gastos_dia = value
+		gastos_dia_cambiado.emit(gastos_dia)
+
+
+#reinicia los gastos diarios
+func reiniciar_estadisticas_dia():
+	print("Reiniciando estadisticas diarias")
+	ingresos_dia = 0
+	gastos_dia = 0
+
+# Guardar una copia de los datos diarios en un Diccionario
+func guardar_dia():
+	print("Guardando datos diarios")
+
+	var datos = {
+		"dia": dia_actual,
+		"ingresos": ingresos_dia,
+		"gastos": gastos_dia,
+		"clientes": CLIENTMANAGER.clientes_atendidos,
+		"reputacion": reputacion,
+		"dinero": dinero
+	}
+
+	historial_dias.append(datos)
+	reiniciar_estadisticas_dia()
+
+	print("Guardado:")
+	print(datos)
+	print("Total días:", historial_dias.size())

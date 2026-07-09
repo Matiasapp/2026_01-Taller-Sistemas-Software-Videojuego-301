@@ -16,7 +16,6 @@
 [ext_resource type="PackedScene" uid="uid://cyl73mjtc24ao" path="res://Scenes/UI/HUD.tscn" id="10_hi6fo"]
 [ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="11_4i3ym"]
 [ext_resource type="PackedScene" uid="uid://ponv4684dx6a" path="res://Scenes/UI/pause_menu.tscn" id="12_u8dp7"]
-[ext_resource type="Script" uid="uid://6djhw1vij6nr" path="res://Scenes/UI/pantalla_resumen_dia.gd" id="13_fiqrm"]
 [ext_resource type="AudioStream" uid="uid://oow22vmaxdqq" path="res://Assets/Audio/GameScreen/ambientfx.wav" id="13_imsci"]
 [ext_resource type="AudioStream" uid="uid://dsmrbqe7w6n7u" path="res://Assets/Audio/GameScreen/songloop.wav" id="14_h5ghc"]
 [ext_resource type="AudioStream" uid="uid://b0sfqmvnpypyl" path="res://Assets/Audio/GameScreen/PCin.wav" id="17_vuvpm"]
@@ -564,7 +563,6 @@ texture = SubResource("AtlasTexture_ev6y3")
 [node name="PantallaResumenDia" parent="." unique_id=1139403389 instance=ExtResource("10_4i3ym")]
 process_mode = 3
 visible = false
-script = ExtResource("13_fiqrm")
 
 [node name="BotónResumenDia" type="Button" parent="PantallaResumenDia" unique_id=256500136]
 process_mode = 3
