@@ -24,6 +24,13 @@ func _on_boton_continuar_pressed() -> void:
 
 	DATOSGLOBALES.sumar_dinero(GLOBALSOLDADURA.dinero)
 
+	# Rendimiento: piezas completadas sobre lo que haría un jugador hábil en la ronda.
+	var rendimiento: float = clampf(
+		float(GLOBALSOLDADURA.piezas_completadas) / float(GLOBALSOLDADURA.PIEZAS_RENDIMIENTO_MAX),
+		0.0, 1.0
+	)
+	DATOSGLOBALES.reportar_rendimiento_minijuego(rendimiento)
+
 	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")
 
 func _on_boton_continuar_mouse_entered() -> void:

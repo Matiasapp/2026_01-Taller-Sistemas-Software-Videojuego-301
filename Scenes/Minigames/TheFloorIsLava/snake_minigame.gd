@@ -542,6 +542,11 @@ func _on_boton_continuar_pressed() -> void:
 	await get_tree().create_timer(0.15).timeout
 	
 	DATOSGLOBALES.sumar_dinero(dinero_obtenido)
+
+	# Rendimiento: tiempo sobrevivido sobre el máximo; ganar da resultado pleno.
+	var rendimiento: float = 1.0 if has_won else clampf(elapsed_time / survival_time, 0.0, 1.0)
+	DATOSGLOBALES.reportar_rendimiento_minijuego(rendimiento)
+
 	Engine.time_scale = 1.0
 	get_tree().paused = false
 	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")

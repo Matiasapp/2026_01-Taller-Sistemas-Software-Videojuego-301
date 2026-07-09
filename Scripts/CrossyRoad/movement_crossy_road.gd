@@ -318,7 +318,11 @@ func _on_button_continuar_pressed() -> void:
 	get_tree().paused = false
 	
 	DATOSGLOBALES.sumar_dinero(dinero_obtenido)
-	
+
+	# Rendimiento: si ganaste, resultado pleno; si no, según cuánto avanzaste hacia la meta.
+	var rendimiento: float = 1.0 if ha_ganado else clampf(float(maximas_casillas_avanzadas) / float(meta_casillas), 0.0, 1.0)
+	DATOSGLOBALES.reportar_rendimiento_minijuego(rendimiento)
+
 	print("Volviendo al taller desde Crossy Road. Dinero obtenido: $", dinero_obtenido)
 	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")
 
