@@ -2,20 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b6nqrgnpayjfb"
-path="res://.godot/imported/estrella_0%.png-8b2ff151ec07bb9aabc8788021235130.ctex"
+uid="uid://wco72uy6llm7"
+path="res://.godot/imported/estrella_res_75.png-747fb48a231bf173e8b1e35a1b260513.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/estrellas_reputacion/estrella_0%.png"
-dest_files=["res://.godot/imported/estrella_0%.png-8b2ff151ec07bb9aabc8788021235130.ctex"]
+source_file="res://Assets/Sprites/estrellas_reputacion/estrella_res_75.png"
+dest_files=["res://.godot/imported/estrella_res_75.png-747fb48a231bf173e8b1e35a1b260513.ctex"]
 
 [params]
 
-compress/mode=3
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

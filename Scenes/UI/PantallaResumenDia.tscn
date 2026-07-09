@@ -1,425 +1,451 @@
 [gd_scene format=3 uid="uid://1gjadl8wqlap"]
 
-[ext_resource type="Script" uid="uid://6djhw1vij6nr" path="res://Scenes/UI/pantalla_resumen_dia.gd" id="1_pwri7"]
-[ext_resource type="Texture2D" uid="uid://cxqi1lh5nip8y" path="res://Assets/UI/button_style.png" id="1_vq17p"]
+[ext_resource type="Script" uid="uid://6djhw1vij6nr" path="res://Scenes/UI/pantalla_resumen_dia.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://cxqi1lh5nip8y" path="res://Assets/UI/button_style.png" id="2_plate"]
+[ext_resource type="Texture2D" uid="uid://b8y14vue8yjgd" path="res://Assets/UI/Cuadros_UI.png" id="3_0hgfa"]
+[ext_resource type="Texture2D" uid="uid://ctkvq4chixrs6" path="res://Assets/Sprites/estrellas_reputacion/estrella_res_0.png" id="3_star0"]
+[ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="4_hvd4h"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_pwri7"]
-atlas = ExtResource("1_vq17p")
+[sub_resource type="AtlasTexture" id="AtlasTexture_1jnlx"]
+atlas = ExtResource("2_plate")
 region = Rect2(1873, 492, 769, 568)
 
-[sub_resource type="Animation" id="Animation_pwri7"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("MarginContainer/VBoxContainer/Dia_actual:visible_ratio")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [1.0]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("MarginContainer/VBoxContainer/Clientes_atendidos:visible_ratio")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [1.0]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("MarginContainer/VBoxContainer/Dinero:visible_ratio")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [1.0]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("MarginContainer/VBoxContainer/Ingresos_hoy:visible_ratio")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [1.0]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("MarginContainer/VBoxContainer/Gastos:visible_ratio")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [1.0]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("MarginContainer/VBoxContainer/Reputacion:visible_ratio")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [1.0]
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("Reputacion/stars_1:visible")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/7/type = "value"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath("Reputacion/stars_2:visible")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/8/type = "value"
-tracks/8/imported = false
-tracks/8/enabled = true
-tracks/8/path = NodePath("Reputacion/stars_3:visible")
-tracks/8/interp = 1
-tracks/8/loop_wrap = true
-tracks/8/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/9/type = "value"
-tracks/9/imported = false
-tracks/9/enabled = true
-tracks/9/path = NodePath("Reputacion/stars_4:visible")
-tracks/9/interp = 1
-tracks/9/loop_wrap = true
-tracks/9/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/10/type = "value"
-tracks/10/imported = false
-tracks/10/enabled = true
-tracks/10/path = NodePath("Reputacion/stars_5:visible")
-tracks/10/interp = 1
-tracks/10/loop_wrap = true
-tracks/10/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/11/type = "value"
-tracks/11/imported = false
-tracks/11/enabled = true
-tracks/11/path = NodePath("Reputacion:visible")
-tracks/11/interp = 1
-tracks/11/loop_wrap = true
-tracks/11/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
+[sub_resource type="AtlasTexture" id="AtlasTexture_l5o4k"]
+atlas = ExtResource("3_0hgfa")
+region = Rect2(96, 188, 284, 357)
 
-[sub_resource type="Animation" id="Animation_yj7a6"]
-resource_name = "mostrar_texto"
-length = 7.5333333
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("MarginContainer/VBoxContainer/Dia_actual:visible_ratio")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0.033333335, 0.6),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [0.0, 1.0]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("MarginContainer/VBoxContainer/Clientes_atendidos:visible_ratio")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0.6333333, 1.2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [0.0, 1.0]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("MarginContainer/VBoxContainer/Dinero:visible_ratio")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(1.2333333, 1.8),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [0.0, 1.0]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("MarginContainer/VBoxContainer/Ingresos_hoy:visible_ratio")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(1.8, 2.4),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [0.0, 1.0]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("MarginContainer/VBoxContainer/Gastos:visible_ratio")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(2.4, 3),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [0.0, 1.0]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("MarginContainer/VBoxContainer/Reputacion:visible_ratio")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(3.0333333, 3.6),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [0.0, 1.0]
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("Reputacion/stars_1:visible")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
-"times": PackedFloat32Array(0.033333335, 4.2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [false, true]
-}
-tracks/7/type = "value"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath("Reputacion/stars_2:visible")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = {
-"times": PackedFloat32Array(0, 4.8),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [false, true]
-}
-tracks/8/type = "value"
-tracks/8/imported = false
-tracks/8/enabled = true
-tracks/8/path = NodePath("Reputacion/stars_3:visible")
-tracks/8/interp = 1
-tracks/8/loop_wrap = true
-tracks/8/keys = {
-"times": PackedFloat32Array(0.06666667, 5.4),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [false, true]
-}
-tracks/9/type = "value"
-tracks/9/imported = false
-tracks/9/enabled = true
-tracks/9/path = NodePath("Reputacion/stars_4:visible")
-tracks/9/interp = 1
-tracks/9/loop_wrap = true
-tracks/9/keys = {
-"times": PackedFloat32Array(6),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/10/type = "value"
-tracks/10/imported = false
-tracks/10/enabled = true
-tracks/10/path = NodePath("Reputacion/stars_5:visible")
-tracks/10/interp = 1
-tracks/10/loop_wrap = true
-tracks/10/keys = {
-"times": PackedFloat32Array(0, 6.6),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [false, true]
-}
-tracks/11/type = "value"
-tracks/11/imported = false
-tracks/11/enabled = true
-tracks/11/path = NodePath("Reputacion:visible")
-tracks/11/interp = 1
-tracks/11/loop_wrap = true
-tracks/11/keys = {
-"times": PackedFloat32Array(3.8),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
+[sub_resource type="StyleBoxFlat" id="style_bar_bg"]
+bg_color = Color(0.09, 0.06, 0.04, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_hvd4h"]
-_data = {
-&"RESET": SubResource("Animation_pwri7"),
-&"mostrar_texto": SubResource("Animation_yj7a6")
-}
+[sub_resource type="StyleBoxFlat" id="style_bar_fill"]
+bg_color = Color(0.247, 0.729, 0.314, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
 
-[node name="PantallaResumenDia" type="CanvasLayer" unique_id=1139403389]
-script = ExtResource("1_pwri7")
+[sub_resource type="AtlasTexture" id="AtlasTexture_0hgfa"]
+atlas = ExtResource("3_0hgfa")
+region = Rect2(96, 188, 284, 357)
 
-[node name="ColorRect" type="ColorRect" parent="." unique_id=2036095544]
-self_modulate = Color(1, 1, 1, 0.52156866)
-offset_left = -2.0
-offset_top = -3.0
-offset_right = 1151.0
-offset_bottom = 648.0
-color = Color(0.36182892, 0.17908949, 9.62615e-08, 1)
+[node name="PantallaResumenDia" type="CanvasLayer" unique_id=1001350383]
+script = ExtResource("1_script")
 
-[node name="PanelTutorial" type="NinePatchRect" parent="." unique_id=450979099]
+[node name="ColorRect" type="ColorRect" parent="." unique_id=450530660]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.16, 0.09, 0.04, 0.8)
+
+[node name="Panel" type="NinePatchRect" parent="." unique_id=1708389863]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -447.75
-offset_top = -253.75
-offset_right = 447.75
-offset_bottom = 253.75
+offset_left = -464.0
+offset_top = -274.0
+offset_right = 406.0
+offset_bottom = 309.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = SubResource("AtlasTexture_pwri7")
+texture = SubResource("AtlasTexture_1jnlx")
 region_rect = Rect2(0, 0, 769, 568)
-patch_margin_left = 97
-patch_margin_top = 100
-patch_margin_right = 110
-patch_margin_bottom = 110
+patch_margin_left = 51
+patch_margin_top = 45
+patch_margin_right = 46
+patch_margin_bottom = 54
 
-[node name="Label" type="Label" parent="." unique_id=1696276231]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -104.0
-offset_top = -166.0
-offset_right = 104.0
-offset_bottom = -124.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(1, 0.57254905, 0.078431375, 1)
+[node name="BALANCE" type="Control" parent="Panel" unique_id=2013417835]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="NinePatchRect3" type="NinePatchRect" parent="Panel/BALANCE" unique_id=782420187]
+layout_mode = 0
+offset_left = 378.0
+offset_top = 252.0
+offset_right = 608.00037
+offset_bottom = 384.5
+scale = Vector2(0.79999876, 0.8)
+texture = SubResource("AtlasTexture_l5o4k")
+region_rect = Rect2(0, 0.28019667, 284.08963, 356.71982)
+patch_margin_left = 23
+patch_margin_top = 69
+patch_margin_bottom = 30
+
+[node name="BalanceValue" type="Label" parent="Panel/BALANCE" unique_id=880403506]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 408.0
+offset_top = 308.0
+offset_right = 535.0
+offset_bottom = 339.0
+theme_override_colors/font_color = Color(0.247, 0.729, 0.314, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 8
-theme_override_font_sizes/font_size = 30
-text = "Día terminado"
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 22
+text = "+$0"
+horizontal_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="." unique_id=35534820]
+[node name="TituloBalance" type="Label" parent="Panel/BALANCE" unique_id=1183763755]
+layout_mode = 0
+offset_left = 410.0
+offset_top = 270.0
+offset_right = 530.0
+offset_bottom = 292.0
+theme_override_colors/font_color = Color(0.78, 0.7, 0.55, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_constants/shadow_outline_size = 8
+theme_override_font_sizes/font_size = 14
+text = "BALANCE DEL DÍA"
+
+[node name="REPUTACION" type="Control" parent="Panel" unique_id=1520739739]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="NinePatchRect3" type="NinePatchRect" parent="Panel/REPUTACION" unique_id=626982542]
+layout_mode = 0
+offset_left = 117.0
+offset_top = 142.0
+offset_right = 423.25046
+offset_bottom = 619.5
+scale = Vector2(0.79999876, 0.8)
+texture = SubResource("AtlasTexture_l5o4k")
+region_rect = Rect2(0, 0.28019667, 284.08963, 356.71982)
+patch_margin_left = 23
+patch_margin_top = 69
+patch_margin_bottom = 30
+
+[node name="RepTitulo" type="Label" parent="Panel/REPUTACION" unique_id=1918402367]
+layout_mode = 0
+offset_left = 130.0
+offset_top = 158.0
+offset_right = 350.0
+offset_bottom = 178.0
+theme_override_colors/font_color = Color(0.882, 0.686, 0.18, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 7
+theme_override_constants/shadow_outline_size = 8
+theme_override_font_sizes/font_size = 14
+text = "REPUTACIÓN DEL TALLER"
+horizontal_alignment = 1
+
+[node name="stars_1" type="TextureRect" parent="Panel/REPUTACION" unique_id=558056477]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 142.0
+offset_top = 248.0
+offset_right = 178.0
+offset_bottom = 284.0
+texture = ExtResource("3_star0")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="stars_2" type="TextureRect" parent="Panel/REPUTACION" unique_id=1053809730]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 182.0
+offset_top = 248.0
+offset_right = 218.0
+offset_bottom = 284.0
+texture = ExtResource("3_star0")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="stars_3" type="TextureRect" parent="Panel/REPUTACION" unique_id=290476320]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 222.0
+offset_top = 248.0
+offset_right = 258.0
+offset_bottom = 284.0
+texture = ExtResource("3_star0")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="stars_4" type="TextureRect" parent="Panel/REPUTACION" unique_id=1300387245]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 262.0
+offset_top = 248.0
+offset_right = 298.0
+offset_bottom = 284.0
+texture = ExtResource("3_star0")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="stars_5" type="TextureRect" parent="Panel/REPUTACION" unique_id=2134615459]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 302.0
+offset_top = 248.0
+offset_right = 338.0
+offset_bottom = 284.0
+texture = ExtResource("3_star0")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ReputacionBar" type="ProgressBar" parent="Panel/REPUTACION" unique_id=1330439633]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 141.0
+offset_top = 318.0
+offset_right = 337.0
+offset_bottom = 337.0
+theme_override_styles/background = SubResource("style_bar_bg")
+theme_override_styles/fill = SubResource("style_bar_fill")
+show_percentage = false
+
+[node name="ReputacionLabel" type="Label" parent="Panel/REPUTACION" unique_id=999309988]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 130.0
+offset_top = 373.0
+offset_right = 346.0
+offset_bottom = 396.0
+theme_override_colors/font_color = Color(0.92, 0.9, 0.85, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "Reputación: 0/100"
+horizontal_alignment = 1
+
+[node name="CLIENTES" type="Control" parent="Panel" unique_id=579793276]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="NinePatchRect3" type="NinePatchRect" parent="Panel/CLIENTES" unique_id=480540929]
+layout_mode = 0
+offset_left = 377.99997
+offset_top = 142.0
+offset_right = 608.00037
+offset_bottom = 274.5
+scale = Vector2(0.79999876, 0.8)
+texture = SubResource("AtlasTexture_l5o4k")
+region_rect = Rect2(0, 0.28019667, 284.08963, 356.71982)
+patch_margin_left = 23
+patch_margin_top = 69
+patch_margin_bottom = 30
+
+[node name="ClientesValue" type="Label" parent="Panel/CLIENTES" unique_id=1114786683]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 408.0
+offset_top = 196.0
+offset_right = 535.0
+offset_bottom = 227.0
+theme_override_colors/font_color = Color(0.95, 0.93, 0.88, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 22
+text = "0 atendidos"
+
+[node name="TituloClientes" type="Label" parent="Panel/CLIENTES" unique_id=1894488396]
+layout_mode = 0
+offset_left = 440.0
+offset_top = 158.0
+offset_right = 503.0
+offset_bottom = 178.0
+theme_override_colors/font_color = Color(0.78, 0.7, 0.55, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_constants/shadow_outline_size = 8
+theme_override_font_sizes/font_size = 14
+text = "CLIENTES"
+
+[node name="DIAGNOSTICO" type="Control" parent="Panel" unique_id=297919389]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="NinePatchRect3" type="NinePatchRect" parent="Panel/DIAGNOSTICO" unique_id=1972610492]
+layout_mode = 0
+offset_left = 575.0
+offset_top = 142.0
+offset_right = 805.00037
+offset_bottom = 274.5
+scale = Vector2(0.79999876, 0.8)
+texture = SubResource("AtlasTexture_l5o4k")
+region_rect = Rect2(0, 0.28019667, 284.08963, 356.71982)
+patch_margin_left = 23
+patch_margin_top = 69
+patch_margin_bottom = 30
+
+[node name="TituloDiagnostico" type="Label" parent="Panel/DIAGNOSTICO" unique_id=56527242]
+layout_mode = 0
+offset_left = 619.0
+offset_top = 158.0
+offset_right = 715.0
+offset_bottom = 178.0
+theme_override_colors/font_color = Color(0.78, 0.7, 0.55, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_constants/shadow_outline_size = 8
+theme_override_font_sizes/font_size = 14
+text = "DIAGNÓSTICO"
+
+[node name="DiagnosticoValue" type="Label" parent="Panel/DIAGNOSTICO" unique_id=1292153512]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 599.0
+offset_top = 196.0
+offset_right = 742.0
+offset_bottom = 227.0
+theme_override_colors/font_color = Color(0.95, 0.93, 0.88, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 22
+text = "0 bien / 0 mal"
+
+[node name="CAJA" type="Control" parent="Panel" unique_id=1370871217]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="NinePatchRect3" type="NinePatchRect" parent="Panel/CAJA" unique_id=196381154]
+layout_mode = 0
+offset_left = 575.0
+offset_top = 252.0
+offset_right = 805.00037
+offset_bottom = 384.49997
+scale = Vector2(0.79999876, 0.8)
+texture = SubResource("AtlasTexture_0hgfa")
+region_rect = Rect2(0, 0.28019667, 284.08963, 356.71982)
+patch_margin_left = 23
+patch_margin_top = 69
+patch_margin_bottom = 30
+
+[node name="TituloCaja" type="Label" parent="Panel/CAJA" unique_id=555442783]
+layout_mode = 0
+offset_left = 630.0
+offset_top = 270.0
+offset_right = 705.0
+offset_bottom = 290.0
+theme_override_colors/font_color = Color(0.78, 0.7, 0.55, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_constants/shadow_outline_size = 8
+theme_override_font_sizes/font_size = 14
+text = "CAJA FINAL"
+
+[node name="CajaValue" type="Label" parent="Panel/CAJA" unique_id=885548636]
+unique_name_in_owner = true
+layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -240.5
-offset_top = -60.0
-offset_right = 240.5
-offset_bottom = 103.0
+offset_left = 597.0
+offset_top = 288.0
+offset_right = 699.0
+offset_bottom = 319.0
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1803830430]
-layout_mode = 2
-
-[node name="Dia_actual" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1403636314]
-layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.93, 0.88, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 22
+text = "$0"
 horizontal_alignment = 1
 
-[node name="Clientes_atendidos" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1042069950]
-layout_mode = 2
+[node name="Titulo" type="Label" parent="Panel" unique_id=1608802335]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 130.0
+offset_top = 51.0
+offset_right = 770.0
+offset_bottom = 93.0
+theme_override_colors/font_color = Color(0.882, 0.686, 0.18, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 30
+text = "RESUMEN DEL DÍA"
 horizontal_alignment = 1
 
-[node name="Dinero" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1720699182]
-layout_mode = 2
+[node name="Estado" type="Label" parent="Panel" unique_id=1007611175]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 130.0
+offset_top = 93.0
+offset_right = 770.0
+offset_bottom = 117.0
+theme_override_colors/font_color = Color(0.247, 0.729, 0.314, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 15
+text = "Jornada cerrada"
 horizontal_alignment = 1
 
-[node name="Ingresos_hoy" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1989154311]
-layout_mode = 2
+[node name="NinePatchRect3" type="NinePatchRect" parent="Panel" unique_id=609777510]
+layout_mode = 0
+offset_left = 378.0
+offset_top = 373.0
+offset_right = 854.2508
+offset_bottom = 561.75
+scale = Vector2(0.79999876, 0.8)
+texture = SubResource("AtlasTexture_l5o4k")
+region_rect = Rect2(0, 0.28019667, 284.08963, 356.71982)
+patch_margin_left = 23
+patch_margin_top = 31
+patch_margin_right = 17
+patch_margin_bottom = 30
+
+[node name="EventosLabel" type="RichTextLabel" parent="Panel" unique_id=1973966573]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 394.0
+offset_top = 412.0
+offset_right = 742.0
+offset_bottom = 504.0
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/normal_font_size = 14
+bbcode_enabled = true
+
+[node name="BotonCerrar" type="Button" parent="Panel" unique_id=229779570]
+layout_mode = 0
+offset_left = 378.0
+offset_top = 543.0
+offset_right = 505.875
+offset_bottom = 574.0
+theme = ExtResource("4_hvd4h")
+text = "Cerrar"
+
+[node name="Label" type="Label" parent="Panel" unique_id=1125772988]
+layout_mode = 0
+offset_left = 494.0
+offset_top = 382.0
+offset_right = 638.0
+offset_bottom = 405.0
+theme_override_colors/font_color = Color(0.69803923, 0.62352943, 0.49019608, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_constants/shadow_outline_size = 7
+text = "BITÁCORA DEL DÍA"
 horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="Gastos" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1332253256]
-layout_mode = 2
-horizontal_alignment = 1
-
-[node name="Reputacion" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1764851768]
-layout_mode = 2
-text = "Reputación: "
-horizontal_alignment = 1
-
-[node name="Reputacion" type="HBoxContainer" parent="." unique_id=1179158995]
-offset_left = 626.0
-offset_top = 394.0
-offset_right = 1107.0
-offset_bottom = 394.0
-scale = Vector2(0.1, 0.1)
-size_flags_vertical = 8
-
-[node name="stars_1" type="TextureRect" parent="Reputacion" unique_id=1248446941]
-layout_mode = 2
-size_flags_vertical = 8
-
-[node name="stars_2" type="TextureRect" parent="Reputacion" unique_id=1331725663]
-layout_mode = 2
-
-[node name="stars_3" type="TextureRect" parent="Reputacion" unique_id=1574739458]
-layout_mode = 2
-
-[node name="stars_4" type="TextureRect" parent="Reputacion" unique_id=774802950]
-layout_mode = 2
-
-[node name="stars_5" type="TextureRect" parent="Reputacion" unique_id=657525845]
-layout_mode = 2
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1567661301]
-libraries/ = SubResource("AnimationLibrary_hvd4h")
+[connection signal="pressed" from="Panel/BotonCerrar" to="." method="_on_cerrar_pressed"]
