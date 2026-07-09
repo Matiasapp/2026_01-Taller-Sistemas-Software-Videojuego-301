@@ -130,6 +130,11 @@ func _ready() -> void:
 		DATOSGLOBALES.volviendo_de_atencion = false
 		venimos_de_atender = true
 		var delta_dinero: int = DATOSGLOBALES.dinero - DATOSGLOBALES.dinero_antes_atencion
+		DATOSGLOBALES.registrar_atencion_dia(delta_dinero)
+		DATOSGLOBALES.registrar_evento_dia(
+			"Atencion finalizada. Balance de la reparacion: %s."
+			% DATOSGLOBALES.formatear_monto(delta_dinero)
+		)
 		if delta_dinero != 0 and hud:
 			hud.mostrar_popup_dinero(delta_dinero)
 	
@@ -499,6 +504,11 @@ func lanzar_minijuego_random() -> void:
 
 func cerrar_dia() -> void:
 	print("Día terminado")
+
+	DATOSGLOBALES.registrar_cierre_dia()
+	DATOSGLOBALES.registrar_evento_dia(
+		"Dia cerrado con $%d en caja." % DATOSGLOBALES.dinero
+	)
 
 	taller_abierto = false
 
