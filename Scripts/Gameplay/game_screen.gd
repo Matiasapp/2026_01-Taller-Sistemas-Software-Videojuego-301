@@ -107,7 +107,9 @@ func _ready() -> void:
 	
 	if resumen_dia:
 		resumen_dia.visible = false
-	
+		if not resumen_dia.cerrado.is_connected(_on_resumen_cerrado):
+			resumen_dia.cerrado.connect(_on_resumen_cerrado)
+
 	# Recuperar estado del flujo al volver desde un minijuego
 	if CLIENTMANAGER:
 		taller_abierto = CLIENTMANAGER.taller_abierto
@@ -583,12 +585,8 @@ func _on_day_ended():
 	print("Jornada terminada. Acércate a la cortina para cerrar el taller.")
 	actualizar_mensaje_puerta()
 
-func _on_botón_resumen_dia_pressed() -> void:
-	if resumen_dia:
-		resumen_dia.visible = false
-
-	get_tree().paused = false
-	Engine.time_scale = 1.0
+## El resumen del día se cerró (el propio panel ya despausó el juego).
+func _on_resumen_cerrado() -> void:
 	actualizar_mensaje_puerta()
 
 
@@ -665,7 +663,7 @@ func mostrar_resumen_dia() -> void:
 	get_tree().paused = true
 
 	if resumen_dia:
-		resumen_dia.visible = true		
+		resumen_dia.mostrar_resumen()
 		
 func fade_to_black(duration := 0.6) -> void:
 	fade_rect.visible = true

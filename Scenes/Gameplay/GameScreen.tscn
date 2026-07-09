@@ -564,15 +564,6 @@ texture = SubResource("AtlasTexture_ev6y3")
 process_mode = 3
 visible = false
 
-[node name="BotónResumenDia" type="Button" parent="PantallaResumenDia" unique_id=256500136]
-process_mode = 3
-offset_left = 803.0
-offset_top = 501.0
-offset_right = 938.0
-offset_bottom = 538.0
-theme = ExtResource("11_4i3ym")
-text = "cerrar"
-
 [node name="en_desarrollo" type="AcceptDialog" parent="." unique_id=237246111]
 title = "Aviso"
 dialog_text = "Lo sentimos, esta función se encuentra en desarrollo !!"
@@ -814,6 +805,5 @@ bus = &"SFX"
 [connection signal="body_exited" from="AreaInteractuarPc" to="." method="_on_area_interactuar_pc_body_exited"]
 [connection signal="body_entered" from="AreaAtenderCliente" to="." method="_on_area_atender_cliente_body_entered"]
 [connection signal="body_exited" from="AreaAtenderCliente" to="." method="_on_area_atender_cliente_body_exited"]
-[connection signal="pressed" from="PantallaResumenDia/BotónResumenDia" to="." method="_on_botón_resumen_dia_pressed"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="pressed" from="ModalBienvenida/Panel/BtnEntendido" to="." method="_on_modal_bienvenida_entendido"]
