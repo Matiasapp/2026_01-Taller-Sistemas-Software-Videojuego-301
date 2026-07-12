@@ -261,10 +261,14 @@ func actualizar_resumen_final() -> void:
 	label_texto_autos.text = "CLIENTES ATENDIDOS (TOTAL)"
 	label_texto_dinero.text = "GANANCIAS TOTALES"
 
-	# Placeholder por ahora. Luego puedes reemplazarlo con managers reales.
-	var reputacion := 95
-	var clientes_satisfechos := 23
-	var clientes_atendidos_total := 35
+	var stats := DATOSGLOBALES.get_estadisticas_generales()
+	var reputacion: int = DATOSGLOBALES.reputacion
+	var clientes_atendidos_total: int = int(stats.get("clientes_atendidos", 0))
+	var incidentes: int = (
+		int(stats.get("diagnosticos_incorrectos", 0))
+		+ int(stats.get("minijuegos_fallidos", 0))
+	)
+	var clientes_satisfechos := maxi(0, clientes_atendidos_total - incidentes)
 	var ganancias_totales := DATOSGLOBALES.dinero
 
 	label_reputacion.text = str(reputacion) + "%"

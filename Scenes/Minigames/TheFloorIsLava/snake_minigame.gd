@@ -576,6 +576,11 @@ func _on_boton_continuar_pressed() -> void:
 	await get_tree().create_timer(0.15).timeout
 	
 	DATOSGLOBALES.sumar_dinero(dinero_obtenido)
+	DATOSGLOBALES.registrar_desempeno_minijuego(
+		has_won,
+		"Reparacion de combustible",
+		"Bidones recogidos: %d." % bidones_recogidos
+	)
 	Engine.time_scale = 1.0
 	get_tree().paused = false
 	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")

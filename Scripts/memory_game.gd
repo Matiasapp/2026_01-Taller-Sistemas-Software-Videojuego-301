@@ -376,6 +376,11 @@ func _on_btn_continuar_pressed() -> void:
 	print("Memory terminado. Ganó:", gano, " Monto:", monto)
 
 	DATOSGLOBALES.sumar_dinero(monto)
+	DATOSGLOBALES.registrar_desempeno_minijuego(
+		gano,
+		"Circuito electrico",
+		"Pares encontrados: %d/%d." % [matched_pairs, TOTAL_PAIRS]
+	)
 
 	Engine.time_scale = 1.0
 	get_tree().paused = false

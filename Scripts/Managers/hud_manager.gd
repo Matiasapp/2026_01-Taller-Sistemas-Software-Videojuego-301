@@ -245,8 +245,8 @@ func play_lose_money() -> void:
 	tween.tween_property(money_sound, "pitch_scale", 0.55, 0.35).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 
 
-func actualizar_reputacion():
-	var reputacion = clamp(DATOSGLOBALES.reputacion, 0, 100)
+func actualizar_reputacion(_nueva_reputacion: int = -1) -> void:
+	var reputacion := clampi(DATOSGLOBALES.reputacion, 0, 100)
 
 	for i in range(5):
 		var valor_estrella = reputacion - i * 20

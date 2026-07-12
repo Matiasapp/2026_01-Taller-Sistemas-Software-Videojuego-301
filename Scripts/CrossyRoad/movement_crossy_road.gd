@@ -318,6 +318,11 @@ func _on_button_continuar_pressed() -> void:
 	get_tree().paused = false
 	
 	DATOSGLOBALES.sumar_dinero(dinero_obtenido)
+	DATOSGLOBALES.registrar_desempeno_minijuego(
+		ha_ganado,
+		"Busqueda de repuesto",
+		"Se llego a la tienda." if ha_ganado else "No se consiguio el repuesto."
+	)
 	
 	print("Volviendo al taller desde Crossy Road. Dinero obtenido: $", dinero_obtenido)
 	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")

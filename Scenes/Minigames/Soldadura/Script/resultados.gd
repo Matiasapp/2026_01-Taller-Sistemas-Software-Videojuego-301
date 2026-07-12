@@ -23,6 +23,12 @@ func _on_boton_continuar_pressed() -> void:
 	print("Volviendo al taller desde Soldadura")
 
 	DATOSGLOBALES.sumar_dinero(GLOBALSOLDADURA.dinero)
+	var desempeno_suficiente := GLOBALSOLDADURA.piezas_completadas >= 3
+	DATOSGLOBALES.registrar_desempeno_minijuego(
+		desempeno_suficiente,
+		"Soldadura",
+		"Piezas completadas: %d." % GLOBALSOLDADURA.piezas_completadas
+	)
 
 	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")
 
