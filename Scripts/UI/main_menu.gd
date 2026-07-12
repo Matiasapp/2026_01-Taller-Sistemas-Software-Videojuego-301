@@ -104,7 +104,9 @@ func _on_button_load_game_pressed() -> void:
 		return
 
 	await get_tree().create_timer(0.15).timeout
-	GlobalMusic.set_intro_volume()
+	# Cargar partida salta la introducción, que normalmente es la encargada de
+	# apagar la música persistente del menú antes de entrar al taller.
+	await GlobalMusic.fade_out_and_stop(0.35)
 	CARGADOR.cambiar_escena("res://Scenes/Gameplay/GameScreen.tscn")
 
 
