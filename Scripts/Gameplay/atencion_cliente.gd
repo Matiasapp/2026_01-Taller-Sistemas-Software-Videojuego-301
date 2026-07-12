@@ -351,9 +351,8 @@ func _on_pieza_elegida(tipo: String) -> void:
 
 	print("Pieza elegida:", tipo)
 
-	get_tree().change_scene_to_file(
-		ruta_minijuego_pendiente
-	)
+	var destino := DATOSGLOBALES.obtener_destino_post_escena(ruta_minijuego_pendiente)
+	get_tree().change_scene_to_file(destino)
 	
 func play_click() -> void:
 	if not click_sound:

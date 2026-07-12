@@ -214,6 +214,15 @@ func mostrar_aviso(texto: String) -> void:
 	aviso_tween.tween_property(aviso_cliente, "modulate:a", 0.0, 0.5)
 	aviso_tween.tween_callback(func(): aviso_cliente.visible = false)
 
+func _mostrar_avisos_reputacion(avisos: Array[String]) -> void:
+	var detalle := "\n".join(PackedStringArray(avisos))
+	mostrar_aviso("[b]Cambios de reputacion[/b]\n" + detalle)
+
+func mostrar_cambios_reputacion_pendientes() -> void:
+	var avisos_reputacion := DATOSGLOBALES.consumir_avisos_reputacion()
+	if not avisos_reputacion.is_empty():
+		call_deferred("_mostrar_avisos_reputacion", avisos_reputacion)
+
 func actualizar_dia(nuevo_dia: int) -> void:
 	label_dia.text = "Día: " + str(nuevo_dia)
 

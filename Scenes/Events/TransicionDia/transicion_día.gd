@@ -161,10 +161,14 @@ func finalizar_evento() -> void:
 	get_tree().paused = false
 
 	# Si esta noche hay robo, se muestra DESPUÉS del cierre del taller; si no, al taller.
+	var destino_normal: String
 	if DATOSGLOBALES.siguiente_evento_dia == "robo":
-		get_tree().change_scene_to_file("res://Scenes/Events/EventoRobo/EventoRobo.tscn")
+		destino_normal = "res://Scenes/Events/EventoRobo/EventoRobo.tscn"
 	else:
-		get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")
+		destino_normal = "res://Scenes/Gameplay/GameScreen.tscn"
+
+	var destino := DATOSGLOBALES.obtener_destino_post_escena(destino_normal)
+	get_tree().change_scene_to_file(destino)
 
 
 func _on_comenzar_pressed() -> void:

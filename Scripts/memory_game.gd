@@ -376,15 +376,23 @@ func _on_btn_continuar_pressed() -> void:
 	print("Memory terminado. Ganó:", gano, " Monto:", monto)
 
 	DATOSGLOBALES.sumar_dinero(monto)
+	var nivel_desempeno := DATOSGLOBALES.DESEMPENO_FALLIDO
+	if gano:
+		nivel_desempeno = DATOSGLOBALES.DESEMPENO_EXITOSO
+	elif matched_pairs >= 7:
+		nivel_desempeno = DATOSGLOBALES.DESEMPENO_ACEPTABLE
 	DATOSGLOBALES.registrar_desempeno_minijuego(
-		gano,
+		nivel_desempeno,
 		"Circuito electrico",
 		"Pares encontrados: %d/%d." % [matched_pairs, TOTAL_PAIRS]
 	)
 
 	Engine.time_scale = 1.0
 	get_tree().paused = false
-	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")
+	var destino := DATOSGLOBALES.obtener_destino_post_escena(
+		"res://Scenes/Gameplay/GameScreen.tscn"
+	)
+	get_tree().change_scene_to_file(destino)
 
 func _process(delta: float) -> void:
 	if estado_actual != Estado.JUGANDO:

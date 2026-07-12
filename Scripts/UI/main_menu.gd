@@ -107,7 +107,10 @@ func _on_button_load_game_pressed() -> void:
 	# Cargar partida salta la introducción, que normalmente es la encargada de
 	# apagar la música persistente del menú antes de entrar al taller.
 	await GlobalMusic.fade_out_and_stop(0.35)
-	CARGADOR.cambiar_escena("res://Scenes/Gameplay/GameScreen.tscn")
+	var destino := DATOSGLOBALES.obtener_destino_post_escena(
+		"res://Scenes/Gameplay/GameScreen.tscn"
+	)
+	CARGADOR.cambiar_escena(destino)
 
 
 func _on_button_exit_pressed() -> void:

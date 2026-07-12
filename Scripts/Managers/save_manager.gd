@@ -36,6 +36,7 @@ func cargar() -> bool:
 	var cfg := ConfigFile.new()
 	if cfg.load(RUTA) != OK:
 		return false
+	DATOSGLOBALES.limpiar_avisos_reputacion()
 
 	DATOSGLOBALES.dia_actual = cfg.get_value("partida", "dia_actual", 1)
 	DATOSGLOBALES.dinero = cfg.get_value("partida", "dinero", 150)

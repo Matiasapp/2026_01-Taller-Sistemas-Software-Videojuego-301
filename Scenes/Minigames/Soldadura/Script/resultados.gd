@@ -23,14 +23,21 @@ func _on_boton_continuar_pressed() -> void:
 	print("Volviendo al taller desde Soldadura")
 
 	DATOSGLOBALES.sumar_dinero(GLOBALSOLDADURA.dinero)
-	var desempeno_suficiente := GLOBALSOLDADURA.piezas_completadas >= 3
+	var nivel_desempeno := DATOSGLOBALES.DESEMPENO_FALLIDO
+	if GLOBALSOLDADURA.piezas_completadas >= 3:
+		nivel_desempeno = DATOSGLOBALES.DESEMPENO_EXITOSO
+	elif GLOBALSOLDADURA.piezas_completadas >= 1:
+		nivel_desempeno = DATOSGLOBALES.DESEMPENO_ACEPTABLE
 	DATOSGLOBALES.registrar_desempeno_minijuego(
-		desempeno_suficiente,
+		nivel_desempeno,
 		"Soldadura",
 		"Piezas completadas: %d." % GLOBALSOLDADURA.piezas_completadas
 	)
 
-	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")
+	var destino := DATOSGLOBALES.obtener_destino_post_escena(
+		"res://Scenes/Gameplay/GameScreen.tscn"
+	)
+	get_tree().change_scene_to_file(destino)
 
 func _on_boton_continuar_mouse_entered() -> void:
 	AUDIOMANAGER.play_ui_hover()

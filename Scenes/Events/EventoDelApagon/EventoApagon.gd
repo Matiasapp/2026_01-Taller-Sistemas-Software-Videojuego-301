@@ -6,6 +6,7 @@ signal evento_terminado
 @onready var animacion = $AnimationPlayer
 
 @onready var audio_apagon = $AudioApagon
+@onready var continuar_button: Button = $Panel/Continuar
 
 
 func _ready() -> void:
@@ -25,6 +26,8 @@ func iniciar() -> void:
 	# ==========================
 
 	for audio in game.find_children("*", "AudioStreamPlayer2D", true, false):
+		if audio == audio_apagon:
+			continue
 		audio.stop()
 		audio.seek(0.0)
 		audio.stream_paused = true
@@ -74,14 +77,8 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 
 
 func _on_continuar_pressed() -> void:
-
-	var game = get_parent()
-
+	if continuar_button.disabled:
+		return
+	continuar_button.disabled = true
 	panel.visible = false
-
-	if game.has_method("cerrar_dia"):
-		game.cerrar_dia()
-
 	evento_terminado.emit()
-
-	queue_free()

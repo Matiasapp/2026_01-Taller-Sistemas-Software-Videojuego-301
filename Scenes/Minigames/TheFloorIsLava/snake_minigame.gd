@@ -576,14 +576,22 @@ func _on_boton_continuar_pressed() -> void:
 	await get_tree().create_timer(0.15).timeout
 	
 	DATOSGLOBALES.sumar_dinero(dinero_obtenido)
+	var nivel_desempeno := DATOSGLOBALES.DESEMPENO_FALLIDO
+	if has_won:
+		nivel_desempeno = DATOSGLOBALES.DESEMPENO_EXITOSO
+	elif elapsed_time >= survival_time * 0.70:
+		nivel_desempeno = DATOSGLOBALES.DESEMPENO_ACEPTABLE
 	DATOSGLOBALES.registrar_desempeno_minijuego(
-		has_won,
+		nivel_desempeno,
 		"Reparacion de combustible",
 		"Bidones recogidos: %d." % bidones_recogidos
 	)
 	Engine.time_scale = 1.0
 	get_tree().paused = false
-	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")
+	var destino := DATOSGLOBALES.obtener_destino_post_escena(
+		"res://Scenes/Gameplay/GameScreen.tscn"
+	)
+	get_tree().change_scene_to_file(destino)
 	
 func play_countdown_sound(semitones := 0) -> void:
 	if not countdown_sound:

@@ -246,20 +246,24 @@ func mostrar_resumen_limpio() -> void:
 	
 func actualizar_resumen_final() -> void:
 	label_titulo.text = "RESUMEN SEMANAL"
-	label_descripcion.text = "Has completado la semana. Este es el resultado de tu esfuerzo."
+	label_descripcion.text = "Completaste los 5 dias, pero el futuro del taller sigue incierto."
 
 	label_texto_reputacion.text = "REPUTACIÓN"
 	label_texto_clientes.text = "CLIENTES SATISFECHOS"
 	label_texto_autos.text = "CLIENTES ATENDIDOS (TOTAL)"
-	label_texto_dinero.text = "GANANCIAS TOTALES"
+	label_texto_dinero.text = "DINERO FINAL"
 
-	# Placeholder por ahora. Luego puedes reemplazarlo con managers reales.
-	var reputacion := 95
-	var clientes_satisfechos := 23
-	var clientes_atendidos_total := 35
+	var stats := DATOSGLOBALES.get_estadisticas_generales()
+	var reputacion: int = DATOSGLOBALES.reputacion
+	var clientes_atendidos_total: int = int(stats.get("clientes_atendidos", 0))
+	var incidentes: int = (
+		int(stats.get("diagnosticos_incorrectos", 0))
+		+ int(stats.get("minijuegos_fallidos", 0))
+	)
+	var clientes_satisfechos := maxi(0, clientes_atendidos_total - incidentes)
 	var ganancias_totales := DATOSGLOBALES.dinero
 
 	label_reputacion.text = str(reputacion) + "%"
 	label_clientes.text = str(clientes_satisfechos)
 	label_autos.text = str(clientes_atendidos_total)
-	label_dinero.text = "$" + str(ganancias_totales)	
+	label_dinero.text = "$%d" % ganancias_totales if ganancias_totales >= 0 else "-$%d" % absi(ganancias_totales)

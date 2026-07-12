@@ -9,21 +9,18 @@ const GASTOS: Array[Dictionary] = [
 		"detalle": "Mantiene el local disponible para la próxima jornada.",
 		"base": 110,
 		"aumento": 10,
-		"penalizacion": 12,
 	},
 	{
 		"nombre": "Luz y servicios",
 		"detalle": "Electricidad, agua y herramientas conectadas.",
 		"base": 55,
 		"aumento": 5,
-		"penalizacion": 7,
 	},
 	{
 		"nombre": "Comida",
 		"detalle": "Algo caliente para recuperar fuerzas.",
 		"base": 45,
 		"aumento": 5,
-		"penalizacion": 5,
 	},
 ]
 
@@ -83,7 +80,6 @@ func _on_gasto_toggled(_activo: bool) -> void:
 
 func _actualizar_resumen() -> void:
 	var total := 0
-	var penalizacion := 0
 	var postergados := 0
 
 	for i in range(checks.size()):
@@ -92,20 +88,21 @@ func _actualizar_resumen() -> void:
 			total += costos[i]
 		else:
 			checks[i].text = "POSTERGAR"
-			penalizacion += int(GASTOS[i]["penalizacion"])
 			postergados += 1
 
 	var saldo := DATOSGLOBALES.dinero - total
+	var presupuesto_disponible := maxi(0, DATOSGLOBALES.dinero)
+	var pago_inviable := total > presupuesto_disponible
 	total_label.text = "TOTAL A PAGAR:  $%d" % total
 	saldo_label.text = "SALDO PARA MAÑANA:  $%d" % saldo
 	saldo_label.add_theme_color_override("font_color", COLOR_OK if saldo >= 0 else COLOR_ALERTA)
 
-	if saldo < 0:
+	if pago_inviable:
 		consecuencia_label.text = "No alcanza la caja. Posterga uno o más pagos para continuar."
 		consecuencia_label.add_theme_color_override("font_color", COLOR_ALERTA)
 		confirmar_button.disabled = true
 	elif postergados > 0:
-		consecuencia_label.text = "Pagos postergados: %d  ·  Reputación: -%d" % [postergados, penalizacion]
+		consecuencia_label.text = "Pagos postergados: %d  ·  Sin cambio de reputación" % postergados
 		consecuencia_label.add_theme_color_override("font_color", COLOR_ALERTA)
 		confirmar_button.disabled = false
 	else:
@@ -125,7 +122,6 @@ func _on_confirmar_pressed() -> void:
 	var pagados: Array[String] = []
 	var postergados: Array[String] = []
 	var total := 0
-	var penalizacion := 0
 
 	for i in range(checks.size()):
 		var nombre := str(GASTOS[i]["nombre"])
@@ -134,10 +130,9 @@ func _on_confirmar_pressed() -> void:
 			total += costos[i]
 		else:
 			postergados.append(nombre)
-			penalizacion += int(GASTOS[i]["penalizacion"])
 
 	DATOSGLOBALES.registrar_gastos_diarios(
-		dia_cerrado, pagados, postergados, total, penalizacion
+		dia_cerrado, pagados, postergados, total, 0
 	)
 	PARTIDA.guardar()
 
@@ -152,7 +147,8 @@ func _on_confirmar_pressed() -> void:
 
 	await get_tree().create_timer(0.85).timeout
 	await _fundir_a_negro()
-	get_tree().change_scene_to_file(ESCENA_SIGUIENTE)
+	var destino := DATOSGLOBALES.obtener_destino_post_escena(ESCENA_SIGUIENTE)
+	get_tree().change_scene_to_file(destino)
 
 
 func _on_confirmar_mouse_entered() -> void:
