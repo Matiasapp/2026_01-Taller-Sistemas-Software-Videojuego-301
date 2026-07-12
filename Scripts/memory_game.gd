@@ -387,15 +387,6 @@ func _on_btn_continuar_pressed() -> void:
 		"Pares encontrados: %d/%d." % [matched_pairs, TOTAL_PAIRS]
 	)
 
-	# Rendimiento: si ganaste, resultado alto con bono por tiempo sobrante;
-	# si perdiste, según cuántos pares alcanzaste a encontrar.
-	var rendimiento: float
-	if gano:
-		rendimiento = clampf(0.8 + 0.2 * (tiempo_restante / TIEMPO_LIMITE), 0.0, 1.0)
-	else:
-		rendimiento = clampf(float(matched_pairs) / float(TOTAL_PAIRS), 0.0, 1.0) * 0.6
-	DATOSGLOBALES.reportar_rendimiento_minijuego(rendimiento)
-
 	Engine.time_scale = 1.0
 	get_tree().paused = false
 	var destino := DATOSGLOBALES.obtener_destino_post_escena(

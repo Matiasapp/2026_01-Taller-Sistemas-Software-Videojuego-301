@@ -373,9 +373,6 @@ func atender_cliente() -> void:
 	# Guardamos el dinero actual para, al volver, mostrar en el HUD cuánto cambió.
 	DATOSGLOBALES.dinero_antes_atencion = DATOSGLOBALES.dinero
 	DATOSGLOBALES.volviendo_de_atencion = true
-	# Limpia cualquier rendimiento de minijuego que hubiera quedado pendiente (p. ej.
-	# del minijuego aleatorio de easter egg), para que no se filtre a esta atención.
-	DATOSGLOBALES.rendimiento_minijuego_pendiente = -1.0
 
 	# Siempre se atiende al cliente (también al 5º): pantalla de atención + minijuego.
 	await transition_to_atencion_cliente()
