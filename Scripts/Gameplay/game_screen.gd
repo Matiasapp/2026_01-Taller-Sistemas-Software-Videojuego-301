@@ -539,9 +539,9 @@ func cerrar_dia() -> void:
 
 	await fade_to_black(0.6)
 
-	# Siempre se muestra primero la escena de cierre del taller (transición del día).
-	# Si esta noche hay robo, se encadena DESPUÉS de la transición (ver transicion_día.gd).
-	get_tree().change_scene_to_file("res://Scenes/Events/TransicionDia/transicion_dia.tscn")
+	# Primero se decide qué gastos del cierre pagar. Después se muestra la
+	# transición nocturna y, si corresponde, el evento de robo.
+	get_tree().change_scene_to_file("res://Scenes/Events/GastosDiarios/GastosDiarios.tscn")
 
 func ejecutar_evento_robo() -> void:
 	print("EVENTO: Entraron a robar")

@@ -136,6 +136,45 @@ func registrar_cierre_dia(dia: int = -1) -> void:
 	stats["reputacion"] = reputacion
 	estadisticas_dias[dia] = stats
 
+## Aplica una sola vez las decisiones de la libreta de gastos del cierre.
+## Devuelve false si ese día ya había sido procesado, evitando cobros duplicados.
+func registrar_gastos_diarios(
+	dia: int,
+	pagados: Array[String],
+	postergados: Array[String],
+	total_pagado: int,
+	penalizacion_reputacion: int
+) -> bool:
+	var stats := asegurar_estadistica_dia(dia)
+	if bool(stats.get("gastos_diarios_procesados", false)):
+		return false
+
+	dinero -= total_pagado
+	if penalizacion_reputacion > 0:
+		ajustar_reputacion(-penalizacion_reputacion)
+
+	stats["gastos_diarios_procesados"] = true
+	stats["gastos_diarios_total"] = total_pagado
+	stats["gastos_diarios_pagados"] = pagados.duplicate()
+	stats["gastos_diarios_postergados"] = postergados.duplicate()
+	stats["gastos"] = int(stats.get("gastos", 0)) + total_pagado
+	stats["balance"] = int(stats.get("balance", 0)) - total_pagado
+	stats["dinero_final"] = dinero
+	stats["reputacion"] = reputacion
+
+	var eventos: Array = stats.get("eventos", [])
+	if total_pagado > 0:
+		eventos.append("Gastos de cierre pagados: -$%d." % total_pagado)
+	if not postergados.is_empty():
+		eventos.append(
+			"Pagos postergados: %s. Reputacion: -%d."
+			% [", ".join(PackedStringArray(postergados)), penalizacion_reputacion]
+		)
+	stats["eventos"] = eventos
+
+	estadisticas_dias[dia] = stats
+	return true
+
 func get_estadistica_dia(dia: int) -> Dictionary:
 	return asegurar_estadistica_dia(dia)
 
