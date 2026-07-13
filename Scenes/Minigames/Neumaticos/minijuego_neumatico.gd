@@ -2,23 +2,14 @@ extends Control
 
 @onready var tutorial = $Tutorial
 
-# RESUMEN COMPLETO (FONDO NARANJA)
+# RESUMEN COMPLETO VIEJO (Lo guardamos para destruirlo al final)
 @onready var panel_final = $Resumen
-
-@onready var label_puntaje_final = (
-	$Resumen/PanelFinal/PuntajeFinal
-)
-
-@onready var label_dinero = (
-	$Resumen/PanelFinal/DineroObtenido
-)
 
 @onready var barra = $AreaMovimiento
 @onready var zona = $AreaMovimiento/ZonaVerde
 @onready var indicador = $AreaMovimiento/Indicador
 
 @onready var tiempo_label = $Tiempo
-
 @onready var neumatico = $Neumatico
 
 @onready var Tuerca1 = $Vidas/Tuerca1
@@ -40,13 +31,13 @@ extends Control
 	$Neumaticos/Neumatico10
 ]
 
-#AUDIO
-
+# AUDIO
 @onready var sfx_break = $BreakSound
 @onready var sfx_hit = $HitSound
 @onready var sfx_inflate = $InflateSound
 @onready var sfx_complete = $CompleteSound
-#MUSICA
+
+# MUSICA
 @onready var music_loop = $MusicLoop
 
 # MOVIMIENTO
@@ -73,7 +64,6 @@ var vidas_perdidas = 0
 
 # DINERO
 var dinero_obtenido = 0
-
 @export var dinero_por_neumatico = 40
 @export var costo_por_tuerca = 10
 
@@ -84,13 +74,13 @@ var ancho_inicial_zona = 190
 
 
 func _ready():
-
 	randomize()
 	
 	music_loop.play()
 
-	# OCULTAR RESUMEN
-	panel_final.visible = false
+	# OCULTAR RESUMEN VIEJO
+	if panel_final:
+		panel_final.hide()
 
 	# MOSTRAR TUTORIAL
 	tutorial.visible = true
@@ -106,22 +96,16 @@ func _ready():
 
 	# POSICION INICIAL
 	indicador.position.x = 0
-
-	# TAMAÑO INICIAL ZONA
 	zona.size.x = ancho_inicial_zona
 
 	actualizar_tiempo()
 
 
 func _process(delta):
-
 	# ESPERAR INICIO
 	if not juego_iniciado:
-
 		if Input.is_action_just_pressed("ui_accept"):
-
 			iniciar_juego()
-
 		return
 
 	# TERMINADO
@@ -130,21 +114,15 @@ func _process(delta):
 
 	# TIEMPO
 	tiempo_restante -= delta
-
-	# AUMENTAR VELOCIDAD
 	velocidad += delta * 5
 
 	actualizar_tiempo()
 
 	# TERMINAR POR TIEMPO
 	if tiempo_restante <= 0:
-
 		tiempo_restante = 0
-
 		juego_terminado = true
-
 		calcular_dinero_final()
-
 		return
 
 	# MOVER INDICADOR
@@ -152,225 +130,147 @@ func _process(delta):
 
 	# GOLPE
 	if Input.is_action_just_pressed("ui_accept"):
-
 		evaluar_golpe()
 
 
 func mover_indicador(delta):
+	indicador.position.x += (velocidad * direccion * delta)
 
-	indicador.position.x += (
-		velocidad * direccion * delta
-	)
-
-	if indicador.position.x >= (
-		barra.size.x - indicador.size.x
-	):
-
-		indicador.position.x = (
-			barra.size.x - indicador.size.x
-		)
-
+	if indicador.position.x >= (barra.size.x - indicador.size.x):
+		indicador.position.x = (barra.size.x - indicador.size.x)
 		direccion = -1
 		reproducir_hit()
 
 	if indicador.position.x <= 0:
-
 		indicador.position.x = 0
-
 		direccion = 1
 		reproducir_hit()
 
 
 func evaluar_golpe():
-
-	# CENTRO INDICADOR
-	var centro_indicador = (
-		indicador.position.x
-		+ indicador.size.x / 2
-	)
-
+	var centro_indicador = (indicador.position.x + indicador.size.x / 2)
 	var inicio_zona = zona.position.x
-
-	var final_zona = (
-		zona.position.x + zona.size.x
-	)
-
+	var final_zona = (zona.position.x + zona.size.x)
 	var margen = 8
 
-	var dentro = (
-		centro_indicador >= inicio_zona - margen
-		and centro_indicador <= final_zona + margen
-	)
+	var dentro = (centro_indicador >= inicio_zona - margen and centro_indicador <= final_zona + margen)
 
 	# GOLPE CORRECTO
 	if dentro:
-
 		sfx_inflate.play()
-
 		nivel_inflado += 1
 
 		# CAMBIAR FRAME
 		if nivel_inflado <= 3:
 			neumatico.frame = nivel_inflado
 
-		# MOVER ZONAA
 		cambiar_zona()
-
-		# DIFICULTAD
 		velocidad += 15
 
 		# COMPLETAR NEUMATICO
 		if nivel_inflado >= 4:
-
 			sfx_complete.play()
-
 			neumaticos_inflados += 1
 
-			# MOSTRAR EN ESTANTE
 			if neumaticos_inflados <= neumaticos_guardados.size():
+				neumaticos_guardados[neumaticos_inflados - 1].visible = true
 
-				neumaticos_guardados[
-					neumaticos_inflados - 1
-				].visible = true
-
-			# FRAME FINAL
 			neumatico.frame = 3
-
-			# REINICIAR
 			nivel_inflado = 0
-
-			# RESET ZONA
 			zona.size.x = ancho_inicial_zona
-
-			# RESET NEUMATICO
 			neumatico.frame = 0
 
 			await get_tree().create_timer(0.3).timeout
 
 	# GOLPE FALLIDO
 	else:
-
 		sfx_break.play()
-
 		vidas -= 1
-
 		vidas_perdidas += 1
-
 		romper_tuerca()
 
-		# GAME OVER
 		if vidas <= 0:
-
 			juego_terminado = true
-
 			calcular_dinero_final()
 
 
 func cambiar_zona():
-
-	# NUEVA POSICION
-	var nueva_x = randf_range(
-		0,
-		barra.size.x - zona.size.x
-	)
-
+	var nueva_x = randf_range(0, barra.size.x - zona.size.x)
 	zona.position.x = nueva_x
 
-	# REDUCIR ZONA
-	var nuevo_ancho = (
-		zona.size.x - reduccion_zona
-	)
-
-	nuevo_ancho = max(
-		nuevo_ancho,
-		ancho_minimo_zona
-	)
-
+	var nuevo_ancho = (zona.size.x - reduccion_zona)
+	nuevo_ancho = max(nuevo_ancho, ancho_minimo_zona)
 	zona.size.x = nuevo_ancho
 
 
 func actualizar_tiempo():
-
-	tiempo_label.text = (
-		"Tiempo: "
-		+ str(int(tiempo_restante))
-	)
+	tiempo_label.text = "Tiempo: " + str(int(tiempo_restante))
 
 
 func romper_tuerca():
-
 	if vidas == 3:
-
 		Tuerca4.play("Romper")
-
 	elif vidas == 2:
-
 		Tuerca3.play("Romper")
-
 	elif vidas == 1:
-
 		Tuerca2.play("Romper")
-
 	elif vidas <= 0:
-
 		Tuerca1.play("Romper")
 
 
 func iniciar_juego():
-
-	# OCULTAR TUTORIAL
 	tutorial.visible = false
-
-	# INICIAR
 	juego_iniciado = true
 
 
 func calcular_dinero_final():
+	# Pausamos todo para que el fondo se detenga
+	get_tree().paused = true
 	
-	# CALCULAR DINERO
-	dinero_obtenido = (
-		neumaticos_inflados
-		* dinero_por_neumatico
-	) - (
-		vidas_perdidas
-		* costo_por_tuerca
-	)
+	dinero_obtenido = (neumaticos_inflados * dinero_por_neumatico) - (vidas_perdidas * costo_por_tuerca)
+	dinero_obtenido = max(dinero_obtenido, 0)
 
-	# EVITAR NEGATIVOS
-	dinero_obtenido = max(
-		dinero_obtenido,
-		0
-	)
+	# Eliminamos el panel viejo de la memoria
+	if panel_final:
+		panel_final.queue_free()
 
-	# MOSTRAR RESUMEN
-	panel_final.visible = true
-
-	# ACTUALIZAR TEXTOS
-	label_puntaje_final.text = (
-		"Puntaje Final: "
-		+ str(neumaticos_inflados)
-	)
-
-	label_dinero.text = (
-		"Dinero Obtenido: $"
-		+ str(dinero_obtenido)
-	)
+	var progreso: float = float(neumaticos_inflados) / float(neumaticos_guardados.size())
+	var penal_vidas: float = float(vidas_perdidas) / float(VIDAS_INICIALES) * 0.4
+	var rendimiento: float = clampf(progreso - penal_vidas, 0.0, 1.0)
 	
-	#ALTERNAR PITCH EN HIT
+	DATOSGLOBALES.reportar_rendimiento_minijuego(rendimiento, dinero_obtenido)
+	
+	# FUNDAMENTAL: Prevenir autodestrucción
+	DATOSGLOBALES.volviendo_de_atencion = true
+	
+	var resumen = $ResumenAtencion
+	resumen.layer = 100 # Capa por encima
+	
+	# Como ya está en la escena, NO usamos add_child(). Solo lo activamos:
+	resumen.activar_panel()
+	
+	# CONEXIÓN SEGURA
+	if not resumen.continuar.is_connected(_on_boton_continuar_pressed):
+		resumen.continuar.connect(_on_boton_continuar_pressed)
+
+
 func reproducir_hit():
 	sfx_hit.pitch_scale = randf_range(0.95, 1.05)
 	sfx_hit.play()
 
+
 func _on_boton_continuar_pressed() -> void:
 	AUDIOMANAGER.play_ui_click()
 	
-	await get_tree().create_timer(0.15).timeout
+	# Timer a prueba de pausas
+	await get_tree().create_timer(0.15, true, false, true).timeout
 	
 	Engine.time_scale = 1.0
 	get_tree().paused = false
 	
-	print("Volviendo al taller desde Neumáticos")
+	print("Volviendo al taller desde Neumáticos. Dinero obtenido: $", dinero_obtenido)
 	DATOSGLOBALES.sumar_dinero(dinero_obtenido)
+<<<<<<< HEAD
 	var nivel_desempeno := DATOSGLOBALES.DESEMPENO_FALLIDO
 	if vidas > 0 and neumaticos_inflados >= 3:
 		nivel_desempeno = DATOSGLOBALES.DESEMPENO_EXITOSO
@@ -388,3 +288,7 @@ func _on_boton_continuar_pressed() -> void:
 	
 func _on_boton_continuar_mouse_entered() -> void:
 	AUDIOMANAGER.play_ui_hover()	
+=======
+
+	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")
+>>>>>>> origin/develop

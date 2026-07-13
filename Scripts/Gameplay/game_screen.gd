@@ -290,7 +290,7 @@ func _input(event):
 			print("El taller ya está abierto")
 	
 	if jugador_en_rango_easter_egg and event.is_action_pressed("interactuar"):
-		lanzar_minijuego_random()
+		get_tree().change_scene_to_file("res://Scenes/Minigames/Crossy_Road/Crossy Road.tscn")
 	
 	if jugador_en_rango_atender_cliente and event.is_action_pressed("interactuar"):
 		atender_cliente()
@@ -373,6 +373,12 @@ func atender_cliente() -> void:
 	# Guardamos el dinero actual para, al volver, mostrar en el HUD cuánto cambió.
 	DATOSGLOBALES.dinero_antes_atencion = DATOSGLOBALES.dinero
 	DATOSGLOBALES.volviendo_de_atencion = true
+
+	# Limpia cualquier rendimiento de minijuego que hubiera quedado pendiente (p. ej.
+	# del minijuego aleatorio de easter egg), para que no se filtre a esta atención.
+	DATOSGLOBALES.rendimiento_minijuego_pendiente = -1.0
+	# Empieza un desglose limpio de esta atención (costos, recompensa, reputación).
+	DATOSGLOBALES.iniciar_resumen_atencion()
 
 	# Siempre se atiende al cliente (también al 5º): pantalla de atención + minijuego.
 	await transition_to_atencion_cliente()

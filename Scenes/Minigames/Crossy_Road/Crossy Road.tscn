@@ -11,10 +11,10 @@
 [ext_resource type="PackedScene" uid="uid://cu0ssuik4848n" path="res://Scenes/Minigames/Crossy_Road/CartelTallerEnCrisis.tscn" id="8_mfv65"]
 [ext_resource type="PackedScene" uid="uid://cyl73mjtc24ao" path="res://Scenes/UI/HUD.tscn" id="9_8s0oy"]
 [ext_resource type="AudioStream" uid="uid://cv2aaoesql834" path="res://Assets/Audio/MinigameAudio/Crossy Road/hop.wav" id="9_fpi7r"]
-[ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="10_4j6am"]
 [ext_resource type="AudioStream" uid="uid://b8u6eyn1c1mgo" path="res://Assets/Audio/MinigameAudio/Crossy Road/atropello.wav" id="10_k3elq"]
 [ext_resource type="AudioStream" uid="uid://ckssv244g63lg" path="res://Assets/Audio/MinigameAudio/Crossy Road/dead.wav" id="10_nh0ng"]
 [ext_resource type="AudioStream" uid="uid://b0jv72gjvmr2c" path="res://Assets/Audio/MinigameAudio/Crossy Road/ciudadambient.ogg" id="12_k3elq"]
+[ext_resource type="PackedScene" uid="uid://c8n2rqp4dv6xk" path="res://Scenes/UI/ResumenAtencion.tscn" id="14_dug1p"]
 [ext_resource type="AudioStream" uid="uid://doowsmrd45t0u" path="res://Assets/Audio/MinigameAudio/Crossy Road/crossyroadloop.ogg" id="15_g6t81"]
 [ext_resource type="Texture2D" uid="uid://cxqi1lh5nip8y" path="res://Assets/UI/button_style.png" id="16_hudnp"]
 
@@ -92,7 +92,7 @@ scale = Vector2(1.0064815, 1.0018868)
 texture = SubResource("AtlasTexture_d0mq6")
 offset = Vector2(0, 121.77024)
 
-[node name="Player" parent="." unique_id=332878050 node_paths=PackedStringArray("label_parpadeo", "pantalla_final", "label_puntaje_final") groups=["jugador"] instance=ExtResource("2_3x3vj")]
+[node name="Player" parent="." unique_id=332878050 node_paths=PackedStringArray("label_parpadeo") groups=["jugador"] instance=ExtResource("2_3x3vj")]
 physics_interpolation_mode = 1
 z_index = 2
 z_as_relative = false
@@ -107,8 +107,6 @@ bonus_meta = 200
 penalizacion_fracaso = 100
 tiempo_limite = 45.0
 label_parpadeo = NodePath("../Hud/Tutorial/PanelTutorial/Comenzar")
-pantalla_final = NodePath("../Hud/Resumen")
-label_puntaje_final = NodePath("../Hud/Resumen/PanelFinal/PuntajeFinal")
 
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=440032078]
 position = Vector2(0, -0.5)
@@ -174,6 +172,8 @@ position = Vector2(590, -176)
 
 [node name="Hud" parent="." unique_id=715583916 instance=ExtResource("9_8s0oy")]
 
+[node name="ResumenAtencion" parent="Hud" unique_id=686501913 instance=ExtResource("14_dug1p")]
+
 [node name="Puntaje" type="Label" parent="Hud" unique_id=448035701]
 anchors_preset = 5
 anchor_left = 0.5
@@ -209,107 +209,6 @@ theme_override_constants/shadow_outline_size = 8
 theme_override_font_sizes/font_size = 24
 text = "Tiempo Restante: 45s"
 
-[node name="Resumen" type="ColorRect" parent="Hud" unique_id=1092347522]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -608.0
-offset_top = -364.0
-offset_right = 608.0
-offset_bottom = 364.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.16, 0.09, 0.04, 0.8)
-
-[node name="PanelFinal" type="NinePatchRect" parent="Hud/Resumen" unique_id=734400852]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -335.0
-offset_top = -238.0
-offset_right = 280.16626
-offset_bottom = 228.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = SubResource("AtlasTexture_ninehud")
-region_rect = Rect2(0, 0, 769, 568)
-patch_margin_left = 110
-patch_margin_top = 100
-patch_margin_right = 110
-patch_margin_bottom = 110
-
-[node name="PuntajeFinal" type="Label" parent="Hud/Resumen/PanelFinal" unique_id=865096234]
-layout_mode = 0
-offset_left = 106.0
-offset_top = 56.0
-offset_right = 486.0
-offset_bottom = 112.0
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/shadow_offset_x = 1
-theme_override_constants/shadow_offset_y = 1
-theme_override_constants/outline_size = 5
-theme_override_constants/shadow_outline_size = 3
-theme_override_font_sizes/font_size = 30
-text = "Reparación Fallida"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-
-[node name="Button" type="Button" parent="Hud/Resumen/PanelFinal" unique_id=1816222871]
-layout_mode = 0
-offset_left = 262.0
-offset_top = 341.0
-offset_right = 350.0
-offset_bottom = 373.0
-theme = ExtResource("10_4j6am")
-text = "Continuar
-"
-
-[node name="Descripcion" type="Label" parent="Hud/Resumen/PanelFinal" unique_id=495857300]
-layout_mode = 0
-offset_left = 122.0
-offset_top = 130.0
-offset_right = 486.0
-offset_bottom = 236.0
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/shadow_offset_x = 1
-theme_override_constants/shadow_offset_y = 1
-theme_override_constants/outline_size = 4
-theme_override_constants/shadow_outline_size = 3
-theme_override_font_sizes/font_size = 18
-text = "Un auto te embistió en plena avenida. Sin el repuesto, la reparación quedó a medias y el cliente se marcha furioso."
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-
-[node name="DineroObtenido" type="Label" parent="Hud/Resumen/PanelFinal" unique_id=495857211]
-layout_mode = 0
-offset_left = 122.0
-offset_top = 248.0
-offset_right = 486.0
-offset_bottom = 310.0
-theme_override_colors/font_color = Color(1, 0.92, 0.5, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/shadow_offset_x = 1
-theme_override_constants/shadow_offset_y = 1
-theme_override_constants/outline_size = 5
-theme_override_constants/shadow_outline_size = 3
-theme_override_font_sizes/font_size = 20
-text = "Perdiste $100 en gastos médicos y compensación al cliente"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-
 [node name="Tutorial" type="ColorRect" parent="Hud" unique_id=1459824079]
 anchors_preset = 8
 anchor_left = 0.5
@@ -331,10 +230,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -416.0
-offset_top = -244.0
-offset_right = 440.0
-offset_bottom = 284.0
+offset_left = -428.0
+offset_top = -264.0
+offset_right = 428.0
+offset_bottom = 264.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("AtlasTexture_ninehud")
@@ -418,4 +317,3 @@ volume_db = -20.0
 bus = &"Music"
 
 [connection signal="area_entered" from="Player/Area2D" to="Player" method="_on_area_2d_area_entered"]
-[connection signal="pressed" from="Hud/Resumen/PanelFinal/Button" to="." method="_on_button_continuar_pressed"]

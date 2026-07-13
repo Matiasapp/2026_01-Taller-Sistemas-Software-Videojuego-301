@@ -8,26 +8,20 @@ extends Node2D
 @onready var label_tiempo_restante = $"../Hud/TiempoRestante"
 
 # META: distancia (en casillas) que el jugador debe recorrer para llegar a la tienda y ganar.
-# Debe coincidir con "meta_casillas" del generador para que la franja meta quede alineada.
 @onready var meta_casillas: int = 80
-# Dinero extra que se otorga por completar el recorrido (reparación exitosa).
 @export var bonus_meta: int = 200
-# Dinero que se pierde si la reparación fracasa (no se llega a la tienda).
 @export var penalizacion_fracaso: int = 100
-# Tiempo límite (en segundos) para llegar a la tienda antes de que cierre.
 @export var tiempo_limite: float = 45.0
+
 var tiempo_restante: float = 45.0
 var ha_ganado: bool = false
-@onready var label_dinero_obtenido = $"../Hud/Resumen/PanelFinal/DineroObtenido"
-@onready var label_descripcion = $"../Hud/Resumen/PanelFinal/Descripcion"
 @onready var dinero_obtenido: int = 0
 @onready var panel_tutorial = $"../Hud/Tutorial"
 var juego_iniciado: bool = false
-@export var label_parpadeo: Label
-@export var pantalla_final: Control
-@export var label_puntaje_final: Label
-@onready var atropellado: bool = false
 
+@export var label_parpadeo: Label
+@onready var resumen_atencion = $"../Hud/ResumenAtencion"
+@onready var atropellado: bool = false
 @onready var anim = $AnimatedSprite2D
 @onready var genero = DATOSGLOBALES.genero_jugador
 @onready var entorno_visual = $WorldEnvironment.environment
@@ -37,8 +31,6 @@ var juego_iniciado: bool = false
 @onready var audio_salto: AudioStreamPlayer = $SaltoAudio
 @onready var audio_muerte: AudioStreamPlayer = $MuerteAudio
 @onready var audio_atropello: AudioStreamPlayer = $AtropelloAudio
-@onready var boton_continuar: Button = $"../Hud/Resumen/PanelFinal/Button"
-
 
 var frames_hombre = preload("res://Assets/Sprites/animaciones_hombre.tres")
 var frames_mujer = preload("res://Assets/Sprites/animaciones_mujer.tres")
@@ -51,7 +43,6 @@ var tween_actual: Tween
 
 var posicion_inicial_y: float
 var maximas_casillas_avanzadas: int = 0
-
 
 func _ready() -> void:
 	if panel_tutorial:
@@ -72,7 +63,6 @@ func _ready() -> void:
 		anim.sprite_frames = frames_mujer
 
 	tiempo_restante = tiempo_limite
-
 	posicion_logica = position
 	posicion_inicial_y = position.y
 	actualizar_idle()
@@ -81,50 +71,34 @@ func _ready() -> void:
 		camara.top_level = true
 		camara.global_position = global_position
 
-	# Sincronizar UI al iniciar
 	if puntaje:
 		puntaje.text = str(maximas_casillas_avanzadas) + " / " + str(meta_casillas)
 
-	if pantalla_final:
-		pantalla_final.hide()
+	# Nos aseguramos de que el panel viejo del minijuego esté oculto
+	if resumen_atencion:
+		resumen_atencion.hide()
 
-	# ======================
-	# CONECTAR BOTÓN FINAL
-	# ======================
-
-	if boton_continuar:
-		if not boton_continuar.pressed.is_connected(_on_button_continuar_pressed):
-			boton_continuar.pressed.connect(_on_button_continuar_pressed)
-
-		if not boton_continuar.mouse_entered.is_connected(_on_button_continuar_mouse_entered):
-			boton_continuar.mouse_entered.connect(_on_button_continuar_mouse_entered)
 
 func _process(delta: float) -> void:
 	if camara and not esta_muerto:
-		# En el eje X, la cámara te sigue a los lados libremente
 		var destino_x = global_position.x
-		
-		# En el eje Y, la cámara SOLO sube basada en tu récord máximo de casillas
 		var destino_y = posicion_inicial_y - (maximas_casillas_avanzadas * tamaño_casilla)
-		
-		# Movemos la cámara suavemente hacia ese destino usando lerp
 		var posicion_destino = Vector2(destino_x, destino_y)
 		camara.global_position = camara.global_position.lerp(posicion_destino, 8.0 * delta)
 		
 		if juego_iniciado and tiempo_restante > 0 and not ha_ganado:
-			tiempo_restante -= delta # Restamos el tiempo que pasó en este frame
+			tiempo_restante -= delta 
 			
 			if label_tiempo_restante:
 				label_tiempo_restante.text = "Tiempo Restante: " + str(int((ceil(tiempo_restante)))) + "s"
 				
-			# Si el tiempo llega a cero o menos
 			if tiempo_restante <= 0:
 				tiempo_restante = 0
 				if label_tiempo_restante:
 					label_tiempo_restante.text = "Tiempo Restante: 0s"
-				
 				print("¡Se acabó el tiempo!")
 				morir()
+
 
 func _unhandled_input(event: InputEvent) -> void:
 	if se_esta_moviendo or esta_muerto or ha_ganado:
@@ -177,9 +151,9 @@ func _unhandled_input(event: InputEvent) -> void:
 
 			dar_salto(direccion)
 
-			# Si este salto nos hizo alcanzar la tienda, ganamos.
 			if maximas_casillas_avanzadas >= meta_casillas:
 				ganar()
+
 
 func dar_salto(direccion: Vector2) -> void:
 	if audio_salto:
@@ -203,7 +177,6 @@ func dar_salto(direccion: Vector2) -> void:
 	if not se_esta_moviendo:
 		actualizar_idle()
 
-# --- DETECCIÓN DE ATROPELLO ---
 
 func morir() -> void:
 	if esta_muerto or ha_ganado: return
@@ -211,8 +184,6 @@ func morir() -> void:
 	esta_muerto = true
 	se_esta_moviendo = true 
 	anim.play("atropellado")
-	
-	
 
 	if audio_muerte:
 		audio_muerte.play()
@@ -221,7 +192,7 @@ func morir() -> void:
 		tween_actual.kill()
 	
 	entorno_visual.adjustment_enabled = true
-	Engine.time_scale = 0.3 # Cámara lenta
+	Engine.time_scale = 0.3 
 	
 	var tween_color = create_tween()
 	tween_color.set_ignore_time_scale(true)
@@ -229,53 +200,37 @@ func morir() -> void:
 	
 	print("¡Game Over!")
 	calculo_dinero_final()
-	# Vamos directo a la pantalla final
 	get_tree().create_timer(1.5, true, false, true).timeout.connect(mostrar_pantalla_final)
 
-# --- VICTORIA: el jugador llegó a la tienda de repuestos ---
+
 func ganar() -> void:
 	if ha_ganado or esta_muerto: return
 
-	ha_ganado = true # Bloquea el input y detiene el temporizador (ver _process y _unhandled_input)
-
+	ha_ganado = true
 	print("¡Llegaste a la tienda de repuestos!")
 	calculo_dinero_final()
-
-	# Dejamos que el último salto se vea y luego mostramos la pantalla de victoria.
 	get_tree().create_timer(1.2, true, false, true).timeout.connect(mostrar_pantalla_final)
 
+
 func mostrar_pantalla_final() -> void:
-	Engine.time_scale = 0.0
+	# 1. Usar pausa nativa en lugar de time_scale = 0.0 para no romper el panel
+	get_tree().paused = true
+	var rendimiento: float = 1.0 if ha_ganado else clampf(float(maximas_casillas_avanzadas) / float(meta_casillas), 0.0, 1.0)
+	DATOSGLOBALES.reportar_rendimiento_minijuego(rendimiento, dinero_obtenido)
+	# 2. Forzar esta variable para que el panel NO se autodestruya al nacer
+	DATOSGLOBALES.volviendo_de_atencion = true
+	# 3. Instanciamos el nuevo panel
+	var resumen := preload("res://Scenes/UI/ResumenAtencion.tscn").instantiate()
+	# 4. Lo ponemos en una capa altísima para que nada lo tape
+	resumen.layer = 100
+	# Lo agregamos a la escena
+	add_child(resumen)
+	# CONEXIÓN: unimos la señal "continuar" a nuestra función de regreso
+	resumen.continuar.connect(_on_button_continuar_pressed)
+	
+	# Nos aseguramos de que sea visible (por si le habías puesto hide() en su _ready)
+	resumen.show()
 
-	if pantalla_final:
-		pantalla_final.show()
-
-	if ha_ganado:
-		if label_dinero_obtenido:
-			label_dinero_obtenido.add_theme_color_override("font_color", Color(0.4, 1.0, 0.4, 1)) # Verde: ganancia
-		if label_puntaje_final:
-			label_puntaje_final.text = "¡REPARACIÓN EXITOSA!"
-		if label_descripcion:
-			var mensajes_exito = [
-				"Conseguiste el repuesto justo a tiempo y dejaste el auto como nuevo. El cliente sonríe y promete volver.",
-				"¡Misión cumplida! Volviste con la pieza correcta y el taller recupera su prestigio.",
-				"Esquivaste el tráfico y llegaste a la tienda antes del cierre. Otro cliente satisfecho para el taller."
-			]
-			label_descripcion.text = mensajes_exito.pick_random()
-		label_dinero_obtenido.text = "El cliente te paga: $" + str(dinero_obtenido)
-	else:
-		if label_dinero_obtenido:
-			label_dinero_obtenido.add_theme_color_override("font_color", Color(1.0, 0.35, 0.35, 1)) # Rojo: pérdida
-		if label_puntaje_final:
-			label_puntaje_final.text = "REPARACIÓN FALLIDA"
-		if atropellado:
-			if label_descripcion:
-				label_descripcion.text = "Un auto te embistió en plena avenida. Sin el repuesto, la reparación quedó a medias y el cliente se marcha furioso."
-			label_dinero_obtenido.text = "Perdiste $" + str(penalizacion_fracaso) + " en gastos médicos y compensación al cliente"
-		else:
-			if label_descripcion:
-				label_descripcion.text = "La tienda cerró antes de que llegaras. Volviste con las manos vacías y tuviste que compensar al cliente molesto."
-			label_dinero_obtenido.text = "Perdiste $" + str(penalizacion_fracaso) + " en compensación al cliente"
 
 func actualizar_idle() -> void:
 	if ultima_direccion.x > 0:
@@ -286,6 +241,7 @@ func actualizar_idle() -> void:
 		anim.play("idle_arriba")
 	else:
 		anim.play("idle_abajo")
+
 
 func _on_area_2d_area_entered(area: Area2D) -> void:
 	if esta_muerto or ha_ganado:
@@ -299,42 +255,27 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 			audio_atropello.play()
 			
 		morir()
-		
+
+
 func calculo_dinero_final() -> void:
 	if ha_ganado:
-		# Reparación exitosa: conseguiste el repuesto. Cobras la reparación + bonus.
 		dinero_obtenido = (maximas_casillas_avanzadas * valor_por_casilla) + bonus_meta
 	else:
-		# Reparación fallida: no llegaste a la tienda, el cliente se va y pierdes dinero.
 		dinero_obtenido = -penalizacion_fracaso
 
 
 func _on_button_continuar_pressed() -> void:
+	# Esta función se ejecutará automáticamente cuando el usuario pulse "Continuar" 
+	# en la escena de ResumenAtencion.
 	AUDIOMANAGER.play_ui_click()
 	
+	# El timer ignorará la escala de tiempo (argumento final = true)
 	await get_tree().create_timer(0.15, true, false, true).timeout
 	
 	Engine.time_scale = 1.0
 	get_tree().paused = false
 	
 	DATOSGLOBALES.sumar_dinero(dinero_obtenido)
-	var nivel_desempeno := DATOSGLOBALES.DESEMPENO_FALLIDO
-	if ha_ganado:
-		nivel_desempeno = DATOSGLOBALES.DESEMPENO_EXITOSO
-	elif maximas_casillas_avanzadas >= int(meta_casillas * 0.65):
-		nivel_desempeno = DATOSGLOBALES.DESEMPENO_ACEPTABLE
-	DATOSGLOBALES.registrar_desempeno_minijuego(
-		nivel_desempeno,
-		"Busqueda de repuesto",
-		"Se llego a la tienda." if ha_ganado else "No se consiguio el repuesto."
-	)
-	
+
 	print("Volviendo al taller desde Crossy Road. Dinero obtenido: $", dinero_obtenido)
-	var destino := DATOSGLOBALES.obtener_destino_post_escena(
-		"res://Scenes/Gameplay/GameScreen.tscn"
-	)
-	get_tree().change_scene_to_file(destino)
-
-
-func _on_button_continuar_mouse_entered() -> void:
-	AUDIOMANAGER.play_ui_hover()
+	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")
