@@ -59,8 +59,7 @@ var juego_terminado = false
 var juego_iniciado = false
 
 # VIDAS
-const VIDAS_INICIALES := 4
-var vidas = VIDAS_INICIALES
+var vidas = 4
 var vidas_perdidas = 0
 
 # DINERO
@@ -271,5 +270,25 @@ func _on_boton_continuar_pressed() -> void:
 	
 	print("Volviendo al taller desde Neumáticos. Dinero obtenido: $", dinero_obtenido)
 	DATOSGLOBALES.sumar_dinero(dinero_obtenido)
+<<<<<<< HEAD
+	var nivel_desempeno := DATOSGLOBALES.DESEMPENO_FALLIDO
+	if vidas > 0 and neumaticos_inflados >= 3:
+		nivel_desempeno = DATOSGLOBALES.DESEMPENO_EXITOSO
+	elif neumaticos_inflados >= 1:
+		nivel_desempeno = DATOSGLOBALES.DESEMPENO_ACEPTABLE
+	DATOSGLOBALES.registrar_desempeno_minijuego(
+		nivel_desempeno,
+		"Reparacion de neumaticos",
+		"Neumaticos: %d; errores: %d." % [neumaticos_inflados, vidas_perdidas]
+	)
+	var destino := DATOSGLOBALES.obtener_destino_post_escena(
+		"res://Scenes/Gameplay/GameScreen.tscn"
+	)
+	get_tree().change_scene_to_file(destino)
+	
+func _on_boton_continuar_mouse_entered() -> void:
+	AUDIOMANAGER.play_ui_hover()	
+=======
 
 	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")
+>>>>>>> origin/develop

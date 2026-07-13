@@ -1,0 +1,402 @@
+[gd_scene load_steps=11 format=3]
+
+[ext_resource type="Script" path="res://Scenes/Events/GastosDiarios/gastos_diarios.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://Assets/Sprites/background_game_screen.png" id="2_bg"]
+[ext_resource type="Theme" path="res://Assets/Default.tres" id="3_theme"]
+
+[sub_resource type="StyleBoxFlat" id="StyleDesk"]
+bg_color = Color(0.105, 0.065, 0.035, 0.97)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.31, 0.19, 0.09, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0, 0, 0, 0.7)
+shadow_size = 18
+
+[sub_resource type="StyleBoxFlat" id="StylePaper"]
+bg_color = Color(0.82, 0.75, 0.58, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.32, 0.23, 0.13, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleRow"]
+bg_color = Color(0.72, 0.64, 0.47, 0.88)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.36, 0.26, 0.14, 0.8)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+content_margin_left = 14.0
+content_margin_top = 9.0
+content_margin_right = 14.0
+content_margin_bottom = 9.0
+
+[sub_resource type="StyleBoxFlat" id="StyleLine"]
+bg_color = Color(0.31, 0.23, 0.13, 0.7)
+
+[sub_resource type="StyleBoxFlat" id="StyleButtonNormal"]
+bg_color = Color(0.27, 0.2, 0.11, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.1, 0.07, 0.04, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleButtonHover"]
+bg_color = Color(0.42, 0.3, 0.14, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9, 0.68, 0.18, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleButtonDisabled"]
+bg_color = Color(0.22, 0.19, 0.15, 0.7)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.25, 0.23, 0.2, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="GastosDiarios" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_theme")
+script = ExtResource("1_script")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Oscurecer" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.035, 0.02, 0.01, 0.82)
+
+[node name="Mesa" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -466.0
+offset_top = -298.0
+offset_right = 466.0
+offset_bottom = 298.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleDesk")
+
+[node name="MargenMesa" type="MarginContainer" parent="Mesa"]
+layout_mode = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 18
+
+[node name="Papel" type="PanelContainer" parent="Mesa/MargenMesa"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StylePaper")
+
+[node name="MargenPapel" type="MarginContainer" parent="Mesa/MargenMesa/Papel"]
+layout_mode = 2
+theme_override_constants/margin_left = 38
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 38
+theme_override_constants/margin_bottom = 25
+
+[node name="Contenido" type="VBoxContainer" parent="Mesa/MargenMesa/Papel/MargenPapel"]
+layout_mode = 2
+theme_override_constants/separation = 9
+
+[node name="Titulo" type="Label" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.19, 0.14, 0.09, 1)
+theme_override_colors/font_outline_color = Color(0.9, 0.82, 0.64, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 27
+text = "CIERRE DE CAJA  ·  DÍA 1"
+horizontal_alignment = 1
+
+[node name="Subtitulo" type="Label" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.32, 0.23, 0.13, 1)
+theme_override_font_sizes/font_size = 14
+text = "Marca las obligaciones que pagarás esta noche. Lo que postergues tendrá consecuencias."
+horizontal_alignment = 1
+
+[node name="Linea1" type="Panel" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido"]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleLine")
+
+[node name="CajaLabel" type="Label" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.19, 0.14, 0.09, 1)
+theme_override_font_sizes/font_size = 19
+text = "Caja disponible:  $500"
+
+[node name="Arriendo" type="PanelContainer" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido"]
+custom_minimum_size = Vector2(0, 72)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleRow")
+
+[node name="Fila" type="HBoxContainer" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Arriendo"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Textos" type="VBoxContainer" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Arriendo/Fila"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Nombre" type="Label" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Arriendo/Fila/Textos"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.19, 0.14, 0.09, 1)
+theme_override_font_sizes/font_size = 20
+text = "ARRIENDO DEL TALLER"
+
+[node name="Detalle" type="Label" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Arriendo/Fila/Textos"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.36, 0.28, 0.18, 1)
+theme_override_font_sizes/font_size = 13
+text = "Mantiene el local disponible para la próxima jornada."
+
+[node name="ArriendoPrecio" type="Label" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Arriendo/Fila"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.19, 0.14, 0.09, 1)
+theme_override_font_sizes/font_size = 23
+text = "$110"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="ArriendoCheck" type="CheckButton" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Arriendo/Fila"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(104, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.19, 0.14, 0.09, 1)
+theme_override_colors/font_pressed_color = Color(0.12, 0.35, 0.14, 1)
+theme_override_font_sizes/font_size = 15
+button_pressed = true
+text = "PAGAR"
+
+[node name="Servicios" type="PanelContainer" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido"]
+custom_minimum_size = Vector2(0, 72)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleRow")
+
+[node name="Fila" type="HBoxContainer" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Servicios"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Textos" type="VBoxContainer" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Servicios/Fila"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Nombre" type="Label" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Servicios/Fila/Textos"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.19, 0.14, 0.09, 1)
+theme_override_font_sizes/font_size = 20
+text = "LUZ Y SERVICIOS"
+
+[node name="Detalle" type="Label" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Servicios/Fila/Textos"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.36, 0.28, 0.18, 1)
+theme_override_font_sizes/font_size = 13
+text = "Electricidad, agua y herramientas conectadas."
+
+[node name="ServiciosPrecio" type="Label" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Servicios/Fila"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.19, 0.14, 0.09, 1)
+theme_override_font_sizes/font_size = 23
+text = "$55"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="ServiciosCheck" type="CheckButton" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Servicios/Fila"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(104, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.19, 0.14, 0.09, 1)
+theme_override_colors/font_pressed_color = Color(0.12, 0.35, 0.14, 1)
+theme_override_font_sizes/font_size = 15
+button_pressed = true
+text = "PAGAR"
+
+[node name="Comida" type="PanelContainer" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido"]
+custom_minimum_size = Vector2(0, 72)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleRow")
+
+[node name="Fila" type="HBoxContainer" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Comida"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Textos" type="VBoxContainer" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Comida/Fila"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Nombre" type="Label" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Comida/Fila/Textos"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.19, 0.14, 0.09, 1)
+theme_override_font_sizes/font_size = 20
+text = "COMIDA"
+
+[node name="Detalle" type="Label" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Comida/Fila/Textos"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.36, 0.28, 0.18, 1)
+theme_override_font_sizes/font_size = 13
+text = "Algo caliente para recuperar fuerzas."
+
+[node name="ComidaPrecio" type="Label" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Comida/Fila"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.19, 0.14, 0.09, 1)
+theme_override_font_sizes/font_size = 23
+text = "$45"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="ComidaCheck" type="CheckButton" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Comida/Fila"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(104, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.19, 0.14, 0.09, 1)
+theme_override_colors/font_pressed_color = Color(0.12, 0.35, 0.14, 1)
+theme_override_font_sizes/font_size = 15
+button_pressed = true
+text = "PAGAR"
+
+[node name="Linea2" type="Panel" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido"]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleLine")
+
+[node name="Totales" type="HBoxContainer" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido"]
+layout_mode = 2
+
+[node name="TotalLabel" type="Label" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Totales"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.19, 0.14, 0.09, 1)
+theme_override_font_sizes/font_size = 18
+text = "TOTAL A PAGAR:  $210"
+
+[node name="SaldoLabel" type="Label" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Totales"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.247, 0.729, 0.314, 1)
+theme_override_font_sizes/font_size = 18
+text = "SALDO PARA MAÑANA:  $290"
+horizontal_alignment = 2
+
+[node name="Pie" type="HBoxContainer" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido"]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="ConsecuenciaLabel" type="Label" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Pie"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.247, 0.729, 0.314, 1)
+theme_override_font_sizes/font_size = 14
+text = "Todas las obligaciones quedarán cubiertas."
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="ConfirmarButton" type="Button" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Pie"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(220, 48)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.9, 0.75, 1)
+theme_override_colors/font_hover_color = Color(1, 0.82, 0.28, 1)
+theme_override_colors/font_disabled_color = Color(0.5, 0.48, 0.44, 1)
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleButtonNormal")
+theme_override_styles/hover = SubResource("StyleButtonHover")
+theme_override_styles/pressed = SubResource("StyleButtonHover")
+theme_override_styles/disabled = SubResource("StyleButtonDisabled")
+text = "CONFIRMAR GASTOS"
+
+[node name="Sello" type="Label" parent="Mesa"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+offset_left = 680.0
+offset_top = 438.0
+offset_right = 862.0
+offset_bottom = 522.0
+pivot_offset = Vector2(91, 42)
+rotation = -0.151844
+theme_override_colors/font_color = Color(0.55, 0.08, 0.055, 0.92)
+theme_override_colors/font_outline_color = Color(0.82, 0.75, 0.58, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 23
+text = "REGISTRADO\n-$210"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FadeRect" type="ColorRect" parent="."]
+unique_name_in_owner = true
+visible = false
+z_index = 100
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)

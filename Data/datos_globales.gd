@@ -36,6 +36,33 @@ var resumen_atencion: Dictionary = {}
 
 var estadisticas_dias: Dictionary = {}
 
+const FINAL_REPUTACION_SCENE := "res://Scenes/Events/FinalMalo/FinalMalo1.tscn"
+const FINAL_DEUDA_SCENE := "res://Scenes/Events/FinalMalo/FinalMalo2.tscn"
+const FINAL_VICTORIA_SCENE := "res://Scenes/Events/EventoVictoria/evento_victoria.tscn"
+const FINAL_MEDIO_SCENE := "res://Scenes/Events/EventoMedio/evento_medio.tscn"
+
+const UMBRAL_DEUDA_EXTREMA: int = -800
+const UMBRAL_VICTORIA_DINERO: int = 800
+const UMBRAL_VICTORIA_REPUTACION: int = 80
+const ULTIMO_DIA: int = 5
+
+## El final no interrumpe la pantalla donde se perdio el ultimo punto. Se marca
+## como pendiente y se lanza apenas esa escena entrega el control a la siguiente.
+var final_pendiente_scene := ""
+var _escena_origen_final_id := 0
+var _cambiando_a_evento_final := false
+
+## Evitan aplicar dos veces la reputacion si un boton de resultado recibe mas
+## de un clic antes de que termine el cambio de escena.
+var _pieza_reputacion_registrada := false
+var _minijuego_reputacion_registrado := false
+var _avisos_reputacion_pendientes: Array[String] = []
+
+func _ready() -> void:
+	# El vigilante del final debe seguir activo incluso si una pantalla de
+	# resultados deja el arbol pausado durante su transicion.
+	process_mode = Node.PROCESS_MODE_ALWAYS
+
 # ============================================================
 # REPUTACION (única fuente de verdad)
 # ------------------------------------------------------------
@@ -45,14 +72,22 @@ var estadisticas_dias: Dictionary = {}
 # de este valor para mostrarla en el resumen.
 # ============================================================
 const REPUTACION_INICIAL: int = 75
-const REP_DIAGNOSTICO_CORRECTO: int = 8
-const REP_DIAGNOSTICO_INCORRECTO: int = 7
-const REP_CLIENTE_ATENDIDO: int = 2
+const REP_DIAGNOSTICO_CORRECTO: int = 2
+const REP_DIAGNOSTICO_INCORRECTO: int = 10
+const REP_PIEZA_BUENA: int = 5
+const REP_PIEZA_BARATA: int = 1
+const REP_PIEZA_DUDOSA_PENALIZACION: int = 5
+const PROBABILIDAD_FALLO_PIEZA_DUDOSA: float = 0.55
+const REP_MINIJUEGO_EXITOSO: int = 3
+const REP_MINIJUEGO_FALLIDO: int = 8
 
-## Rango de ajuste de reputación según el rendimiento (0.0-1.0) reportado por el
-## minijuego de reparación: de -REP_MINIJUEGO_RANGO (rendimiento 0.0) a +REP_MINIJUEGO_RANGO
-## (rendimiento 1.0), interpolado linealmente y redondeado (sin truncar a 0 como antes).
-const REP_MINIJUEGO_RANGO: int = 6
+const DESEMPENO_FALLIDO: int = -1
+const DESEMPENO_ACEPTABLE: int = 0
+const DESEMPENO_EXITOSO: int = 1
+
+# Constantes de reputación añadidas desde develop (ajusta sus valores si eran diferentes)
+const REP_CLIENTE_ATENDIDO: int = 2
+const REP_MINIJUEGO_RANGO: float = 3.0
 
 signal dinero_cambiado(nuevo_monto: int)
 signal dia_cambiado(nuevo_dia: int)
@@ -66,6 +101,8 @@ var dinero: int = 500:
 	set(value):
 		dinero = value
 		dinero_cambiado.emit(dinero)
+		if dinero <= UMBRAL_DEUDA_EXTREMA:
+			_programar_evento_final(FINAL_DEUDA_SCENE)
 
 func sumar_dinero(cantidad: int):
 	dinero += cantidad
@@ -100,15 +137,27 @@ func registrar_diagnostico_dia(correcto: bool, dia: int = -1) -> void:
 		dia = dia_actual
 
 	var stats := asegurar_estadistica_dia(dia)
+	# Un diagnostico abre un nuevo ciclo reparacion -> pieza -> minijuego.
+	_pieza_reputacion_registrada = false
+	_minijuego_reputacion_registrado = false
 
 	var rep_diag: int
 	if correcto:
 		stats["diagnosticos_correctos"] += 1
 		rep_diag = REP_DIAGNOSTICO_CORRECTO
+		ajustar_reputacion(rep_diag, "Diagnostico correcto")
+		_agregar_evento_stats(
+			stats,
+			"Diagnostico correcto: reputacion +%d." % REP_DIAGNOSTICO_CORRECTO
+		)
 	else:
 		stats["diagnosticos_incorrectos"] += 1
 		rep_diag = -REP_DIAGNOSTICO_INCORRECTO
-	ajustar_reputacion(rep_diag)
+		ajustar_reputacion(rep_diag, "Diagnostico incorrecto")
+		_agregar_evento_stats(
+			stats,
+			"Diagnostico incorrecto: reputacion -%d." % REP_DIAGNOSTICO_INCORRECTO
+		)
 
 	# Guardamos el detalle para el resumen de la atención (pantalla de resultado del minijuego).
 	resumen_atencion["diagnostico_correcto"] = correcto
@@ -116,6 +165,107 @@ func registrar_diagnostico_dia(correcto: bool, dia: int = -1) -> void:
 
 	stats["reputacion"] = reputacion
 	estadisticas_dias[dia] = stats
+
+## Registra el efecto de calidad de la pieza elegida. La dudosa no falla siempre,
+## pero su riesgo es suficientemente alto para que no sea la opcion dominante.
+func registrar_calidad_pieza(tipo: String, dia: int = -1) -> int:
+	if _pieza_reputacion_registrada:
+		return 0
+	_pieza_reputacion_registrada = true
+
+	if dia < 0:
+		dia = dia_actual
+
+	var delta := 0
+	var mensaje := ""
+	var motivo := ""
+	match tipo:
+		"buena":
+			delta = REP_PIEZA_BUENA
+			mensaje = "Pieza buena instalada: reputacion +%d." % delta
+			motivo = "Pieza buena instalada"
+		"barata":
+			delta = REP_PIEZA_BARATA
+			mensaje = "Pieza barata instalada: reputacion +%d." % delta
+			motivo = "Pieza barata instalada"
+		"dudosa":
+			if randf() < PROBABILIDAD_FALLO_PIEZA_DUDOSA:
+				delta = -REP_PIEZA_DUDOSA_PENALIZACION
+				mensaje = "La pieza dudosa fallo: reputacion -%d." % absi(delta)
+				motivo = "Pieza dudosa defectuosa"
+			else:
+				mensaje = "La pieza dudosa no genero reclamos esta vez: reputacion sin cambios."
+		_:
+			push_warning("Tipo de pieza desconocido para reputacion: %s" % tipo)
+			return 0
+
+	if delta != 0:
+		ajustar_reputacion(delta, motivo)
+	else:
+		_registrar_aviso_reputacion(0, "Pieza dudosa sin reclamos")
+
+	var stats := asegurar_estadistica_dia(dia)
+	var piezas: Dictionary = stats.get("piezas_usadas", {})
+	piezas[tipo] = int(piezas.get(tipo, 0)) + 1
+	stats["piezas_usadas"] = piezas
+	stats["reputacion"] = reputacion
+	_agregar_evento_stats(stats, mensaje)
+	estadisticas_dias[dia] = stats
+	return delta
+
+## Unifica el balance de los cinco minijuegos y garantiza que el resultado de
+## una reparacion solo afecte la reputacion una vez.
+func registrar_desempeno_minijuego(
+	nivel: int,
+	nombre_minijuego: String,
+	detalle: String = "",
+	dia: int = -1
+) -> int:
+	if _minijuego_reputacion_registrado:
+		return 0
+	_minijuego_reputacion_registrado = true
+
+	if dia < 0:
+		dia = dia_actual
+
+	nivel = clampi(nivel, DESEMPENO_FALLIDO, DESEMPENO_EXITOSO)
+	var delta := 0
+	var estado := "desempeno aceptable"
+	var clave := "minijuegos_aceptables"
+	if nivel == DESEMPENO_EXITOSO:
+		delta = REP_MINIJUEGO_EXITOSO
+		estado = "buen desempeno"
+		clave = "minijuegos_exitosos"
+	elif nivel == DESEMPENO_FALLIDO:
+		delta = -REP_MINIJUEGO_FALLIDO
+		estado = "mal desempeno"
+		clave = "minijuegos_fallidos"
+
+	if delta != 0:
+		ajustar_reputacion(delta, "%s: %s" % [nombre_minijuego, estado])
+	else:
+		_registrar_aviso_reputacion(0, "%s: %s" % [nombre_minijuego, estado])
+
+	var stats := asegurar_estadistica_dia(dia)
+	stats[clave] = int(stats.get(clave, 0)) + 1
+	stats["reputacion"] = reputacion
+
+	var texto := "%s: %s; reputacion %s%d." % [
+		nombre_minijuego,
+		estado,
+		"+" if delta > 0 else "",
+		delta,
+	]
+	if not detalle.is_empty():
+		texto += " " + detalle
+	_agregar_evento_stats(stats, texto)
+	estadisticas_dias[dia] = stats
+	return delta
+
+func _agregar_evento_stats(stats: Dictionary, texto: String) -> void:
+	var eventos: Array = stats.get("eventos", [])
+	eventos.append(texto)
+	stats["eventos"] = eventos
 
 func registrar_evento_dia(texto: String, dia: int = -1) -> void:
 	if dia < 0:
@@ -127,6 +277,29 @@ func registrar_evento_dia(texto: String, dia: int = -1) -> void:
 
 	stats["eventos"] = eventos
 	stats["dinero_final"] = dinero
+	estadisticas_dias[dia] = stats
+
+## Registra una perdida monetaria externa (robo, multa, accidente) sin contarla
+## como atencion de cliente. Tambien permite una penalizacion reputacional menor.
+func registrar_perdida_evento(
+	cantidad: int,
+	texto: String,
+	penalizacion_reputacion: int = 0,
+	dia: int = -1
+) -> void:
+	if dia < 0:
+		dia = dia_actual
+
+	dinero -= cantidad
+	if penalizacion_reputacion > 0:
+		ajustar_reputacion(-penalizacion_reputacion, texto)
+
+	var stats := asegurar_estadistica_dia(dia)
+	stats["gastos"] = int(stats.get("gastos", 0)) + cantidad
+	stats["balance"] = int(stats.get("balance", 0)) - cantidad
+	stats["dinero_final"] = dinero
+	stats["reputacion"] = reputacion
+	_agregar_evento_stats(stats, texto)
 	estadisticas_dias[dia] = stats
 
 ## Reinicia el desglose de la atención (lo llama GameScreen al iniciar una atención,
@@ -189,10 +362,9 @@ func registrar_atencion_dia(delta_dinero: int, dia: int = -1) -> void:
 		stats["gastos"] += abs(delta_dinero)
 
 	# Atender suma reputación base, más un ajuste según qué tan bien te fue en el
-	# minijuego de reparación (no según el dinero: eso truncaba a 0 cualquier
-	# variación menor a $100 y dejaba el mal rendimiento sin castigo real).
+	# minijuego de reparación.
 	var rendimiento: float = rendimiento_minijuego_pendiente if rendimiento_minijuego_pendiente >= 0.0 else 0.5
-	ajustar_reputacion(calcular_rep_desempeno(rendimiento))
+	ajustar_reputacion(calcular_rep_desempeno(rendimiento), "Atención completada")
 	rendimiento_minijuego_pendiente = -1.0
 
 	stats["dinero_final"] = dinero
@@ -207,6 +379,43 @@ func registrar_cierre_dia(dia: int = -1) -> void:
 	stats["dinero_final"] = dinero
 	stats["reputacion"] = reputacion
 	estadisticas_dias[dia] = stats
+
+## Aplica una sola vez las decisiones de la libreta de gastos del cierre.
+## Devuelve false si ese día ya había sido procesado, evitando cobros duplicados.
+func registrar_gastos_diarios(
+	dia: int,
+	pagados: Array[String],
+	postergados: Array[String],
+	total_pagado: int,
+	_penalizacion_reputacion: int
+) -> bool:
+	var stats := asegurar_estadistica_dia(dia)
+	if bool(stats.get("gastos_diarios_procesados", false)):
+		return false
+
+	dinero -= total_pagado
+
+	stats["gastos_diarios_procesados"] = true
+	stats["gastos_diarios_total"] = total_pagado
+	stats["gastos_diarios_pagados"] = pagados.duplicate()
+	stats["gastos_diarios_postergados"] = postergados.duplicate()
+	stats["gastos"] = int(stats.get("gastos", 0)) + total_pagado
+	stats["balance"] = int(stats.get("balance", 0)) - total_pagado
+	stats["dinero_final"] = dinero
+	stats["reputacion"] = reputacion
+
+	var eventos: Array = stats.get("eventos", [])
+	if total_pagado > 0:
+		eventos.append("Gastos de cierre pagados: -$%d." % total_pagado)
+	if not postergados.is_empty():
+		eventos.append(
+			"Pagos postergados: %s. Sin cambio de reputacion."
+			% ", ".join(PackedStringArray(postergados))
+		)
+	stats["eventos"] = eventos
+
+	estadisticas_dias[dia] = stats
+	return true
 
 func get_estadistica_dia(dia: int) -> Dictionary:
 	return asegurar_estadistica_dia(dia)
@@ -223,6 +432,9 @@ func get_estadisticas_generales() -> Dictionary:
 	var total_ingresos := 0
 	var total_gastos := 0
 	var total_balance := 0
+	var total_minijuegos_exitosos := 0
+	var total_minijuegos_aceptables := 0
+	var total_minijuegos_fallidos := 0
 
 	for dia in get_dias_con_estadisticas():
 		var stats: Dictionary = estadisticas_dias[dia]
@@ -232,6 +444,9 @@ func get_estadisticas_generales() -> Dictionary:
 		total_ingresos += int(stats.get("ingresos", 0))
 		total_gastos += int(stats.get("gastos", 0))
 		total_balance += int(stats.get("balance", 0))
+		total_minijuegos_exitosos += int(stats.get("minijuegos_exitosos", 0))
+		total_minijuegos_aceptables += int(stats.get("minijuegos_aceptables", 0))
+		total_minijuegos_fallidos += int(stats.get("minijuegos_fallidos", 0))
 
 	return {
 		"clientes_atendidos": total_clientes,
@@ -240,6 +455,9 @@ func get_estadisticas_generales() -> Dictionary:
 		"ingresos": total_ingresos,
 		"gastos": total_gastos,
 		"balance": total_balance,
+		"minijuegos_exitosos": total_minijuegos_exitosos,
+		"minijuegos_aceptables": total_minijuegos_aceptables,
+		"minijuegos_fallidos": total_minijuegos_fallidos,
 		"dinero_actual": dinero,
 		"reputacion": reputacion
 	}
@@ -252,6 +470,12 @@ func formatear_monto(monto: int) -> String:
 
 ## Reinicia todo el estado de la partida a los valores iniciales (Nueva Partida).
 func reiniciar() -> void:
+	final_pendiente_scene = ""
+	_escena_origen_final_id = 0
+	_cambiando_a_evento_final = false
+	_pieza_reputacion_registrada = false
+	_minijuego_reputacion_registrado = false
+	_avisos_reputacion_pendientes.clear()
 	dia_actual = 1
 	dinero = 500
 	reputacion = REPUTACION_INICIAL
@@ -276,24 +500,124 @@ var reputacion: int = REPUTACION_INICIAL:
 	set(value):
 		reputacion = clampi(value, 0, 100)
 		reputacion_cambiado.emit(reputacion)
+		if reputacion == 0:
+			_programar_evento_final(FINAL_REPUTACION_SCENE)
 
 
-func sumar_reputacion(cantidad:int):
-	reputacion = mini(100,reputacion + cantidad)
+func sumar_reputacion(cantidad: int, motivo: String = "") -> void:
+	ajustar_reputacion(cantidad, motivo)
 
-func restar_reputacion(cantidad:int):
-	reputacion = maxi(0,reputacion - cantidad)
+func restar_reputacion(cantidad: int, motivo: String = "") -> void:
+	ajustar_reputacion(-cantidad, motivo)
 
 ## Ajusta la reputación con una cantidad con signo (+ sube, - baja). El setter
 ## se encarga de mantenerla dentro de 0-100.
-func ajustar_reputacion(cantidad:int):
+func ajustar_reputacion(cantidad: int, motivo: String = "") -> int:
+	var anterior := reputacion
 	reputacion += cantidad
+	var cambio_real := reputacion - anterior
+	if not motivo.is_empty() and cambio_real != 0:
+		_registrar_aviso_reputacion(cambio_real, motivo)
+	return cambio_real
+
+func _registrar_aviso_reputacion(cambio: int, motivo: String) -> void:
+	var color := "#8b949e"
+	var valor := "0"
+	if cambio > 0:
+		color = "#3fb950"
+		valor = "+%d" % cambio
+	elif cambio < 0:
+		color = "#f85149"
+		valor = str(cambio)
+	_avisos_reputacion_pendientes.append(
+		"[color=%s]%s reputacion[/color] - %s" % [color, valor, motivo]
+	)
+
+func consumir_avisos_reputacion() -> Array[String]:
+	var avisos: Array[String] = _avisos_reputacion_pendientes.duplicate()
+	_avisos_reputacion_pendientes.clear()
+	return avisos
+
+func limpiar_avisos_reputacion() -> void:
+	_avisos_reputacion_pendientes.clear()
+
+## Devuelve la escena que debe seguir a la actual. Los finales criticos tienen
+## prioridad; la evaluacion semanal solo ocurre una vez terminado el dia 5.
+func obtener_destino_post_escena(destino_normal: String) -> String:
+	var destino := _obtener_final_critico()
+
+	if destino.is_empty() and dia_actual > ULTIMO_DIA:
+		if dinero >= UMBRAL_VICTORIA_DINERO and reputacion >= UMBRAL_VICTORIA_REPUTACION:
+			destino = FINAL_VICTORIA_SCENE
+		else:
+			destino = FINAL_MEDIO_SCENE
+
+	if destino.is_empty():
+		return destino_normal
+
+	_limpiar_final_pendiente()
+	PARTIDA.guardar()
+	return destino
+
+func _obtener_final_critico() -> String:
+	# Reputacion tiene prioridad si ambas condiciones terminales se cumplen.
+	if final_pendiente_scene == FINAL_REPUTACION_SCENE or reputacion <= 0:
+		return FINAL_REPUTACION_SCENE
+	if final_pendiente_scene == FINAL_DEUDA_SCENE or dinero <= UMBRAL_DEUDA_EXTREMA:
+		return FINAL_DEUDA_SCENE
+	return ""
+
+func _programar_evento_final(ruta: String) -> void:
+	if _cambiando_a_evento_final:
+		return
+
+	# Una caida a reputacion cero prevalece sobre la quiebra si coinciden.
+	if final_pendiente_scene.is_empty() or ruta == FINAL_REPUTACION_SCENE:
+		final_pendiente_scene = ruta
+
+	if is_inside_tree() and get_tree().current_scene and _escena_origen_final_id == 0:
+		_escena_origen_final_id = get_tree().current_scene.get_instance_id()
+
+func _limpiar_final_pendiente() -> void:
+	final_pendiente_scene = ""
+	_escena_origen_final_id = 0
+
+## Respaldo para escenas antiguas que aun cambien directamente: evita perder
+## un final, aunque las rutas principales usan obtener_destino_post_escena y
+## por ello no llegan a mostrar una escena intermedia.
+func _process(_delta: float) -> void:
+	if final_pendiente_scene.is_empty() or _cambiando_a_evento_final:
+		return
+
+	var escena_actual := get_tree().current_scene
+	if escena_actual == null:
+		return
+	if escena_actual.scene_file_path == final_pendiente_scene:
+		_limpiar_final_pendiente()
+		return
+
+	if _escena_origen_final_id == 0:
+		_escena_origen_final_id = escena_actual.get_instance_id()
+		return
+
+	if escena_actual.get_instance_id() != _escena_origen_final_id:
+		_cambiando_a_evento_final = true
+		call_deferred("_ejecutar_evento_final_pendiente")
+
+func _ejecutar_evento_final_pendiente() -> void:
+	var destino := _obtener_final_critico()
+	_limpiar_final_pendiente()
+	get_tree().paused = false
+	Engine.time_scale = 1.0
+	if not destino.is_empty():
+		PARTIDA.guardar()
+		get_tree().change_scene_to_file(destino)
+	_cambiando_a_evento_final = false
 
 # Ingreso y Gastos realizados
 
 signal ingresos_dia_cambiado(nuevo_ingreso:int)
 signal gastos_dia_cambiado(nuevo_gasto:int)
-
 
 # Contenedor de datos diarios
 var historial_dias = []
@@ -309,7 +633,6 @@ var gastos_dia:int = 100:
 	set(value):
 		gastos_dia = value
 		gastos_dia_cambiado.emit(gastos_dia)
-
 
 #reinicia los gastos diarios
 func reiniciar_estadisticas_dia():

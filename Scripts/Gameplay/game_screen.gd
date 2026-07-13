@@ -16,23 +16,20 @@ var jugador_en_rango_easter_egg = false
 const MAX_CLIENTES_DIA := 5
 # Segundos (tiempo real) que tarda en llegar el próximo cliente tras abrir / tras atender uno.
 const TIEMPO_LLEGADA_CLIENTE := 5
+const PROBABILIDAD_APAGON := 0.30
+const APAGON_SCENE := preload("res://Scenes/Events/EventoDelApagon/EventoApagon.tscn")
+const TRANSICION_DIA_SCENE := "res://Scenes/Events/TransicionDia/transicion_dia.tscn"
 
 var taller_abierto := false
 var clientes_atendidos := 0
 # true cuando este _ready se ejecuta justo tras volver de atender a un cliente.
 var venimos_de_atender := false
+var apagon_programado := false
+var apagon_en_curso := false
 # Temporizador (uno a la vez) para la llegada de clientes.
 var timer_llegada: Timer
 # Sonido de campana que suena cuando llega un cliente.
 var campana_sound: AudioStreamPlayer
-
-# Placeholder hasta que exista el sistema real de inventario/piezas
-var inventario := {
-	"neumatico": 5,
-	"bateria": 3,
-	"aceite": 4,
-	"frenos": 3
-}
 
 var minijuegos := [
 	"res://Scenes/Minigames/Crossy_Road/Crossy Road.tscn",
@@ -63,6 +60,7 @@ const EVENTO_ESTAFA_SCENE := "res://Scenes/Events/EventoEstafa.tscn"
 @onready var sprite_taller: Sprite2D = $Taller
 @onready var dust_particles: GPUParticles2D = $DustParticles
 @onready var modal_bienvenida: CanvasLayer = $ModalBienvenida
+@onready var jugador: CharacterBody2D = $Node2D/Player
 # Alzadora de autos: se muestra la "ocupada" (con un auto) cuando hay un cliente
 # esperando, y la "desocupada" (vacía) el resto del tiempo.
 @onready var alzadora_ocupada: Sprite2D = $"Node2D/alzadora de autos ocupada"
@@ -139,6 +137,17 @@ func _ready() -> void:
 		)
 		if delta_dinero != 0 and hud:
 			hud.mostrar_popup_dinero(delta_dinero)
+
+		# Una sola tirada diaria, justo al volver del segundo cliente. El dia 5
+		# queda protegido para no romper el cierre final de la partida.
+		if _puede_programar_apagon():
+			apagon_programado = randf() <= PROBABILIDAD_APAGON
+			if apagon_programado:
+				puede_interactuar = false
+				_bloquear_movimiento_jugador()
+
+	if hud and hud.has_method("mostrar_cambios_reputacion_pendientes"):
+		hud.mostrar_cambios_reputacion_pendientes()
 	
 	iniciar_audio_taller()
 	
@@ -208,7 +217,7 @@ func _ready() -> void:
 		mostrar_resumen_dia()
 
 	# Al volver de atender, programamos la llegada del siguiente cliente (si quedan).
-	if taller_abierto:
+	if taller_abierto and not apagon_programado:
 		programar_llegada_cliente()
 
 	# Dejamos la alzadora en el estado correcto según si hay un cliente esperando.
@@ -216,6 +225,9 @@ func _ready() -> void:
 
 	# Modal de bienvenida: solo el día 1 a las 08:00, una única vez.
 	_verificar_modal_bienvenida()
+
+	if apagon_programado:
+		call_deferred("_lanzar_apagon")
 
 
 ## Muestra el modal de bienvenida una sola vez, al iniciar el día 1 (08:00).
@@ -260,19 +272,6 @@ func play_pc_out() -> void:
 	if pc_sound_out:
 		pc_sound_out.play()
 
-
-func _process(_delta: float) -> void:
-
-	if Input.is_key_pressed(KEY_P) and not debug_apagon_lanzado:
-
-		debug_apagon_lanzado = true
-
-		var apagon = preload("res://Scenes/Events/EventoDelApagon/EventoApagon.tscn").instantiate()
-
-		add_child(apagon)
-
-	if not Input.is_key_pressed(KEY_P):
-		debug_apagon_lanzado = false
 
 func _input(event):
 	if get_tree().paused: 
@@ -374,6 +373,7 @@ func atender_cliente() -> void:
 	# Guardamos el dinero actual para, al volver, mostrar en el HUD cuánto cambió.
 	DATOSGLOBALES.dinero_antes_atencion = DATOSGLOBALES.dinero
 	DATOSGLOBALES.volviendo_de_atencion = true
+
 	# Limpia cualquier rendimiento de minijuego que hubiera quedado pendiente (p. ej.
 	# del minijuego aleatorio de easter egg), para que no se filtre a esta atención.
 	DATOSGLOBALES.rendimiento_minijuego_pendiente = -1.0
@@ -544,45 +544,68 @@ func cerrar_dia() -> void:
 
 	await fade_to_black(0.6)
 
-	# Siempre se muestra primero la escena de cierre del taller (transición del día).
-	# Si esta noche hay robo, se encadena DESPUÉS de la transición (ver transicion_día.gd).
-	get_tree().change_scene_to_file("res://Scenes/Events/TransicionDia/transicion_dia.tscn")
+	# Primero se decide qué gastos del cierre pagar. Después se muestra la
+	# transición nocturna y, si corresponde, el evento de robo.
+	get_tree().change_scene_to_file("res://Scenes/Events/GastosDiarios/GastosDiarios.tscn")
 
-func ejecutar_evento_robo() -> void:
-	print("EVENTO: Entraron a robar")
-
-	var piezas_disponibles := []
-
-	for pieza in inventario.keys():
-		if inventario[pieza] > 0:
-			piezas_disponibles.append(pieza)
-
-	if piezas_disponibles.is_empty():
-		print("No había piezas para robar")
-		mostrar_resumen_dia()
+## El apagon corta la jornada sin gastos diarios ni evento nocturno. Registra el
+## cierre parcial, avanza el calendario y muestra directamente la transicion.
+func cerrar_dia_por_apagon() -> void:
+	if not apagon_en_curso:
 		return
 
-	var cantidad_robada := randi_range(1, 3)
-	var piezas_robadas := []
+	DATOSGLOBALES.registrar_cierre_dia()
+	DATOSGLOBALES.registrar_evento_dia(
+		"Un corte electrico cerro el taller despues de %d clientes."
+		% CLIENTMANAGER.clientes_atendidos
+	)
 
-	for i in cantidad_robada:
-		if piezas_disponibles.is_empty():
-			break
+	taller_abierto = false
+	CLIENTMANAGER.cerrar_taller()
+	TIEMPOMANAGER.stop_timer()
+	TIEMPOMANAGER.avanzar_dia()
 
-		var pieza = piezas_disponibles.pick_random()
-		inventario[pieza] -= 1
-		piezas_robadas.append(pieza)
-
-		if inventario[pieza] <= 0:
-			piezas_disponibles.erase(pieza)
-
-	print("Piezas robadas:", piezas_robadas)
-	print("Inventario actualizado:", inventario)
+	DATOSGLOBALES.guardar_dia()
+	DATOSGLOBALES.siguiente_evento_dia = "transicion"
+	DATOSGLOBALES.mostrar_resumen_dia_al_volver = true
+	PARTIDA.guardar()
 
 	get_tree().paused = false
 	Engine.time_scale = 1.0
-	get_tree().change_scene_to_file("res://Scenes/Events/EventoRobo/EventoRobo.tscn")
+	var destino := DATOSGLOBALES.obtener_destino_post_escena(TRANSICION_DIA_SCENE)
+	get_tree().change_scene_to_file(destino)
 
+func _puede_programar_apagon() -> bool:
+	return (
+		venimos_de_atender
+		and taller_abierto
+		and DATOSGLOBALES.dia_actual < DATOSGLOBALES.ULTIMO_DIA
+		and CLIENTMANAGER.clientes_atendidos == 2
+	)
+
+func _lanzar_apagon() -> void:
+	if not apagon_programado or apagon_en_curso or not is_inside_tree():
+		return
+
+	apagon_en_curso = true
+	puede_interactuar = false
+	_bloquear_movimiento_jugador()
+	if timer_llegada:
+		timer_llegada.stop()
+	if TIEMPOMANAGER:
+		TIEMPOMANAGER.stop_timer()
+
+	mensaje_abrir_taller.visible = false
+	mensaje_interactuar_pc.visible = false
+	mensaje_atender_cliente.visible = false
+
+	var apagon = APAGON_SCENE.instantiate()
+	apagon.connect("evento_terminado", cerrar_dia_por_apagon, Object.CONNECT_ONE_SHOT)
+	add_child(apagon)
+
+func _bloquear_movimiento_jugador() -> void:
+	if jugador and jugador.has_method("set_movimiento_habilitado"):
+		jugador.set_movimiento_habilitado(false)
 
 func _on_day_ended():
 	# Terminó la jornada (18:00 / 5 clientes atendidos). NO cerramos solos:
@@ -680,8 +703,6 @@ func fade_to_black(duration := 0.6) -> void:
 
 	await tween.finished		
 	
-var debug_apagon_lanzado := false
-
 func transition_to_atencion_cliente() -> void:
 	puede_interactuar = false
 

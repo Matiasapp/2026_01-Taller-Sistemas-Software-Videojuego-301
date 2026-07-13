@@ -81,9 +81,15 @@ func _ready():
 	animacion.play("mostrarTexto")
 	animacion.play("Barra_espacio")
 	#se disminuye la reputacion segun la cantidad de comentarios negativos
-	DATOSGLOBALES.restar_reputacion(num_comentarios * 5)
+	DATOSGLOBALES.restar_reputacion(
+		num_comentarios * 5,
+		"Comentarios negativos de clientes"
+	)
 	
 
 func _process(float):
 	if Input.is_key_pressed(KEY_SPACE):
-		get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")
+		var destino := DATOSGLOBALES.obtener_destino_post_escena(
+			"res://Scenes/Gameplay/GameScreen.tscn"
+		)
+		get_tree().change_scene_to_file(destino)

@@ -16,6 +16,7 @@ var frames_mujer = preload("res://Assets/Sprites/animaciones_mujer.tres")
 
 var ultima_direccion = Vector2(0, 1)
 var distancia_acumulada := 0.0
+var movimiento_habilitado := true
 
 
 func _ready() -> void:
@@ -26,6 +27,10 @@ func _ready() -> void:
 
 
 func _physics_process(delta):
+	if not movimiento_habilitado:
+		velocity = Vector2.ZERO
+		return
+
 	var input_direction = Input.get_vector("mover_izquierda", "mover_derecha", "mover_arriba", "mover_abajo")
 	
 	var actual_speed = walk_speed
@@ -40,6 +45,17 @@ func _physics_process(delta):
 	
 	actualizar_animacion(input_direction, estado)
 	actualizar_sonido_pasos(input_direction, estado, delta)
+
+
+func set_movimiento_habilitado(habilitado: bool) -> void:
+	movimiento_habilitado = habilitado
+	if habilitado:
+		return
+
+	velocity = Vector2.ZERO
+	distancia_acumulada = 0.0
+	stop_movement_sounds()
+	actualizar_animacion(Vector2.ZERO, "caminar")
 
 
 func actualizar_animacion(input_direction: Vector2, estado: String) -> void:

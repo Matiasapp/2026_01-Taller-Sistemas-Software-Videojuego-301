@@ -1,5 +1,8 @@
 extends Node2D
 
+const PERDIDA_MINIMA := 300
+const PERDIDA_MAXIMA := 500
+
 @onready var label: RichTextLabel = $CanvasLayer/VistaTextoIntroduccion/Panel/RichTextLabel
 @onready var vista_evento: Control = $CanvasLayer/VistaTextoIntroduccion
 @onready var imagen: TextureRect = $CanvasLayer/VistaTextoIntroduccion/TextureRect
@@ -25,10 +28,12 @@ var indice_mensaje := 0
 
 var mensajes := []
 var imagenes := []
+var monto_robado := 0
 
 
 func _ready() -> void:
 	randomize()
+	_aplicar_consecuencias_robo()
 
 	if bg_animation:
 		bg_animation.play("background_move")
@@ -51,8 +56,8 @@ func configurar_evento() -> void:
 	mensajes = [
 		"Al llegar al taller, notas algo extraño. La cortina metálica está forzada.",
 		"Adentro, el desorden confirma lo peor: alguien entró durante la noche.",
-		"Revisas el inventario. Varias cajas están abiertas y algunas piezas desaparecieron.",
-		"No sirve lamentarse. Tendrás que seguir adelante con menos recursos."
+		"Revisas el inventario. Entre piezas robadas y daños, perdiste $%d." % monto_robado,
+		"La caja queda golpeada, pero la calidad de tu trabajo no cambia. El taller debe continuar."
 	]
 
 	if DATOSGLOBALES.genero_jugador == "Femenino":
@@ -69,6 +74,17 @@ func configurar_evento() -> void:
 			imagen_hombre_3,
 			imagen_hombre_4
 		]
+
+func _aplicar_consecuencias_robo() -> void:
+	monto_robado = randi_range(PERDIDA_MINIMA, PERDIDA_MAXIMA)
+	var dia_afectado := maxi(1, DATOSGLOBALES.dia_actual - 1)
+	DATOSGLOBALES.registrar_perdida_evento(
+		monto_robado,
+		"Robo nocturno: -$%d. Sin cambio de reputacion." % monto_robado,
+		0,
+		dia_afectado
+	)
+	PARTIDA.guardar()
 
 
 func _input(event) -> void:
@@ -161,7 +177,10 @@ func finalizar_evento() -> void:
 
 	Engine.time_scale = 1.0
 	get_tree().paused = false
-	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")
+	var destino := DATOSGLOBALES.obtener_destino_post_escena(
+		"res://Scenes/Gameplay/GameScreen.tscn"
+	)
+	get_tree().change_scene_to_file(destino)
 
 
 func _on_comenzar_pressed() -> void:
