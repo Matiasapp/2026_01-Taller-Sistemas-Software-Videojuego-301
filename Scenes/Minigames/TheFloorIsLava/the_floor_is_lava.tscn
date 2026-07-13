@@ -4,8 +4,8 @@
 [ext_resource type="PackedScene" uid="uid://c80byqtkm0rum" path="res://Scenes/Minigames/TheFloorIsLava/Burn/burn_mark.tscn" id="2_tyt8e"]
 [ext_resource type="Texture2D" uid="uid://byra8s7qn0ulk" path="res://Scenes/Minigames/TheFloorIsLava/Background/checkboard.png" id="3_qrgef"]
 [ext_resource type="SpriteFrames" uid="uid://1wudhpdgds2f" path="res://Scenes/Minigames/TheFloorIsLava/Car/car_sprite_frames.tres" id="4_nrjaw"]
-[ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="5_y48l2"]
 [ext_resource type="Script" uid="uid://cr1t6tqa1jarg" path="res://Scenes/Minigames/TheFloorIsLava/node_2d.gd" id="6_b3uvg"]
+[ext_resource type="PackedScene" uid="uid://c8n2rqp4dv6xk" path="res://Scenes/UI/ResumenAtencion.tscn" id="6_qrgef"]
 [ext_resource type="AudioStream" uid="uid://dcjasma1c0uyk" path="res://Assets/Audio/MinigameAudio/TheFloorIsLava/lavaspawn.wav" id="7_34h8w"]
 [ext_resource type="AudioStream" uid="uid://vupbpt4ewj8b" path="res://Assets/Audio/MinigameAudio/TheFloorIsLava/lavaloop.ogg" id="8_1hw8h"]
 [ext_resource type="AudioStream" uid="uid://c5vxi8mwnt5ca" path="res://Assets/Audio/MinigameAudio/TheFloorIsLava/carskid.wav" id="9_76irg"]
@@ -248,98 +248,7 @@ offset_bottom = 415.0
 theme_override_colors/font_color = Color(1, 0.8862745, 0, 1)
 text = "[ Presiona cualquier tecla de movimiento para empezar ]"
 
-[node name="Resumen" type="ColorRect" parent="CanvasLayer" unique_id=618810719]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -1289.0
-offset_top = -1374.0
-offset_right = -1289.0
-offset_bottom = -1374.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.16, 0.09, 0.04, 0.8)
-
-[node name="PanelFinal" type="NinePatchRect" parent="CanvasLayer/Resumen" unique_id=1825216563]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -210.0
-offset_top = -148.0
-offset_right = 210.0
-offset_bottom = 180.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = SubResource("AtlasTexture_ninehud")
-region_rect = Rect2(0, 0, 769, 568)
-patch_margin_left = 110
-patch_margin_top = 100
-patch_margin_right = 110
-patch_margin_bottom = 110
-
-[node name="PuntajeFinal" type="Label" parent="CanvasLayer/Resumen/PanelFinal" unique_id=986407430]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -63.0
-offset_top = -94.0
-offset_right = 56.0
-offset_bottom = -71.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/shadow_offset_x = 1
-theme_override_constants/shadow_offset_y = 1
-theme_override_constants/outline_size = 5
-theme_override_constants/shadow_outline_size = 3
-text = "Puntaje Final: 0"
-
-[node name="Button" type="Button" parent="CanvasLayer/Resumen/PanelFinal" unique_id=1313374609]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -47.0
-offset_top = 50.0
-offset_right = 41.0
-offset_bottom = 82.0
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("5_y48l2")
-text = "Continuar
-"
-
-[node name="DineroObtenido" type="Label" parent="CanvasLayer/Resumen/PanelFinal" unique_id=578310294]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -79.0
-offset_top = -62.0
-offset_right = 68.0
-offset_bottom = -39.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/shadow_offset_x = 1
-theme_override_constants/shadow_offset_y = 1
-theme_override_constants/outline_size = 5
-theme_override_constants/shadow_outline_size = 3
-text = "Dinero Obtenido: 0"
+[node name="ResumenAtencion" parent="." unique_id=686501913 instance=ExtResource("6_qrgef")]
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=790007625]
 zoom = Vector2(0.8, 0.8)
@@ -376,6 +285,3 @@ stream = ExtResource("11_tyt8e")
 volume_db = -15.0
 bus = &"Music"
 parameters/looping = true
-
-[connection signal="mouse_entered" from="CanvasLayer/Resumen/PanelFinal/Button" to="." method="_on_boton_continuar_mouse_entered"]
-[connection signal="pressed" from="CanvasLayer/Resumen/PanelFinal/Button" to="." method="_on_boton_continuar_pressed"]

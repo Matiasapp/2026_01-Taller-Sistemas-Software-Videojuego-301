@@ -1,0 +1,294 @@
+[gd_scene format=3 uid="uid://c8n2rqp4dv6xk"]
+
+[ext_resource type="Script" uid="uid://5h25g3w84a5d" path="res://Scripts/UI/resumen_atencion.gd" id="1_resumen"]
+[ext_resource type="Texture2D" uid="uid://b8y14vue8yjgd" path="res://Assets/UI/Cuadros_UI.png" id="2_k74fi"]
+[ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="3_tema"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i7vgm"]
+atlas = ExtResource("2_k74fi")
+region = Rect2(96, 188, 284, 357)
+
+[sub_resource type="StyleBoxFlat" id="style_sep"]
+content_margin_top = 1.0
+content_margin_bottom = 1.0
+bg_color = Color(0.42, 0.28, 0.16, 0.7)
+
+[node name="ResumenAtencion" type="CanvasLayer" unique_id=686501913]
+process_mode = 3
+layer = 30
+script = ExtResource("1_resumen")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1716801058]
+self_modulate = Color(1, 1, 1, 0.30588236)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -576.0
+offset_top = -324.0
+offset_right = 576.0
+offset_bottom = 324.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.27450982, 0.18039216, 0.078431375, 1)
+
+[node name="Marco" type="NinePatchRect" parent="." unique_id=368450885]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -188.5
+offset_top = -187.75
+offset_right = 188.5
+offset_bottom = 187.75
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_i7vgm")
+region_rect = Rect2(0, 0, 284, 357)
+patch_margin_left = 23
+patch_margin_top = 31
+patch_margin_right = 22
+patch_margin_bottom = 30
+
+[node name="Margin" type="MarginContainer" parent="Marco" unique_id=465226468]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 18.0
+offset_top = 20.0
+offset_right = -25.0
+offset_bottom = 17.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 6
+
+[node name="VBox" type="VBoxContainer" parent="Marco/Margin" unique_id=1683801000]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Titulo" type="Label" parent="Marco/Margin/VBox" unique_id=730080985]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.882, 0.686, 0.18, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 17
+text = "RESULTADO DE LA ATENCIÓN
+"
+horizontal_alignment = 1
+
+[node name="HeaderDinero" type="Label" parent="Marco/Margin/VBox" unique_id=1046142890]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.882, 0.686, 0.18, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "DINERO"
+
+[node name="FilaRecompensa" type="HBoxContainer" parent="Marco/Margin/VBox" unique_id=263740773]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Concepto" type="Label" parent="Marco/Margin/VBox/FilaRecompensa" unique_id=1065910508]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.78, 0.7, 0.55, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 15
+text = "Recompensa reparación"
+
+[node name="RecompensaValor" type="Label" parent="Marco/Margin/VBox/FilaRecompensa" unique_id=2022367153]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.247, 0.729, 0.314, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 15
+text = "+$0"
+horizontal_alignment = 2
+
+[node name="PiezaFila" type="HBoxContainer" parent="Marco/Margin/VBox" unique_id=545884862]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="PiezaConcepto" type="Label" parent="Marco/Margin/VBox/PiezaFila" unique_id=573897486]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.78, 0.7, 0.55, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 15
+text = "Pieza"
+
+[node name="PiezaValor" type="Label" parent="Marco/Margin/VBox/PiezaFila" unique_id=1843455305]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.35, 0.3, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 15
+text = "-$0"
+horizontal_alignment = 2
+
+[node name="DiagPenalFila" type="HBoxContainer" parent="Marco/Margin/VBox" unique_id=1324283760]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Concepto" type="Label" parent="Marco/Margin/VBox/DiagPenalFila" unique_id=800707392]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.78, 0.7, 0.55, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 15
+text = "Diagnóstico erróneo"
+
+[node name="DiagPenalValor" type="Label" parent="Marco/Margin/VBox/DiagPenalFila" unique_id=562779623]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.35, 0.3, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 15
+text = "-$0"
+horizontal_alignment = 2
+
+[node name="Sep2" type="HSeparator" parent="Marco/Margin/VBox" unique_id=1634826660]
+layout_mode = 2
+theme_override_styles/separator = SubResource("style_sep")
+
+[node name="FilaBalance" type="HBoxContainer" parent="Marco/Margin/VBox" unique_id=802296390]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Concepto" type="Label" parent="Marco/Margin/VBox/FilaBalance" unique_id=2022270096]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.95, 0.93, 0.88, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 15
+text = "Balance"
+vertical_alignment = 1
+
+[node name="BalanceValor" type="Label" parent="Marco/Margin/VBox/FilaBalance" unique_id=274641215]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.247, 0.729, 0.314, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 20
+text = "+$0"
+horizontal_alignment = 2
+
+[node name="EspacioRep" type="Control" parent="Marco/Margin/VBox" unique_id=524465102]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+
+[node name="HeaderReputacion" type="Label" parent="Marco/Margin/VBox" unique_id=2026106070]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.882, 0.686, 0.18, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "REPUTACIÓN"
+
+[node name="FilaRepDiag" type="HBoxContainer" parent="Marco/Margin/VBox" unique_id=1941090711]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Concepto" type="Label" parent="Marco/Margin/VBox/FilaRepDiag" unique_id=1985189849]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.78, 0.7, 0.55, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 15
+text = "Diagnóstico"
+
+[node name="RepDiagValor" type="Label" parent="Marco/Margin/VBox/FilaRepDiag" unique_id=1745961065]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.247, 0.729, 0.314, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 15
+text = "+0"
+horizontal_alignment = 2
+
+[node name="FilaRepDesempeno" type="HBoxContainer" parent="Marco/Margin/VBox" unique_id=2004551400]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Concepto" type="Label" parent="Marco/Margin/VBox/FilaRepDesempeno" unique_id=2032947786]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.78, 0.7, 0.55, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 15
+text = "Desempeño"
+
+[node name="RepDesempenoValor" type="Label" parent="Marco/Margin/VBox/FilaRepDesempeno" unique_id=766702705]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.247, 0.729, 0.314, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 15
+text = "+0"
+horizontal_alignment = 2
+
+[node name="Sep3" type="HSeparator" parent="Marco/Margin/VBox" unique_id=205992313]
+layout_mode = 2
+theme_override_styles/separator = SubResource("style_sep")
+
+[node name="FilaRepTotal" type="HBoxContainer" parent="Marco/Margin/VBox" unique_id=677347190]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Concepto" type="Label" parent="Marco/Margin/VBox/FilaRepTotal" unique_id=1451424951]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.95, 0.93, 0.88, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 15
+text = "Total"
+vertical_alignment = 1
+
+[node name="RepTotalValor" type="Label" parent="Marco/Margin/VBox/FilaRepTotal" unique_id=1693796566]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.247, 0.729, 0.314, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 20
+text = "+0"
+horizontal_alignment = 2
+
+[node name="EspacioBoton" type="Control" parent="Marco/Margin/VBox" unique_id=1230534230]
+custom_minimum_size = Vector2(0, 8)
+layout_mode = 2
+
+[node name="BotonContinuar" type="Button" parent="Marco/Margin/VBox" unique_id=256132175]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 36)
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("3_tema")
+theme_override_font_sizes/font_size = 16
+text = "Continuar"
+
+[connection signal="pressed" from="Marco/Margin/VBox/BotonContinuar" to="." method="_on_boton_continuar_pressed"]
