@@ -153,9 +153,11 @@ func _on_area_buena_input_event(viewport, event, shape_idx) -> void:
 
 func _on_area_barata_input_event(viewport, event, shape_idx) -> void:
 	if event is InputEventMouseButton and event.pressed:
+		DATOSGLOBALES.contador_pieza_mala += 1
 		seleccionar_pieza("barata")
 
 
 func _on_area_dudosa_input_event(viewport, event, shape_idx) -> void:
 	if event is InputEventMouseButton and event.pressed:
+		DATOSGLOBALES.contador_pieza_mala += 2
 		seleccionar_pieza("dudosa")

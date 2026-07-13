@@ -216,6 +216,9 @@ func _ready() -> void:
 
 	# Modal de bienvenida: solo el día 1 a las 08:00, una única vez.
 	_verificar_modal_bienvenida()
+	
+	#Ejecura el evento de Malos comentarios, se muestra si se cumple las condiciones
+	ejecutar_evento_malos_comentarios()
 
 
 ## Muestra el modal de bienvenida una sola vez, al iniciar el día 1 (08:00).
@@ -580,6 +583,20 @@ func ejecutar_evento_robo() -> void:
 	get_tree().paused = false
 	Engine.time_scale = 1.0
 	get_tree().change_scene_to_file("res://Scenes/Events/EventoRobo/EventoRobo.tscn")
+
+func ejecutar_evento_malos_comentarios() -> void:
+	print("Se ejecuta evento Malos Comentarios")
+	
+	# Se ejecta evento de advertencia, no representa ningun cambio para el jugador
+	if DATOSGLOBALES.contador_pieza_mala >= 2 and DATOSGLOBALES.advertencia_mostrada == false:
+		DATOSGLOBALES.advertencia_mostrada = true
+		get_tree().change_scene_to_file("res://Scenes/Events/EventoComentariosNegativos/MalosComentarios.tscn")
+	
+	# Se carga escena con consecuencias hacia el jugador
+	if DATOSGLOBALES.contador_pieza_mala >= 4 and DATOSGLOBALES.comentarios_negativos == false:
+		DATOSGLOBALES.comentarios_negativos = true
+		get_tree().change_scene_to_file("res://Scenes/Events/EventoComentariosNegativos/MalosComentarios.tscn")	
+		
 
 
 func _on_day_ended():

@@ -39,9 +39,17 @@ var comentarios = [
 	$Comentario_5
 ]
 
+# Tablero de advertencia post malos comentarios
+@onready var Advertencia = $Advertencia
+
+@onready var titulo_advertencia: Label = $Advertencia/PanelFinal/Advertencia
+@onready var texto_advertencia: Label = $Advertencia/PanelFinal/Texto_advertencia
+
 var rng = RandomNumberGenerator.new()
 
 func _ready():
+	
+	Advertencia.visible = 0
 	
 	var num_comentarios = rng.randi_range(1,labels.size())
 	
@@ -80,10 +88,24 @@ func _ready():
 	
 	animacion.play("mostrarTexto")
 	animacion.play("Barra_espacio")
+	
+	#formula de perdida de reputacion
+	var rep_perdida = num_comentarios * 5 + 10
 	#se disminuye la reputacion segun la cantidad de comentarios negativos
-	DATOSGLOBALES.restar_reputacion(num_comentarios * 5)
+	if DATOSGLOBALES.advertencia_comentarios == true:
+		DATOSGLOBALES.restar_reputacion(rep_perdida)
+		
+		titulo_advertencia.text = "Lastima, te lo advertimos"
+		texto_advertencia.text = "Reputacion perdida: " + str(rep_perdida)
+
 	
 
 func _process(float):
 	if Input.is_key_pressed(KEY_SPACE):
-		get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")
+		if DATOSGLOBALES.advertencia_comentarios == false:
+			DATOSGLOBALES.advertencia_comentarios = true
+			titulo_advertencia.text = "Advertencia"
+		Advertencia.visible = 1
+
+func _on_button_pressed() -> void:
+	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")

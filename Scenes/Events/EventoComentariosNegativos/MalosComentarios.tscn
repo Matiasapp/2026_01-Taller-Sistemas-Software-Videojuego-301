@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://ctefbnedhlnia" path="res://Scenes/Events/EventoComentariosNegativos/malos_comentarios.gd" id="1_ol8d6"]
 [ext_resource type="Texture2D" uid="uid://rct57uqcc37x" path="res://Assets/Sprites/pantalla_pc.png" id="2_slbnv"]
 [ext_resource type="Texture2D" uid="uid://c67d2lslu1w2j" path="res://Assets/Sprites/arrow_example.png" id="3_b0ne0"]
+[ext_resource type="Texture2D" uid="uid://cxqi1lh5nip8y" path="res://Assets/UI/button_style.png" id="4_73y51"]
+[ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="5_etbm8"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slbnv"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -182,6 +184,10 @@ _data = {
 &"mostrarTexto": SubResource("Animation_b0ne0")
 }
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_x3g33"]
+atlas = ExtResource("4_73y51")
+region = Rect2(1873, 492, 769, 568)
+
 [node name="Control" type="Control" unique_id=1531523037]
 layout_mode = 3
 anchors_preset = 15
@@ -315,3 +321,86 @@ text = " Espacio
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=697246481]
 libraries/ = SubResource("AnimationLibrary_2nl8y")
+
+[node name="Advertencia" type="ColorRect" parent="." unique_id=1112500308]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -608.0
+offset_top = -364.0
+offset_right = 608.0
+offset_bottom = 364.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.16, 0.09, 0.04, 0.8)
+
+[node name="PanelFinal" type="NinePatchRect" parent="Advertencia" unique_id=1864813070]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -269.54266
+offset_top = -210.5
+offset_right = 269.54266
+offset_bottom = 210.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_x3g33")
+region_rect = Rect2(0, 0, 769, 568)
+patch_margin_left = 110
+patch_margin_top = 100
+patch_margin_right = 110
+patch_margin_bottom = 110
+
+[node name="Advertencia" type="Label" parent="Advertencia/PanelFinal" unique_id=996391364]
+layout_mode = 0
+offset_left = 207.54266
+offset_top = 97.5
+offset_right = 326.54266
+offset_bottom = 120.5
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 5
+theme_override_constants/shadow_outline_size = 3
+text = "Advertencia"
+horizontal_alignment = 1
+
+[node name="Button" type="Button" parent="Advertencia/PanelFinal" unique_id=1178257557]
+layout_mode = 0
+offset_left = 225.54266
+offset_top = 286.5
+offset_right = 313.54266
+offset_bottom = 318.5
+theme = ExtResource("5_etbm8")
+text = "Continuar
+"
+
+[node name="Texto_advertencia" type="Label" parent="Advertencia/PanelFinal" unique_id=438978809]
+layout_mode = 0
+offset_left = 81.54266
+offset_top = 146.5
+offset_right = 451.54266
+offset_bottom = 273.5
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 5
+theme_override_constants/shadow_outline_size = 3
+text = "Estas utilizando demaciadas
+piezas que no tiene la calidad
+optima, la proxima no será
+solo una advertencia.
+"
+horizontal_alignment = 1
+
+[connection signal="pressed" from="Advertencia/PanelFinal/Button" to="." method="_on_button_pressed"]

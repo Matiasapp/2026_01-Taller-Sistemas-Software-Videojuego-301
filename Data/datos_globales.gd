@@ -18,6 +18,12 @@ var estafa_pendiente: bool = false
 var dinero_antes_estafa: int = 0   # Dinero justo antes del minijuego (para revertir el pago falso)
 var nombre_estafador: String = ""
 
+##Estado de malos comentarios: Primeramente se activa una advertencia, luego se penaliza
+var advertencia_comentarios:bool = false
+var advertencia_mostrada:bool = false
+var comentarios_negativos: bool = false
+var contador_pieza_mala: int = 0
+
 ## Para mostrar en el HUD cuánto cambió el dinero tras atender a un cliente (reparación).
 var dinero_antes_atencion: int = 0
 var volviendo_de_atencion: bool = false
@@ -210,6 +216,10 @@ func reiniciar() -> void:
 	modal_bienvenida_mostrado = false
 	clientes_usados.clear()
 	estafa_pendiente = false
+	advertencia_comentarios = false
+	advertencia_mostrada = false
+	comentarios_negativos = false
+	contador_pieza_mala = 0
 	dinero_antes_estafa = 0
 	nombre_estafador = ""
 	dinero_antes_atencion = 0
