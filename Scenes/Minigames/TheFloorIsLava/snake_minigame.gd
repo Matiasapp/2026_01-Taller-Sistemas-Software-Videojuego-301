@@ -15,7 +15,6 @@ extends Node2D
 @export var bonus_victoria := 30
 @export var penalizacion_derrota := 20
 
-
 #Sprites
 @export var burn_mark_scene: PackedScene
 @onready var car := $Car
@@ -25,16 +24,11 @@ extends Node2D
 @onready var death_particles := $Car/DeathParticles
 @onready var car_sprite: AnimatedSprite2D = $Car/AnimatedSprite2D
 
-#Tutorial
+#Tutorial y resumen atención
 @onready var panel_tutorial := $CanvasLayer/Tutorial
 @onready var panel_tutorial_interno := $CanvasLayer/Tutorial/PanelTutorial
 @onready var label_parpadeo := $CanvasLayer/Tutorial/PanelTutorial/Comenzar
-
-#Panel Final
-@onready var panel_final := $CanvasLayer/Resumen
-@onready var label_resultado_final := $CanvasLayer/Resumen/PanelFinal/PuntajeFinal
-@onready var label_dinero_final := $CanvasLayer/Resumen/PanelFinal/DineroObtenido
-@onready var boton_continuar := $CanvasLayer/Resumen/PanelFinal/Button
+@onready var panel_resumen = $ResumenAtencion
 
 #Sfx
 @onready var lava_spawn_sound := $LavaSpawnSound
@@ -69,7 +63,6 @@ var dinero_obtenido := 0
 var ultimo_segundo_anunciado := -1
 
 
-
 func _ready() -> void:
 	randomize()
 	
@@ -82,13 +75,6 @@ func _ready() -> void:
 	time_label.visible = false
 	danger_label.visible = false
 	start_label.visible = false
-
-	if panel_final:
-		panel_final.hide()
-
-	if boton_continuar:
-		if not boton_continuar.pressed.is_connected(_on_boton_continuar_pressed):
-			boton_continuar.pressed.connect(_on_boton_continuar_pressed)
 
 	car_sprite.play("avanzar")
 
@@ -108,17 +94,16 @@ func mostrar_tutorial() -> void:
 	time_label.visible = false
 
 	panel_tutorial.visible = true
-	panel_tutorial.show()
 	panel_tutorial.position = Vector2.ZERO
 	panel_tutorial.size = get_viewport_rect().size
 	panel_tutorial.z_index = 100
 
 	panel_tutorial_interno.visible = true
-	panel_tutorial_interno.show()
 	panel_tutorial_interno.z_index = 101
 
 	await get_tree().create_timer(0.35).timeout
 	tutorial_can_start = true
+
 
 func setup_time_label() -> void:
 	time_label = Label.new()
@@ -180,7 +165,6 @@ func _process(delta: float) -> void:
 				panel_tutorial.hide()
 
 			start_countdown()
-
 		return
 
 	if not game_started or is_game_over or has_won:
@@ -213,17 +197,14 @@ func handle_direction_input() -> void:
 		direction = Vector2i.UP
 		car.rotation_degrees = -90
 		changed = true
-
 	elif Input.is_action_just_pressed("ui_down") or Input.is_action_just_pressed("mover_abajo"):
 		direction = Vector2i.DOWN
 		car.rotation_degrees = 90
 		changed = true
-
 	elif Input.is_action_just_pressed("ui_left") or Input.is_action_just_pressed("mover_izquierda"):
 		direction = Vector2i.LEFT
 		car.rotation_degrees = 180
 		changed = true
-
 	elif Input.is_action_just_pressed("ui_right") or Input.is_action_just_pressed("mover_derecha"):
 		direction = Vector2i.RIGHT
 		car.rotation_degrees = 0
@@ -243,8 +224,8 @@ func handle_direction_input() -> void:
 			turn_sound.pitch_scale = randf_range(0.7, 1.1)
 			turn_sound.volume_db = randf_range(-15.0, -10.0)
 			turn_sound.play()
-
 			rapid_turn_count = 0
+
 
 func direction_input_pressed() -> bool:
 	return (
@@ -257,6 +238,7 @@ func direction_input_pressed() -> bool:
 		or Input.is_action_just_pressed("mover_izquierda")
 		or Input.is_action_just_pressed("mover_derecha")
 	)
+
 
 func start_countdown() -> void:
 	game_started = false
@@ -273,31 +255,23 @@ func start_countdown() -> void:
 
 	start_label.text = "3"
 	play_countdown_sound(0)
-
 	await get_tree().create_timer(1.0).timeout
-	if is_game_over or has_won or not countdown_activo:
-		return
+	if is_game_over or has_won or not countdown_activo: return
 
 	start_label.text = "2"
 	play_countdown_sound(0)
-
 	await get_tree().create_timer(1.0).timeout
-	if is_game_over or has_won or not countdown_activo:
-		return
+	if is_game_over or has_won or not countdown_activo: return
 
 	start_label.text = "1"
 	play_countdown_sound(0)
-
 	await get_tree().create_timer(1.0).timeout
-	if is_game_over or has_won or not countdown_activo:
-		return
+	if is_game_over or has_won or not countdown_activo: return
 
 	start_label.text = "¡YA!"
 	play_countdown_sound(12)
-
 	await get_tree().create_timer(0.5).timeout
-	if is_game_over or has_won or not countdown_activo:
-		return
+	if is_game_over or has_won or not countdown_activo: return
 
 	start_label.visible = false
 	time_label.visible = true
@@ -330,7 +304,6 @@ func spawn_lava_wave() -> void:
 
 func spawn_random_lava() -> void:
 	if burn_mark_scene == null:
-		push_error("burn_mark_scene no asignado")
 		return
 
 	var attempts := 0
@@ -344,7 +317,6 @@ func spawn_random_lava() -> void:
 
 		if cell != car_cell and not lava_cells.has(cell):
 			break
-
 		attempts += 1
 
 	if attempts >= 30:
@@ -358,9 +330,8 @@ func spawn_random_lava() -> void:
 	if lava_sprite == null:
 		return
 
-	# Fase 1: aviso visual, NO mata
+	# Fase 1: aviso visual
 	lava_sprite.play("spawn_burn")
-
 	await lava_sprite.animation_finished
 
 	if is_game_over or has_won:
@@ -368,7 +339,7 @@ func spawn_random_lava() -> void:
 			lava.queue_free()
 		return
 
-	# Fase 2: lava inicial, YA mata
+	# Fase 2: lava inicial
 	lava_cells[cell] = true
 
 	if lava_spawn_sound:
@@ -383,7 +354,7 @@ func spawn_random_lava() -> void:
 		game_over()
 		return
 
-	# Fase 3: lava en loop, sigue matando
+	# Fase 3: lava en loop
 	lava_sprite.play("lava")
 
 	var smoke := lava.get_node_or_null("SmokeParticles") as GPUParticles2D
@@ -424,7 +395,6 @@ func spawn_car_random() -> void:
 		randi_range(0, board_size - 1),
 		randi_range(0, board_size - 1)
 	)
-
 	car.global_position = cell_to_world(car_cell)
 
 
@@ -441,7 +411,6 @@ func is_inside_board(cell: Vector2i) -> bool:
 
 func calcular_dinero_final() -> void:
 	var segundos_sobrevividos := int(elapsed_time)
-
 	dinero_obtenido = segundos_sobrevividos * valor_por_segundo
 
 	if has_won:
@@ -450,8 +419,6 @@ func calcular_dinero_final() -> void:
 		dinero_obtenido -= penalizacion_derrota
 
 	dinero_obtenido = max(0, dinero_obtenido)
-
-	print("Dinero obtenido: $", dinero_obtenido)
 
 
 func game_over() -> void:
@@ -495,6 +462,7 @@ func game_over() -> void:
 
 	mostrar_pantalla_final(false)
 
+
 func win_game() -> void:
 	if has_won or is_game_over:
 		return
@@ -520,37 +488,51 @@ func win_game() -> void:
 
 	mostrar_pantalla_final(true)
 
+
 func mostrar_pantalla_final(gano: bool) -> void:
 	await get_tree().create_timer(1.0).timeout
+
+	# Pausamos el juego visualmente
+	get_tree().paused = true
 
 	start_label.visible = false
 	danger_label.visible = false
 	time_label.visible = false
 
-	panel_final.visible = true
-	panel_final.show()
-	panel_final.position = panel_tutorial.position
-	panel_final.size = panel_tutorial.size
-	panel_final.z_index = panel_tutorial.z_index + 10
-
-	label_resultado_final.text = "¡GANASTE!" if gano else "GAME OVER"
-	label_dinero_final.text = "Dinero obtenido: $" + str(dinero_obtenido)
+	# Calculamos el rendimiento
+	var rendimiento: float = 1.0 if has_won else clampf(elapsed_time / survival_time, 0.0, 1.0)
+	DATOSGLOBALES.reportar_rendimiento_minijuego(rendimiento, dinero_obtenido)
+	
+	# FUNDAMENTAL: Prevenir que el panel se autodestruya al nacer
+	DATOSGLOBALES.volviendo_de_atencion = true
+	
+	if panel_resumen:
+		panel_resumen.layer = 100 
+		panel_resumen.activar_panel()
 		
+		# CONECTAMOS EL NUEVO PANEL DE FORMA SEGURA
+		if not panel_resumen.continuar.is_connected(_on_boton_continuar_pressed):
+			panel_resumen.continuar.connect(_on_boton_continuar_pressed)
+
+
 func _on_boton_continuar_pressed() -> void:
 	AUDIOMANAGER.play_ui_click()
 	
-	await get_tree().create_timer(0.15).timeout
+	# Timer a prueba de pausas
+	await get_tree().create_timer(0.15, true, false, true).timeout
 	
 	DATOSGLOBALES.sumar_dinero(dinero_obtenido)
 
-	# Rendimiento: tiempo sobrevivido sobre el máximo; ganar da resultado pleno.
-	var rendimiento: float = 1.0 if has_won else clampf(elapsed_time / survival_time, 0.0, 1.0)
-	DATOSGLOBALES.reportar_rendimiento_minijuego(rendimiento)
-
 	Engine.time_scale = 1.0
 	get_tree().paused = false
-	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")
 	
+	if music_loop:
+		music_loop.stop()
+		
+	print("Volviendo al taller desde The Floor Is Lava. Dinero: $", dinero_obtenido)
+	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")
+
+
 func play_countdown_sound(semitones := 0) -> void:
 	if not countdown_sound:
 		return
@@ -559,6 +541,3 @@ func play_countdown_sound(semitones := 0) -> void:
 	countdown_sound.pitch_scale = pow(2.0, semitones / 12.0)
 	countdown_sound.stop()
 	countdown_sound.play()
-	
-func _on_boton_continuar_mouse_entered() -> void:
-	AUDIOMANAGER.play_ui_hover()

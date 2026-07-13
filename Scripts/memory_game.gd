@@ -1,10 +1,10 @@
 extends Node2D
 
-#Audio
+# Audio
 @onready var music_loop = $MusicLoop
 @onready var card_flip_sound = $CardFlipSound
 @onready var match_sound = $MatchSound
-
+@onready var panel_resumen = $ResumenAtencion
 const COLS := 5
 const ROWS := 4
 const TOTAL_PAIRS := 10
@@ -37,6 +37,7 @@ var can_interact := false
 var time_elapsed := 0.0
 var moves := 0
 var matched_pairs := 0
+var dinero_final := 0
 
 var bg: Control
 
@@ -45,12 +46,11 @@ var bg: Control
 @onready var pairs_label: Label = $CanvasLayer/HUD/PairsLabel
 
 @onready var pantalla_intro: ColorRect = $CanvasLayer/PantallaIntro
-@onready var pantalla_result: ColorRect = $CanvasLayer/PantallaResultado
 @onready var hud: Control = $CanvasLayer/HUD
-
 @onready var btn_iniciar: Button = $CanvasLayer/PantallaIntro/Panel/VBox/BtnIniciar
-@onready var btn_continuar: Button = $CanvasLayer/PantallaResultado/Panel/VBox/BtnContinuar
 
+# Exportamos el panel viejo por si lo tienes en el CanvasLayer y queremos apagarlo
+@export var pantalla_final_vieja: Control 
 
 func _ready() -> void:
 	randomize()
@@ -63,19 +63,19 @@ func _ready() -> void:
 	build_board()
 	_reset_game_values()
 	_mostrar_instrucciones()
-	_conectar_botones()
+	
+	if not btn_iniciar.pressed.is_connected(_on_btn_iniciar_pressed):
+		btn_iniciar.pressed.connect(_on_btn_iniciar_pressed)
+	if not btn_iniciar.mouse_entered.is_connected(_on_btn_iniciar_mouse_entered):
+		btn_iniciar.mouse_entered.connect(_on_btn_iniciar_mouse_entered)
 
 
 func _configurar_mouse_filters() -> void:
-	# El HUD solo muestra información, no debe bloquear clicks sobre las cartas.
 	hud.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	timer_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	moves_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	pairs_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-
-	# Las pantallas sí deben bloquear las cartas mientras están visibles.
 	pantalla_intro.mouse_filter = Control.MOUSE_FILTER_STOP
-	pantalla_result.mouse_filter = Control.MOUSE_FILTER_STOP
 
 
 func _setup_background() -> void:
@@ -100,23 +100,11 @@ func _setup_background() -> void:
 	move_child(bg, 0)
 
 
-func _conectar_botones() -> void:
-	if not btn_iniciar.pressed.is_connected(_on_btn_iniciar_pressed):
-		btn_iniciar.pressed.connect(_on_btn_iniciar_pressed)
-
-	if not btn_iniciar.mouse_entered.is_connected(_on_btn_iniciar_mouse_entered):
-		btn_iniciar.mouse_entered.connect(_on_btn_iniciar_mouse_entered)
-
-	if not btn_continuar.pressed.is_connected(_on_btn_continuar_pressed):
-		btn_continuar.pressed.connect(_on_btn_continuar_pressed)
-
-	if not btn_continuar.mouse_entered.is_connected(_on_btn_continuar_mouse_entered):
-		btn_continuar.mouse_entered.connect(_on_btn_continuar_mouse_entered)
-
 func _reset_game_values() -> void:
 	time_elapsed = 0.0
 	moves = 0
 	matched_pairs = 0
+	dinero_final = 0
 
 	selected.clear()
 	can_interact = false
@@ -127,16 +115,16 @@ func _reset_game_values() -> void:
 	timer_label.modulate = Color(0.882, 0.686, 0.18)
 
 	btn_iniciar.disabled = false
-	btn_continuar.hide()
 
 
 func _mostrar_instrucciones() -> void:
 	estado_actual = Estado.INSTRUCCIONES
 	can_interact = false
-
 	hud.hide()
-	pantalla_result.hide()
 	pantalla_intro.show()
+	
+	if pantalla_final_vieja:
+		pantalla_final_vieja.hide()
 
 
 func _on_btn_iniciar_pressed() -> void:
@@ -144,17 +132,14 @@ func _on_btn_iniciar_pressed() -> void:
 		return
 
 	AUDIOMANAGER.play_ui_click()
-
 	btn_iniciar.disabled = true
 
 	pantalla_intro.hide()
-	pantalla_result.hide()
 	hud.show()
 
 	estado_actual = Estado.MEMORIZANDO
 	can_interact = false
 
-	# Fase de memorización: mostrar todas las cartas.
 	for card in cards:
 		card.flip(false)
 
@@ -163,7 +148,6 @@ func _on_btn_iniciar_pressed() -> void:
 	if estado_actual != Estado.MEMORIZANDO:
 		return
 
-	# Ocultar cartas antes de empezar.
 	for card in cards:
 		card.flip_back(false)
 
@@ -219,13 +203,7 @@ func build_board() -> void:
 
 
 func _on_card_clicked(card: MemoryCard) -> void:
-	if estado_actual != Estado.JUGANDO:
-		return
-
-	if not can_interact:
-		return
-
-	if card in selected:
+	if estado_actual != Estado.JUGANDO or not can_interact or card in selected:
 		return
 
 	if card.is_flipped or card.is_matched:
@@ -241,7 +219,6 @@ func _on_card_clicked(card: MemoryCard) -> void:
 	if selected.size() == 2:
 		moves += 1
 		moves_label.text = "MOVS: %d" % moves
-
 		can_interact = false
 
 		await get_tree().create_timer(0.45).timeout
@@ -253,17 +230,13 @@ func _on_card_clicked(card: MemoryCard) -> void:
 
 
 func check_match() -> void:
-	if estado_actual != Estado.JUGANDO:
-		return
-
-	if selected.size() < 2:
+	if estado_actual != Estado.JUGANDO or selected.size() < 2:
 		return
 
 	var a := selected[0]
 	var b := selected[1]
 
 	if a.icon_type == b.icon_type:
-
 		if match_sound:
 			match_sound.play()
 
@@ -293,61 +266,48 @@ func check_match() -> void:
 func on_victory() -> void:
 	if estado_actual != Estado.JUGANDO:
 		return
-
-	estado_actual = Estado.RESULTADO
-	can_interact = false
-
-	var tiempo_restante: float = maxf(0.0, TIEMPO_LIMITE - time_elapsed)
-	var recompensa: int = int(matched_pairs * 28 + tiempo_restante * 1.33)
-
-	_mostrar_resultado(true, matched_pairs, tiempo_restante, recompensa)
+	_procesar_final(true)
 
 
 func on_time_out() -> void:
 	if estado_actual != Estado.JUGANDO:
 		return
+	selected.clear()
+	_procesar_final(false)
 
+
+func _procesar_final(gano: bool) -> void:
 	estado_actual = Estado.RESULTADO
 	can_interact = false
-	selected.clear()
-
-	_mostrar_resultado(false, matched_pairs, 0.0, -30)
-
-
-func _mostrar_resultado(gano: bool, pares: int, t_restante: float, monto: int) -> void:
+	
 	hud.hide()
 	pantalla_intro.hide()
-	pantalla_result.show()
+	if pantalla_final_vieja:
+		pantalla_final_vieja.hide()
 
-	btn_continuar.hide()
-
-	var lbl_titulo: Label = pantalla_result.get_node("Panel/VBox/LblTitulo")
-	var lbl_pares: Label = pantalla_result.get_node("Panel/VBox/LblPares")
-	var lbl_tiempo: Label = pantalla_result.get_node("Panel/VBox/LblTiempo")
-	var lbl_formula: Label = pantalla_result.get_node("Panel/VBox/LblFormula")
-	var lbl_total: Label = pantalla_result.get_node("Panel/VBox/LblTotal")
-	lbl_formula.hide()
+	var t_restante: float = maxf(0.0, TIEMPO_LIMITE - time_elapsed)
+	var rendimiento: float
 
 	if gano:
-		lbl_titulo.text = "¡TALLER REPARADO!"
-		lbl_titulo.modulate = Color("#3fb950")
-
-		lbl_total.text = "RECOMPENSA: +$%d" % monto
-		lbl_total.modulate = Color("#3fb950")
+		dinero_final = int(matched_pairs * 10 + t_restante * 0.5)
+		rendimiento = clampf(0.8 + 0.2 * (t_restante / TIEMPO_LIMITE), 0.0, 1.0)
 	else:
-		lbl_titulo.text = "¡REPARACIÓN FALLIDA!"
-		lbl_titulo.modulate = Color("#f85149")
+		dinero_final = -30
+		rendimiento = clampf(float(matched_pairs) / float(TOTAL_PAIRS), 0.0, 1.0) * 0.6
 
-		lbl_total.text = "PENITENCIA: -$30"
-		lbl_total.modulate = Color("#f85149")
+	DATOSGLOBALES.reportar_rendimiento_minijuego(rendimiento, dinero_final)
+	
+	# FUNDAMENTAL: Prevenir que el panel se autodestruya
+	DATOSGLOBALES.volviendo_de_atencion = true 
 
-	lbl_pares.text = "Pares encontrados: %d / %d" % [pares, TOTAL_PAIRS]
-	lbl_tiempo.text = "Tiempo restante: %.1f s" % t_restante
-
-	await get_tree().create_timer(0.5).timeout
-
-	if estado_actual == Estado.RESULTADO:
-		btn_continuar.show()
+	# --- CAMBIO AQUI: Usamos el panel que ya está en la escena ---
+	if panel_resumen:
+		panel_resumen.layer = 100 
+		panel_resumen.activar_panel()
+		
+		# CONECTAMOS EL PANEL EXISTENTE DE FORMA SEGURA
+		if not panel_resumen.continuar.is_connected(_on_btn_continuar_pressed):
+			panel_resumen.continuar.connect(_on_btn_continuar_pressed)
 
 
 func _on_btn_continuar_pressed() -> void:
@@ -356,39 +316,18 @@ func _on_btn_continuar_pressed() -> void:
 	
 	AUDIOMANAGER.play_ui_click()
 	
-	await get_tree().create_timer(0.15).timeout
+	await get_tree().create_timer(0.15, true, false, true).timeout
 		
 	if music_loop:
 		music_loop.stop()
 	
-	btn_continuar.disabled = true
-
-	var gano := matched_pairs == TOTAL_PAIRS
-	var tiempo_restante: float = maxf(0.0, TIEMPO_LIMITE - time_elapsed)
-
-	var monto: int
-
-	if gano:
-		monto = int(matched_pairs * 10 + tiempo_restante * 0.5)
-	else:
-		monto = -30
-
-	print("Memory terminado. Ganó:", gano, " Monto:", monto)
-
-	DATOSGLOBALES.sumar_dinero(monto)
-
-	# Rendimiento: si ganaste, resultado alto con bono por tiempo sobrante;
-	# si perdiste, según cuántos pares alcanzaste a encontrar.
-	var rendimiento: float
-	if gano:
-		rendimiento = clampf(0.8 + 0.2 * (tiempo_restante / TIEMPO_LIMITE), 0.0, 1.0)
-	else:
-		rendimiento = clampf(float(matched_pairs) / float(TOTAL_PAIRS), 0.0, 1.0) * 0.6
-	DATOSGLOBALES.reportar_rendimiento_minijuego(rendimiento)
+	print("Memory terminado. Dinero obtenido: $", dinero_final)
+	DATOSGLOBALES.sumar_dinero(dinero_final)
 
 	Engine.time_scale = 1.0
 	get_tree().paused = false
 	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")
+
 
 func _process(delta: float) -> void:
 	if estado_actual != Estado.JUGANDO:
@@ -401,7 +340,6 @@ func _process(delta: float) -> void:
 
 	@warning_ignore("integer_division")
 	var mins: int = secs / 60
-
 	secs = secs % 60
 
 	timer_label.text = "%02d:%02d" % [mins, secs]
@@ -415,12 +353,6 @@ func _process(delta: float) -> void:
 
 	if time_elapsed >= TIEMPO_LIMITE:
 		on_time_out()
-		
+
 func _on_btn_iniciar_mouse_entered() -> void:
 	AUDIOMANAGER.play_ui_hover()
-
-
-func _on_btn_continuar_mouse_entered() -> void:
-	AUDIOMANAGER.play_ui_hover()
-		
-		

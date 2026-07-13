@@ -5,6 +5,7 @@
 [ext_resource type="AudioStream" uid="uid://c2lxpg60tyflj" path="res://Assets/Audio/MinigameAudio/MemoryGame/memoryloop.ogg" id="3_ws1so"]
 [ext_resource type="AudioStream" uid="uid://bd70o16yeox1q" path="res://Assets/Audio/MinigameAudio/MemoryGame/cardflip.wav" id="4_63w7e"]
 [ext_resource type="AudioStream" uid="uid://dojpag0buidym" path="res://Assets/Audio/MinigameAudio/MemoryGame/matchsound.wav" id="5_eohb8"]
+[ext_resource type="PackedScene" uid="uid://c8n2rqp4dv6xk" path="res://Scenes/UI/ResumenAtencion.tscn" id="5_pheg3"]
 [ext_resource type="Texture2D" uid="uid://cxqi1lh5nip8y" path="res://Assets/UI/button_style.png" id="6_hudnp"]
 [ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="7_theme"]
 
@@ -160,105 +161,7 @@ theme = ExtResource("7_theme")
 theme_override_font_sizes/font_size = 16
 text = "▶  INICIAR MINIJUEGO"
 
-[node name="PantallaResultado" type="ColorRect" parent="CanvasLayer" unique_id=1878677761]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-color = Color(0.16, 0.09, 0.04, 0.8)
-
-[node name="Panel" type="NinePatchRect" parent="CanvasLayer/PantallaResultado" unique_id=1463322178]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -398.0
-offset_top = -262.0
-offset_right = 400.0
-offset_bottom = 260.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = SubResource("AtlasTexture_ninehud")
-region_rect = Rect2(0, 0, 769, 568)
-patch_margin_left = 110
-patch_margin_top = 100
-patch_margin_right = 110
-patch_margin_bottom = 110
-
-[node name="VBox" type="VBoxContainer" parent="CanvasLayer/PantallaResultado/Panel" unique_id=1370112831]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 130.0
-offset_top = 110.0
-offset_right = -130.0
-offset_bottom = -110.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="LblTitulo" type="Label" parent="CanvasLayer/PantallaResultado/Panel/VBox" unique_id=1401923942]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.247, 0.729, 0.314, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 3
-theme_override_font_sizes/font_size = 28
-text = "RESULTADO"
-horizontal_alignment = 1
-
-[node name="Separador" type="HSeparator" parent="CanvasLayer/PantallaResultado/Panel/VBox" unique_id=1880115942]
-layout_mode = 2
-
-[node name="LblPares" type="Label" parent="CanvasLayer/PantallaResultado/Panel/VBox" unique_id=955812394]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
-theme_override_font_sizes/font_size = 15
-text = "Pares encontrados: 0 / 10"
-horizontal_alignment = 1
-
-[node name="LblTiempo" type="Label" parent="CanvasLayer/PantallaResultado/Panel/VBox" unique_id=1002521341]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
-theme_override_font_sizes/font_size = 15
-text = "Tiempo restante: 0.0s"
-horizontal_alignment = 1
-
-[node name="Separador2" type="HSeparator" parent="CanvasLayer/PantallaResultado/Panel/VBox" unique_id=669432341]
-layout_mode = 2
-
-[node name="LblFormula" type="Label" parent="CanvasLayer/PantallaResultado/Panel/VBox" unique_id=1141473972]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.6, 0.6, 0.65, 1)
-theme_override_font_sizes/font_size = 13
-text = "Fórmula: ..."
-horizontal_alignment = 1
-autowrap_mode = 3
-
-[node name="Espaciado" type="Control" parent="CanvasLayer/PantallaResultado/Panel/VBox" unique_id=1864870925]
-custom_minimum_size = Vector2(0, 8)
-layout_mode = 2
-
-[node name="LblTotal" type="Label" parent="CanvasLayer/PantallaResultado/Panel/VBox" unique_id=1531768137]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.247, 0.729, 0.314, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 3
-theme_override_font_sizes/font_size = 32
-text = "+$0"
-horizontal_alignment = 1
-
-[node name="Espaciado2" type="Control" parent="CanvasLayer/PantallaResultado/Panel/VBox" unique_id=1026876193]
-custom_minimum_size = Vector2(0, 16)
-layout_mode = 2
-
-[node name="BtnContinuar" type="Button" parent="CanvasLayer/PantallaResultado/Panel/VBox" unique_id=106157736]
-custom_minimum_size = Vector2(0, 44)
-layout_mode = 2
-theme = ExtResource("7_theme")
-theme_type_variation = &"FlatButton"
-theme_override_font_sizes/font_size = 16
-text = "CONTINUAR →"
+[node name="ResumenAtencion" parent="." unique_id=686501913 instance=ExtResource("5_pheg3")]
 
 [node name="MusicLoop" type="AudioStreamPlayer" parent="." unique_id=195818257]
 stream = ExtResource("3_ws1so")
@@ -273,6 +176,3 @@ bus = &"SFX"
 stream = ExtResource("5_eohb8")
 volume_db = -7.0
 bus = &"SFX"
-
-[connection signal="mouse_entered" from="CanvasLayer/PantallaResultado/Panel/VBox/BtnContinuar" to="." method="_on_btn_continuar_mouse_entered"]
-[connection signal="pressed" from="CanvasLayer/PantallaResultado/Panel/VBox/BtnContinuar" to="." method="_on_btn_continuar_pressed"]
