@@ -40,7 +40,6 @@ func _ready() -> void:
 	boton_continuar.pressed.connect(_on_continuar_pressed)
 
 	_poblar(DATOSGLOBALES.get_resumen_atencion())
-	boton_continuar.pressed.connect(_on_continuar_pressed)
 
 	# El Marco (NinePatchRect) no se autoajusta: le fijamos la altura al contenido
 	# real, para que calce igual con o sin la fila "Diagnóstico erróneo".

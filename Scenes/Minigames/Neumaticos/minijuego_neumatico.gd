@@ -59,7 +59,8 @@ var juego_terminado = false
 var juego_iniciado = false
 
 # VIDAS
-var vidas = 4
+const VIDAS_INICIALES := 4
+var vidas = VIDAS_INICIALES
 var vidas_perdidas = 0
 
 # DINERO
@@ -234,9 +235,10 @@ func calcular_dinero_final():
 	if panel_final:
 		panel_final.queue_free()
 
-	var progreso: float = float(neumaticos_inflados) / float(neumaticos_guardados.size())
+	# Usamos porcentaje_completado para evitar el error de variable duplicada
+	var porcentaje_completado: float = float(neumaticos_inflados) / float(neumaticos_guardados.size())
 	var penal_vidas: float = float(vidas_perdidas) / float(VIDAS_INICIALES) * 0.4
-	var rendimiento: float = clampf(progreso - penal_vidas, 0.0, 1.0)
+	var rendimiento: float = clampf(porcentaje_completado - penal_vidas, 0.0, 1.0)
 	
 	DATOSGLOBALES.reportar_rendimiento_minijuego(rendimiento, dinero_obtenido)
 	
@@ -270,25 +272,5 @@ func _on_boton_continuar_pressed() -> void:
 	
 	print("Volviendo al taller desde Neumáticos. Dinero obtenido: $", dinero_obtenido)
 	DATOSGLOBALES.sumar_dinero(dinero_obtenido)
-<<<<<<< HEAD
-	var nivel_desempeno := DATOSGLOBALES.DESEMPENO_FALLIDO
-	if vidas > 0 and neumaticos_inflados >= 3:
-		nivel_desempeno = DATOSGLOBALES.DESEMPENO_EXITOSO
-	elif neumaticos_inflados >= 1:
-		nivel_desempeno = DATOSGLOBALES.DESEMPENO_ACEPTABLE
-	DATOSGLOBALES.registrar_desempeno_minijuego(
-		nivel_desempeno,
-		"Reparacion de neumaticos",
-		"Neumaticos: %d; errores: %d." % [neumaticos_inflados, vidas_perdidas]
-	)
-	var destino := DATOSGLOBALES.obtener_destino_post_escena(
-		"res://Scenes/Gameplay/GameScreen.tscn"
-	)
-	get_tree().change_scene_to_file(destino)
-	
-func _on_boton_continuar_mouse_entered() -> void:
-	AUDIOMANAGER.play_ui_hover()	
-=======
 
 	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")
->>>>>>> origin/develop
