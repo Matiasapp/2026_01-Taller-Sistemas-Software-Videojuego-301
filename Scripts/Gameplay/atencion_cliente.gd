@@ -319,6 +319,7 @@ func _on_diagnostico_resuelto(correcto: bool) -> void:
 
 	if not correcto:
 		DATOSGLOBALES.restar_dinero(PENALIZACION_DIAGNOSTICO)
+		DATOSGLOBALES.resumen_atencion["penalizacion_diagnostico"] = PENALIZACION_DIAGNOSTICO
 
 	DATOSGLOBALES.registrar_diagnostico_dia(correcto)
 

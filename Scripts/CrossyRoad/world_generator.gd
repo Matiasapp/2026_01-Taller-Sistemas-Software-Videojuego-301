@@ -5,7 +5,7 @@ extends Node2D
 @export var franjas_iniciales: int = 25 # Con 30 para empezar es más que suficiente
 @export var buffer_generacion: int = 20 # Mantiene siempre 25 casillas por delante del jugador
 
-# NUEVO: Necesitamos saber dónde está el jugador para generar el mapa frente a él
+# Necesitamos saber dónde está el jugador para generar el mapa frente a él
 @export var jugador: Node2D
 
 # META: distancia (en casillas) a la que se coloca la tienda de repuestos.
@@ -16,6 +16,7 @@ extends Node2D
 @onready var ambiente_mapa: AudioStreamPlayer = $AmbienteMapa
 #Musica
 @onready var musica_loop: AudioStreamPlayer = $MusicLoop
+#Conexión del panel resumen
 
 var posicion_y_actual: int = 0
 var franjas_activas: Array[Node] = [] # NUEVO: Lista para guardar y borrar las franjas viejas
@@ -159,3 +160,4 @@ func limpiar_franjas_viejas() -> void:
 			franja_vieja.queue_free() # Destruye el nodo liberando memoria
 		else:
 			break
+			
