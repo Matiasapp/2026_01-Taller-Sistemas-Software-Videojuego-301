@@ -1,4 +1,5 @@
 extends Node2D
+
 #Grilla
 @export var grid_size := 80
 @export var board_size := 9
@@ -51,7 +52,6 @@ var time_label: Label
 
 var car_cell := Vector2i.ZERO
 var direction := Vector2i.RIGHT
-
 
 var trail_cells: Array[Vector2i] = []
 var trail_nodes := {}
@@ -304,88 +304,6 @@ func start_countdown() -> void:
 	spawn_gasolina()
 
 	move_timer.start()
-<<<<<<< HEAD
-=======
-	start_lava_loop()
-
-
-func start_lava_loop() -> void:
-	while game_started and not is_game_over and not has_won:
-		spawn_lava_wave()
-		await get_tree().create_timer(lava_spawn_interval).timeout
-
-
-func spawn_lava_wave() -> void:
-	for i in range(lava_amount_per_wave):
-		spawn_random_lava()
-
-
-func spawn_random_lava() -> void:
-	if burn_mark_scene == null:
-		return
-
-	var attempts := 0
-	var cell := Vector2i.ZERO
-
-	while attempts < 30:
-		cell = Vector2i(
-			randi_range(0, board_size - 1),
-			randi_range(0, board_size - 1)
-		)
-
-		if cell != car_cell and not lava_cells.has(cell):
-			break
-		attempts += 1
-
-	if attempts >= 30:
-		return
-
-	var lava = burn_mark_scene.instantiate()
-	trail_container.add_child(lava)
-	lava.global_position = cell_to_world(cell)
-
-	var lava_sprite := lava.get_node_or_null("AnimatedSprite2D") as AnimatedSprite2D
-	if lava_sprite == null:
-		return
-
-	# Fase 1: aviso visual
-	lava_sprite.play("spawn_burn")
-	await lava_sprite.animation_finished
-
-	if is_game_over or has_won:
-		if is_instance_valid(lava):
-			lava.queue_free()
-		return
-
-	# Fase 2: lava inicial
-	lava_cells[cell] = true
-
-	if lava_spawn_sound:
-		lava_spawn_sound.pitch_scale = randf_range(0.85, 1.20)
-		lava_spawn_sound.volume_db = randf_range(-2.0, 1.0)
-		lava_spawn_sound.global_position = cell_to_world(cell)
-		lava_spawn_sound.play()
-
-	lava_sprite.play("spawn_lava")
-
-	if cell == car_cell:
-		game_over()
-		return
-
-	# Fase 3: lava en loop
-	lava_sprite.play("lava")
-
-	var smoke := lava.get_node_or_null("SmokeParticles") as GPUParticles2D
-	if smoke:
-		smoke.restart()
-		smoke.emitting = true
-
-	await get_tree().create_timer(lava_lifetime).timeout
-
-	if is_instance_valid(lava):
-		lava_cells.erase(cell)
-		lava.queue_free()
->>>>>>> origin/develop
 
 
 func _move_car() -> void:
@@ -436,14 +354,10 @@ func is_inside_board(cell: Vector2i) -> bool:
 
 func calcular_dinero_final() -> void:
 	var segundos_sobrevividos := int(elapsed_time)
-<<<<<<< HEAD
 	var dinero_tiempo := segundos_sobrevividos * valor_por_segundo
 	var dinero_bidones := bidones_recogidos * dinero_por_bidon
 
 	dinero_obtenido = dinero_tiempo + dinero_bidones
-=======
-	dinero_obtenido = segundos_sobrevividos * valor_por_segundo
->>>>>>> origin/develop
 
 	if has_won:
 		dinero_obtenido += bonus_victoria
@@ -452,13 +366,10 @@ func calcular_dinero_final() -> void:
 
 	dinero_obtenido = max(0, dinero_obtenido)
 
-<<<<<<< HEAD
 	print("Tiempo: ", segundos_sobrevividos)
 	print("Bidones: ", bidones_recogidos)
 	print("Dinero obtenido: $", dinero_obtenido)
 
-=======
->>>>>>> origin/develop
 
 func game_over() -> void:
 	if is_game_over or has_won:
@@ -551,17 +462,22 @@ func mostrar_pantalla_final(gano: bool) -> void:
 	danger_label.visible = false
 	time_label.visible = false
 
-<<<<<<< HEAD
-	panel_final.visible = true
-	panel_final.show()
-	panel_final.position = panel_tutorial.position
-	panel_final.size = panel_tutorial.size
-	panel_final.z_index = panel_tutorial.z_index + 10
+	# Calculamos el rendimiento
+	var rendimiento: float = 1.0 if has_won else clampf(elapsed_time / survival_time, 0.0, 1.0)
+	DATOSGLOBALES.reportar_rendimiento_minijuego(rendimiento, dinero_obtenido)
+	
+	# FUNDAMENTAL: Prevenir que el panel se autodestruya al nacer
+	DATOSGLOBALES.volviendo_de_atencion = true
+	
+	if panel_resumen:
+		panel_resumen.layer = 100 
+		panel_resumen.activar_panel()
+		
+		# CONECTAMOS EL NUEVO PANEL DE FORMA SEGURA
+		if not panel_resumen.continuar.is_connected(_on_boton_continuar_pressed):
+			panel_resumen.continuar.connect(_on_boton_continuar_pressed)
 
-	label_resultado_final.text = "¡GANASTE!" if gano else "GAME OVER"
-	label_dinero_final.text = "Dinero obtenido: $" + str(dinero_obtenido)
-	
-	
+
 func create_trail_lava(cell: Vector2i) -> void:
 	if burn_mark_scene == null:
 		return
@@ -591,7 +507,8 @@ func create_trail_lava(cell: Vector2i) -> void:
 				old_lava.queue_free()
 
 			trail_nodes.erase(old_cell)
-			
+
+
 func spawn_gasolina() -> void:
 	if gasolina_scene == null:
 		return
@@ -621,7 +538,8 @@ func spawn_gasolina() -> void:
 	gasolina_node = gasolina_scene.instantiate()
 	trail_container.add_child(gasolina_node)
 	gasolina_node.global_position = cell_to_world(cell)	
-	
+
+
 func collect_gasolina() -> void:
 	bidones_recogidos += 1
 	trail_length += trail_extra_per_gas
@@ -636,23 +554,6 @@ func collect_gasolina() -> void:
 
 	gasolina_cell = Vector2i(-1, -1)
 	spawn_gasolina()
-	
-=======
-	# Calculamos el rendimiento
-	var rendimiento: float = 1.0 if has_won else clampf(elapsed_time / survival_time, 0.0, 1.0)
-	DATOSGLOBALES.reportar_rendimiento_minijuego(rendimiento, dinero_obtenido)
-	
-	# FUNDAMENTAL: Prevenir que el panel se autodestruya al nacer
-	DATOSGLOBALES.volviendo_de_atencion = true
-	
-	if panel_resumen:
-		panel_resumen.layer = 100 
-		panel_resumen.activar_panel()
->>>>>>> origin/develop
-		
-		# CONECTAMOS EL NUEVO PANEL DE FORMA SEGURA
-		if not panel_resumen.continuar.is_connected(_on_boton_continuar_pressed):
-			panel_resumen.continuar.connect(_on_boton_continuar_pressed)
 
 
 func _on_boton_continuar_pressed() -> void:
@@ -662,33 +563,14 @@ func _on_boton_continuar_pressed() -> void:
 	await get_tree().create_timer(0.15, true, false, true).timeout
 	
 	DATOSGLOBALES.sumar_dinero(dinero_obtenido)
-<<<<<<< HEAD
-	var nivel_desempeno := DATOSGLOBALES.DESEMPENO_FALLIDO
-	if has_won:
-		nivel_desempeno = DATOSGLOBALES.DESEMPENO_EXITOSO
-	elif elapsed_time >= survival_time * 0.70:
-		nivel_desempeno = DATOSGLOBALES.DESEMPENO_ACEPTABLE
-	DATOSGLOBALES.registrar_desempeno_minijuego(
-		nivel_desempeno,
-		"Reparacion de combustible",
-		"Bidones recogidos: %d." % bidones_recogidos
-	)
-	Engine.time_scale = 1.0
-	get_tree().paused = false
-	var destino := DATOSGLOBALES.obtener_destino_post_escena(
-		"res://Scenes/Gameplay/GameScreen.tscn"
-	)
-	get_tree().change_scene_to_file(destino)
-=======
 
 	Engine.time_scale = 1.0
 	get_tree().paused = false
->>>>>>> origin/develop
 	
 	if music_loop:
 		music_loop.stop()
 		
-	print("Volviendo al taller desde The Floor Is Lava. Dinero: $", dinero_obtenido)
+	print("Volviendo al taller desde The Floor Is Lava (Snake). Dinero: $", dinero_obtenido)
 	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")
 
 

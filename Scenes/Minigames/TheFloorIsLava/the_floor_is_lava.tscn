@@ -290,7 +290,6 @@ stream = ExtResource("11_tyt8e")
 volume_db = -15.0
 bus = &"Music"
 parameters/looping = true
-<<<<<<< HEAD
 
 [node name="CollectSound" type="AudioStreamPlayer2D" parent="." unique_id=29974056]
 stream = ExtResource("14_y48l2")
@@ -300,8 +299,3 @@ volume_db = 13.0
 position = Vector2(-1, 0)
 stream = ExtResource("15_b3uvg")
 volume_db = 10.0
-
-[connection signal="mouse_entered" from="CanvasLayer/Resumen/PanelFinal/Button" to="." method="_on_boton_continuar_mouse_entered"]
-[connection signal="pressed" from="CanvasLayer/Resumen/PanelFinal/Button" to="." method="_on_boton_continuar_pressed"]
-=======
->>>>>>> origin/develop
