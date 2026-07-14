@@ -18,7 +18,7 @@ const MAX_CLIENTES_DIA := 5
 const TIEMPO_LLEGADA_CLIENTE := 5
 const PROBABILIDAD_APAGON := 0.30
 const APAGON_SCENE := preload("res://Scenes/Events/EventoDelApagon/EventoApagon.tscn")
-const TRANSICION_DIA_SCENE := "res://Scenes/Events/TransicionDia/transicion_dia.tscn"
+const GASTOS_DIARIOS_SCENE := "res://Scenes/Events/GastosDiarios/GastosDiarios.tscn"
 
 var taller_abierto := false
 var clientes_atendidos := 0
@@ -253,6 +253,10 @@ func _on_modal_bienvenida_entendido() -> void:
 	get_tree().paused = false
 
 
+func _on_modal_bienvenida_entendido_mouse_entered() -> void:
+	AUDIOMANAGER.play_ui_hover()
+
+
 func iniciar_audio_taller() -> void:
 	if ambient_fx:
 		ambient_fx.volume_db = 6.0
@@ -279,8 +283,13 @@ func _input(event):
 	
 	if not puede_interactuar:
 		return
-	
-	if jugador_en_rango_abrir_taller and event.is_action_pressed("interactuar"):
+
+	if not event.is_action_pressed("interactuar") or event.is_echo():
+		return
+
+	# Una pulsacion solo puede ejecutar una interaccion. La puerta tiene prioridad
+	# para impedir que un area superpuesta cargue tambien otra escena.
+	if jugador_en_rango_abrir_taller:
 		if not taller_abierto:
 			abrir_taller()
 		elif CLIENTMANAGER.dia_completo():
@@ -288,17 +297,24 @@ func _input(event):
 			cerrar_dia()
 		else:
 			print("El taller ya está abierto")
-	
-	if jugador_en_rango_easter_egg and event.is_action_pressed("interactuar"):
-		get_tree().change_scene_to_file("res://Scenes/Minigames/Crossy_Road/Crossy Road.tscn")
-	
-	if jugador_en_rango_atender_cliente and event.is_action_pressed("interactuar"):
+		get_viewport().set_input_as_handled()
+		return
+
+	if jugador_en_rango_atender_cliente:
 		atender_cliente()
-	
-	if jugador_en_rango_interactuar_pc and event.is_action_pressed("interactuar"):
+		get_viewport().set_input_as_handled()
+		return
+
+	if jugador_en_rango_interactuar_pc:
 		play_pc_in()
 		GLOBALSIGNALS.abrir_pc.emit()
 		print("¡Se abrió el pc!")
+		get_viewport().set_input_as_handled()
+		return
+
+	if jugador_en_rango_easter_egg:
+		get_viewport().set_input_as_handled()
+		get_tree().change_scene_to_file("res://Scenes/Minigames/Crossy_Road/Crossy Road.tscn")
 
 
 # =========================
@@ -374,9 +390,6 @@ func atender_cliente() -> void:
 	DATOSGLOBALES.dinero_antes_atencion = DATOSGLOBALES.dinero
 	DATOSGLOBALES.volviendo_de_atencion = true
 
-	# Limpia cualquier rendimiento de minijuego que hubiera quedado pendiente (p. ej.
-	# del minijuego aleatorio de easter egg), para que no se filtre a esta atención.
-	DATOSGLOBALES.rendimiento_minijuego_pendiente = -1.0
 	# Empieza un desglose limpio de esta atención (costos, recompensa, reputación).
 	DATOSGLOBALES.iniciar_resumen_atencion()
 
@@ -546,10 +559,10 @@ func cerrar_dia() -> void:
 
 	# Primero se decide qué gastos del cierre pagar. Después se muestra la
 	# transición nocturna y, si corresponde, el evento de robo.
-	get_tree().change_scene_to_file("res://Scenes/Events/GastosDiarios/GastosDiarios.tscn")
+	get_tree().change_scene_to_file(GASTOS_DIARIOS_SCENE)
 
-## El apagon corta la jornada sin gastos diarios ni evento nocturno. Registra el
-## cierre parcial, avanza el calendario y muestra directamente la transicion.
+## El apagon corta la jornada y evita el evento nocturno de robo, pero mantiene
+## el cierre de caja: los gastos diarios siguen existiendo aunque se trabaje menos.
 func cerrar_dia_por_apagon() -> void:
 	if not apagon_en_curso:
 		return
@@ -572,8 +585,7 @@ func cerrar_dia_por_apagon() -> void:
 
 	get_tree().paused = false
 	Engine.time_scale = 1.0
-	var destino := DATOSGLOBALES.obtener_destino_post_escena(TRANSICION_DIA_SCENE)
-	get_tree().change_scene_to_file(destino)
+	get_tree().change_scene_to_file(GASTOS_DIARIOS_SCENE)
 
 func _puede_programar_apagon() -> bool:
 	return (
@@ -686,7 +698,13 @@ func _on_area_atender_cliente_body_exited(body):
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.name == "Player":
 		jugador_en_rango_easter_egg = true
-		
+
+
+func _on_area_2d_body_exited(body: Node2D) -> void:
+	if body.name == "Player":
+		jugador_en_rango_easter_egg = false
+
+
 func mostrar_resumen_dia() -> void:
 	get_tree().paused = true
 

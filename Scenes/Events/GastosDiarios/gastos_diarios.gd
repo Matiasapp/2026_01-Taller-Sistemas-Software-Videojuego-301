@@ -3,26 +3,7 @@ extends Control
 const ESCENA_SIGUIENTE := "res://Scenes/Events/TransicionDia/transicion_dia.tscn"
 const COLOR_OK := Color(0.247, 0.729, 0.314)
 const COLOR_ALERTA := Color(0.9, 0.35, 0.3)
-const GASTOS: Array[Dictionary] = [
-	{
-		"nombre": "Arriendo del taller",
-		"detalle": "Mantiene el local disponible para la próxima jornada.",
-		"base": 110,
-		"aumento": 10,
-	},
-	{
-		"nombre": "Luz y servicios",
-		"detalle": "Electricidad, agua y herramientas conectadas.",
-		"base": 55,
-		"aumento": 5,
-	},
-	{
-		"nombre": "Comida",
-		"detalle": "Algo caliente para recuperar fuerzas.",
-		"base": 45,
-		"aumento": 5,
-	},
-]
+const GRUPO_GASTOS := &"gasto_diario"
 
 @onready var titulo: Label = %Titulo
 @onready var caja_label: Label = %CajaLabel
@@ -33,19 +14,8 @@ const GASTOS: Array[Dictionary] = [
 @onready var sello: Label = %Sello
 @onready var fade_rect: ColorRect = %FadeRect
 
-@onready var checks: Array[CheckButton] = [
-	%ArriendoCheck,
-	%ServiciosCheck,
-	%ComidaCheck,
-]
-@onready var precios: Array[Label] = [
-	%ArriendoPrecio,
-	%ServiciosPrecio,
-	%ComidaPrecio,
-]
-
 var dia_cerrado: int
-var costos: Array[int] = []
+var filas_gastos: Array[GastoDiarioFila] = []
 var procesando := false
 
 
@@ -54,13 +24,16 @@ func _ready() -> void:
 	titulo.text = "CIERRE DE CAJA  ·  DÍA %d" % dia_cerrado
 	caja_label.text = "Caja disponible:  $%d" % DATOSGLOBALES.dinero
 
-	for i in range(GASTOS.size()):
-		var costo := int(GASTOS[i]["base"]) + int(GASTOS[i]["aumento"]) * (dia_cerrado - 1)
-		costos.append(costo)
-		precios[i].text = "$%d" % costo
-		checks[i].button_pressed = true
-		checks[i].toggled.connect(_on_gasto_toggled)
-		checks[i].mouse_entered.connect(AUDIOMANAGER.play_ui_hover)
+	_buscar_filas_gasto(self)
+	for fila in filas_gastos:
+		fila.estado_cambiado.connect(_on_gasto_toggled)
+		fila.configurar_para_dia(dia_cerrado)
+		var boton: CheckButton = fila.get_boton()
+		if boton:
+			boton.mouse_entered.connect(AUDIOMANAGER.play_ui_hover)
+
+	if filas_gastos.is_empty():
+		push_error("GastosDiarios necesita al menos una fila del grupo 'gasto_diario'.")
 
 	confirmar_button.pressed.connect(_on_confirmar_pressed)
 	confirmar_button.mouse_entered.connect(_on_confirmar_mouse_entered)
@@ -71,7 +44,14 @@ func _ready() -> void:
 	tween.tween_property(self, "modulate:a", 1.0, 0.3)
 
 
-func _on_gasto_toggled(_activo: bool) -> void:
+func _buscar_filas_gasto(nodo: Node) -> void:
+	for hijo in nodo.get_children():
+		if hijo is GastoDiarioFila and hijo.is_in_group(GRUPO_GASTOS):
+			filas_gastos.append(hijo)
+		_buscar_filas_gasto(hijo)
+
+
+func _on_gasto_toggled() -> void:
 	if procesando:
 		return
 	AUDIOMANAGER.play_ui_click()
@@ -79,15 +59,20 @@ func _on_gasto_toggled(_activo: bool) -> void:
 
 
 func _actualizar_resumen() -> void:
+	if filas_gastos.is_empty():
+		consecuencia_label.text = "Agrega al menos una fila de gasto para continuar."
+		consecuencia_label.add_theme_color_override("font_color", COLOR_ALERTA)
+		confirmar_button.disabled = true
+		return
+
 	var total := 0
 	var postergados := 0
 
-	for i in range(checks.size()):
-		if checks[i].button_pressed:
-			checks[i].text = "PAGAR"
-			total += costos[i]
+	for fila in filas_gastos:
+		fila.actualizar_texto_boton()
+		if fila.esta_seleccionado():
+			total += fila.costo_actual
 		else:
-			checks[i].text = "POSTERGAR"
 			postergados += 1
 
 	var saldo := DATOSGLOBALES.dinero - total
@@ -123,11 +108,11 @@ func _on_confirmar_pressed() -> void:
 	var postergados: Array[String] = []
 	var total := 0
 
-	for i in range(checks.size()):
-		var nombre := str(GASTOS[i]["nombre"])
-		if checks[i].button_pressed:
+	for fila in filas_gastos:
+		var nombre := str(fila.nombre)
+		if fila.esta_seleccionado():
 			pagados.append(nombre)
-			total += costos[i]
+			total += fila.costo_actual
 		else:
 			postergados.append(nombre)
 

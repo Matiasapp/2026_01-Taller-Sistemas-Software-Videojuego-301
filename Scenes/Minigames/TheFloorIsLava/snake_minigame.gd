@@ -75,8 +75,12 @@ var bidones_recogidos := 0
 
 func _ready() -> void:
 	randomize()
-	
-	music_loop.play()
+
+	# El resumen pausa el árbol para congelar el minijuego. La música debe seguir
+	# sonando hasta que el jugador pulse Continuar.
+	if music_loop:
+		music_loop.process_mode = Node.PROCESS_MODE_ALWAYS
+		music_loop.play()
 
 	create_start_label()
 	create_danger_label()
@@ -464,7 +468,18 @@ func mostrar_pantalla_final(gano: bool) -> void:
 
 	# Calculamos el rendimiento
 	var rendimiento: float = 1.0 if has_won else clampf(elapsed_time / survival_time, 0.0, 1.0)
-	DATOSGLOBALES.reportar_rendimiento_minijuego(rendimiento, dinero_obtenido)
+	var nivel_desempeno := DATOSGLOBALES.DESEMPENO_FALLIDO
+	if has_won:
+		nivel_desempeno = DATOSGLOBALES.DESEMPENO_EXITOSO
+	elif elapsed_time >= survival_time * 0.70:
+		nivel_desempeno = DATOSGLOBALES.DESEMPENO_ACEPTABLE
+	DATOSGLOBALES.reportar_rendimiento_minijuego(
+		rendimiento,
+		dinero_obtenido,
+		nivel_desempeno,
+		"Reparacion de combustible",
+		"Bidones recogidos: %d." % bidones_recogidos
+	)
 	
 	# FUNDAMENTAL: Prevenir que el panel se autodestruya al nacer
 	DATOSGLOBALES.volviendo_de_atencion = true
@@ -557,8 +572,6 @@ func collect_gasolina() -> void:
 
 
 func _on_boton_continuar_pressed() -> void:
-	AUDIOMANAGER.play_ui_click()
-	
 	# Timer a prueba de pausas
 	await get_tree().create_timer(0.15, true, false, true).timeout
 	
@@ -571,7 +584,10 @@ func _on_boton_continuar_pressed() -> void:
 		music_loop.stop()
 		
 	print("Volviendo al taller desde The Floor Is Lava (Snake). Dinero: $", dinero_obtenido)
-	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")
+	var destino := DATOSGLOBALES.obtener_destino_post_escena(
+		"res://Scenes/Gameplay/GameScreen.tscn"
+	)
+	get_tree().change_scene_to_file(destino)
 
 
 func play_countdown_sound(semitones := 0) -> void:

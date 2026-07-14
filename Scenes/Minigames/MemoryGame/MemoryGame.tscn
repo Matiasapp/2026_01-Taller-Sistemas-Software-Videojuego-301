@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://cm6qptlpis012"]
 
 [ext_resource type="Script" uid="uid://dpfitycnkyiam" path="res://Scripts/memory_game.gd" id="1_game"]
-[ext_resource type="Script" uid="uid://cyyyx5vo0rvl4" path="res://Scripts/memory_decoration.gd" id="2_decoration"]
 [ext_resource type="AudioStream" uid="uid://c2lxpg60tyflj" path="res://Assets/Audio/MinigameAudio/MemoryGame/memoryloop.ogg" id="3_ws1so"]
 [ext_resource type="AudioStream" uid="uid://bd70o16yeox1q" path="res://Assets/Audio/MinigameAudio/MemoryGame/cardflip.wav" id="4_63w7e"]
 [ext_resource type="AudioStream" uid="uid://dojpag0buidym" path="res://Assets/Audio/MinigameAudio/MemoryGame/matchsound.wav" id="5_eohb8"]
@@ -15,10 +14,6 @@ region = Rect2(1873, 492, 769, 568)
 
 [node name="MemoryGame" type="Node2D" unique_id=291353999]
 script = ExtResource("1_game")
-
-[node name="Decoracion" type="Node2D" parent="." unique_id=1405476319]
-z_index = -10
-script = ExtResource("2_decoration")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1352626618]
 

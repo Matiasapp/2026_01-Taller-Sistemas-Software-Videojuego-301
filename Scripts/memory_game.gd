@@ -295,7 +295,18 @@ func _procesar_final(gano: bool) -> void:
 		dinero_final = -30
 		rendimiento = clampf(float(matched_pairs) / float(TOTAL_PAIRS), 0.0, 1.0) * 0.6
 
-	DATOSGLOBALES.reportar_rendimiento_minijuego(rendimiento, dinero_final)
+	var nivel_desempeno := DATOSGLOBALES.DESEMPENO_FALLIDO
+	if gano:
+		nivel_desempeno = DATOSGLOBALES.DESEMPENO_EXITOSO
+	elif matched_pairs >= 7:
+		nivel_desempeno = DATOSGLOBALES.DESEMPENO_ACEPTABLE
+	DATOSGLOBALES.reportar_rendimiento_minijuego(
+		rendimiento,
+		dinero_final,
+		nivel_desempeno,
+		"Circuito electrico",
+		"Pares encontrados: %d/%d." % [matched_pairs, TOTAL_PAIRS]
+	)
 	
 	# FUNDAMENTAL: Prevenir que el panel se autodestruya
 	DATOSGLOBALES.volviendo_de_atencion = true 
@@ -313,9 +324,7 @@ func _procesar_final(gano: bool) -> void:
 func _on_btn_continuar_pressed() -> void:
 	if estado_actual != Estado.RESULTADO:
 		return
-	
-	AUDIOMANAGER.play_ui_click()
-	
+
 	await get_tree().create_timer(0.15, true, false, true).timeout
 		
 	if music_loop:

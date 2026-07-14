@@ -76,8 +76,12 @@ var ancho_inicial_zona = 190
 
 func _ready():
 	randomize()
-	
-	music_loop.play()
+
+	# El resumen pausa el árbol para congelar el minijuego. La música debe seguir
+	# sonando hasta que el jugador pulse Continuar.
+	if music_loop:
+		music_loop.process_mode = Node.PROCESS_MODE_ALWAYS
+		music_loop.play()
 
 	# OCULTAR RESUMEN VIEJO
 	if panel_final:
@@ -239,8 +243,18 @@ func calcular_dinero_final():
 	var porcentaje_completado: float = float(neumaticos_inflados) / float(neumaticos_guardados.size())
 	var penal_vidas: float = float(vidas_perdidas) / float(VIDAS_INICIALES) * 0.4
 	var rendimiento: float = clampf(porcentaje_completado - penal_vidas, 0.0, 1.0)
-	
-	DATOSGLOBALES.reportar_rendimiento_minijuego(rendimiento, dinero_obtenido)
+	var nivel_desempeno := DATOSGLOBALES.DESEMPENO_FALLIDO
+	if vidas > 0 and neumaticos_inflados >= 3:
+		nivel_desempeno = DATOSGLOBALES.DESEMPENO_EXITOSO
+	elif neumaticos_inflados >= 1:
+		nivel_desempeno = DATOSGLOBALES.DESEMPENO_ACEPTABLE
+	DATOSGLOBALES.reportar_rendimiento_minijuego(
+		rendimiento,
+		dinero_obtenido,
+		nivel_desempeno,
+		"Reparacion de neumaticos",
+		"Neumaticos: %d; errores: %d." % [neumaticos_inflados, vidas_perdidas]
+	)
 	
 	# FUNDAMENTAL: Prevenir autodestrucción
 	DATOSGLOBALES.volviendo_de_atencion = true
@@ -262,10 +276,11 @@ func reproducir_hit():
 
 
 func _on_boton_continuar_pressed() -> void:
-	AUDIOMANAGER.play_ui_click()
-	
 	# Timer a prueba de pausas
 	await get_tree().create_timer(0.15, true, false, true).timeout
+
+	if music_loop:
+		music_loop.stop()
 	
 	Engine.time_scale = 1.0
 	get_tree().paused = false
@@ -273,4 +288,7 @@ func _on_boton_continuar_pressed() -> void:
 	print("Volviendo al taller desde Neumáticos. Dinero obtenido: $", dinero_obtenido)
 	DATOSGLOBALES.sumar_dinero(dinero_obtenido)
 
-	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")
+	var destino := DATOSGLOBALES.obtener_destino_post_escena(
+		"res://Scenes/Gameplay/GameScreen.tscn"
+	)
+	get_tree().change_scene_to_file(destino)
