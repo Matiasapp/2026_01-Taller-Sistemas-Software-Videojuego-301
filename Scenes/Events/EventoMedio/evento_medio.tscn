@@ -23,7 +23,7 @@
 [ext_resource type="AudioStream" uid="uid://c6ksaho7s4f52" path="res://Assets/Audio/IntroScreen/select_character.wav" id="21_k5bdn"]
 [ext_resource type="AudioStream" uid="uid://lnnltgws2f7" path="res://Assets/Audio/IntroScreen/whoosh.wav" id="22_gewgn"]
 [ext_resource type="AudioStream" uid="uid://cc2twnwdewko7" path="res://Assets/Audio/IntroScreen/talking.wav" id="23_0jewb"]
-[ext_resource type="AudioStream" uid="uid://dkvb24f2gp4bi" path="res://Assets/Events/EventoVictoria/stringloop.ogg" id="24_f5cem"]
+[ext_resource type="AudioStream" uid="uid://bltblumv0tckr" path="res://Assets/Events/EventoMedio/finalmedio.ogg" id="24_ree4u"]
 
 [sub_resource type="Animation" id="Animation_jy5sd"]
 length = 0.001
@@ -70,6 +70,7 @@ texture_margin_bottom = 4.0
 region_rect = Rect2(173, 492, 771, 568)
 
 [node name="Victoria" type="Node2D" unique_id=1964637352 node_paths=PackedStringArray("talking_sound")]
+position = Vector2(0, 2)
 script = ExtResource("1_d0b5v")
 talking_sound = NodePath("TalkingSound")
 imagen_hombre_1 = ExtResource("2_e2rrg")
@@ -299,7 +300,7 @@ volume_db = -8.0
 bus = &"SFX"
 
 [node name="StringLoop" type="AudioStreamPlayer" parent="." unique_id=323153690]
-stream = ExtResource("24_f5cem")
+stream = ExtResource("24_ree4u")
 volume_db = -10.0
 autoplay = true
 bus = &"Music"

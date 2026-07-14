@@ -15,7 +15,6 @@
 [ext_resource type="Texture2D" uid="uid://byed0eyqfsahm" path="res://Assets/Events/EventoFinalMalo/7F.png" id="11_s2cae"]
 [ext_resource type="Texture2D" uid="uid://d0kpg6dic7l5c" path="res://Assets/Events/EventoVictoria/9_panel.png" id="14_g4l4f"]
 [ext_resource type="Texture2D" uid="uid://dwuxd24ol4hjj" path="res://Assets/Sprites/background_game_screen.png" id="15_dqywy"]
-[ext_resource type="AudioStream" uid="uid://f46fxleja8hv" path="res://Assets/Events/EventoFinalMalo/finalmalo.wav" id="16_bdtg3"]
 [ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="16_ikhux"]
 [ext_resource type="Texture2D" uid="uid://cxqi1lh5nip8y" path="res://Assets/UI/button_style.png" id="17_d88nf"]
 [ext_resource type="AudioStream" uid="uid://b2t66hdqmo381" path="res://Assets/Audio/Menu/click.wav" id="18_u01av"]
@@ -24,6 +23,7 @@
 [ext_resource type="AudioStream" uid="uid://c6ksaho7s4f52" path="res://Assets/Audio/IntroScreen/select_character.wav" id="21_i1o4v"]
 [ext_resource type="AudioStream" uid="uid://lnnltgws2f7" path="res://Assets/Audio/IntroScreen/whoosh.wav" id="22_q0syh"]
 [ext_resource type="AudioStream" uid="uid://cc2twnwdewko7" path="res://Assets/Audio/IntroScreen/talking.wav" id="23_5ijlf"]
+[ext_resource type="AudioStream" uid="uid://0k0inx7e4fx8" path="res://Assets/Events/EventoFinalMalo/finalmalo2.ogg" id="24_yt5x6"]
 
 [sub_resource type="Animation" id="Animation_jy5sd"]
 length = 0.001
@@ -299,7 +299,7 @@ volume_db = -8.0
 bus = &"SFX"
 
 [node name="StringLoop" type="AudioStreamPlayer" parent="." unique_id=323153690]
-stream = ExtResource("16_bdtg3")
+stream = ExtResource("24_yt5x6")
 volume_db = -10.0
 autoplay = true
 bus = &"Music"

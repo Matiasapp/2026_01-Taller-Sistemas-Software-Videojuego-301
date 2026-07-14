@@ -23,7 +23,7 @@
 [ext_resource type="AudioStream" uid="uid://c6ksaho7s4f52" path="res://Assets/Audio/IntroScreen/select_character.wav" id="21_63rhp"]
 [ext_resource type="AudioStream" uid="uid://lnnltgws2f7" path="res://Assets/Audio/IntroScreen/whoosh.wav" id="22_y1frq"]
 [ext_resource type="AudioStream" uid="uid://cc2twnwdewko7" path="res://Assets/Audio/IntroScreen/talking.wav" id="23_1b88r"]
-[ext_resource type="AudioStream" uid="uid://f46fxleja8hv" path="res://Assets/Events/EventoFinalMalo/finalmalo.wav" id="24_baaun"]
+[ext_resource type="AudioStream" uid="uid://cqkp6t0xbja8u" path="res://Assets/Events/EventoFinalMalo/finalmalo1.ogg" id="24_baaun"]
 
 [sub_resource type="Animation" id="Animation_jy5sd"]
 length = 0.001
