@@ -44,17 +44,23 @@ func seleccionar_pieza(tipo: String) -> void:
 	rect_barata.color.a = 0
 	rect_dudosa.color.a = 0
 
+	var costo := 0
 	if tipo == "buena":
 		rect_buena.color.a = 0.25
-		DATOSGLOBALES.restar_dinero(COSTO_BUENA)
-
+		costo = COSTO_BUENA
 	elif tipo == "barata":
 		rect_barata.color.a = 0.25
-		DATOSGLOBALES.restar_dinero(COSTO_BARATA)
-
+		costo = COSTO_BARATA
 	elif tipo == "dudosa":
 		rect_dudosa.color.a = 0.25
-		DATOSGLOBALES.restar_dinero(COSTO_DUDOSA)
+		costo = COSTO_DUDOSA
+
+	DATOSGLOBALES.restar_dinero(costo)
+	# Registramos el costo para el desglose de la atención (pantalla de resultado del minijuego).
+	DATOSGLOBALES.resumen_atencion["costo_pieza"] = costo
+	DATOSGLOBALES.resumen_atencion["tipo_pieza"] = tipo
+
+	DATOSGLOBALES.registrar_calidad_pieza(tipo)
 
 	print("Pieza seleccionada: ", tipo)
 	print("Dinero actual: ", DATOSGLOBALES.dinero)
@@ -146,16 +152,16 @@ func _on_area_dudosa_mouse_exited() -> void:
 		rect_dudosa.color.a = 0
 
 
-func _on_area_buena_input_event(viewport, event, shape_idx) -> void:
+func _on_area_buena_input_event(_viewport, event, _shape_idx) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		seleccionar_pieza("buena")
 
 
-func _on_area_barata_input_event(viewport, event, shape_idx) -> void:
+func _on_area_barata_input_event(_viewport, event, _shape_idx) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		seleccionar_pieza("barata")
 
 
-func _on_area_dudosa_input_event(viewport, event, shape_idx) -> void:
+func _on_area_dudosa_input_event(_viewport, event, _shape_idx) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		seleccionar_pieza("dudosa")

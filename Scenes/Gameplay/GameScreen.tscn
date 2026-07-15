@@ -806,4 +806,6 @@ bus = &"SFX"
 [connection signal="body_entered" from="AreaAtenderCliente" to="." method="_on_area_atender_cliente_body_entered"]
 [connection signal="body_exited" from="AreaAtenderCliente" to="." method="_on_area_atender_cliente_body_exited"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
+[connection signal="mouse_entered" from="ModalBienvenida/Panel/BtnEntendido" to="." method="_on_modal_bienvenida_entendido_mouse_entered"]
 [connection signal="pressed" from="ModalBienvenida/Panel/BtnEntendido" to="." method="_on_modal_bienvenida_entendido"]

@@ -8,6 +8,9 @@ var ui_player := AudioStreamPlayer.new()
 func _ready() -> void:
 	add_child(ui_player)
 	ui_player.bus = "SFX"
+	# Los botones de pausa y de resultados siguen activos con el árbol pausado.
+	# Su reproductor también debe ignorar esa pausa para que hover/click se oigan.
+	ui_player.process_mode = Node.PROCESS_MODE_ALWAYS
 
 func play_ui_click() -> void:
 	if not click_sound:

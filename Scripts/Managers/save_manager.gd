@@ -18,6 +18,7 @@ func guardar() -> void:
 	var cfg := ConfigFile.new()
 	cfg.set_value("partida", "dia_actual", DATOSGLOBALES.dia_actual)
 	cfg.set_value("partida", "dinero", DATOSGLOBALES.dinero)
+	cfg.set_value("partida", "reputacion", DATOSGLOBALES.reputacion)
 	cfg.set_value("partida", "genero_jugador", DATOSGLOBALES.genero_jugador)
 	cfg.set_value("partida", "clientes_usados", DATOSGLOBALES.clientes_usados)
 	cfg.set_value("partida", "modal_bienvenida_mostrado", DATOSGLOBALES.modal_bienvenida_mostrado)
@@ -35,9 +36,13 @@ func cargar() -> bool:
 	var cfg := ConfigFile.new()
 	if cfg.load(RUTA) != OK:
 		return false
+	DATOSGLOBALES.limpiar_avisos_reputacion()
 
 	DATOSGLOBALES.dia_actual = cfg.get_value("partida", "dia_actual", 1)
 	DATOSGLOBALES.dinero = cfg.get_value("partida", "dinero", 150)
+	DATOSGLOBALES.reputacion = cfg.get_value(
+		"partida", "reputacion", DATOSGLOBALES.REPUTACION_INICIAL
+	)
 	DATOSGLOBALES.genero_jugador = cfg.get_value("partida", "genero_jugador", "")
 	DATOSGLOBALES.modal_bienvenida_mostrado = cfg.get_value("partida", "modal_bienvenida_mostrado", false)
 	DATOSGLOBALES.estadisticas_dias = cfg.get_value("partida", "estadisticas_dias", {})

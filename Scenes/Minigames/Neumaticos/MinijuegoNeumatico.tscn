@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://do46uuuci0hus" path="res://Assets/Sprites/inflado_neumatico/NeumaticoDesinflado.png" id="7_ija6x"]
 [ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="9_v74x8"]
 [ext_resource type="AudioStream" uid="uid://ckdcsitnq35ym" path="res://Assets/Audio/MinigameAudio/Neumaticos/break.wav" id="10_xi774"]
+[ext_resource type="PackedScene" uid="uid://c8n2rqp4dv6xk" path="res://Scenes/UI/ResumenAtencion.tscn" id="11_e2ey8"]
 [ext_resource type="AudioStream" uid="uid://cpr027gd7615q" path="res://Assets/Audio/MinigameAudio/Neumaticos/hit.wav" id="11_f37eh"]
 [ext_resource type="AudioStream" uid="uid://3lvr8kb4vatu" path="res://Assets/Audio/MinigameAudio/Neumaticos/inflate.wav" id="12_4nbr0"]
 [ext_resource type="AudioStream" uid="uid://cytnoh8w72o5v" path="res://Assets/Audio/MinigameAudio/Neumaticos/complete.wav" id="13_f37eh"]
@@ -289,23 +290,24 @@ sprite_frames = SubResource("SpriteFrames_kn8ba")
 
 [node name="Neumatico8" type="AnimatedSprite2D" parent="Neumaticos" unique_id=1724309354]
 visible = false
-position = Vector2(96, 392)
+position = Vector2(125, 392)
 scale = Vector2(0.59911245, 0.40804595)
 sprite_frames = SubResource("SpriteFrames_kn8ba")
 
 [node name="Neumatico9" type="AnimatedSprite2D" parent="Neumaticos" unique_id=1691164436]
 visible = false
-position = Vector2(127.999985, 391.99997)
+position = Vector2(158, 392)
 scale = Vector2(0.59911245, 0.40804595)
 sprite_frames = SubResource("SpriteFrames_kn8ba")
 
 [node name="Neumatico10" type="AnimatedSprite2D" parent="Neumaticos" unique_id=1928131353]
 visible = false
-position = Vector2(160, 392)
+position = Vector2(189, 392.99997)
 scale = Vector2(0.59911245, 0.40804595)
 sprite_frames = SubResource("SpriteFrames_kn8ba")
 
 [node name="Resumen" type="ColorRect" parent="." unique_id=629025858]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -379,6 +381,8 @@ theme_override_constants/shadow_offset_y = 1
 theme_override_constants/outline_size = 5
 theme_override_constants/shadow_outline_size = 3
 text = "Dinero Obtenido: 0"
+
+[node name="ResumenAtencion" parent="." unique_id=686501913 instance=ExtResource("11_e2ey8")]
 
 [node name="Tutorial" type="ColorRect" parent="." unique_id=611989632]
 process_mode = 2
@@ -465,7 +469,7 @@ offset_right = 335.0
 offset_bottom = -31.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "Tienes 30 segundos. ¡Inflada todos los neumáticos que puedas para ganar puntuacion!"
+text = "Tienes 30 segundos. ¡Infla todos los neumáticos que puedas para ganar puntuacion!"
 
 [node name="Comenzar" type="Label" parent="Tutorial/PanelTutorial" unique_id=1973646582]
 layout_mode = 0

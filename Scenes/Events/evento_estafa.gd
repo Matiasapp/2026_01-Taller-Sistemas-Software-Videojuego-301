@@ -6,6 +6,8 @@ extends Node2D
 @onready var bg_animation: AnimationPlayer = $CanvasLayer/VistaTextoIntroduccion/TextureRect/AnimationPlayer
 @onready var continuar_button: Button = $CanvasLayer/VistaTextoIntroduccion/Panel/Comenzar
 @onready var fade_rect: ColorRect = $CanvasLayer/FadeRect
+@onready var risa_sound: AudioStreamPlayer = $Risa
+@onready var temporizador_risa: Timer = $TemporizadorRisa
 
 @export var talking_sound: AudioStreamPlayer
 
@@ -15,8 +17,11 @@ extends Node2D
 var animador_texto: Tween
 var escribiendo := false
 var indice_mensaje := 0
+var evento_finalizando := false
 
 const COSTO_MATERIALES: int = 100   # Pérdida real: repuestos/materiales gastados en la reparación
+const INTERVALO_RISA_MINIMO := 4.0
+const INTERVALO_RISA_MAXIMO := 7.0
 
 var mensajes := []
 var imagen_evento: Texture2D
@@ -29,8 +34,8 @@ func _ready() -> void:
 	if bg_animation:
 		bg_animation.play("background_move")
 
+	continuar_button.visible = false
 	continuar_button.disabled = true
-	continuar_button.modulate.a = 0.35
 	continuar_button.text = "Continuar"
 
 	if not continuar_button.pressed.is_connected(_on_comenzar_pressed):
@@ -38,6 +43,10 @@ func _ready() -> void:
 
 	if not continuar_button.mouse_entered.is_connected(_on_comenzar_mouse_entered):
 		continuar_button.mouse_entered.connect(_on_comenzar_mouse_entered)
+
+	if not temporizador_risa.timeout.is_connected(_on_temporizador_risa_timeout):
+		temporizador_risa.timeout.connect(_on_temporizador_risa_timeout)
+	programar_proxima_risa()
 
 	procesar_estafa()
 	configurar_evento()
@@ -95,6 +104,7 @@ func _input(event) -> void:
 func mostrar_mensaje_actual() -> void:
 	if indice_mensaje >= mensajes.size():
 		stop_talking()
+		continuar_button.visible = true
 		continuar_button.disabled = false
 		continuar_button.modulate.a = 1.0
 		return
@@ -151,6 +161,24 @@ func stop_talking() -> void:
 		talking_sound.stop()
 
 
+func programar_proxima_risa() -> void:
+	if evento_finalizando:
+		return
+
+	temporizador_risa.start(randf_range(INTERVALO_RISA_MINIMO, INTERVALO_RISA_MAXIMO))
+
+
+func _on_temporizador_risa_timeout() -> void:
+	if evento_finalizando or not vista_evento.visible:
+		return
+
+	if risa_sound and not risa_sound.playing:
+		risa_sound.pitch_scale = randf_range(0.96, 1.04)
+		risa_sound.play()
+
+	programar_proxima_risa()
+
+
 func fade_to_black(duration := 0.6) -> void:
 	fade_rect.visible = true
 	fade_rect.modulate.a = 0.0
@@ -163,13 +191,20 @@ func fade_to_black(duration := 0.6) -> void:
 
 
 func finalizar_evento() -> void:
+	evento_finalizando = true
+	temporizador_risa.stop()
+	if risa_sound and risa_sound.playing:
+		risa_sound.stop()
 	stop_talking()
 
 	await fade_to_black(0.6)
 
 	Engine.time_scale = 1.0
 	get_tree().paused = false
-	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")
+	var destino := DATOSGLOBALES.obtener_destino_post_escena(
+		"res://Scenes/Gameplay/GameScreen.tscn"
+	)
+	get_tree().change_scene_to_file(destino)
 
 
 func _on_comenzar_pressed() -> void:

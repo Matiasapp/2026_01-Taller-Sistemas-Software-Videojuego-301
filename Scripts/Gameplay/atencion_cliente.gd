@@ -319,6 +319,7 @@ func _on_diagnostico_resuelto(correcto: bool) -> void:
 
 	if not correcto:
 		DATOSGLOBALES.restar_dinero(PENALIZACION_DIAGNOSTICO)
+		DATOSGLOBALES.resumen_atencion["penalizacion_diagnostico"] = PENALIZACION_DIAGNOSTICO
 
 	DATOSGLOBALES.registrar_diagnostico_dia(correcto)
 
@@ -351,9 +352,8 @@ func _on_pieza_elegida(tipo: String) -> void:
 
 	print("Pieza elegida:", tipo)
 
-	get_tree().change_scene_to_file(
-		ruta_minijuego_pendiente
-	)
+	var destino := DATOSGLOBALES.obtener_destino_post_escena(ruta_minijuego_pendiente)
+	get_tree().change_scene_to_file(destino)
 	
 func play_click() -> void:
 	if not click_sound:
