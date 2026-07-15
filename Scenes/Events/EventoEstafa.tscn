@@ -3,12 +3,17 @@
 [ext_resource type="Script" uid="uid://cijo8inm7bwog" path="res://Scenes/Events/evento_estafa.gd" id="1_estafa"]
 [ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="3_theme"]
 [ext_resource type="Texture2D" uid="uid://cxqi1lh5nip8y" path="res://Assets/UI/button_style.png" id="4_panel"]
-[ext_resource type="Texture2D" uid="uid://bwgemq5lmawnj" path="res://Assets/Events/Evento Estafa/1h-estafa.png" id="5_hombre"]
-[ext_resource type="Texture2D" uid="uid://brg5tbbrbtw6o" path="res://Assets/Events/Evento Estafa/1m-estafa.png" id="6_mujer"]
+[ext_resource type="Texture2D" uid="uid://cufgoqnymcfuc" path="res://Assets/Events/Evento Estafa/1h-estafa.png" id="5_hombre"]
+[ext_resource type="Texture2D" uid="uid://cvcaywwndhq4b" path="res://Assets/Events/Evento Estafa/1m-estafa.png" id="6_mujer"]
+[ext_resource type="AudioStream" uid="uid://cu1rfmnj5qmg3" path="res://Assets/Events/Evento Estafa/estafaloop.ogg" id="7_lt07h"]
 [ext_resource type="AudioStream" uid="uid://cc2twnwdewko7" path="res://Assets/Audio/IntroScreen/talking.wav" id="7_talk"]
+[ext_resource type="AudioStream" uid="uid://doln62m26gx8n" path="res://Assets/Events/Evento Estafa/risaestafa.wav" id="8_xv0v7"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_qbcld"]
+load_path = "res://.godot/imported/1h-estafa.png-445e27445cac14f9b5a23313fc15a2af.ctex"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_e2244"]
-atlas = ExtResource("5_hombre")
+atlas = SubResource("CompressedTexture2D_qbcld")
 
 [sub_resource type="Animation" id="Animation_reset"]
 length = 0.001
@@ -83,8 +88,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -569.0
 offset_top = -307.0
-offset_right = 554.5126
-offset_bottom = 304.72693
+offset_right = 669.96655
+offset_bottom = 320.9925
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(1.000419, 1.000419)
@@ -145,6 +150,19 @@ color = Color(0, 0, 0, 1)
 stream = ExtResource("7_talk")
 volume_db = -8.0
 bus = &"SFX"
+
+[node name="Estafaloop" type="AudioStreamPlayer" parent="." unique_id=198803228]
+stream = ExtResource("7_lt07h")
+volume_db = -10.0
+autoplay = true
+bus = &"Music"
+
+[node name="Risa" type="AudioStreamPlayer" parent="." unique_id=976791758]
+stream = ExtResource("8_xv0v7")
+bus = &"SFX"
+
+[node name="TemporizadorRisa" type="Timer" parent="." unique_id=906752654]
+one_shot = true
 
 [connection signal="mouse_entered" from="CanvasLayer/VistaTextoIntroduccion/Panel/Comenzar" to="." method="_on_comenzar_mouse_entered"]
 [connection signal="pressed" from="CanvasLayer/VistaTextoIntroduccion/Panel/Comenzar" to="." method="_on_comenzar_pressed"]

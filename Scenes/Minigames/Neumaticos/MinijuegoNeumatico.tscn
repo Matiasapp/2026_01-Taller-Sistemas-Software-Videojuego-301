@@ -469,7 +469,7 @@ offset_right = 335.0
 offset_bottom = -31.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "Tienes 30 segundos. ¡Inflada todos los neumáticos que puedas para ganar puntuacion!"
+text = "Tienes 30 segundos. ¡Infla todos los neumáticos que puedas para ganar puntuacion!"
 
 [node name="Comenzar" type="Label" parent="Tutorial/PanelTutorial" unique_id=1973646582]
 layout_mode = 0

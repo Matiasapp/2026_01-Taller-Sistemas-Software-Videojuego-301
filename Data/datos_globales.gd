@@ -22,12 +22,6 @@ var nombre_estafador: String = ""
 var dinero_antes_atencion: int = 0
 var volviendo_de_atencion: bool = false
 
-## Rendimiento (0.0 = peor resultado posible, 1.0 = mejor resultado posible) que cada
-## minijuego reporta antes de volver a GameScreen, vía reportar_rendimiento_minijuego().
-## -1.0 = "no reportado" (fallback neutro): sirve de defensa si algún minijuego no llega
-## a reportar (p. ej. una ruta de salida no contemplada).
-var rendimiento_minijuego_pendiente: float = -1.0
-
 ## Desglose de la atención en curso, para mostrarlo en la pantalla de resultado del
 ## minijuego (costo de la pieza, penalización de diagnóstico, recompensa del minijuego,
 ## y los cambios de reputación). Se rellena a medida que avanza la atención; se lee con
@@ -85,10 +79,6 @@ const DESEMPENO_FALLIDO: int = -1
 const DESEMPENO_ACEPTABLE: int = 0
 const DESEMPENO_EXITOSO: int = 1
 
-# Constantes de reputación añadidas desde develop (ajusta sus valores si eran diferentes)
-const REP_CLIENTE_ATENDIDO: int = 2
-const REP_MINIJUEGO_RANGO: float = 3.0
-
 signal dinero_cambiado(nuevo_monto: int)
 signal dia_cambiado(nuevo_dia: int)
 
@@ -145,7 +135,7 @@ func registrar_diagnostico_dia(correcto: bool, dia: int = -1) -> void:
 	if correcto:
 		stats["diagnosticos_correctos"] += 1
 		rep_diag = REP_DIAGNOSTICO_CORRECTO
-		ajustar_reputacion(rep_diag, "Diagnostico correcto")
+		rep_diag = ajustar_reputacion(rep_diag, "Diagnostico correcto")
 		_agregar_evento_stats(
 			stats,
 			"Diagnostico correcto: reputacion +%d." % REP_DIAGNOSTICO_CORRECTO
@@ -153,7 +143,7 @@ func registrar_diagnostico_dia(correcto: bool, dia: int = -1) -> void:
 	else:
 		stats["diagnosticos_incorrectos"] += 1
 		rep_diag = -REP_DIAGNOSTICO_INCORRECTO
-		ajustar_reputacion(rep_diag, "Diagnostico incorrecto")
+		rep_diag = ajustar_reputacion(rep_diag, "Diagnostico incorrecto")
 		_agregar_evento_stats(
 			stats,
 			"Diagnostico incorrecto: reputacion -%d." % REP_DIAGNOSTICO_INCORRECTO
@@ -199,10 +189,12 @@ func registrar_calidad_pieza(tipo: String, dia: int = -1) -> int:
 			push_warning("Tipo de pieza desconocido para reputacion: %s" % tipo)
 			return 0
 
+	var delta_aplicado := delta
 	if delta != 0:
-		ajustar_reputacion(delta, motivo)
+		delta_aplicado = ajustar_reputacion(delta, motivo)
 	else:
 		_registrar_aviso_reputacion(0, "Pieza dudosa sin reclamos")
+	resumen_atencion["rep_pieza"] = delta_aplicado
 
 	var stats := asegurar_estadistica_dia(dia)
 	var piezas: Dictionary = stats.get("piezas_usadas", {})
@@ -211,7 +203,7 @@ func registrar_calidad_pieza(tipo: String, dia: int = -1) -> int:
 	stats["reputacion"] = reputacion
 	_agregar_evento_stats(stats, mensaje)
 	estadisticas_dias[dia] = stats
-	return delta
+	return delta_aplicado
 
 ## Unifica el balance de los cinco minijuegos y garantiza que el resultado de
 ## una reparacion solo afecte la reputacion una vez.
@@ -241,8 +233,12 @@ func registrar_desempeno_minijuego(
 		estado = "mal desempeno"
 		clave = "minijuegos_fallidos"
 
+	var delta_aplicado := delta
 	if delta != 0:
-		ajustar_reputacion(delta, "%s: %s" % [nombre_minijuego, estado])
+		delta_aplicado = ajustar_reputacion(
+			delta,
+			"%s: %s" % [nombre_minijuego, estado]
+		)
 	else:
 		_registrar_aviso_reputacion(0, "%s: %s" % [nombre_minijuego, estado])
 
@@ -253,14 +249,14 @@ func registrar_desempeno_minijuego(
 	var texto := "%s: %s; reputacion %s%d." % [
 		nombre_minijuego,
 		estado,
-		"+" if delta > 0 else "",
-		delta,
+		"+" if delta_aplicado > 0 else "",
+		delta_aplicado,
 	]
 	if not detalle.is_empty():
 		texto += " " + detalle
 	_agregar_evento_stats(stats, texto)
 	estadisticas_dias[dia] = stats
-	return delta
+	return delta_aplicado
 
 func _agregar_evento_stats(stats: Dictionary, texto: String) -> void:
 	var eventos: Array = stats.get("eventos", [])
@@ -308,27 +304,32 @@ func iniciar_resumen_atencion() -> void:
 	resumen_atencion = {
 		"diagnostico_correcto": true,
 		"rep_diagnostico": 0,
+		"rep_pieza": 0,
+		"rep_desempeno": 0,
 		"penalizacion_diagnostico": 0,
 		"costo_pieza": 0,
 		"tipo_pieza": "",
 		"recompensa_minijuego": 0,
 		"rendimiento": 0.5,
 	}
-
-## Reputación que otorga el desempeño en el minijuego (base por atender + ajuste por
-## rendimiento). Compartida por registrar_atencion_dia (aplicación real) y por
-## get_resumen_atencion (previsualización en la pantalla de resultado), para que
-## siempre coincidan.
-func calcular_rep_desempeno(rendimiento: float) -> int:
-	var r: float = clampf(rendimiento, 0.0, 1.0)
-	return REP_CLIENTE_ATENDIDO + roundi(lerpf(-REP_MINIJUEGO_RANGO, REP_MINIJUEGO_RANGO, r))
-
-## Los minijuegos llaman a esto (justo antes de volver a GameScreen) para reportar
-## qué tan bien les fue (0.0 = peor, 1.0 = mejor) y cuánto dinero dio la reparación.
-func reportar_rendimiento_minijuego(rendimiento: float, recompensa: int = 0) -> void:
-	rendimiento_minijuego_pendiente = clampf(rendimiento, 0.0, 1.0)
-	resumen_atencion["rendimiento"] = rendimiento_minijuego_pendiente
+## Los minijuegos reportan tanto el porcentaje visual como el nivel de desempeño
+## balanceado. El nivel aplica la reputación una sola vez y alimenta el resumen.
+func reportar_rendimiento_minijuego(
+	rendimiento: float,
+	recompensa: int = 0,
+	nivel_desempeno: int = DESEMPENO_ACEPTABLE,
+	nombre_minijuego: String = "Minijuego",
+	detalle: String = ""
+) -> int:
+	resumen_atencion["rendimiento"] = clampf(rendimiento, 0.0, 1.0)
 	resumen_atencion["recompensa_minijuego"] = recompensa
+	var rep_desempeno := registrar_desempeno_minijuego(
+		nivel_desempeno,
+		nombre_minijuego,
+		detalle
+	)
+	resumen_atencion["rep_desempeno"] = rep_desempeno
+	return rep_desempeno
 
 ## Devuelve el desglose completo de la atención para mostrarlo en la pantalla de
 ## resultado del minijuego: cuánto dinero varió (recompensa, costos, balance neto) y
@@ -339,12 +340,13 @@ func get_resumen_atencion() -> Dictionary:
 	var costo_pieza: int = int(r.get("costo_pieza", 0))
 	var penal_diag: int = int(r.get("penalizacion_diagnostico", 0))
 	var rep_diag: int = int(r.get("rep_diagnostico", 0))
-	var rendimiento: float = float(r.get("rendimiento", 0.5))
-	var rep_desempeno: int = calcular_rep_desempeno(rendimiento)
+	var rep_pieza: int = int(r.get("rep_pieza", 0))
+	var rep_desempeno: int = int(r.get("rep_desempeno", 0))
 
 	r["balance_dinero"] = recompensa - costo_pieza - penal_diag
+	r["rep_pieza"] = rep_pieza
 	r["rep_desempeno"] = rep_desempeno
-	r["rep_total"] = rep_diag + rep_desempeno
+	r["rep_total"] = rep_diag + rep_pieza + rep_desempeno
 	return r
 
 func registrar_atencion_dia(delta_dinero: int, dia: int = -1) -> void:
@@ -361,11 +363,7 @@ func registrar_atencion_dia(delta_dinero: int, dia: int = -1) -> void:
 	else:
 		stats["gastos"] += abs(delta_dinero)
 
-	# Atender suma reputación base, más un ajuste según qué tan bien te fue en el
-	# minijuego de reparación.
-	var rendimiento: float = rendimiento_minijuego_pendiente if rendimiento_minijuego_pendiente >= 0.0 else 0.5
-	ajustar_reputacion(calcular_rep_desempeno(rendimiento), "Atención completada")
-	rendimiento_minijuego_pendiente = -1.0
+	# La reputación ya se resolvió por diagnóstico, pieza y nivel del minijuego.
 
 	stats["dinero_final"] = dinero
 	stats["reputacion"] = reputacion
@@ -489,7 +487,6 @@ func reiniciar() -> void:
 	nombre_estafador = ""
 	dinero_antes_atencion = 0
 	volviendo_de_atencion = false
-	rendimiento_minijuego_pendiente = -1.0
 	resumen_atencion.clear()
 	estadisticas_dias.clear()
 

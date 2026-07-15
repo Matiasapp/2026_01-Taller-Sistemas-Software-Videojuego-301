@@ -216,7 +216,18 @@ func mostrar_pantalla_final() -> void:
 	# 1. Usar pausa nativa en lugar de time_scale = 0.0 para no romper el panel
 	get_tree().paused = true
 	var rendimiento: float = 1.0 if ha_ganado else clampf(float(maximas_casillas_avanzadas) / float(meta_casillas), 0.0, 1.0)
-	DATOSGLOBALES.reportar_rendimiento_minijuego(rendimiento, dinero_obtenido)
+	var nivel_desempeno := DATOSGLOBALES.DESEMPENO_FALLIDO
+	if ha_ganado:
+		nivel_desempeno = DATOSGLOBALES.DESEMPENO_EXITOSO
+	elif maximas_casillas_avanzadas >= int(meta_casillas * 0.65):
+		nivel_desempeno = DATOSGLOBALES.DESEMPENO_ACEPTABLE
+	DATOSGLOBALES.reportar_rendimiento_minijuego(
+		rendimiento,
+		dinero_obtenido,
+		nivel_desempeno,
+		"Busqueda de repuesto",
+		"Progreso: %d/%d casillas." % [maximas_casillas_avanzadas, meta_casillas]
+	)
 	# 2. Forzar esta variable para que el panel NO se autodestruya al nacer
 	DATOSGLOBALES.volviendo_de_atencion = true
 	# 3. Instanciamos el nuevo panel
@@ -267,8 +278,7 @@ func calculo_dinero_final() -> void:
 func _on_button_continuar_pressed() -> void:
 	# Esta función se ejecutará automáticamente cuando el usuario pulse "Continuar" 
 	# en la escena de ResumenAtencion.
-	AUDIOMANAGER.play_ui_click()
-	
+
 	# El timer ignorará la escala de tiempo (argumento final = true)
 	await get_tree().create_timer(0.15, true, false, true).timeout
 	
@@ -278,4 +288,7 @@ func _on_button_continuar_pressed() -> void:
 	DATOSGLOBALES.sumar_dinero(dinero_obtenido)
 
 	print("Volviendo al taller desde Crossy Road. Dinero obtenido: $", dinero_obtenido)
-	get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")
+	var destino := DATOSGLOBALES.obtener_destino_post_escena(
+		"res://Scenes/Gameplay/GameScreen.tscn"
+	)
+	get_tree().change_scene_to_file(destino)

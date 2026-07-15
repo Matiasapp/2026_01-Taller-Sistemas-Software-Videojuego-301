@@ -27,6 +27,7 @@ signal continuar
 @onready var diag_penal_valor: Label = %DiagPenalValor
 @onready var balance_valor: Label = %BalanceValor
 @onready var rep_diag_valor: Label = %RepDiagValor
+@onready var rep_pieza_valor: Label = %RepPiezaValor
 @onready var rep_desempeno_valor: Label = %RepDesempenoValor
 @onready var rep_total_valor: Label = %RepTotalValor
 
@@ -37,7 +38,10 @@ func _ready() -> void:
 	# Solo tiene sentido dentro del flujo de atención a un cliente (no en el
 	# minijuego aleatorio de prueba, que no pasa por atender_cliente()).
 	hide() # Nace oculto en lugar de destruirse
-	boton_continuar.pressed.connect(_on_continuar_pressed)
+	if not boton_continuar.pressed.is_connected(_on_continuar_pressed):
+		boton_continuar.pressed.connect(_on_continuar_pressed)
+	if not boton_continuar.mouse_entered.is_connected(_on_boton_continuar_mouse_entered):
+		boton_continuar.mouse_entered.connect(_on_boton_continuar_mouse_entered)
 
 	_poblar(DATOSGLOBALES.get_resumen_atencion())
 
@@ -48,10 +52,16 @@ func _ready() -> void:
 
 
 func _on_continuar_pressed() -> void:
-	# El sonido de click y el regreso al taller los maneja el minijuego que
-	# conectó la señal 'continuar' a su propia lógica de retorno.
+	# El panel compartido maneja su propio audio. Cada minijuego solo procesa el
+	# dinero, detiene su música y realiza el regreso al taller.
 	boton_continuar.disabled = true
+	AUDIOMANAGER.play_ui_click()
 	continuar.emit()
+
+
+func _on_boton_continuar_mouse_entered() -> void:
+	if not boton_continuar.disabled:
+		AUDIOMANAGER.play_ui_hover()
 
 
 ## Ajusta la altura del Marco a la del contenido (VBox) más los márgenes internos.
@@ -69,6 +79,7 @@ func _poblar(r: Dictionary) -> void:
 	var tipo_pieza: String = str(r.get("tipo_pieza", ""))
 	var balance: int = int(r.get("balance_dinero", 0))
 	var rep_diag: int = int(r.get("rep_diagnostico", 0))
+	var rep_pieza: int = int(r.get("rep_pieza", 0))
 	var rep_desempeno: int = int(r.get("rep_desempeno", 0))
 	var rep_total: int = int(r.get("rep_total", 0))
 
@@ -84,6 +95,7 @@ func _poblar(r: Dictionary) -> void:
 	_dinero(balance_valor, balance)
 
 	_rep(rep_diag_valor, rep_diag)
+	_rep(rep_pieza_valor, rep_pieza)
 	_rep(rep_desempeno_valor, rep_desempeno)
 	_rep(rep_total_valor, rep_total)
 
