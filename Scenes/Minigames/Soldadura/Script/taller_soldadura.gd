@@ -18,12 +18,15 @@ var escena_anterior
 
 var escenas_piezas = [
 	preload("res://Scenes/Minigames/Soldadura/Scene/PiezasMetal/PiezaMetal.tscn"),
-	preload("res://Scenes/Minigames/Soldadura/Scene/PiezasMetal/pieza_metal_2.tscn"),
-	preload("res://Scenes/Minigames/Soldadura/Scene/PiezasMetal/pieza_metal_3.tscn"),
-	preload("res://Scenes/Minigames/Soldadura/Scene/PiezasMetal/pieza_metal_4.tscn"),
-	preload("res://Scenes/Minigames/Soldadura/Scene/PiezasMetal/pieza_metal_5.tscn"),
-	preload("res://Scenes/Minigames/Soldadura/Scene/PiezasMetal/pieza_metal_6.tscn"),
-	preload("res://Scenes/Minigames/Soldadura/Scene/PiezasMetal/pieza_metal_7.tscn")
+	preload("res://Scenes/Minigames/Soldadura/Scene/PiezasMetal/PiezaMetal_1.tscn"),
+	preload("res://Scenes/Minigames/Soldadura/Scene/PiezasMetal/PiezaMetal_2.tscn"),
+	preload("res://Scenes/Minigames/Soldadura/Scene/PiezasMetal/PiezaMetal_3.tscn"),
+	preload("res://Scenes/Minigames/Soldadura/Scene/PiezasMetal/PiezaMetal_4.tscn"),
+	preload("res://Scenes/Minigames/Soldadura/Scene/PiezasMetal/PiezaMetal_5.tscn"),
+	preload("res://Scenes/Minigames/Soldadura/Scene/PiezasMetal/PiezaMetal_6.tscn"),
+	preload("res://Scenes/Minigames/Soldadura/Scene/PiezasMetal/PiezaMetal_7.tscn"),
+	preload("res://Scenes/Minigames/Soldadura/Scene/PiezasMetal/PiezaMetal_8.tscn"),
+	preload("res://Scenes/Minigames/Soldadura/Scene/PiezasMetal/PiezaMetal_9.tscn")
 ]
 
 var pieza_actual

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bp5mghyxel7h3"
-path="res://.godot/imported/Placa.png-cb46c576a916311f2a9de1185da34d48.ctex"
+uid="uid://2hqdpkmvxiy7"
+path="res://.godot/imported/pieza_9.png-fd6b3cd244494120c4f72597364cc120.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/Minigames/Soldadura/Imagenes/Placa.png"
-dest_files=["res://.godot/imported/Placa.png-cb46c576a916311f2a9de1185da34d48.ctex"]
+source_file="res://Scenes/Minigames/Soldadura/Imagenes/pieza_9.png"
+dest_files=["res://.godot/imported/pieza_9.png-fd6b3cd244494120c4f72597364cc120.ctex"]
 
 [params]
 

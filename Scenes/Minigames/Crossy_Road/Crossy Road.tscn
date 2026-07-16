@@ -9,7 +9,6 @@
 [ext_resource type="PackedScene" uid="uid://vuy4bk71txai" path="res://Scenes/Minigames/Crossy_Road/FranjaMeta.tscn" id="3_meta1"]
 [ext_resource type="PackedScene" uid="uid://0l8f5dotsieg" path="res://Scenes/Minigames/Crossy_Road/arbol.tscn" id="7_ijbgn"]
 [ext_resource type="PackedScene" uid="uid://cu0ssuik4848n" path="res://Scenes/Minigames/Crossy_Road/CartelTallerEnCrisis.tscn" id="8_mfv65"]
-[ext_resource type="PackedScene" uid="uid://cyl73mjtc24ao" path="res://Scenes/UI/HUD.tscn" id="9_8s0oy"]
 [ext_resource type="AudioStream" uid="uid://cv2aaoesql834" path="res://Assets/Audio/MinigameAudio/Crossy Road/hop.wav" id="9_fpi7r"]
 [ext_resource type="AudioStream" uid="uid://b8u6eyn1c1mgo" path="res://Assets/Audio/MinigameAudio/Crossy Road/atropello.wav" id="10_k3elq"]
 [ext_resource type="AudioStream" uid="uid://ckssv244g63lg" path="res://Assets/Audio/MinigameAudio/Crossy Road/dead.wav" id="10_nh0ng"]
@@ -170,7 +169,7 @@ position = Vector2(590, -104)
 [node name="Arbol4" parent="ArbolesInicioLimiteIzquierdo" unique_id=1885989848 instance=ExtResource("7_ijbgn")]
 position = Vector2(590, -176)
 
-[node name="Hud" parent="." unique_id=715583916 instance=ExtResource("9_8s0oy")]
+[node name="Hud" type="CanvasLayer" parent="." unique_id=581804483]
 
 [node name="ResumenAtencion" parent="Hud" unique_id=686501913 instance=ExtResource("14_dug1p")]
 
@@ -178,9 +177,9 @@ position = Vector2(590, -176)
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -16.0
+offset_left = -67.0
 offset_top = 80.0
-offset_right = 24.0
+offset_right = 75.0
 offset_bottom = 154.0
 grow_horizontal = 2
 size_flags_horizontal = 0
