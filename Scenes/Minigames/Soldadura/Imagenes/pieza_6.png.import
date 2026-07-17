@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dg2q2187aryrg"
-path="res://.godot/imported/placa trianngular.png-def86d3a4c38de703568f9aa0da79e8f.ctex"
+uid="uid://dhx85bnrghxy7"
+path="res://.godot/imported/pieza_6.png-d07f864fff5e0c662ae956691cf2611e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/Minigames/Soldadura/Imagenes/placa trianngular.png"
-dest_files=["res://.godot/imported/placa trianngular.png-def86d3a4c38de703568f9aa0da79e8f.ctex"]
+source_file="res://Scenes/Minigames/Soldadura/Imagenes/pieza_6.png"
+dest_files=["res://.godot/imported/pieza_6.png-d07f864fff5e0c662ae956691cf2611e.ctex"]
 
 [params]
 

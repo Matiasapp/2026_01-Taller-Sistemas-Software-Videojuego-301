@@ -53,7 +53,17 @@ func _ready() -> void:
 		preload("res://Assets/Sprites/estrellas_reputacion/estrella_25%.png"),
 		preload("res://Assets/Sprites/estrellas_reputacion/estrella_50%.png"),
 		preload("res://Assets/Sprites/estrellas_reputacion/estrella_75%.png"),
-		preload("res://Assets/Sprites/estrellas_reputacion/estrella_100%.png")
+		preload("res://Assets/Sprites/estrellas_reputacion/estrella_100%.png"),
+		#estrellas color rojo
+		preload("res://Assets/Sprites/estrellas_reputacion/estrella_perdida_25%.png"),
+		preload("res://Assets/Sprites/estrellas_reputacion/estrella_perdida_50%.png"),
+		preload("res://Assets/Sprites/estrellas_reputacion/estrella_perdida_75%.png"),
+		preload("res://Assets/Sprites/estrellas_reputacion/estrella_perdida_100%.png"),
+		#estrellas color verde
+		preload("res://Assets/Sprites/estrellas_reputacion/estrella_buena_25%.png"),
+		preload("res://Assets/Sprites/estrellas_reputacion/estrella_buena_50%.png"),
+		preload("res://Assets/Sprites/estrellas_reputacion/estrella_buena_75%.png"),
+		preload("res://Assets/Sprites/estrellas_reputacion/estrella_buena_100%.png")
 	]
 	
 	
@@ -254,19 +264,50 @@ func play_lose_money() -> void:
 	tween.tween_property(money_sound, "pitch_scale", 0.55, 0.35).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 
 
-func actualizar_reputacion(_nueva_reputacion: int = -1) -> void:
-	var reputacion := clampi(DATOSGLOBALES.reputacion, 0, 100)
+#<<<<<<< HEAD
+func actualizar_reputacion():
+	var reputacion = clamp(DATOSGLOBALES.reputacion, 0, 100)
+	
+	# si la reputacion es 15 o menos
+	if reputacion <= 15:
+		for i in range(5):
+			var valor_estrella = reputacion - i * 20
 
-	for i in range(5):
-		var valor_estrella = reputacion - i * 20
+			if valor_estrella <= 0:
+				estrellas[i].texture = texturas[0] # vacía
+			elif valor_estrella <= 5:
+				estrellas[i].texture = texturas[5] # 25%
+			elif valor_estrella <= 10:
+				estrellas[i].texture = texturas[6] # 50%
+			elif valor_estrella <= 15:
+				estrellas[i].texture = texturas[7] # 75%
+			else: # 16–20 o más
+				estrellas[i].texture = texturas[8] # llena
+	elif reputacion >= 75:
+		for i in range(5):
+			var valor_estrella = reputacion - i * 20
 
-		if valor_estrella <= 0:
-			estrellas[i].texture = texturas[0] # vacía
-		elif valor_estrella <= 5:
-			estrellas[i].texture = texturas[1] # 25%
-		elif valor_estrella <= 10:
-			estrellas[i].texture = texturas[2] # 50%
-		elif valor_estrella <= 15:
-			estrellas[i].texture = texturas[3] # 75%
-		else: # 16–20 o más
-			estrellas[i].texture = texturas[4] # llena
+			if valor_estrella <= 0:
+				estrellas[i].texture = texturas[0] # vacía
+			elif valor_estrella <= 5:
+				estrellas[i].texture = texturas[9] # 25%
+			elif valor_estrella <= 10:
+				estrellas[i].texture = texturas[10] # 50%
+			elif valor_estrella <= 15:
+				estrellas[i].texture = texturas[11] # 75%
+			else: # 16–20 o más
+				estrellas[i].texture = texturas[12] # llena
+	else:	
+		for i in range(5):
+			var valor_estrella = reputacion - i * 20
+
+			if valor_estrella <= 0:
+				estrellas[i].texture = texturas[0] # vacía
+			elif valor_estrella <= 5:
+				estrellas[i].texture = texturas[1] # 25%
+			elif valor_estrella <= 10:
+				estrellas[i].texture = texturas[2] # 50%
+			elif valor_estrella <= 15:
+				estrellas[i].texture = texturas[3] # 75%
+			else: # 16–20 o más
+				estrellas[i].texture = texturas[4] # llena

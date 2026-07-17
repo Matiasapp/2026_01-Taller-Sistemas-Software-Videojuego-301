@@ -43,5 +43,3 @@ func _on_abrir_pc():
 func _on_cerrar_pc():
 	if hud:
 		hud.visible = true
-
-

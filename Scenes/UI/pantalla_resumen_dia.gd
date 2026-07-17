@@ -22,6 +22,16 @@ var texturas_estrellas := [
 	preload("res://Assets/Sprites/estrellas_reputacion/estrella_res_50.png"),
 	preload("res://Assets/Sprites/estrellas_reputacion/estrella_res_75.png"),
 	preload("res://Assets/Sprites/estrellas_reputacion/estrella_res_100.png"),
+	#estrellas color rojo
+	preload("res://Assets/Sprites/estrellas_reputacion/estrella_perdida_25%.png"),
+	preload("res://Assets/Sprites/estrellas_reputacion/estrella_perdida_50%.png"),
+	preload("res://Assets/Sprites/estrellas_reputacion/estrella_perdida_75%.png"),
+	preload("res://Assets/Sprites/estrellas_reputacion/estrella_perdida_100%.png"),
+	#estrellas color verde
+	preload("res://Assets/Sprites/estrellas_reputacion/estrella_buena_25%.png"),
+	preload("res://Assets/Sprites/estrellas_reputacion/estrella_buena_50%.png"),
+	preload("res://Assets/Sprites/estrellas_reputacion/estrella_buena_75%.png"),
+	preload("res://Assets/Sprites/estrellas_reputacion/estrella_buena_100%.png")	
 ]
 
 @onready var root_panel: NinePatchRect = $Panel
@@ -95,21 +105,52 @@ func _refrescar() -> void:
 
 func _actualizar_estrellas(reputacion: int) -> void:
 	reputacion = clampi(reputacion, 0, 100)
-	for i in range(estrellas.size()):
-		var valor_estrella: int = reputacion - i * 20
-		var idx: int
-		if valor_estrella <= 0:
-			idx = 0
-		elif valor_estrella <= 5:
-			idx = 1
-		elif valor_estrella <= 10:
-			idx = 2
-		elif valor_estrella <= 15:
-			idx = 3
-		else:
-			idx = 4
-		estrellas[i].texture = texturas_estrellas[idx]
-
+	if reputacion <= 15:
+		for i in range(estrellas.size()):
+			var valor_estrella: int = reputacion - i * 20
+			var idx: int
+			if valor_estrella <= 0:
+				idx = 0
+			elif valor_estrella <= 5:
+				idx = 5
+			elif valor_estrella <= 10:
+				idx = 6
+			elif valor_estrella <= 15:
+				idx = 7
+			else:
+				idx = 8
+			estrellas[i].texture = texturas_estrellas[idx]
+	elif reputacion >= 75:
+		for i in range(estrellas.size()):
+			var valor_estrella: int = reputacion - i * 20
+			var idx: int
+			if valor_estrella <= 0:
+				idx = 0
+			elif valor_estrella <= 5:
+				idx = 9
+			elif valor_estrella <= 10:
+				idx = 10
+			elif valor_estrella <= 15:
+				idx = 11
+			else:
+				idx = 12
+			estrellas[i].texture = texturas_estrellas[idx]
+	else:
+		for i in range(estrellas.size()):
+			var valor_estrella: int = reputacion - i * 20
+			var idx: int
+			if valor_estrella <= 0:
+				idx = 0
+			elif valor_estrella <= 5:
+				idx = 1
+			elif valor_estrella <= 10:
+				idx = 2
+			elif valor_estrella <= 15:
+				idx = 3
+			else:
+				idx = 4
+			estrellas[i].texture = texturas_estrellas[idx]
+	
 
 func _actualizar_eventos(eventos: Array) -> void:
 	if eventos.is_empty():
