@@ -1,18 +1,19 @@
 [gd_scene format=3 uid="uid://cicimsvaknbec"]
 
 [ext_resource type="Script" uid="uid://da58w1siw4d34" path="res://Scenes/Events/EventoMedio/evento_medio.gd" id="1_d0b5v"]
-[ext_resource type="Texture2D" uid="uid://cynkj84o6wfih" path="res://Assets/Events/EventoVictoria/1h.png" id="2_e2rrg"]
-[ext_resource type="Texture2D" uid="uid://dg0edj21hhv7a" path="res://Assets/Events/EventoVictoria/1m.png" id="3_khxnr"]
-[ext_resource type="Texture2D" uid="uid://cwctnwsy4o50f" path="res://Assets/Events/EventoVictoria/2.png" id="4_htovw"]
-[ext_resource type="Texture2D" uid="uid://vf1sjyrp2ig6" path="res://Assets/Events/EventoVictoria/3.png" id="5_wh1ff"]
-[ext_resource type="Texture2D" uid="uid://be7qhd3qopdhx" path="res://Assets/Events/EventoVictoria/4h.png" id="6_8vbe0"]
-[ext_resource type="Texture2D" uid="uid://chraqx4bsqd72" path="res://Assets/Events/EventoVictoria/4m.png" id="7_c2ie2"]
-[ext_resource type="Texture2D" uid="uid://cyf2kp4y7t87d" path="res://Assets/Events/EventoVictoria/5.png" id="8_k7j8a"]
-[ext_resource type="Texture2D" uid="uid://ea37hh6ky66p" path="res://Assets/Events/EventoMedio/6h.png" id="9_ree4u"]
-[ext_resource type="Texture2D" uid="uid://dp84kgyqnwkpv" path="res://Assets/Events/EventoMedio/6m.png" id="10_3iuhu"]
-[ext_resource type="Texture2D" uid="uid://cu642a64xim84" path="res://Assets/Events/EventoMedio/7.png" id="11_mn15x"]
-[ext_resource type="Texture2D" uid="uid://cm6d4u0vf2jh3" path="res://Assets/Events/EventoMedio/8.png" id="12_ixsij"]
-[ext_resource type="Texture2D" uid="uid://bxbewabgugyqb" path="res://Assets/Events/EventoMedio/9_fondo.png" id="13_gbvtw"]
+[ext_resource type="Texture2D" uid="uid://cqfsse7otjns2" path="res://Assets/Events/EventoMedio/1h.png" id="2_fudft"]
+[ext_resource type="Texture2D" uid="uid://c01pxm8xl3pve" path="res://Assets/Events/EventoMedio/2h.png" id="3_leimq"]
+[ext_resource type="Texture2D" uid="uid://nfentq2mh02d" path="res://Assets/Events/EventoMedio/1m.png" id="3_mn15x"]
+[ext_resource type="Texture2D" uid="uid://cm8jtjonh131l" path="res://Assets/Events/EventoMedio/3h.png" id="4_fqgj2"]
+[ext_resource type="Texture2D" uid="uid://dt7lkyj0teg6j" path="res://Assets/Events/EventoMedio/2m.png" id="5_ixsij"]
+[ext_resource type="Texture2D" uid="uid://jdxtg8scaavk" path="res://Assets/Events/EventoMedio/4h.png" id="5_r23yu"]
+[ext_resource type="Texture2D" uid="uid://cqdmrdgav7yhp" path="res://Assets/Events/EventoMedio/5h.png" id="6_ree4u"]
+[ext_resource type="Texture2D" uid="uid://cs4uaj164onkp" path="res://Assets/Events/EventoMedio/3m.png" id="7_gbvtw"]
+[ext_resource type="Texture2D" uid="uid://bo37r8fyrjfim" path="res://Assets/Events/EventoVictoria/9_fondo.png" id="8_fudft"]
+[ext_resource type="Texture2D" uid="uid://jxacrq41byet" path="res://Assets/Events/EventoMedio/4m.png" id="9_qro88"]
+[ext_resource type="Texture2D" uid="uid://crv2e2nsv4gcc" path="res://Assets/Events/EventoMedio/6h.png" id="9_ree4u"]
+[ext_resource type="Texture2D" uid="uid://cupqpwv6cbo7o" path="res://Assets/Events/EventoMedio/5m.png" id="11_skymo"]
+[ext_resource type="Texture2D" uid="uid://bnfi75kq45r3a" path="res://Assets/Events/EventoMedio/6m.png" id="13_rt0xp"]
 [ext_resource type="Texture2D" uid="uid://d0kpg6dic7l5c" path="res://Assets/Events/EventoVictoria/9_panel.png" id="14_yio2b"]
 [ext_resource type="Texture2D" uid="uid://dwuxd24ol4hjj" path="res://Assets/Sprites/background_game_screen.png" id="15_rti7t"]
 [ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="16_fn3xq"]
@@ -20,11 +21,11 @@
 [ext_resource type="AudioStream" uid="uid://b2t66hdqmo381" path="res://Assets/Audio/Menu/click.wav" id="18_ffqec"]
 [ext_resource type="AudioStream" uid="uid://d0gkxqmj2s251" path="res://Assets/Audio/Menu/hoverclick.wav" id="19_p81u4"]
 [ext_resource type="AudioStream" uid="uid://c6ya5qvsib7as" path="res://Assets/Audio/IntroScreen/hover_character.wav" id="20_eaije"]
+[ext_resource type="AudioStream" uid="uid://b6bgpfuu8hl3x" path="res://Assets/Events/EventoMedio/medioloop.ogg" id="20_fudft"]
 [ext_resource type="AudioStream" uid="uid://c6ksaho7s4f52" path="res://Assets/Audio/IntroScreen/select_character.wav" id="21_k5bdn"]
 [ext_resource type="AudioStream" uid="uid://lnnltgws2f7" path="res://Assets/Audio/IntroScreen/whoosh.wav" id="22_gewgn"]
 [ext_resource type="AudioStream" uid="uid://cc2twnwdewko7" path="res://Assets/Audio/IntroScreen/talking.wav" id="23_0jewb"]
 [ext_resource type="PackedScene" uid="uid://bb4m8n2s6x0ve" path="res://Scenes/UI/IndicadorReputacion.tscn" id="24_reputacion"]
-[ext_resource type="AudioStream" uid="uid://bltblumv0tckr" path="res://Assets/Events/EventoMedio/finalmedio.ogg" id="24_ree4u"]
 
 [sub_resource type="Animation" id="Animation_jy5sd"]
 length = 0.001
@@ -70,23 +71,24 @@ texture_margin_top = 2.0
 texture_margin_bottom = 4.0
 region_rect = Rect2(173, 492, 771, 568)
 
-[node name="Victoria" type="Node2D" unique_id=1964637352 node_paths=PackedStringArray("talking_sound")]
+[node name="Medio" type="Node2D" unique_id=1964637352 node_paths=PackedStringArray("talking_sound")]
 position = Vector2(0, 2)
 script = ExtResource("1_d0b5v")
 talking_sound = NodePath("TalkingSound")
-imagen_hombre_1 = ExtResource("2_e2rrg")
-imagen_mujer_1 = ExtResource("3_khxnr")
-imagen_2 = ExtResource("4_htovw")
-imagen_3 = ExtResource("5_wh1ff")
-imagen_hombre_4 = ExtResource("6_8vbe0")
-imagen_mujer_4 = ExtResource("7_c2ie2")
-imagen_5 = ExtResource("8_k7j8a")
+imagen_hombre_1 = ExtResource("2_fudft")
+imagen_mujer_1 = ExtResource("3_mn15x")
+imagen_hombre_2 = ExtResource("3_leimq")
+imagen_mujer_2 = ExtResource("5_ixsij")
+imagen_hombre_3 = ExtResource("4_fqgj2")
+imagen_mujer_3 = ExtResource("7_gbvtw")
+imagen_hombre_4 = ExtResource("5_r23yu")
+imagen_mujer_4 = ExtResource("9_qro88")
+imagen_hombre_5 = ExtResource("6_ree4u")
+imagen_mujer_5 = ExtResource("11_skymo")
 imagen_hombre_6 = ExtResource("9_ree4u")
-imagen_mujer_6 = ExtResource("10_3iuhu")
-imagen_7 = ExtResource("11_mn15x")
-imagen_8 = ExtResource("12_ixsij")
-imagen_9_fondo = ExtResource("13_gbvtw")
-imagen_9_panel = ExtResource("14_yio2b")
+imagen_mujer_6 = ExtResource("13_rt0xp")
+imagen_resumen_fondo = ExtResource("8_fudft")
+imagen_resumen_panel = ExtResource("14_yio2b")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1697874380]
 editor_description = "
@@ -207,7 +209,7 @@ offset_bottom = 166.0
 theme_override_colors/font_color = Color(0.95686275, 0.95686275, 0.95686275, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 
-[node name="IndicadorReputacion" parent="CanvasLayer/VistaTextoIntroduccion/ResumenRect" instance=ExtResource("24_reputacion")]
+[node name="IndicadorReputacion" parent="CanvasLayer/VistaTextoIntroduccion/ResumenRect" unique_id=1638836213 instance=ExtResource("24_reputacion")]
 layout_mode = 0
 offset_left = 397.0
 offset_top = 139.0
@@ -308,7 +310,7 @@ volume_db = -8.0
 bus = &"SFX"
 
 [node name="StringLoop" type="AudioStreamPlayer" parent="." unique_id=323153690]
-stream = ExtResource("24_ree4u")
+stream = ExtResource("20_fudft")
 volume_db = -10.0
 autoplay = true
 bus = &"Music"
