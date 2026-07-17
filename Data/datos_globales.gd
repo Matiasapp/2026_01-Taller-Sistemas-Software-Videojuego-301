@@ -107,6 +107,7 @@ func asegurar_estadistica_dia(dia: int) -> Dictionary:
 		estadisticas_dias[dia] = {
 			"dia": dia,
 			"clientes_atendidos": 0,
+			"clientes_satisfechos": 0,
 			"diagnosticos_correctos": 0,
 			"diagnosticos_incorrectos": 0,
 			"ingresos": 0,
@@ -117,8 +118,21 @@ func asegurar_estadistica_dia(dia: int) -> Dictionary:
 			"reputacion": reputacion,
 			"eventos": []
 		}
-	elif not estadisticas_dias[dia].has("eventos"):
-		estadisticas_dias[dia]["eventos"] = []
+	else:
+		var stats_existentes: Dictionary = estadisticas_dias[dia]
+		if not stats_existentes.has("eventos"):
+			stats_existentes["eventos"] = []
+		if not stats_existentes.has("clientes_satisfechos"):
+			# Migra partidas antiguas con la mejor estimacion disponible.
+			var incidentes := (
+				int(stats_existentes.get("diagnosticos_incorrectos", 0))
+				+ int(stats_existentes.get("minijuegos_fallidos", 0))
+			)
+			stats_existentes["clientes_satisfechos"] = maxi(
+				0,
+				int(stats_existentes.get("clientes_atendidos", 0)) - incidentes
+			)
+		estadisticas_dias[dia] = stats_existentes
 
 	return estadisticas_dias[dia]
 
@@ -311,6 +325,8 @@ func iniciar_resumen_atencion() -> void:
 		"tipo_pieza": "",
 		"recompensa_minijuego": 0,
 		"rendimiento": 0.5,
+		"nivel_desempeno": DESEMPENO_ACEPTABLE,
+		"resultado_minijuego_registrado": false,
 	}
 ## Los minijuegos reportan tanto el porcentaje visual como el nivel de desempeño
 ## balanceado. El nivel aplica la reputación una sola vez y alimenta el resumen.
@@ -323,6 +339,12 @@ func reportar_rendimiento_minijuego(
 ) -> int:
 	resumen_atencion["rendimiento"] = clampf(rendimiento, 0.0, 1.0)
 	resumen_atencion["recompensa_minijuego"] = recompensa
+	resumen_atencion["nivel_desempeno"] = clampi(
+		nivel_desempeno,
+		DESEMPENO_FALLIDO,
+		DESEMPENO_EXITOSO
+	)
+	resumen_atencion["resultado_minijuego_registrado"] = true
 	var rep_desempeno := registrar_desempeno_minijuego(
 		nivel_desempeno,
 		nombre_minijuego,
@@ -356,6 +378,8 @@ func registrar_atencion_dia(delta_dinero: int, dia: int = -1) -> void:
 	var stats := asegurar_estadistica_dia(dia)
 
 	stats["clientes_atendidos"] += 1
+	if _atencion_actual_fue_satisfactoria():
+		stats["clientes_satisfechos"] = int(stats.get("clientes_satisfechos", 0)) + 1
 	stats["balance"] += delta_dinero
 
 	if delta_dinero >= 0:
@@ -368,6 +392,37 @@ func registrar_atencion_dia(delta_dinero: int, dia: int = -1) -> void:
 	stats["dinero_final"] = dinero
 	stats["reputacion"] = reputacion
 	estadisticas_dias[dia] = stats
+
+
+## Un cliente queda satisfecho si el diagnostico fue correcto y el minijuego
+## termino con un desempeno aceptable o exitoso. Se evalua una sola vez al
+## consolidar la atencion, evitando descontar dos veces al mismo cliente.
+func _atencion_actual_fue_satisfactoria() -> bool:
+	if not bool(resumen_atencion.get("resultado_minijuego_registrado", false)):
+		return false
+
+	return (
+		bool(resumen_atencion.get("diagnostico_correcto", false))
+		and int(resumen_atencion.get("nivel_desempeno", DESEMPENO_FALLIDO))
+			>= DESEMPENO_ACEPTABLE
+	)
+
+
+## Registra la atencion que quedo pendiente al salir de un minijuego. Tambien
+## lo llaman los finales criticos, que pueden saltarse el regreso a GameScreen.
+## Devuelve si registro algo y el cambio monetario real de esa atencion.
+func consolidar_atencion_pendiente() -> Dictionary:
+	if not volviendo_de_atencion:
+		return {"registrada": false, "delta_dinero": 0}
+
+	volviendo_de_atencion = false
+	var delta_dinero := dinero - dinero_antes_atencion
+	registrar_atencion_dia(delta_dinero)
+	registrar_evento_dia(
+		"Atencion finalizada. Balance de la reparacion: %s."
+		% formatear_monto(delta_dinero)
+	)
+	return {"registrada": true, "delta_dinero": delta_dinero}
 
 func registrar_cierre_dia(dia: int = -1) -> void:
 	if dia < 0:
@@ -425,6 +480,7 @@ func get_dias_con_estadisticas() -> Array:
 
 func get_estadisticas_generales() -> Dictionary:
 	var total_clientes := 0
+	var total_clientes_satisfechos := 0
 	var total_correctos := 0
 	var total_incorrectos := 0
 	var total_ingresos := 0
@@ -436,7 +492,17 @@ func get_estadisticas_generales() -> Dictionary:
 
 	for dia in get_dias_con_estadisticas():
 		var stats: Dictionary = estadisticas_dias[dia]
-		total_clientes += int(stats.get("clientes_atendidos", 0))
+		var clientes_dia := int(stats.get("clientes_atendidos", 0))
+		total_clientes += clientes_dia
+		if stats.has("clientes_satisfechos"):
+			total_clientes_satisfechos += int(stats["clientes_satisfechos"])
+		else:
+			# Compatibilidad con partidas guardadas antes de registrar este dato.
+			var incidentes := (
+				int(stats.get("diagnosticos_incorrectos", 0))
+				+ int(stats.get("minijuegos_fallidos", 0))
+			)
+			total_clientes_satisfechos += maxi(0, clientes_dia - incidentes)
 		total_correctos += int(stats.get("diagnosticos_correctos", 0))
 		total_incorrectos += int(stats.get("diagnosticos_incorrectos", 0))
 		total_ingresos += int(stats.get("ingresos", 0))
@@ -448,6 +514,7 @@ func get_estadisticas_generales() -> Dictionary:
 
 	return {
 		"clientes_atendidos": total_clientes,
+		"clientes_satisfechos": total_clientes_satisfechos,
 		"diagnosticos_correctos": total_correctos,
 		"diagnosticos_incorrectos": total_incorrectos,
 		"ingresos": total_ingresos,
@@ -457,8 +524,15 @@ func get_estadisticas_generales() -> Dictionary:
 		"minijuegos_aceptables": total_minijuegos_aceptables,
 		"minijuegos_fallidos": total_minijuegos_fallidos,
 		"dinero_actual": dinero,
+		"dinero_final": dinero,
 		"reputacion": reputacion
 	}
+
+
+## Foto unica de los valores que deben mostrar todos los desenlaces.
+func get_resumen_final() -> Dictionary:
+	consolidar_atencion_pendiente()
+	return get_estadisticas_generales()
 
 func formatear_monto(monto: int) -> String:
 	if monto >= 0:
@@ -552,6 +626,7 @@ func obtener_destino_post_escena(destino_normal: String) -> String:
 	if destino.is_empty():
 		return destino_normal
 
+	consolidar_atencion_pendiente()
 	_limpiar_final_pendiente()
 	PARTIDA.guardar()
 	return destino
@@ -607,6 +682,7 @@ func _ejecutar_evento_final_pendiente() -> void:
 	get_tree().paused = false
 	Engine.time_scale = 1.0
 	if not destino.is_empty():
+		consolidar_atencion_pendiente()
 		PARTIDA.guardar()
 		get_tree().change_scene_to_file(destino)
 	_cambiando_a_evento_final = false

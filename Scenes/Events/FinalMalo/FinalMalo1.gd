@@ -76,21 +76,21 @@ func _ready() -> void:
 
 func configurar_evento() -> void:
 	mensajes = [
-	"Llegaste a un taller con problemas. El dinero escaseaba, los clientes eran pocos y cada reparación parecía una carrera contra el tiempo. Para seguir funcionando, comenzaron a utilizarse piezas cuya procedencia nadie quiso comprobar.",
+	"Llegaste a un taller con problemas. El dinero escaseaba, los clientes eran pocos y cada reparación parecía una carrera contra el tiempo. Para reducir los gastos, comenzaste a utilizar piezas baratas cuya procedencia y calidad nunca estuvieron del todo claras.",
 
-	"Al principio parecía una solución temporal. Las reparaciones continuaban y el taller seguía abierto, pero la calidad del trabajo comenzó a deteriorarse. Los clientes notaron las fallas y la confianza empezó a desaparecer.",
+	"Al principio pareció una solución temporal. Las reparaciones continuaron y el taller logró mantenerse abierto, pero las consecuencias no tardaron en aparecer. Algunas piezas fallaron y la calidad del servicio comenzó a deteriorarse.",
 
-	"Las quejas aumentaron con cada día. Vehículos que regresaban por nuevas averías, piezas defectuosas y reparaciones que no duraban lo esperado hicieron que la reputación del taller cayera rápidamente.",
+	"Las quejas aumentaron con cada día. Vehículos que regresaban con nuevas averías, reparaciones que duraban menos de lo prometido y clientes cada vez más desconfiados hicieron que la reputación del taller se desplomara.",
 
-	"Lo que comenzó como simples reclamos terminó convirtiéndose en denuncias formales. Las autoridades iniciaron una investigación para descubrir el origen de las piezas utilizadas en las reparaciones.",
+	"Lo que comenzó como una serie de reclamos terminó convirtiéndose en denuncias formales. Las autoridades iniciaron una investigación para determinar el origen de las piezas instaladas en los vehículos.",
 
-	"Los inspectores encontraron múltiples irregularidades. Varias autopartes provenían de distribuidores sin autorización y no existían registros que acreditaran su procedencia.",
+	"Los inspectores encontraron numerosas irregularidades. Varias autopartes provenían de distribuidores no autorizados y el taller no contaba con documentos que permitieran acreditar su procedencia.",
 
-	"La investigación avanzó con rapidez. La policía llegó al taller para incautar evidencia mientras los clientes observaban cómo el lugar quedaba bajo custodia.",
+	"Poco después, la policía llegó al taller. Las reparaciones fueron interrumpidas, las piezas quedaron incautadas y el lugar fue puesto bajo custodia mientras los clientes observaban desde el exterior.",
 
-	"El responsable del taller fue detenido para responder ante la justicia. Las herramientas quedaron inmóviles y las puertas fueron selladas mientras continuaba la investigación.",
+	"Fuiste detenido para responder por las irregularidades encontradas. Las herramientas quedaron inmóviles, los vehículos sin reparar y las puertas del taller fueron selladas.",
 
-	"Lo que alguna vez intentó ser una oportunidad para recuperar el negocio terminó con el taller clausurado. La reputación se perdió por completo y las puertas nunca volvieron a abrirse."
+	"La oportunidad de recuperar el negocio terminó destruida por decisiones que comprometieron la seguridad y la confianza de los clientes. El taller fue clausurado y su reputación se perdió por completo."
 
 	]
 
@@ -254,23 +254,19 @@ func mostrar_resumen_limpio() -> void:
 	continuar_button.text = "Continuar"
 	
 func actualizar_resumen_final() -> void:
-	label_titulo.text = "RESUMEN SEMANAL"
-	label_descripcion.text = "No llegaste al final de semana"
+	label_titulo.text = "TALLER CLAUSURADO"
+	label_descripcion.text = "Las irregularidades terminaron con el cierre definitivo del taller."
 
 	label_texto_reputacion.text = "REPUTACIÓN"
 	label_texto_clientes.text = "CLIENTES SATISFECHOS"
 	label_texto_autos.text = "CLIENTES ATENDIDOS (TOTAL)"
 	label_texto_dinero.text = "DINERO FINAL"
 
-	var stats := DATOSGLOBALES.get_estadisticas_generales()
-	var reputacion: int = DATOSGLOBALES.reputacion
-	var clientes_atendidos_total: int = int(stats.get("clientes_atendidos", 0))
-	var incidentes: int = (
-		int(stats.get("diagnosticos_incorrectos", 0))
-		+ int(stats.get("minijuegos_fallidos", 0))
-	)
-	var clientes_satisfechos := maxi(0, clientes_atendidos_total - incidentes)
-	var ganancias_totales := DATOSGLOBALES.dinero
+	var resumen := DATOSGLOBALES.get_resumen_final()
+	var reputacion := int(resumen.get("reputacion", 0))
+	var clientes_atendidos_total := int(resumen.get("clientes_atendidos", 0))
+	var clientes_satisfechos := int(resumen.get("clientes_satisfechos", 0))
+	var ganancias_totales := int(resumen.get("dinero_final", 0))
 
 	label_reputacion.text = str(reputacion) + "%"
 	indicador_reputacion.set_reputacion(reputacion)

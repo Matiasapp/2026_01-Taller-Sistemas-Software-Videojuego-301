@@ -4,87 +4,40 @@
 [ext_resource type="Texture2D" uid="uid://dwuxd24ol4hjj" path="res://Assets/Sprites/background_game_screen.png" id="2_bg"]
 [ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="3_theme"]
 [ext_resource type="Script" uid="uid://bc1onahfdrulf" path="res://Scenes/Events/GastosDiarios/gasto_diario_fila.gd" id="4_fila"]
+[ext_resource type="Texture2D" uid="uid://cxqi1lh5nip8y" path="res://Assets/UI/button_style.png" id="5_frame"]
+[ext_resource type="AudioStream" uid="uid://qu5f0tynvrol" path="res://Assets/Audio/Gameplay/GastosDiarios/workshopcloseloop.ogg" id="6_tq7jq"]
 
-[sub_resource type="StyleBoxFlat" id="StyleDesk"]
-bg_color = Color(0.105, 0.065, 0.035, 0.97)
-border_width_left = 5
-border_width_top = 5
-border_width_right = 5
-border_width_bottom = 5
-border_color = Color(0.31, 0.19, 0.09, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-shadow_color = Color(0, 0, 0, 0.7)
-shadow_size = 18
+[sub_resource type="AtlasTexture" id="AtlasFrame"]
+atlas = ExtResource("5_frame")
+region = Rect2(1873, 492, 769, 568)
 
 [sub_resource type="StyleBoxFlat" id="StylePaper"]
-bg_color = Color(0.82, 0.75, 0.58, 1)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color(0.32, 0.23, 0.13, 1)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
+bg_color = Color(0, 0, 0, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleLine"]
-bg_color = Color(0.31, 0.23, 0.13, 0.7)
+bg_color = Color(0.55, 0.31, 0.16, 0.85)
 
 [sub_resource type="StyleBoxFlat" id="StyleRow"]
 content_margin_left = 14.0
 content_margin_top = 9.0
 content_margin_right = 14.0
 content_margin_bottom = 9.0
-bg_color = Color(0.72, 0.64, 0.47, 0.88)
+bg_color = Color(0.105, 0.075, 0.055, 0.94)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.36, 0.26, 0.14, 0.8)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
+border_color = Color(0.51, 0.29, 0.16, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+shadow_color = Color(0, 0, 0, 0.55)
+shadow_size = 5
 
-[sub_resource type="StyleBoxFlat" id="StyleButtonNormal"]
-bg_color = Color(0.27, 0.2, 0.11, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.1, 0.07, 0.04, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
-[sub_resource type="StyleBoxFlat" id="StyleButtonHover"]
-bg_color = Color(0.42, 0.3, 0.14, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.9, 0.68, 0.18, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
-[sub_resource type="StyleBoxFlat" id="StyleButtonDisabled"]
-bg_color = Color(0.22, 0.19, 0.15, 0.7)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.25, 0.23, 0.2, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
+[sub_resource type="StyleBoxTexture" id="StylePayButton"]
+texture = ExtResource("5_frame")
+region_rect = Rect2(173, 492, 771, 568)
 
 [node name="GastosDiarios" type="Control" unique_id=1795365506]
 editor_description = "Pantalla de cierre de caja. Para editar los gastos, selecciona una fila (Arriendo, Servicios o Comida) y cambia las secciones 'Contenido del gasto' y 'Costo' en el Inspector. Puedes duplicar o borrar filas sin modificar gastos_diarios.gd."
@@ -116,9 +69,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(0.035, 0.02, 0.01, 0.82)
+color = Color(0.16, 0.09, 0.04, 0.8)
 
-[node name="Mesa" type="Panel" parent="." unique_id=1756464839]
+[node name="Mesa" type="NinePatchRect" parent="." unique_id=1756464839]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -131,7 +84,12 @@ offset_right = 466.0
 offset_bottom = 298.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleDesk")
+texture = SubResource("AtlasFrame")
+region_rect = Rect2(0, 0, 769, 568)
+patch_margin_left = 51
+patch_margin_top = 45
+patch_margin_right = 46
+patch_margin_bottom = 54
 
 [node name="MargenMesa" type="Control" parent="Mesa" unique_id=2100753858]
 anchors_preset = 0
@@ -163,11 +121,11 @@ unique_name_in_owner = true
 layout_mode = 0
 offset_right = 820.0
 offset_bottom = 34.0
-theme_override_colors/font_color = Color(0.19, 0.14, 0.09, 1)
-theme_override_colors/font_outline_color = Color(0.9, 0.82, 0.64, 1)
-theme_override_constants/outline_size = 2
-theme_override_font_sizes/font_size = 27
-text = "CIERRE DE CAJA  ·  DÍA 1"
+theme_override_colors/font_color = Color(0.882, 0.686, 0.18, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 28
+text = "CIERRE DEL TALLER  ·  DÍA 1"
 horizontal_alignment = 1
 
 [node name="Subtitulo" type="Label" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido" unique_id=1445129265]
@@ -175,7 +133,9 @@ layout_mode = 0
 offset_top = 42.0
 offset_right = 820.0
 offset_bottom = 62.0
-theme_override_colors/font_color = Color(0.32, 0.23, 0.13, 1)
+theme_override_colors/font_color = Color(0.247, 0.729, 0.314, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
 theme_override_font_sizes/font_size = 14
 text = "Marca las obligaciones que pagarás esta noche. Lo que postergues tendrá consecuencias."
 horizontal_alignment = 1
@@ -194,7 +154,9 @@ layout_mode = 0
 offset_top = 80.0
 offset_right = 820.0
 offset_bottom = 105.0
-theme_override_colors/font_color = Color(0.19, 0.14, 0.09, 1)
+theme_override_colors/font_color = Color(0.95, 0.93, 0.88, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
 theme_override_font_sizes/font_size = 19
 text = "Caja disponible:  $500"
 
@@ -230,7 +192,9 @@ offset_left = 69.0
 offset_top = 3.0
 offset_right = 306.0
 offset_bottom = 31.0
-theme_override_colors/font_color = Color(0.19, 0.14, 0.09, 1)
+theme_override_colors/font_color = Color(0.78, 0.7, 0.55, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
 theme_override_font_sizes/font_size = 20
 text = "ARRIENDO DEL TALLER"
 
@@ -240,7 +204,7 @@ offset_left = 69.0
 offset_top = 34.0
 offset_right = 403.0
 offset_bottom = 54.0
-theme_override_colors/font_color = Color(0.36, 0.28, 0.18, 1)
+theme_override_colors/font_color = Color(0.72, 0.68, 0.61, 1)
 theme_override_font_sizes/font_size = 13
 text = "Mantiene el local disponible para la próxima jornada."
 
@@ -251,7 +215,9 @@ offset_left = 536.0
 offset_top = 5.0
 offset_right = 626.0
 offset_bottom = 59.0
-theme_override_colors/font_color = Color(0.19, 0.14, 0.09, 1)
+theme_override_colors/font_color = Color(0.95, 0.93, 0.88, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
 theme_override_font_sizes/font_size = 23
 text = "$110"
 horizontal_alignment = 2
@@ -263,11 +229,20 @@ layout_mode = 0
 offset_left = 664.0
 offset_right = 792.0
 offset_bottom = 54.0
-theme_override_colors/font_color = Color(0.19, 0.14, 0.09, 1)
-theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_color = Color(0.78, 0.7, 0.55, 1)
+theme_override_colors/font_pressed_color = Color(0.247, 0.729, 0.314, 1)
+theme_override_colors/font_hover_color = Color(0.882, 0.686, 0.18, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_constants/h_separation = 0
 theme_override_font_sizes/font_size = 15
-button_pressed = false
+theme_override_styles/normal = SubResource("StylePayButton")
+theme_override_styles/pressed = SubResource("StylePayButton")
+theme_override_styles/hover = SubResource("StylePayButton")
+theme_override_styles/hover_pressed = SubResource("StylePayButton")
+theme_override_styles/focus = SubResource("StylePayButton")
 text = "PAGAR"
+alignment = 1
 
 [node name="Servicios" type="Panel" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido" unique_id=469081101 groups=["gasto_diario"]]
 editor_description = "Fila de gasto editable. Duplícala para agregar otro concepto; conserva el grupo 'gasto_diario' y la estructura de sus hijos."
@@ -301,7 +276,9 @@ offset_left = 66.0
 offset_top = 1.0
 offset_right = 263.0
 offset_bottom = 29.0
-theme_override_colors/font_color = Color(0.19, 0.14, 0.09, 1)
+theme_override_colors/font_color = Color(0.78, 0.7, 0.55, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
 theme_override_font_sizes/font_size = 20
 text = "LUZ Y SERVICIOS"
 
@@ -311,7 +288,7 @@ offset_left = 66.0
 offset_top = 32.0
 offset_right = 354.0
 offset_bottom = 52.0
-theme_override_colors/font_color = Color(0.36, 0.28, 0.18, 1)
+theme_override_colors/font_color = Color(0.72, 0.68, 0.61, 1)
 theme_override_font_sizes/font_size = 13
 text = "Electricidad, agua y herramientas conectadas."
 
@@ -322,7 +299,9 @@ offset_left = 536.0
 offset_top = 5.0
 offset_right = 626.0
 offset_bottom = 59.0
-theme_override_colors/font_color = Color(0.19, 0.14, 0.09, 1)
+theme_override_colors/font_color = Color(0.95, 0.93, 0.88, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
 theme_override_font_sizes/font_size = 23
 text = "$55"
 horizontal_alignment = 2
@@ -334,11 +313,20 @@ layout_mode = 0
 offset_left = 664.0
 offset_right = 792.0
 offset_bottom = 54.0
-theme_override_colors/font_color = Color(0.19, 0.14, 0.09, 1)
-theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_color = Color(0.78, 0.7, 0.55, 1)
+theme_override_colors/font_pressed_color = Color(0.247, 0.729, 0.314, 1)
+theme_override_colors/font_hover_color = Color(0.882, 0.686, 0.18, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_constants/h_separation = 0
 theme_override_font_sizes/font_size = 15
-button_pressed = false
+theme_override_styles/normal = SubResource("StylePayButton")
+theme_override_styles/pressed = SubResource("StylePayButton")
+theme_override_styles/hover = SubResource("StylePayButton")
+theme_override_styles/hover_pressed = SubResource("StylePayButton")
+theme_override_styles/focus = SubResource("StylePayButton")
 text = "PAGAR"
+alignment = 1
 
 [node name="Comida" type="Panel" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido" unique_id=1774453656 groups=["gasto_diario"]]
 editor_description = "Fila de gasto editable. Duplícala para agregar otro concepto; conserva el grupo 'gasto_diario' y la estructura de sus hijos."
@@ -372,9 +360,11 @@ offset_left = 66.0
 offset_top = 1.0
 offset_right = 337.0
 offset_bottom = 29.0
-theme_override_colors/font_color = Color(0.19, 0.14, 0.09, 1)
+theme_override_colors/font_color = Color(0.78, 0.7, 0.55, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
 theme_override_font_sizes/font_size = 20
-text = "SERVICIOS DE MANTENCIÓN"
+text = "COMIDA"
 
 [node name="Detalle" type="Label" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Comida/Fila/Textos" unique_id=460763975]
 layout_mode = 0
@@ -382,9 +372,9 @@ offset_left = 66.0
 offset_top = 32.0
 offset_right = 522.0
 offset_bottom = 52.0
-theme_override_colors/font_color = Color(0.36, 0.28, 0.18, 1)
+theme_override_colors/font_color = Color(0.72, 0.68, 0.61, 1)
 theme_override_font_sizes/font_size = 13
-text = "Mantiene las herramientas y equipos en condiciones de funcionamiento."
+text = "Algo caliente para recuperar fuerzas."
 
 [node name="Precio" type="Label" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Comida/Fila" unique_id=2130865651]
 custom_minimum_size = Vector2(90, 0)
@@ -393,7 +383,9 @@ offset_left = 536.0
 offset_top = 5.0
 offset_right = 626.0
 offset_bottom = 59.0
-theme_override_colors/font_color = Color(0.19, 0.14, 0.09, 1)
+theme_override_colors/font_color = Color(0.95, 0.93, 0.88, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
 theme_override_font_sizes/font_size = 23
 text = "$45"
 horizontal_alignment = 2
@@ -405,11 +397,20 @@ layout_mode = 0
 offset_left = 664.0
 offset_right = 792.0
 offset_bottom = 54.0
-theme_override_colors/font_color = Color(0.19, 0.14, 0.09, 1)
-theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_color = Color(0.78, 0.7, 0.55, 1)
+theme_override_colors/font_pressed_color = Color(0.247, 0.729, 0.314, 1)
+theme_override_colors/font_hover_color = Color(0.882, 0.686, 0.18, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_constants/h_separation = 0
 theme_override_font_sizes/font_size = 15
-button_pressed = false
+theme_override_styles/normal = SubResource("StylePayButton")
+theme_override_styles/pressed = SubResource("StylePayButton")
+theme_override_styles/hover = SubResource("StylePayButton")
+theme_override_styles/hover_pressed = SubResource("StylePayButton")
+theme_override_styles/focus = SubResource("StylePayButton")
 text = "PAGAR"
+alignment = 1
 
 [node name="Linea2" type="Panel" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido" unique_id=1915830155]
 custom_minimum_size = Vector2(0, 2)
@@ -430,7 +431,9 @@ unique_name_in_owner = true
 layout_mode = 0
 offset_right = 410.0
 offset_bottom = 26.0
-theme_override_colors/font_color = Color(0.19, 0.14, 0.09, 1)
+theme_override_colors/font_color = Color(0.95, 0.93, 0.88, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
 theme_override_font_sizes/font_size = 18
 text = "TOTAL A PAGAR:  $210"
 
@@ -441,6 +444,8 @@ offset_left = 410.0
 offset_right = 820.0
 offset_bottom = 26.0
 theme_override_colors/font_color = Color(0.247, 0.729, 0.314, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
 theme_override_font_sizes/font_size = 18
 text = "SALDO PARA MAÑANA:  $290"
 horizontal_alignment = 2
@@ -458,6 +463,8 @@ layout_mode = 0
 offset_right = 588.0
 offset_bottom = 58.0
 theme_override_colors/font_color = Color(0.247, 0.729, 0.314, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
 theme_override_font_sizes/font_size = 14
 text = "Todas las obligaciones quedarán cubiertas."
 vertical_alignment = 1
@@ -471,14 +478,13 @@ offset_left = 600.0
 offset_top = 5.0
 offset_right = 820.0
 offset_bottom = 53.0
-theme_override_colors/font_color = Color(0.95, 0.9, 0.75, 1)
-theme_override_colors/font_hover_color = Color(1, 0.82, 0.28, 1)
+theme = ExtResource("3_theme")
+theme_override_colors/font_color = Color(0.95, 0.93, 0.88, 1)
+theme_override_colors/font_hover_color = Color(0.882, 0.686, 0.18, 1)
 theme_override_colors/font_disabled_color = Color(0.5, 0.48, 0.44, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
 theme_override_font_sizes/font_size = 18
-theme_override_styles/normal = SubResource("StyleButtonNormal")
-theme_override_styles/pressed = SubResource("StyleButtonHover")
-theme_override_styles/hover = SubResource("StyleButtonHover")
-theme_override_styles/disabled = SubResource("StyleButtonDisabled")
 text = "CONFIRMAR GASTOS"
 
 [node name="Sello" type="Label" parent="Mesa" unique_id=1067823390]
@@ -491,9 +497,9 @@ offset_right = 862.0
 offset_bottom = 522.0
 rotation = -0.151844
 pivot_offset = Vector2(91, 42)
-theme_override_colors/font_color = Color(0.55, 0.08, 0.055, 0.92)
-theme_override_colors/font_outline_color = Color(0.82, 0.75, 0.58, 1)
-theme_override_constants/outline_size = 2
+theme_override_colors/font_color = Color(0.9, 0.35, 0.3, 0.95)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 23
 text = "REGISTRADO
 -$210"
@@ -511,3 +517,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
+
+[node name="WorkshopClosingLoop" type="AudioStreamPlayer" parent="." unique_id=1368340065]
+stream = ExtResource("6_tq7jq")
+volume_db = -10.0
+autoplay = true
+bus = &"Music"
+parameters/looping = true

@@ -266,15 +266,11 @@ func actualizar_resumen_final() -> void:
 	label_texto_autos.text = "CLIENTES ATENDIDOS (TOTAL)"
 	label_texto_dinero.text = "DINERO FINAL"
 
-	var stats := DATOSGLOBALES.get_estadisticas_generales()
-	var reputacion: int = DATOSGLOBALES.reputacion
-	var clientes_atendidos_total: int = int(stats.get("clientes_atendidos", 0))
-	var incidentes: int = (
-		int(stats.get("diagnosticos_incorrectos", 0))
-		+ int(stats.get("minijuegos_fallidos", 0))
-	)
-	var clientes_satisfechos := maxi(0, clientes_atendidos_total - incidentes)
-	var ganancias_totales := DATOSGLOBALES.dinero
+	var resumen := DATOSGLOBALES.get_resumen_final()
+	var reputacion := int(resumen.get("reputacion", 0))
+	var clientes_atendidos_total := int(resumen.get("clientes_atendidos", 0))
+	var clientes_satisfechos := int(resumen.get("clientes_satisfechos", 0))
+	var ganancias_totales := int(resumen.get("dinero_final", 0))
 
 	label_reputacion.text = str(reputacion) + "%"
 	indicador_reputacion.set_reputacion(reputacion)

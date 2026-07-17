@@ -126,15 +126,10 @@ func _ready() -> void:
 			print("Estafa cancelada: el mal desempeño no dejó un pago que estafar.")
 
 	# Al volver de atender un cliente, mostramos en el HUD cuánto cambió el dinero (neto).
-	if DATOSGLOBALES.volviendo_de_atencion:
-		DATOSGLOBALES.volviendo_de_atencion = false
+	var atencion_consolidada := DATOSGLOBALES.consolidar_atencion_pendiente()
+	if bool(atencion_consolidada.get("registrada", false)):
 		venimos_de_atender = true
-		var delta_dinero: int = DATOSGLOBALES.dinero - DATOSGLOBALES.dinero_antes_atencion
-		DATOSGLOBALES.registrar_atencion_dia(delta_dinero)
-		DATOSGLOBALES.registrar_evento_dia(
-			"Atencion finalizada. Balance de la reparacion: %s."
-			% DATOSGLOBALES.formatear_monto(delta_dinero)
-		)
+		var delta_dinero: int = int(atencion_consolidada.get("delta_dinero", 0))
 		if delta_dinero != 0 and hud:
 			hud.mostrar_popup_dinero(delta_dinero)
 

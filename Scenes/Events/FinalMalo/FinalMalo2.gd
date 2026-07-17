@@ -76,21 +76,21 @@ func _ready() -> void:
 
 func configurar_evento() -> void:
 	mensajes = [
-	"Llegaste a un taller que atravesaba una situación crítica. Las deudas crecían, los clientes eran cada vez menos y cada día era una lucha por conseguir el dinero suficiente para mantener las puertas abiertas.",
+	"Llegaste a un taller que atravesaba una situación crítica. Las deudas crecían, los clientes eran cada vez menos y cada jornada era una lucha por conseguir el dinero necesario para mantener las puertas abiertas.",
 
-	"Trabajaste sin descanso intentando sacar adelante cada reparación. Sin embargo, los ingresos apenas alcanzaban para cubrir los gastos más urgentes y el taller seguía acumulando pérdidas.",
+	"Trabajaste sin descanso para completar cada reparación. Sin embargo, los ingresos apenas alcanzaban para cubrir los gastos más urgentes y las pérdidas continuaron acumulándose.",
 
-	"Las herramientas comenzaron a deteriorarse y ya no había dinero para reemplazarlas. Cada reparación se hacía más difícil que la anterior y los clientes empezaban a buscar otras alternativas.",
+	"Las herramientas comenzaron a deteriorarse y ya no había dinero para reemplazarlas. Cada trabajo requería más esfuerzo, las reparaciones se retrasaban y algunos clientes comenzaron a buscar otras alternativas.",
 
-	"Con el paso de los días, las cuentas siguieron aumentando. El alquiler, los proveedores y los servicios ya no podían pagarse a tiempo, mientras el dinero del taller se agotaba rápidamente.",
+	"Con el paso de los días, las obligaciones superaron los ingresos. El alquiler, los proveedores y los servicios quedaron pendientes mientras el poco dinero disponible desaparecía.",
 
-	"Al llegar al quinto día, ya no quedaban recursos para continuar. Mantener el taller abierto se volvió imposible y la decisión fue inevitable.",
+	"Al llegar al quinto día, ya no quedaban recursos para comprar piezas ni continuar con las reparaciones. Mantener el taller abierto dejó de ser una posibilidad.",
 
-	"Las herramientas fueron guardadas por última vez. Los pocos clientes que aún confiaban en el taller encontraron las puertas cerradas y un aviso anunciando el fin de sus actividades.",
+	"Las herramientas fueron guardadas por última vez. Los pocos clientes que aún confiaban en el taller encontraron las puertas cerradas y un aviso anunciando el término de sus actividades.",
 
-	"El esfuerzo realizado no fue suficiente para revertir la difícil situación económica. Sin recursos para seguir trabajando, el taller tuvo que cerrar definitivamente.",
+	"A pesar del esfuerzo realizado, no lograste revertir la situación económica. Sin dinero para pagar las deudas ni sostener el trabajo diario, el taller tuvo que cerrar definitivamente.",
 
-	"El sueño de recuperar el taller terminó antes de comenzar. Las luces se apagaron, las puertas se cerraron y el lugar quedó vacío, esperando un futuro que nunca llegó."
+	"Las luces se apagaron y el taller quedó vacío. Lo que debía ser una oportunidad para recuperar el negocio terminó consumido por las deudas."
 
 	]
 
@@ -254,7 +254,7 @@ func mostrar_resumen_limpio() -> void:
 	continuar_button.text = "Continuar"
 	
 func actualizar_resumen_final() -> void:
-	label_titulo.text = "RESUMEN SEMANAL"
+	label_titulo.text = "TALLER EN QUIEBRA"
 	label_descripcion.text = "La deuda hizo imposible mantener el taller abierto."
 
 	label_texto_reputacion.text = "REPUTACIÓN"
@@ -262,15 +262,11 @@ func actualizar_resumen_final() -> void:
 	label_texto_autos.text = "CLIENTES ATENDIDOS (TOTAL)"
 	label_texto_dinero.text = "DINERO FINAL"
 
-	var stats := DATOSGLOBALES.get_estadisticas_generales()
-	var reputacion: int = DATOSGLOBALES.reputacion
-	var clientes_atendidos_total: int = int(stats.get("clientes_atendidos", 0))
-	var incidentes: int = (
-		int(stats.get("diagnosticos_incorrectos", 0))
-		+ int(stats.get("minijuegos_fallidos", 0))
-	)
-	var clientes_satisfechos := maxi(0, clientes_atendidos_total - incidentes)
-	var ganancias_totales := DATOSGLOBALES.dinero
+	var resumen := DATOSGLOBALES.get_resumen_final()
+	var reputacion := int(resumen.get("reputacion", 0))
+	var clientes_atendidos_total := int(resumen.get("clientes_atendidos", 0))
+	var clientes_satisfechos := int(resumen.get("clientes_satisfechos", 0))
+	var ganancias_totales := int(resumen.get("dinero_final", 0))
 
 	label_reputacion.text = str(reputacion) + "%"
 	indicador_reputacion.set_reputacion(reputacion)

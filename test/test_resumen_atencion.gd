@@ -33,6 +33,8 @@ func test_iniciar_resumen_establece_valores_predeterminados() -> void:
 	assert_eq(resumen["tipo_pieza"], "")
 	assert_eq(resumen["recompensa_minijuego"], 0)
 	assert_eq(resumen["rendimiento"], 0.5)
+	assert_eq(resumen["nivel_desempeno"], DATOSGLOBALES.DESEMPENO_ACEPTABLE)
+	assert_false(resumen["resultado_minijuego_registrado"])
 	assert_eq(resumen["balance_dinero"], 0)
 	assert_eq(resumen["rep_total"], 0)
 
@@ -103,6 +105,8 @@ func test_reportar_rendimiento_actualiza_resumen_y_limita_porcentaje() -> void:
 	assert_eq(resumen["rendimiento"], 1.0)
 	assert_eq(resumen["recompensa_minijuego"], 250)
 	assert_eq(resumen["rep_desempeno"], DATOSGLOBALES.REP_MINIJUEGO_EXITOSO)
+	assert_eq(resumen["nivel_desempeno"], DATOSGLOBALES.DESEMPENO_EXITOSO)
+	assert_true(resumen["resultado_minijuego_registrado"])
 	assert_eq(resumen["rep_total"], DATOSGLOBALES.REP_MINIJUEGO_EXITOSO)
 	assert_signal_emit_count(DATOSGLOBALES.reputacion_cambiado, 1)
 	assert_signal_emitted_with_parameters(

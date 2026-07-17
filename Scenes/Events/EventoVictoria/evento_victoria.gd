@@ -76,14 +76,14 @@ func _ready() -> void:
 
 func configurar_evento() -> void:
 	mensajes = [
-		"Llegaste a un taller al borde del colapso. Deudas, herramientas gastadas y clientes que ya no confiaban en volver. Todo parecía indicar que era demasiado tarde. Pero decidiste intentarlo.",
-		"Día tras día trabajaste con lo que tenías. Soldaste piezas, reparaste motores e improvisaste soluciones cuando parecía no haber ninguna. No era un trabajo perfecto. Pero cada reparación era un paso para mantener vivo el taller.",
-		"Rescataste piezas que otros habrían desechado. Neumáticos, frenos, motores... Poco a poco, el taller dejó de ser un lugar lleno de problemas. Volvió a ser un lugar donde las cosas podían arreglarse.",
-		"Hubo jornadas interminables. Averías difíciles. Decisiones que nunca fueron sencillas. Pero mientras otros veían un negocio perdido, tú seguías encontrando una razón para abrir cada mañana.",
-		"No fue una semana perfecta. Hubo pérdidas. Hubo errores. Hubo noches en las que parecía más fácil rendirse. Pero al mirar el taller al final del día... ya podías notar que algo estaba cambiando.",
-		"Entonces ocurrió algo que no podía comprarse. Los clientes empezaron a volver. Algunos regresaron porque necesitaban una reparación. Otros porque alguien les habló de un taller donde todavía se trabajaba con honestidad. La confianza comenzó a reconstruirse.",
-		"El taller ya no era el mismo. Donde antes había incertidumbre, ahora había trabajo. Donde antes había desconfianza, ahora había clientes que recomendaban tu nombre. Demostraste que aún valía la pena mantener abiertas esas puertas.",
-		"Hace solo unos días, este lugar parecía condenado al abandono. Hoy vuelve a tener vida. Las luces siguen encendidas. El trabajo continúa. Y el futuro vuelve a parecer posible."
+		"Llegaste a un taller al borde del colapso. Las deudas se acumulaban, las herramientas estaban desgastadas y cada vez menos clientes confiaban en volver. Todo parecía indicar que era demasiado tarde, pero decidiste intentarlo.",
+		"Día tras día trabajaste con los recursos disponibles. Soldaste piezas, inflaste neumáticosa y encontraste soluciones cuando los problemas parecían no tener salida. Cada reparación bien hecha fue un paso para mantener vivo el taller.",
+		"Aprovechaste cada herramienta y cada repuesto disponible. Neumáticos, frenos, motores y baterías volvieron a pasar por tus manos. Poco a poco, el taller recuperó el orden y volvió a convertirse en un lugar donde los problemas podían resolverse.",
+		"Hubo jornadas agotadoras, averías difíciles y decisiones que nunca fueron sencillas. Sin embargo, mientras otros veían un negocio perdido, tú continuaste abriendo las puertas cada mañana.",
+		"No fue una semana perfecta. Hubo errores, gastos inesperados y momentos en los que parecía más fácil rendirse. Pero al observar el taller al final de cada jornada, comenzaste a notar que el esfuerzo estaba dando resultados.",
+		"Los clientes comenzaron a confiar nuevamente en el servicio. Algunos regresaron con nuevas reparaciones y otros llegaron por recomendaciones. Cada trabajo bien realizado ayudó a recuperar el nombre del taller.",
+		"El lugar ya no transmitía la misma incertidumbre. Había reparaciones en marcha, clientes esperando y nuevas oportunidades por delante. Demostraste que el taller todavía podía salir adelante.",
+		"Hace solo unos días, este lugar parecía condenado al abandono. Hoy las luces siguen encendidas, el trabajo continúa y el futuro vuelve a parecer posible. El taller ha comenzado una nueva etapa."
 	]
 
 	var es_mujer := DATOSGLOBALES.genero_jugador == "Femenino"
@@ -246,23 +246,19 @@ func mostrar_resumen_limpio() -> void:
 	continuar_button.text = "Continuar"
 	
 func actualizar_resumen_final() -> void:
-	label_titulo.text = "RESUMEN SEMANAL"
-	label_descripcion.text = "Completaste los 5 dias con un taller prospero y respetado."
+	label_titulo.text = "TALLER RECUPERADO"
+	label_descripcion.text = "Superaste la crisis y mantuviste el negocio en funcionamiento."
 
 	label_texto_reputacion.text = "REPUTACIÓN"
 	label_texto_clientes.text = "CLIENTES SATISFECHOS"
 	label_texto_autos.text = "CLIENTES ATENDIDOS (TOTAL)"
 	label_texto_dinero.text = "DINERO FINAL"
 
-	var stats := DATOSGLOBALES.get_estadisticas_generales()
-	var reputacion: int = DATOSGLOBALES.reputacion
-	var clientes_atendidos_total: int = int(stats.get("clientes_atendidos", 0))
-	var incidentes: int = (
-		int(stats.get("diagnosticos_incorrectos", 0))
-		+ int(stats.get("minijuegos_fallidos", 0))
-	)
-	var clientes_satisfechos := maxi(0, clientes_atendidos_total - incidentes)
-	var ganancias_totales := DATOSGLOBALES.dinero
+	var resumen := DATOSGLOBALES.get_resumen_final()
+	var reputacion := int(resumen.get("reputacion", 0))
+	var clientes_atendidos_total := int(resumen.get("clientes_atendidos", 0))
+	var clientes_satisfechos := int(resumen.get("clientes_satisfechos", 0))
+	var ganancias_totales := int(resumen.get("dinero_final", 0))
 
 	label_reputacion.text = str(reputacion) + "%"
 	indicador_reputacion.set_reputacion(reputacion)
