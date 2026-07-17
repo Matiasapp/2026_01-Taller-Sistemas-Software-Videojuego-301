@@ -8,6 +8,7 @@ extends Node2D
 @onready var label_texto_dinero: Label = $CanvasLayer/VistaTextoIntroduccion/ResumenRect/LabelTextoDinero
 
 @onready var label_reputacion: Label = $CanvasLayer/VistaTextoIntroduccion/ResumenRect/LabelReputacion
+@onready var indicador_reputacion = $CanvasLayer/VistaTextoIntroduccion/ResumenRect/IndicadorReputacion
 @onready var label_clientes: Label = $CanvasLayer/VistaTextoIntroduccion/ResumenRect/LabelClientes
 @onready var label_autos: Label = $CanvasLayer/VistaTextoIntroduccion/ResumenRect/LabelAutos
 @onready var label_dinero: Label = $CanvasLayer/VistaTextoIntroduccion/ResumenRect/LabelDinero
@@ -272,6 +273,7 @@ func actualizar_resumen_final() -> void:
 	var ganancias_totales := DATOSGLOBALES.dinero
 
 	label_reputacion.text = str(reputacion) + "%"
+	indicador_reputacion.set_reputacion(reputacion)
 	label_clientes.text = str(clientes_satisfechos)
 	label_autos.text = str(clientes_atendidos_total)
 	label_dinero.text = "$%d" % ganancias_totales if ganancias_totales >= 0 else "-$%d" % absi(ganancias_totales)

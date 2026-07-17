@@ -23,6 +23,7 @@
 [ext_resource type="AudioStream" uid="uid://c6ksaho7s4f52" path="res://Assets/Audio/IntroScreen/select_character.wav" id="21_k5bdn"]
 [ext_resource type="AudioStream" uid="uid://lnnltgws2f7" path="res://Assets/Audio/IntroScreen/whoosh.wav" id="22_gewgn"]
 [ext_resource type="AudioStream" uid="uid://cc2twnwdewko7" path="res://Assets/Audio/IntroScreen/talking.wav" id="23_0jewb"]
+[ext_resource type="PackedScene" uid="uid://bb4m8n2s6x0ve" path="res://Scenes/UI/IndicadorReputacion.tscn" id="24_reputacion"]
 [ext_resource type="AudioStream" uid="uid://bltblumv0tckr" path="res://Assets/Events/EventoMedio/finalmedio.ogg" id="24_ree4u"]
 
 [sub_resource type="Animation" id="Animation_jy5sd"]
@@ -205,6 +206,13 @@ offset_right = 383.0
 offset_bottom = 166.0
 theme_override_colors/font_color = Color(0.95686275, 0.95686275, 0.95686275, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+
+[node name="IndicadorReputacion" parent="CanvasLayer/VistaTextoIntroduccion/ResumenRect" instance=ExtResource("24_reputacion")]
+layout_mode = 0
+offset_left = 397.0
+offset_top = 139.0
+offset_right = 620.0
+offset_bottom = 171.0
 
 [node name="LabelAutos" type="Label" parent="CanvasLayer/VistaTextoIntroduccion/ResumenRect" unique_id=1715935034]
 layout_mode = 0
