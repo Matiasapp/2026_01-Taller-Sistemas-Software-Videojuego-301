@@ -132,6 +132,49 @@ func test_estadisticas_generales_suman_todos_los_dias() -> void:
 	assert_eq(generales["dinero_actual"], 500)
 
 
+func test_resumen_final_consolida_valores_reales_y_una_atencion_pendiente() -> void:
+	DATOSGLOBALES.iniciar_resumen_atencion()
+	DATOSGLOBALES.registrar_diagnostico_dia(true)
+	DATOSGLOBALES.reportar_rendimiento_minijuego(
+		0.8,
+		150,
+		DATOSGLOBALES.DESEMPENO_EXITOSO,
+		"Prueba de resumen final"
+	)
+	DATOSGLOBALES.dinero_antes_atencion = 500
+	DATOSGLOBALES.dinero = 650
+	DATOSGLOBALES.volviendo_de_atencion = true
+
+	var resumen := DATOSGLOBALES.get_resumen_final()
+
+	assert_eq(resumen["reputacion"], DATOSGLOBALES.reputacion)
+	assert_eq(resumen["clientes_atendidos"], 1)
+	assert_eq(resumen["clientes_satisfechos"], 1)
+	assert_eq(resumen["dinero_final"], 650)
+	assert_false(DATOSGLOBALES.volviendo_de_atencion)
+
+	# Consultar el resumen otra vez no debe duplicar al ultimo cliente.
+	var segundo_resumen := DATOSGLOBALES.get_resumen_final()
+	assert_eq(segundo_resumen["clientes_atendidos"], 1)
+	assert_eq(segundo_resumen["clientes_satisfechos"], 1)
+
+
+func test_cliente_con_diagnostico_y_minijuego_fallidos_se_descuenta_una_vez() -> void:
+	DATOSGLOBALES.iniciar_resumen_atencion()
+	DATOSGLOBALES.registrar_diagnostico_dia(false)
+	DATOSGLOBALES.reportar_rendimiento_minijuego(
+		0.1,
+		0,
+		DATOSGLOBALES.DESEMPENO_FALLIDO,
+		"Prueba fallida"
+	)
+	DATOSGLOBALES.registrar_atencion_dia(0)
+
+	var resumen := DATOSGLOBALES.get_resumen_final()
+	assert_eq(resumen["clientes_atendidos"], 1)
+	assert_eq(resumen["clientes_satisfechos"], 0)
+
+
 func test_formatear_monto_distingue_positivo_cero_y_negativo() -> void:
 	assert_eq(DATOSGLOBALES.formatear_monto(75), "+$75")
 	assert_eq(DATOSGLOBALES.formatear_monto(0), "+$0")

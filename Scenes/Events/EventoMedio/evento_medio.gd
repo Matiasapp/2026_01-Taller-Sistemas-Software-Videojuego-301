@@ -8,6 +8,7 @@ extends Node2D
 @onready var label_texto_dinero: Label = $CanvasLayer/VistaTextoIntroduccion/ResumenRect/LabelTextoDinero
 
 @onready var label_reputacion: Label = $CanvasLayer/VistaTextoIntroduccion/ResumenRect/LabelReputacion
+@onready var indicador_reputacion = $CanvasLayer/VistaTextoIntroduccion/ResumenRect/IndicadorReputacion
 @onready var label_clientes: Label = $CanvasLayer/VistaTextoIntroduccion/ResumenRect/LabelClientes
 @onready var label_autos: Label = $CanvasLayer/VistaTextoIntroduccion/ResumenRect/LabelAutos
 @onready var label_dinero: Label = $CanvasLayer/VistaTextoIntroduccion/ResumenRect/LabelDinero
@@ -25,23 +26,23 @@ extends Node2D
 @export var imagen_hombre_1: Texture2D
 @export var imagen_mujer_1: Texture2D
 
-@export var imagen_2: Texture2D
-@export var imagen_3: Texture2D
+@export var imagen_hombre_2: Texture2D
+@export var imagen_mujer_2: Texture2D
+
+@export var imagen_hombre_3: Texture2D
+@export var imagen_mujer_3: Texture2D
 
 @export var imagen_hombre_4: Texture2D
 @export var imagen_mujer_4: Texture2D
 
-@export var imagen_5: Texture2D
+@export var imagen_hombre_5: Texture2D
+@export var imagen_mujer_5: Texture2D
 
 @export var imagen_hombre_6: Texture2D
 @export var imagen_mujer_6: Texture2D
 
-@export var imagen_7: Texture2D
-
-@export var imagen_8: Texture2D
-
-@export var imagen_9_fondo: Texture2D
-@export var imagen_9_panel: Texture2D
+@export var imagen_resumen_fondo: Texture2D
+@export var imagen_resumen_panel: Texture2D
 
 var animador_texto: Tween
 var escribiendo := false
@@ -75,29 +76,40 @@ func _ready() -> void:
 
 func configurar_evento() -> void:
 	mensajes = [
-	"Llegaste a un taller al borde del colapso. Las deudas se acumulaban, las herramientas estaban desgastadas y pocos clientes seguían confiando en este lugar. Aun así, decidiste darle una oportunidad.",
-	"Durante la semana trabajaste con lo que tenías. Cada reparación exigía esfuerzo y muchas veces hubo que improvisar para sacar adelante el trabajo. No todo salió como esperabas, pero lograste mantener las puertas abiertas.",
-	"Las ganancias fueron suficientes para cubrir lo más urgente. No hubo grandes avances ni nuevas herramientas, pero al menos el taller pudo seguir funcionando un día más.",
-	"Algunos clientes quedaron satisfechos, mientras que otros siguieron dudando de la calidad del servicio. Cada decisión tuvo consecuencias y no siempre fue posible cumplir con todas las expectativas.",
-	"Hubo pérdidas, errores y momentos en los que parecía que el esfuerzo no sería suficiente. Aun así, decidiste continuar, confiando en que el trabajo constante daría resultados con el tiempo.",
-	"Poco a poco comenzaron a regresar algunos clientes. Sin embargo, la mayoría aún veía tu taller como una opción más entre muchos otros. Ganarse su confianza requerirá más tiempo y mejores resultados.",
-	"La reputación del taller empezó a recuperarse, pero todavía no es suficiente para destacar frente a la competencia. Aún queda mucho camino por recorrer antes de convertirte en el taller de referencia del barrio.",
-	"Sobreviviste a la primera semana. El dinero apenas alcanzó para mantener el negocio en funcionamiento y la reputación aún no marca una diferencia. El taller sigue en pie, pero el verdadero desafío apenas comienza."
-]
+		"Cuando llegaste, el taller llevaba tiempo funcionando con dificultades. Las herramientas estaban desgastadas, los recursos eran limitados y cada jornada traía nuevos problemas. Aun así, asumiste la responsabilidad de mantenerlo en marcha.",
+
+		"Durante la semana reparaste vehículos, atendiste clientes y resolviste los problemas que aparecieron en el camino. Algunos trabajos salieron bien; otros dejaron claro que todavía había mucho por mejorar.",
+
+		"No todos los clientes se fueron satisfechos, pero tampoco dejaron de llegar. Para algunos, el taller cumplió con lo necesario. Para otros, siguió siendo solo una alternativa más entre tantas.",
+
+		"El dinero alcanzó para cubrir parte de los gastos y continuar trabajando. No hubo grandes inversiones ni cambios importantes. Las mismas herramientas, el mismo espacio y una nueva jornada por delante.",
+
+		"Al terminar la semana, el taller no era muy diferente al que encontraste. No lograste transformarlo, pero tampoco permitiste que desapareciera. Simplemente conseguiste mantenerlo funcionando.",
+
+		"A la mañana siguiente, volviste a abrir las puertas. Todavía quedan reparaciones por hacer, clientes por atender y decisiones que tomar. Por ahora, el taller continúa."
+	]
 
 	var es_mujer := DATOSGLOBALES.genero_jugador == "Femenino"
 
 	imagenes = [
-		imagen_mujer_1 if es_mujer else imagen_hombre_1,
-		imagen_2,
-		imagen_3,
-		imagen_mujer_4 if es_mujer else imagen_hombre_4,
-		imagen_5,
-		imagen_mujer_6 if es_mujer else imagen_hombre_6,
-		imagen_7,
-		imagen_8,
-		imagen_9_fondo
+		seleccionar_imagen_genero(imagen_hombre_1, imagen_mujer_1, es_mujer),
+		seleccionar_imagen_genero(imagen_hombre_2, imagen_mujer_2, es_mujer),
+		seleccionar_imagen_genero(imagen_hombre_3, imagen_mujer_3, es_mujer),
+		seleccionar_imagen_genero(imagen_hombre_4, imagen_mujer_4, es_mujer),
+		seleccionar_imagen_genero(imagen_hombre_5, imagen_mujer_5, es_mujer),
+		seleccionar_imagen_genero(imagen_hombre_6, imagen_mujer_6, es_mujer)
 	]
+
+
+func seleccionar_imagen_genero(
+	imagen_hombre: Texture2D,
+	imagen_mujer: Texture2D,
+	es_mujer: bool
+) -> Texture2D:
+	if es_mujer and imagen_mujer:
+		return imagen_mujer
+
+	return imagen_hombre
 
 func _input(event) -> void:
 	if not vista_evento.visible:
@@ -110,7 +122,7 @@ func _input(event) -> void:
 		if escribiendo:
 			saltar_animacion()
 		elif resumen_final_activo:
-			indice_mensaje = 8
+			indice_mensaje = mensajes.size()
 			mostrar_resumen_limpio()
 		else:
 			avanzar_mensaje()
@@ -210,11 +222,12 @@ func _on_comenzar_pressed() -> void:
 	if continuar_button.disabled:
 		return
 
+	continuar_button.disabled = true
 	AUDIOMANAGER.play_ui_click()
 
 	await get_tree().create_timer(0.15).timeout
 
-	finalizar_evento()
+	await finalizar_evento()
 
 
 func _on_comenzar_mouse_entered() -> void:
@@ -227,14 +240,14 @@ func mostrar_resumen_limpio() -> void:
 	stop_talking()
 	resumen_listo_para_salir = true
 
-	if imagen_9_fondo:
-		imagen.texture = imagen_9_fondo
+	if imagen_resumen_fondo:
+		imagen.texture = imagen_resumen_fondo
 
 	if panel_texto:
 		panel_texto.visible = false
 
-	if resumen_rect and imagen_9_panel:
-		resumen_rect.texture = imagen_9_panel
+	if resumen_rect and imagen_resumen_panel:
+		resumen_rect.texture = imagen_resumen_panel
 		resumen_rect.visible = true
 
 	actualizar_resumen_final()
@@ -245,25 +258,22 @@ func mostrar_resumen_limpio() -> void:
 	continuar_button.text = "Continuar"
 	
 func actualizar_resumen_final() -> void:
-	label_titulo.text = "RESUMEN SEMANAL"
-	label_descripcion.text = "Completaste los 5 dias, pero el futuro del taller sigue incierto."
+	label_titulo.text = "EL TALLER CONTINÚA"
+	label_descripcion.text = "Completaste los 5 días y mantuviste el taller en funcionamiento."
 
 	label_texto_reputacion.text = "REPUTACIÓN"
 	label_texto_clientes.text = "CLIENTES SATISFECHOS"
 	label_texto_autos.text = "CLIENTES ATENDIDOS (TOTAL)"
 	label_texto_dinero.text = "DINERO FINAL"
 
-	var stats := DATOSGLOBALES.get_estadisticas_generales()
-	var reputacion: int = DATOSGLOBALES.reputacion
-	var clientes_atendidos_total: int = int(stats.get("clientes_atendidos", 0))
-	var incidentes: int = (
-		int(stats.get("diagnosticos_incorrectos", 0))
-		+ int(stats.get("minijuegos_fallidos", 0))
-	)
-	var clientes_satisfechos := maxi(0, clientes_atendidos_total - incidentes)
-	var ganancias_totales := DATOSGLOBALES.dinero
+	var resumen := DATOSGLOBALES.get_resumen_final()
+	var reputacion := int(resumen.get("reputacion", 0))
+	var clientes_atendidos_total := int(resumen.get("clientes_atendidos", 0))
+	var clientes_satisfechos := int(resumen.get("clientes_satisfechos", 0))
+	var ganancias_totales := int(resumen.get("dinero_final", 0))
 
 	label_reputacion.text = str(reputacion) + "%"
+	indicador_reputacion.set_reputacion(reputacion)
 	label_clientes.text = str(clientes_satisfechos)
 	label_autos.text = str(clientes_atendidos_total)
 	label_dinero.text = "$%d" % ganancias_totales if ganancias_totales >= 0 else "-$%d" % absi(ganancias_totales)

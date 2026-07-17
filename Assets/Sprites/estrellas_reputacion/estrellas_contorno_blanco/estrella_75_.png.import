@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bnfi75kq45r3a"
-path="res://.godot/imported/6m.png-6e944bc0cb1e70a8bf115b3b7a49d344.ctex"
+uid="uid://cn4x6h7obv3kh"
+path="res://.godot/imported/estrella_75_.png-55c6023ba5f060ea5f5ae82ab3e6f7f6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Events/EventoMedio/6m.png"
-dest_files=["res://.godot/imported/6m.png-6e944bc0cb1e70a8bf115b3b7a49d344.ctex"]
+source_file="res://Assets/Sprites/estrellas_reputacion/estrellas_contorno_blanco/estrella_75_.png"
+dest_files=["res://.godot/imported/estrella_75_.png-55c6023ba5f060ea5f5ae82ab3e6f7f6.ctex"]
 
 [params]
 
