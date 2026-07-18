@@ -47,6 +47,7 @@ texturas_derecha = Array[Texture2D]([SubResource("AtlasTexture_0lb3p"), SubResou
 texturas_izquierda = Array[Texture2D]([null, null, SubResource("AtlasTexture_xggxn"), SubResource("AtlasTexture_b6nam")])
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=482849701]
+visible = false
 z_index = 2
 z_as_relative = false
 y_sort_enabled = true

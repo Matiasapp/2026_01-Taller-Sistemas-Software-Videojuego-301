@@ -18,6 +18,7 @@ var sonido_activado: bool = false
 @onready var jugador: Node2D = get_tree().get_first_node_in_group("jugador")
 
 func _ready() -> void:
+	add_to_group("vehiculos")
 	# Selección aleatoria del vehículo
 	if texturas_derecha.size() > 0:
 		var indice_aleatorio = randi() % texturas_derecha.size()

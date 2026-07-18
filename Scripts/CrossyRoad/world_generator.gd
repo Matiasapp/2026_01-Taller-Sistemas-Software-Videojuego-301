@@ -144,7 +144,7 @@ func limpiar_franjas_viejas() -> void:
 
 	# Distancia (en píxeles) por DEBAJO del jugador a partir de la cual una franja ya no se ve.
 	# Recuerda: "arriba" es Y negativa, así que las franjas viejas tienen Y MAYOR que el jugador.
-	var margen_limpieza := tamaño_casilla * 12
+	var margen_limpieza := tamaño_casilla * 80
 
 	# La lista está ordenada de la más vieja (abajo) a la más nueva (arriba).
 	# Solo borramos desde el frente mientras esa franja siga muy por detrás del jugador.

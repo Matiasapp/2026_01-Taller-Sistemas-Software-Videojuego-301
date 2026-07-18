@@ -42,9 +42,20 @@ var posicion_logica: Vector2
 var tween_actual: Tween 
 
 var posicion_inicial_y: float
+var posicion_inicial_x: float
 var maximas_casillas_avanzadas: int = 0
 
+# --- VARIABLES IA ---
+@onready var ai_controller = $AIController2D
+@export var modo_entrenamiento: bool = true # Cambia a false cuando quieras jugar tú manualmente
+var casillas_historico_ia: int = 0 # Para darle puntos a la IA solo cuando avanza a zonas nuevas
+var accion_ia: int = 0 # Guarda el input actual de la red neuronal
+
 func _ready() -> void:
+	# Inicializamos la IA
+	if ai_controller:
+		ai_controller.init(self)
+		
 	if panel_tutorial:
 		panel_tutorial.show()
 
@@ -52,6 +63,15 @@ func _ready() -> void:
 			var tween_blink = create_tween().set_loops()
 			tween_blink.tween_property(label_parpadeo, "modulate:a", 0.0, 0.6)
 			tween_blink.tween_property(label_parpadeo, "modulate:a", 1.0, 0.6)
+
+	# ===============================================================
+	# NUEVO: Si la IA entrena, saltar el tutorial de inmediato
+	# ===============================================================
+	if modo_entrenamiento:
+		juego_iniciado = true
+		if panel_tutorial:
+			panel_tutorial.hide()
+	# ===============================================================
 
 	z_index = 2
 	entorno_visual.adjustment_saturation = 1.0
@@ -64,6 +84,7 @@ func _ready() -> void:
 
 	tiempo_restante = tiempo_limite
 	posicion_logica = position
+	posicion_inicial_x = position.x
 	posicion_inicial_y = position.y
 	actualizar_idle()
 
@@ -80,6 +101,11 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	# --- NUEVO: La IA revisa si necesita reiniciar el entorno ---
+	if modo_entrenamiento and ai_controller.needs_reset:
+		reiniciar_entorno()
+		ai_controller.reset() # Limpiamos la bandera interna del plugin
+		return # Cortamos el frame aquí para evitar errores visuales
 	if camara and not esta_muerto:
 		var destino_x = global_position.x
 		var destino_y = posicion_inicial_y - (maximas_casillas_avanzadas * tamaño_casilla)
@@ -101,23 +127,37 @@ func _process(delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	# Bloqueamos el input manual si la IA está entrenando
+	if modo_entrenamiento:
+		return
+		
 	if se_esta_moviendo or esta_muerto or ha_ganado:
 		return
 		
+	var accion_manual = 0
+	if event.is_action_pressed("mover_arriba"): accion_manual = 1
+	elif event.is_action_pressed("mover_abajo"): accion_manual = 2
+	elif event.is_action_pressed("mover_izquierda"): accion_manual = 3
+	elif event.is_action_pressed("mover_derecha"): accion_manual = 4
+	
+	if accion_manual != 0:
+		ejecutar_movimiento(accion_manual)
+
+
+func ejecutar_movimiento(accion: int) -> void:
 	if not juego_iniciado:
-		if event.is_action_pressed("mover_arriba") or event.is_action_pressed("mover_abajo") or event.is_action_pressed("mover_izquierda") or event.is_action_pressed("mover_derecha"):
-			juego_iniciado = true
-			if panel_tutorial:
-				panel_tutorial.hide()
+		juego_iniciado = true
+		if panel_tutorial:
+			panel_tutorial.hide()
 
 	var direccion = Vector2.ZERO
 	var casillas_actuales = int((posicion_inicial_y - posicion_logica.y) / tamaño_casilla)
 	
-	if event.is_action_pressed("mover_arriba"):
+	if accion == 1: # Arriba
 		direccion = Vector2.UP
 		anim.play("saltar_arriba")
 			
-	elif event.is_action_pressed("mover_abajo"):
+	elif accion == 2: # Abajo
 		var casilla_destino = casillas_actuales - 1
 		var casilla_minima_permitida = maximas_casillas_avanzadas - limite_retroceso
 		
@@ -127,10 +167,11 @@ func _unhandled_input(event: InputEvent) -> void:
 		else:
 			print("¡Límite de retroceso! No puedes volver más de ", limite_retroceso, " casillas.")
 			
-	elif event.is_action_pressed("mover_izquierda"):
+	elif accion == 3: # Izquierda
 		direccion = Vector2.LEFT
 		anim.play("saltar_izquierda")
-	elif event.is_action_pressed("mover_derecha"):
+		
+	elif accion == 4: # Derecha
 		direccion = Vector2.RIGHT
 		anim.play("saltar_derecha")
 
@@ -190,6 +231,12 @@ func morir() -> void:
 	
 	if tween_actual and tween_actual.is_running():
 		tween_actual.kill()
+		
+	# MODO ENTRENAMIENTO: Abortamos la UI para no trabar a la IA
+	if modo_entrenamiento:
+		ai_controller.done = true
+		ai_controller.needs_reset = true
+		return
 	
 	entorno_visual.adjustment_enabled = true
 	Engine.time_scale = 0.3 
@@ -208,12 +255,18 @@ func ganar() -> void:
 
 	ha_ganado = true
 	print("¡Llegaste a la tienda de repuestos!")
+	
+	# MODO ENTRENAMIENTO: Abortamos la UI para no trabar a la IA
+	if modo_entrenamiento:
+		ai_controller.done = true
+		ai_controller.needs_reset = true
+		return
+		
 	calculo_dinero_final()
 	get_tree().create_timer(1.2, true, false, true).timeout.connect(mostrar_pantalla_final)
 
 
 func mostrar_pantalla_final() -> void:
-	# 1. Usar pausa nativa en lugar de time_scale = 0.0 para no romper el panel
 	get_tree().paused = true
 	var rendimiento: float = 1.0 if ha_ganado else clampf(float(maximas_casillas_avanzadas) / float(meta_casillas), 0.0, 1.0)
 	var nivel_desempeno := DATOSGLOBALES.DESEMPENO_FALLIDO
@@ -228,18 +281,11 @@ func mostrar_pantalla_final() -> void:
 		"Busqueda de repuesto",
 		"Progreso: %d/%d casillas." % [maximas_casillas_avanzadas, meta_casillas]
 	)
-	# 2. Forzar esta variable para que el panel NO se autodestruya al nacer
 	DATOSGLOBALES.volviendo_de_atencion = true
-	# 3. Instanciamos el nuevo panel
 	var resumen := preload("res://Scenes/UI/ResumenAtencion.tscn").instantiate()
-	# 4. Lo ponemos en una capa altísima para que nada lo tape
 	resumen.layer = 100
-	# Lo agregamos a la escena
 	add_child(resumen)
-	# CONEXIÓN: unimos la señal "continuar" a nuestra función de regreso
 	resumen.continuar.connect(_on_button_continuar_pressed)
-	
-	# Nos aseguramos de que sea visible (por si le habías puesto hide() en su _ready)
 	resumen.show()
 
 
@@ -276,19 +322,33 @@ func calculo_dinero_final() -> void:
 
 
 func _on_button_continuar_pressed() -> void:
-	# Esta función se ejecutará automáticamente cuando el usuario pulse "Continuar" 
-	# en la escena de ResumenAtencion.
-
-	# El timer ignorará la escala de tiempo (argumento final = true)
 	await get_tree().create_timer(0.15, true, false, true).timeout
-	
 	Engine.time_scale = 1.0
 	get_tree().paused = false
-	
 	DATOSGLOBALES.sumar_dinero(dinero_obtenido)
-
-	print("Volviendo al taller desde Crossy Road. Dinero obtenido: $", dinero_obtenido)
-	var destino := DATOSGLOBALES.obtener_destino_post_escena(
-		"res://Scenes/Gameplay/GameScreen.tscn"
-	)
+	var destino := DATOSGLOBALES.obtener_destino_post_escena("res://Scenes/Gameplay/GameScreen.tscn")
 	get_tree().change_scene_to_file(destino)
+func reiniciar_entorno() -> void:
+	# 1. Limpieza absoluta de estados físicos
+	if tween_actual and tween_actual.is_running():
+		tween_actual.kill()
+		
+	position = Vector2(posicion_inicial_x, posicion_inicial_y)
+	posicion_logica = position
+	
+	# 2. Reseteo de contadores de la IA
+	tiempo_restante = tiempo_limite
+	maximas_casillas_avanzadas = 0
+	casillas_historico_ia = 0
+	
+	# 3. Limpieza de estados críticos
+	esta_muerto = false
+	ha_ganado = false
+	se_esta_moviendo = false
+	
+	# 4. Asegurar que el controlador de IA reciba el estado de reset
+	if ai_controller:
+		ai_controller.done = false # Reseteamos la bandera de fin de episodio
+		ai_controller.needs_reset = false # Importante: limpiar esta bandera
+	
+	actualizar_idle()

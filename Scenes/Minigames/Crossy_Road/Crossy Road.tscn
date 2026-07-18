@@ -106,6 +106,7 @@ bonus_meta = 200
 penalizacion_fracaso = 100
 tiempo_limite = 45.0
 label_parpadeo = NodePath("../Hud/Tutorial/PanelTutorial/Comenzar")
+modo_entrenamiento = false
 
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=440032078]
 position = Vector2(0, -0.5)

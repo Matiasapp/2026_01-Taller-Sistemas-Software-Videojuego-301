@@ -31,7 +31,7 @@ func generar_obstaculos() -> void:
 		# 90% de probabilidad de que aparezca un árbol en esta casilla
 		if randf() > 0.1:
 			var nuevo_arbol = arbol_escena.instantiate()
-			
+			nuevo_arbol.add_to_group("arboles")
 			# Ahora el árbol parte desde el borde izquierdo real y avanza según su columna
 			nuevo_arbol.position.x = posicion_inicial_x + (columna * tamaño_casilla)
 			nuevo_arbol.position.y = 0 
