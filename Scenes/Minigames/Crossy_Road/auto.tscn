@@ -54,7 +54,6 @@ sonido_normal = ExtResource("3_jxf3x")
 sonido_policia = ExtResource("4_5ajfa")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=549841757]
-visible = false
 z_index = 2
 z_as_relative = false
 y_sort_enabled = true

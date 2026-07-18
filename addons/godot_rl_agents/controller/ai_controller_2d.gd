@@ -21,6 +21,7 @@ var done := false
 var reward := 0.0
 var n_steps := 0
 var needs_reset := false
+var pending_reset := false
 
 var _player: Node2D
 
@@ -70,6 +71,7 @@ func reset():
 	n_steps = 0
 	done = false
 	needs_reset = false
+	pending_reset = false
 
 func reset_if_done():
 	if done:

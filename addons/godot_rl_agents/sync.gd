@@ -497,6 +497,7 @@ func handle_message() -> bool:
 
 	if message["type"] == "action":
 		var action = message["action"]
+		_reset_pending_agents(agents_training)
 		_set_agent_actions(action, agents_training)
 		need_to_send_obs = true
 		get_tree().set_pause(false)
@@ -525,6 +526,12 @@ func _reset_agents(agents = all_agents):
 		agent.reset()
 
 
+func _reset_pending_agents(agents = all_agents):
+	for agent in agents:
+		if "pending_reset" in agent and agent.pending_reset:
+			agent.reset()
+
+
 func _get_obs_from_agents(agents: Array = all_agents):
 	var obs = []
 	for agent in agents:
@@ -545,6 +552,8 @@ func _get_done_from_agents(agents: Array = agents_training):
 	for agent in agents:
 		var done = agent.get_done()
 		if done:
+			if "pending_reset" in agent:
+				agent.pending_reset = true
 			agent.set_done_false()
 		dones.append(done)
 	return dones

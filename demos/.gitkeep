@@ -1,0 +1,2 @@
+# Carpeta de destino para las demos de experto de Crossy Road.
+# Configura en el nodo AIController2D: expert_demo_save_path = "res://demos/crossy_demos.json"

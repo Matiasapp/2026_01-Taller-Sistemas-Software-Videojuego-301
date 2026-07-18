@@ -34,6 +34,12 @@ func _ready() -> void:
 				sprite.texture = texturas_derecha[indice_aleatorio]
 				sprite.flip_h = true
 
+		# El Sprite2D nace con visible = false en la escena (para no mostrar una
+		# textura por defecto antes de asignar la real). Ya tenemos una textura
+		# válida, así que ahora sí lo mostramos. Sin esto los autos son
+		# invisibles aunque colisionen (la colisión es un nodo aparte).
+		sprite.visible = true
+
 		# Sonido del vehículo
 		if audio_vocina and randf() <= probabilidad_sonido:
 

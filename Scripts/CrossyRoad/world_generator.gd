@@ -57,7 +57,9 @@ func _ready() -> void:
 func reiniciar_entorno_entrenamiento() -> void:
 	for franja in franjas_activas:
 		if is_instance_valid(franja):
-			franja.queue_free()
+			if franja.get_parent() == self:
+				remove_child(franja)
+			franja.free()
 
 	franjas_activas.clear()
 	posicion_y_actual = 0

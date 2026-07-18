@@ -30,6 +30,11 @@ radius = 6.666667
 background_mode = 3
 adjustment_enabled = true
 
+[sub_resource type="InputEventKey" id="InputEventKey_svdu5"]
+device = -1
+keycode = 80
+unicode = 112
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ijbgn"]
 size = Vector2(1152, 242)
 
@@ -158,6 +163,10 @@ bus = &"SFX"
 [node name="AIController2D" type="Node2D" parent="Player" unique_id=554547745]
 position = Vector2(2.0000002, 8)
 script = ExtResource("14_hdlxh")
+control_mode = 4
+reset_after = 2800
+expert_demo_save_path = "res://demos/crossy_demos.json"
+remove_last_episode_key = SubResource("InputEventKey_svdu5")
 metadata/_custom_type_script = "uid://cv03j0rliwodk"
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=2025136447]
@@ -183,7 +192,6 @@ position = Vector2(590, -104)
 position = Vector2(590, -176)
 
 [node name="Hud" type="CanvasLayer" parent="." unique_id=581804483]
-visible = false
 
 [node name="ResumenAtencion" parent="Hud" unique_id=686501913 instance=ExtResource("15_acwbp")]
 visible = false

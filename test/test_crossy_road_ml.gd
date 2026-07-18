@@ -7,12 +7,19 @@ const Sincronizador = preload("res://addons/godot_rl_agents/sync.gd")
 class AgenteTerminalFalso:
 	extends Node
 	var reset_ejecutado := false
+	var pending_reset := false
+	var terminado := true
 
 	func get_done() -> bool:
-		return true
+		return terminado
+
+	func set_done_false() -> void:
+		terminado = false
 
 	func reset() -> void:
 		reset_ejecutado = true
+		pending_reset = false
+		terminado = false
 
 
 func test_limite_de_pasos_cierra_el_episodio_sin_reiniciarlo() -> void:
@@ -49,6 +56,32 @@ func test_inferencia_resetea_el_agente_al_terminar() -> void:
 	sincronizador._reset_agents_if_done([agente])
 
 	assert_true(agente.reset_ejecutado)
+	agente.free()
+	sincronizador.free()
+
+
+func test_done_reportado_deja_un_reset_pendiente() -> void:
+	var sincronizador := Sincronizador.new()
+	var agente := AgenteTerminalFalso.new()
+
+	var terminados := sincronizador._get_done_from_agents([agente])
+
+	assert_eq(terminados, [true])
+	assert_true(agente.pending_reset)
+	assert_false(agente.terminado)
+	agente.free()
+	sincronizador.free()
+
+
+func test_accion_nueva_resetea_un_episodio_terminal_pendiente() -> void:
+	var sincronizador := Sincronizador.new()
+	var agente := AgenteTerminalFalso.new()
+	agente.pending_reset = true
+
+	sincronizador._reset_pending_agents([agente])
+
+	assert_true(agente.reset_ejecutado)
+	assert_false(agente.pending_reset)
 	agente.free()
 	sincronizador.free()
 
