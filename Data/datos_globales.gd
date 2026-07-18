@@ -32,13 +32,21 @@ var estadisticas_dias: Dictionary = {}
 
 const FINAL_REPUTACION_SCENE := "res://Scenes/Events/FinalMalo/FinalMalo1.tscn"
 const FINAL_DEUDA_SCENE := "res://Scenes/Events/FinalMalo/FinalMalo2.tscn"
+const FINAL_DESALOJO_SCENE := "res://Scenes/Events/EventoDesalojo/EventoDesalojo.tscn"
 const FINAL_VICTORIA_SCENE := "res://Scenes/Events/EventoVictoria/evento_victoria.tscn"
 const FINAL_MEDIO_SCENE := "res://Scenes/Events/EventoMedio/evento_medio.tscn"
+const GAME_SCREEN_SCENE := "res://Scenes/Gameplay/GameScreen.tscn"
 
 const UMBRAL_DEUDA_EXTREMA: int = -800
 const UMBRAL_VICTORIA_DINERO: int = 800
 const UMBRAL_VICTORIA_REPUTACION: int = 80
 const ULTIMO_DIA: int = 5
+const NOMBRE_GASTO_ARRIENDO := "Arriendo del taller"
+const ARRIENDOS_POSTERGADOS_PARA_DESALOJO: int = 3
+
+## Los atrasos de arriendo son acumulativos: pagar una jornada posterior no
+## elimina las obligaciones que quedaron pendientes en cierres anteriores.
+var arriendos_postergados: int = 0
 
 ## El final no interrumpe la pantalla donde se perdio el ultimo punto. Se marca
 ## como pendiente y se lanza apenas esa escena entrega el control a la siguiente.
@@ -93,6 +101,10 @@ var dinero: int = 500:
 		dinero_cambiado.emit(dinero)
 		if dinero <= UMBRAL_DEUDA_EXTREMA:
 			_programar_evento_final(FINAL_DEUDA_SCENE)
+		elif final_pendiente_scene == FINAL_DEUDA_SCENE:
+			# La recompensa del minijuego puede sacar al jugador de la deuda
+			# antes de que termine la atencion.
+			_limpiar_final_pendiente()
 
 func sumar_dinero(cantidad: int):
 	dinero += cantidad
@@ -452,6 +464,9 @@ func registrar_gastos_diarios(
 	stats["gastos_diarios_total"] = total_pagado
 	stats["gastos_diarios_pagados"] = pagados.duplicate()
 	stats["gastos_diarios_postergados"] = postergados.duplicate()
+	if postergados.has(NOMBRE_GASTO_ARRIENDO):
+		arriendos_postergados += 1
+	stats["arriendos_postergados_acumulados"] = arriendos_postergados
 	stats["gastos"] = int(stats.get("gastos", 0)) + total_pagado
 	stats["balance"] = int(stats.get("balance", 0)) - total_pagado
 	stats["dinero_final"] = dinero
@@ -465,9 +480,16 @@ func registrar_gastos_diarios(
 			"Pagos postergados: %s. Sin cambio de reputacion."
 			% ", ".join(PackedStringArray(postergados))
 		)
+	if postergados.has(NOMBRE_GASTO_ARRIENDO):
+		eventos.append(
+			"Arriendo postergado: %d de %d atrasos para el desalojo."
+			% [arriendos_postergados, ARRIENDOS_POSTERGADOS_PARA_DESALOJO]
+		)
 	stats["eventos"] = eventos
 
 	estadisticas_dias[dia] = stats
+	if dia >= ULTIMO_DIA and arriendos_postergados >= ARRIENDOS_POSTERGADOS_PARA_DESALOJO:
+		_programar_evento_final(FINAL_DESALOJO_SCENE)
 	return true
 
 func get_estadistica_dia(dia: int) -> Dictionary:
@@ -548,6 +570,7 @@ func reiniciar() -> void:
 	_pieza_reputacion_registrada = false
 	_minijuego_reputacion_registrado = false
 	_avisos_reputacion_pendientes.clear()
+	arriendos_postergados = 0
 	dia_actual = 1
 	dinero = 500
 	reputacion = REPUTACION_INICIAL
@@ -573,6 +596,10 @@ var reputacion: int = REPUTACION_INICIAL:
 		reputacion_cambiado.emit(reputacion)
 		if reputacion == 0:
 			_programar_evento_final(FINAL_REPUTACION_SCENE)
+		elif final_pendiente_scene == FINAL_REPUTACION_SCENE:
+			# La pieza o el minijuego pueden recuperar reputacion antes de que
+			# termine la atencion; en ese caso el final deja de corresponder.
+			_limpiar_final_pendiente()
 
 
 func sumar_reputacion(cantidad: int, motivo: String = "") -> void:
@@ -615,6 +642,16 @@ func limpiar_avisos_reputacion() -> void:
 ## Devuelve la escena que debe seguir a la actual. Los finales criticos tienen
 ## prioridad; la evaluacion semanal solo ocurre una vez terminado el dia 5.
 func obtener_destino_post_escena(destino_normal: String) -> String:
+	# Si la reputacion o el dinero alcanzaron un limite terminal durante una
+	# atencion, primero se completa el minijuego. Su resultado todavia puede
+	# compensar la perdida.
+	if (
+		volviendo_de_atencion
+		and destino_normal != GAME_SCREEN_SCENE
+		and final_pendiente_scene in [FINAL_REPUTACION_SCENE, FINAL_DEUDA_SCENE]
+	):
+		return destino_normal
+
 	var destino := _obtener_final_critico()
 
 	if destino.is_empty() and dia_actual > ULTIMO_DIA:
@@ -633,10 +670,18 @@ func obtener_destino_post_escena(destino_normal: String) -> String:
 
 func _obtener_final_critico() -> String:
 	# Reputacion tiene prioridad si ambas condiciones terminales se cumplen.
-	if final_pendiente_scene == FINAL_REPUTACION_SCENE or reputacion <= 0:
+	if reputacion <= 0:
 		return FINAL_REPUTACION_SCENE
-	if final_pendiente_scene == FINAL_DEUDA_SCENE or dinero <= UMBRAL_DEUDA_EXTREMA:
+	if dinero <= UMBRAL_DEUDA_EXTREMA:
 		return FINAL_DEUDA_SCENE
+	if (
+		final_pendiente_scene == FINAL_DESALOJO_SCENE
+		or (
+			dia_actual > ULTIMO_DIA
+			and arriendos_postergados >= ARRIENDOS_POSTERGADOS_PARA_DESALOJO
+		)
+	):
+		return FINAL_DESALOJO_SCENE
 	return ""
 
 func _programar_evento_final(ruta: String) -> void:
@@ -658,6 +703,14 @@ func _limpiar_final_pendiente() -> void:
 ## un final, aunque las rutas principales usan obtener_destino_post_escena y
 ## por ello no llegan a mostrar una escena intermedia.
 func _process(_delta: float) -> void:
+	# No interrumpir una reparacion por reputacion o deuda: ambas se reevalúan
+	# al salir del resumen del minijuego, con el balance completo disponible.
+	if (
+		volviendo_de_atencion
+		and final_pendiente_scene in [FINAL_REPUTACION_SCENE, FINAL_DEUDA_SCENE]
+	):
+		return
+
 	if final_pendiente_scene.is_empty() or _cambiando_a_evento_final:
 		return
 

@@ -11,10 +11,9 @@ extends Node2D
 @export var trail_extra_per_gas := 2
 
 #Dinero
-@export var valor_por_segundo := 4
-@export var bonus_victoria := 35
+@export var valor_por_segundo := 11
+@export var bonus_victoria := 30
 @export var penalizacion_derrota := 20
-@export var dinero_por_bidon := 12
 
 #Sprites
 @export var burn_mark_scene: PackedScene
@@ -359,9 +358,10 @@ func is_inside_board(cell: Vector2i) -> bool:
 func calcular_dinero_final() -> void:
 	var segundos_sobrevividos := int(elapsed_time)
 	var dinero_tiempo := segundos_sobrevividos * valor_por_segundo
-	var dinero_bidones := bidones_recogidos * dinero_por_bidon
 
-	dinero_obtenido = dinero_tiempo + dinero_bidones
+	# Los bidones siguen siendo parte de la mecanica y del resultado, pero el
+	# balance original paga por supervivencia: 30 s + victoria = $360.
+	dinero_obtenido = dinero_tiempo
 
 	if has_won:
 		dinero_obtenido += bonus_victoria

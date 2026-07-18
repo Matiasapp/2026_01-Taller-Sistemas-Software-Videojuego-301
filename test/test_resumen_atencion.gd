@@ -113,3 +113,98 @@ func test_reportar_rendimiento_actualiza_resumen_y_limita_porcentaje() -> void:
 		DATOSGLOBALES.reputacion_cambiado,
 		[DATOSGLOBALES.REPUTACION_INICIAL + DATOSGLOBALES.REP_MINIJUEGO_EXITOSO]
 	)
+
+
+func test_final_reputacion_no_interrumpe_el_minijuego_de_la_atencion() -> void:
+	DATOSGLOBALES.iniciar_resumen_atencion()
+	DATOSGLOBALES.volviendo_de_atencion = true
+	DATOSGLOBALES.reputacion = 0
+	var minijuego := "res://Scenes/Minigames/Prueba.tscn"
+
+	var destino := DATOSGLOBALES.obtener_destino_post_escena(minijuego)
+
+	assert_eq(destino, minijuego)
+	assert_eq(
+		DATOSGLOBALES.final_pendiente_scene,
+		DATOSGLOBALES.FINAL_REPUTACION_SCENE
+	)
+
+
+func test_minijuego_exitoso_compensa_y_cancela_el_final_reputacion() -> void:
+	DATOSGLOBALES.iniciar_resumen_atencion()
+	DATOSGLOBALES.volviendo_de_atencion = true
+	DATOSGLOBALES.reputacion = 0
+
+	DATOSGLOBALES.reportar_rendimiento_minijuego(
+		1.0,
+		0,
+		DATOSGLOBALES.DESEMPENO_EXITOSO,
+		"Prueba de compensacion"
+	)
+	var destino := DATOSGLOBALES.obtener_destino_post_escena(
+		DATOSGLOBALES.GAME_SCREEN_SCENE
+	)
+
+	assert_eq(DATOSGLOBALES.reputacion, DATOSGLOBALES.REP_MINIJUEGO_EXITOSO)
+	assert_eq(DATOSGLOBALES.final_pendiente_scene, "")
+	assert_eq(destino, DATOSGLOBALES.GAME_SCREEN_SCENE)
+
+
+func test_final_reputacion_se_mantiene_si_el_minijuego_no_compensa() -> void:
+	DATOSGLOBALES.iniciar_resumen_atencion()
+	DATOSGLOBALES.volviendo_de_atencion = true
+	DATOSGLOBALES.reputacion = 0
+
+	DATOSGLOBALES.reportar_rendimiento_minijuego(
+		0.5,
+		0,
+		DATOSGLOBALES.DESEMPENO_ACEPTABLE,
+		"Prueba sin compensacion"
+	)
+
+	assert_eq(DATOSGLOBALES.reputacion, 0)
+	assert_eq(
+		DATOSGLOBALES._obtener_final_critico(),
+		DATOSGLOBALES.FINAL_REPUTACION_SCENE
+	)
+
+
+func test_final_deuda_no_interrumpe_el_minijuego_de_la_atencion() -> void:
+	DATOSGLOBALES.iniciar_resumen_atencion()
+	DATOSGLOBALES.volviendo_de_atencion = true
+	DATOSGLOBALES.dinero = DATOSGLOBALES.UMBRAL_DEUDA_EXTREMA
+	var minijuego := "res://Scenes/Minigames/Prueba.tscn"
+
+	var destino := DATOSGLOBALES.obtener_destino_post_escena(minijuego)
+
+	assert_eq(destino, minijuego)
+	assert_eq(
+		DATOSGLOBALES.final_pendiente_scene,
+		DATOSGLOBALES.FINAL_DEUDA_SCENE
+	)
+
+
+func test_recompensa_compensa_y_cancela_el_final_deuda() -> void:
+	DATOSGLOBALES.iniciar_resumen_atencion()
+	DATOSGLOBALES.volviendo_de_atencion = true
+	DATOSGLOBALES.dinero = DATOSGLOBALES.UMBRAL_DEUDA_EXTREMA
+
+	DATOSGLOBALES.sumar_dinero(1)
+	var destino := DATOSGLOBALES.obtener_destino_post_escena(
+		DATOSGLOBALES.GAME_SCREEN_SCENE
+	)
+
+	assert_eq(DATOSGLOBALES.dinero, DATOSGLOBALES.UMBRAL_DEUDA_EXTREMA + 1)
+	assert_eq(DATOSGLOBALES.final_pendiente_scene, "")
+	assert_eq(destino, DATOSGLOBALES.GAME_SCREEN_SCENE)
+
+
+func test_final_deuda_se_mantiene_si_la_recompensa_no_compensa() -> void:
+	DATOSGLOBALES.iniciar_resumen_atencion()
+	DATOSGLOBALES.volviendo_de_atencion = true
+	DATOSGLOBALES.dinero = DATOSGLOBALES.UMBRAL_DEUDA_EXTREMA
+
+	assert_eq(
+		DATOSGLOBALES._obtener_final_critico(),
+		DATOSGLOBALES.FINAL_DEUDA_SCENE
+	)

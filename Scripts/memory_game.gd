@@ -19,6 +19,8 @@ const BOARD_H := ROWS * (CARD_H + GAP) - GAP
 const TIEMPO_LIMITE := 60.0
 const TIEMPO_MEMORIZACION := 2.0
 const FONDO_MEMORY_PATH := "res://Assets/Sprites/MemorizeGame/fondo_memory.png"
+const DINERO_POR_PAR := 28
+const DINERO_POR_SEGUNDO_RESTANTE := 1.33
 
 enum Estado {
 	INSTRUCCIONES,
@@ -289,7 +291,12 @@ func _procesar_final(gano: bool) -> void:
 	var rendimiento: float
 
 	if gano:
-		dinero_final = int(matched_pairs * 10 + t_restante * 0.5)
+		# Balance original: una partida perfecta entrega cerca de $360, en linea
+		# con Crossy Road y el resto de reparaciones completas.
+		dinero_final = int(
+			matched_pairs * DINERO_POR_PAR
+			+ t_restante * DINERO_POR_SEGUNDO_RESTANTE
+		)
 		rendimiento = clampf(0.8 + 0.2 * (t_restante / TIEMPO_LIMITE), 0.0, 1.0)
 	else:
 		dinero_final = -30

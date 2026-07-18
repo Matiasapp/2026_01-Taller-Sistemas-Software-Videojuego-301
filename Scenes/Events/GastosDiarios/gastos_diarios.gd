@@ -67,6 +67,7 @@ func _actualizar_resumen() -> void:
 
 	var total := 0
 	var postergados := 0
+	var arriendo_postergado := false
 
 	for fila in filas_gastos:
 		fila.actualizar_texto_boton()
@@ -74,18 +75,40 @@ func _actualizar_resumen() -> void:
 			total += fila.costo_actual
 		else:
 			postergados += 1
+			if str(fila.nombre) == DATOSGLOBALES.NOMBRE_GASTO_ARRIENDO:
+				arriendo_postergado = true
 
 	var saldo := DATOSGLOBALES.dinero - total
-	var presupuesto_disponible := maxi(0, DATOSGLOBALES.dinero)
-	var pago_inviable := total > presupuesto_disponible
+	var pago_causa_quiebra := saldo <= DATOSGLOBALES.UMBRAL_DEUDA_EXTREMA
 	total_label.text = "TOTAL A PAGAR:  $%d" % total
 	saldo_label.text = "SALDO PARA MAÑANA:  $%d" % saldo
 	saldo_label.add_theme_color_override("font_color", COLOR_OK if saldo >= 0 else COLOR_ALERTA)
 
-	if pago_inviable:
-		consecuencia_label.text = "No alcanza la caja. Posterga uno o más pagos para continuar."
+	if pago_causa_quiebra:
+		consecuencia_label.text = (
+			"Este pago te dejaría con $%d: llegar a -$%d provoca la quiebra. "
+			+ "Posterga uno o más pagos."
+		) % [saldo, absi(DATOSGLOBALES.UMBRAL_DEUDA_EXTREMA)]
 		consecuencia_label.add_theme_color_override("font_color", COLOR_ALERTA)
 		confirmar_button.disabled = true
+	elif DATOSGLOBALES.arriendos_postergados >= DATOSGLOBALES.ARRIENDOS_POSTERGADOS_PARA_DESALOJO:
+		consecuencia_label.text = "La orden de desalojo ya está vigente. Pagar hoy no elimina los atrasos anteriores."
+		consecuencia_label.add_theme_color_override("font_color", COLOR_ALERTA)
+		confirmar_button.disabled = false
+	elif arriendo_postergado:
+		var atrasos_proyectados := DATOSGLOBALES.arriendos_postergados + 1
+		if atrasos_proyectados >= DATOSGLOBALES.ARRIENDOS_POSTERGADOS_PARA_DESALOJO:
+			consecuencia_label.text = "Arriendo postergado: %d/%d  ·  El desalojo se ejecutará al terminar la semana" % [
+				atrasos_proyectados,
+				DATOSGLOBALES.ARRIENDOS_POSTERGADOS_PARA_DESALOJO
+			]
+		else:
+			consecuencia_label.text = "Arriendo postergado: %d/%d  ·  La deuda queda registrada" % [
+				atrasos_proyectados,
+				DATOSGLOBALES.ARRIENDOS_POSTERGADOS_PARA_DESALOJO
+			]
+		consecuencia_label.add_theme_color_override("font_color", COLOR_ALERTA)
+		confirmar_button.disabled = false
 	elif postergados > 0:
 		consecuencia_label.text = "Pagos postergados: %d  ·  Sin cambio de reputación" % postergados
 		consecuencia_label.add_theme_color_override("font_color", COLOR_ALERTA)
