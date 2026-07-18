@@ -20,12 +20,13 @@ var escribiendo := false
 var indice_escena := -1
 
 const MENSAJES_INTRO: Array[String] = [
-	"Es lunes por la mañana. Frente a ti está el taller que tu padre mantuvo abierto durante casi toda su vida.",
-	"Heredaste sus herramientas, sus clientes y su promesa de mantener el negocio familiar. También heredaste las cuentas que nunca pudo pagar.",
-	"El propietario dejó su última advertencia: si el arriendo no está al día este viernes, cambiará la cerradura. Tienes cinco días.",
-	"Tu madre insiste en que no te preocupes por ella. Dice que ya comió. El refrigerador casi vacío cuenta otra historia.",
-	"Cada noche tendrás que decidir qué pagar y qué postergar. Una cuenta pendiente puede salvarte hoy, pero mañana seguirá esperando. Tienes cinco días para recuperar a tus clientes, proteger a tu familia y evitar que estas puertas se cierren para siempre."
+	"Es lunes por la mañana. La cortina metálica se levanta con dificultad y deja al descubierto el taller que tu padre mantuvo abierto durante gran parte de su vida. Hoy, por primera vez, las llaves están en tus manos.",
+	"Heredaste sus herramientas, algunos clientes y la responsabilidad de continuar con el negocio familiar. Pero entre las cuentas también encontraste deudas, facturas vencidas y meses de problemas que nunca llegó a contarte.",
+	"El propietario ya perdió la paciencia. Su última advertencia quedó sobre el mesón: si el arriendo no está pagado antes del viernes, cambiará la cerradura y tendrás que abandonar el taller. Solo tienes cinco días.",
+	"En casa, tu madre intenta ocultar la preocupación. Dice que no necesita nada y que ya comió, pero el refrigerador casi vacío y las cuentas acumuladas cuentan una historia diferente.",
+	"Cada reparación será una oportunidad y cada gasto, una decisión. Tendrás que elegir qué pagar, qué arriesgar y hasta dónde estás dispuesto a llegar para mantener el taller abierto. Cinco días para recuperar la confianza de los clientes, cuidar de tu familia y decidir qué futuro tendrán estas puertas."
 ]
+
 
 const IMAGENES_INTRO: Array[Texture2D] = [
 	preload("res://Assets/Events/IntroScreen/1.png"),
@@ -94,8 +95,9 @@ func _ready() -> void:
 	assert(MENSAJES_INTRO.size() == IMAGENES_INTRO.size(), "Cada texto de la introducción necesita una imagen.")
 	bg_animation.play("background_move")
 	vista_genero.hide()
+	comenzar_button.hide()
 	comenzar_button.disabled = true
-	comenzar_button.modulate.a = 0.35
+	comenzar_button.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	mostrar_siguiente_escena()
 
 # =========================
@@ -140,8 +142,9 @@ func _finalizar_escritura() -> void:
 	escribiendo = false
 	if indice_escena == MENSAJES_INTRO.size() - 1:
 		print("Fin de la introducción")
+		comenzar_button.show()
 		comenzar_button.disabled = false
-		comenzar_button.modulate.a = 1.0
+		comenzar_button.mouse_filter = Control.MOUSE_FILTER_STOP
 
 
 func mostrar_siguiente_escena() -> void:
@@ -173,6 +176,9 @@ func fade_to_black(duration := 0.6) -> void:
 # =========================
 
 func _on_comenzar_pressed() -> void:
+	if not comenzar_button.visible or comenzar_button.disabled:
+		return
+
 	play_click()
 
 	await get_tree().create_timer(0.15).timeout
@@ -209,6 +215,9 @@ func seleccionar_personaje(genero: String) -> void:
 # =========================
 
 func _on_comenzar_mouse_entered() -> void:
+	if not comenzar_button.visible or comenzar_button.disabled:
+		return
+
 	play_hover()
 
 

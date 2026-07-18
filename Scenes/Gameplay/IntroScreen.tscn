@@ -132,7 +132,7 @@ anchor_bottom = 0.5
 offset_left = -130.0
 offset_top = 131.0
 offset_right = 531.0
-offset_bottom = 285.0
+offset_bottom = 299.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
@@ -144,15 +144,17 @@ layout_mode = 0
 offset_left = 35.0
 offset_top = 15.0
 offset_right = 630.0
-offset_bottom = 136.0
+offset_bottom = 114.0
 
 [node name="Comenzar" type="Button" parent="CanvasLayer/VistaTextoIntroduccion" unique_id=1813346369]
 layout_mode = 0
-offset_left = 431.0
-offset_top = 250.0
-offset_right = 529.0
-offset_bottom = 287.0
+offset_left = 407.0
+offset_top = 268.0
+offset_right = 505.0
+offset_bottom = 305.0
+mouse_filter = 2
 theme = ExtResource("3_qqw2n")
+disabled = true
 text = "Comenzar"
 
 [node name="VistaGenero" type="Control" parent="CanvasLayer" unique_id=981830191]
