@@ -25,10 +25,10 @@ patch_margin_right = 250
 patch_margin_bottom = 250
 
 [node name="NinePatchRect2" type="NinePatchRect" parent="." unique_id=1009115055]
-offset_left = 8.000001
-offset_top = 88.0
-offset_right = 756.387
-offset_bottom = 488.0
+offset_left = 16.0
+offset_top = 16.000008
+offset_right = 764.387
+offset_bottom = 416.0
 scale = Vector2(0.31, 0.31)
 texture = SubResource("AtlasTexture_qc5w2")
 region_rect = Rect2(0, 0, 769, 568)
@@ -36,6 +36,19 @@ patch_margin_left = 250
 patch_margin_top = 150
 patch_margin_right = 250
 patch_margin_bottom = 250
+
+[node name="NinePatchRect4" type="NinePatchRect" parent="." unique_id=524064191]
+offset_left = 904.0
+offset_top = 16.000002
+offset_right = 1652.387
+offset_bottom = 351.48383
+scale = Vector2(0.31, 0.31)
+texture = SubResource("AtlasTexture_qc5w2")
+region_rect = Rect2(0, 0, 769, 568)
+patch_margin_left = 250
+patch_margin_top = 90
+patch_margin_right = 250
+patch_margin_bottom = 180
 
 [node name="PlataHoraDia" type="MarginContainer" parent="." unique_id=1640203519]
 anchors_preset = 1
@@ -82,10 +95,10 @@ layout_mode = 2
 text = "Día: 0"
 
 [node name="TallerAbiertoCerrado" type="MarginContainer" parent="." unique_id=1148068106]
-offset_left = 32.0
-offset_top = 120.0
-offset_right = 208.0
-offset_bottom = 143.0
+offset_left = 40.0
+offset_top = 48.0
+offset_right = 216.0
+offset_bottom = 71.0
 
 [node name="Label" type="RichTextLabel" parent="TallerAbiertoCerrado" unique_id=566617542]
 layout_mode = 2
@@ -98,10 +111,10 @@ scroll_active = false
 autowrap_mode = 0
 
 [node name="ClientesAtendidos" type="MarginContainer" parent="." unique_id=1310501263]
-offset_left = 32.0
-offset_top = 160.0
-offset_right = 232.0
-offset_bottom = 183.0
+offset_left = 40.0
+offset_top = 88.0
+offset_right = 240.0
+offset_bottom = 111.0
 
 [node name="Label" type="RichTextLabel" parent="ClientesAtendidos" unique_id=1305981533]
 layout_mode = 2
@@ -117,9 +130,9 @@ autowrap_mode = 0
 anchors_preset = 10
 anchor_right = 1.0
 offset_left = 16.0
-offset_top = 224.0
+offset_top = 152.0
 offset_right = -760.0
-offset_bottom = 320.0
+offset_bottom = 248.0
 grow_horizontal = 2
 theme_override_colors/default_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -137,9 +150,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -560.0
-offset_top = -180.0
+offset_top = -252.0
 offset_right = -296.0
-offset_bottom = 27.0
+offset_bottom = -45.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 1)
@@ -154,18 +167,24 @@ autowrap_mode = 2
 stream = ExtResource("3_xaom8")
 
 [node name="Label" type="Label" parent="." unique_id=263348492]
-offset_left = 992.0
-offset_top = 19.0
-offset_right = 1080.0
-offset_bottom = 42.0
+offset_left = 975.00006
+offset_top = 31.999977
+offset_right = 1063.0
+offset_bottom = 54.999977
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_y = 11
+theme_override_constants/outline_size = 6
+theme_override_constants/shadow_outline_size = 12
 text = "Reputación"
 horizontal_alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=2042598285]
-offset_left = 945.0
-offset_top = 51.0
-offset_right = 1033.0
-offset_bottom = 51.0
+offset_left = 928.00006
+offset_top = 63.99997
+offset_right = 1016.00006
+offset_bottom = 63.99997
 scale = Vector2(0.1, 0.1)
 
 [node name="stars_1" type="TextureRect" parent="HBoxContainer" unique_id=349789477]
