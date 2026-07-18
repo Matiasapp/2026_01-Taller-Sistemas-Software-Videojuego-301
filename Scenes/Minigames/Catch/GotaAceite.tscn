@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://dkv2k4eijj4y7"]
+
+[ext_resource type="Script" uid="uid://7lp22bvckjkk" path="res://Scenes/Minigames/Catch/gota_aceite.gd" id="1_lll2n"]
+[ext_resource type="Texture2D" uid="uid://cv71we04a5w5p" path="res://Assets/Sprites/inflado_neumatico/GotaAceite.png" id="2_lll2n"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f6wno"]
+size = Vector2(25, 45)
+
+[node name="GotaAceite" type="Area2D" unique_id=1786378885]
+script = ExtResource("1_lll2n")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=341376189]
+position = Vector2(15, 22)
+scale = Vector2(0.04497281, 0.052638896)
+texture = ExtResource("2_lll2n")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2059264562]
+position = Vector2(15.5, 21.5)
+shape = SubResource("RectangleShape2D_f6wno")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=135197481]
+position = Vector2(13, 25)
+rect = Rect2(-10, -26, 25, 45)
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

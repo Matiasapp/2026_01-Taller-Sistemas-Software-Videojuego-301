@@ -1,19 +1,19 @@
 [gd_scene format=3 uid="uid://cddrfrs48lqns"]
 
 [ext_resource type="Script" uid="uid://bw173jp8mygmt" path="res://Scripts/Gameplay/seleccion_pieza.gd" id="1_oe38y"]
-[ext_resource type="Texture2D" uid="uid://di44a3hwi77dx" path="res://Assets/Sprites/MainMenu/Piezas.png" id="2_oe38y"]
+[ext_resource type="Texture2D" uid="uid://ukhykgp4siyc" path="res://Assets/Sprites/Piezas.png" id="2_2xpxw"]
 [ext_resource type="AudioStream" uid="uid://d2txt8yf7fddh" path="res://Assets/Audio/Gameplay/Diagnostico/clickpieza.wav" id="3_dq7yn"]
 [ext_resource type="AudioStream" uid="uid://dekxqi0muv8nt" path="res://Assets/Audio/Gameplay/Diagnostico/hoverpieza.wav" id="4_2xpxw"]
 [ext_resource type="AudioStream" uid="uid://beevsopvjddwc" path="res://Assets/Audio/GameScreen/whoosh1.wav" id="5_2xpxw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mny8t"]
-size = Vector2(332, 462.75)
+size = Vector2(332, 495.875)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_472ik"]
-size = Vector2(319, 464.25)
+size = Vector2(319, 495.25)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_iyxau"]
-size = Vector2(331.75, 466)
+size = Vector2(331.75, 489)
 
 [node name="SeleccionPieza" type="CanvasLayer" unique_id=1534977204]
 script = ExtResource("1_oe38y")
@@ -24,70 +24,70 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_oe38y")
+texture = ExtResource("2_2xpxw")
 expand_mode = 1
 
 [node name="ColorRectBuena" type="ColorRect" parent="." unique_id=1816744899]
 offset_left = 65.0
-offset_top = 94.0
-offset_right = 394.0
-offset_bottom = 556.0
+offset_top = 102.0
+offset_right = 396.0
+offset_bottom = 590.0
 mouse_filter = 2
 color = Color(0, 1, 0, 0)
 
 [node name="ColorRectBarata" type="ColorRect" parent="." unique_id=68583827]
-offset_left = 415.0
-offset_top = 93.0
-offset_right = 732.0
-offset_bottom = 557.0
+offset_left = 421.0
+offset_top = 102.0
+offset_right = 736.0
+offset_bottom = 592.0
 mouse_filter = 2
 color = Color(0, 0.38560182, 0.85376436, 0)
 
 [node name="ColorRectDudosa" type="ColorRect" parent="." unique_id=2009573779]
-offset_left = 753.0
-offset_top = 94.0
+offset_left = 755.0
+offset_top = 102.0
 offset_right = 1084.0
-offset_bottom = 558.0
+offset_bottom = 589.0
 mouse_filter = 2
 color = Color(0.7254902, 0.36862746, 0, 0)
 
 [node name="AreaBuena" type="Area2D" parent="." unique_id=1741316988]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AreaBuena" unique_id=1279123565]
-position = Vector2(229, 324.625)
+position = Vector2(230, 345.9375)
 shape = SubResource("RectangleShape2D_mny8t")
 
 [node name="AreaBarata" type="Area2D" parent="." unique_id=568603749]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AreaBarata" unique_id=284493533]
-position = Vector2(573.5, 326.875)
+position = Vector2(580, 347)
 shape = SubResource("RectangleShape2D_472ik")
 
 [node name="AreaDudosa" type="Area2D" parent="." unique_id=2115648225]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AreaDudosa" unique_id=1388713983]
-position = Vector2(918.125, 326)
+position = Vector2(919, 344.5)
 shape = SubResource("RectangleShape2D_iyxau")
 
 [node name="LabelPrecioBuena" type="Label" parent="." unique_id=1897752166]
-offset_left = 327.0
-offset_top = 423.0
-offset_right = 368.0
-offset_bottom = 446.0
+offset_left = 316.0
+offset_top = 464.0
+offset_right = 357.0
+offset_bottom = 487.0
 text = "Pieza"
 
 [node name="LabelPrecioBarata" type="Label" parent="." unique_id=199806361]
-offset_left = 665.0
-offset_top = 422.0
-offset_right = 706.0
-offset_bottom = 445.0
+offset_left = 655.0
+offset_top = 466.0
+offset_right = 696.0
+offset_bottom = 489.0
 text = "Pieza"
 
 [node name="LabelPrecioDudosa" type="Label" parent="." unique_id=177372636]
-offset_left = 1013.0
-offset_top = 420.0
-offset_right = 1054.0
-offset_bottom = 443.0
+offset_left = 1003.0
+offset_top = 465.0
+offset_right = 1044.0
+offset_bottom = 488.0
 text = "Pieza"
 
 [node name="ClickSound" type="AudioStreamPlayer" parent="." unique_id=2093587348]

@@ -1,0 +1,184 @@
+[gd_scene format=3 uid="uid://cawih5363kae0"]
+
+[ext_resource type="Script" uid="uid://cjcnm3t44ks4p" path="res://Scenes/Minigames/Catch/minijuego_aceite.gd" id="1_08w3f"]
+[ext_resource type="Texture2D" uid="uid://clu3sgla6h45e" path="res://Assets/Sprites/inflado_neumatico/Balde.png" id="2_bxk3r"]
+[ext_resource type="Texture2D" uid="uid://jjbba5c76lw5" path="res://Assets/Sprites/inflado_neumatico/Fondo.png" id="2_y1xvu"]
+[ext_resource type="Texture2D" uid="uid://dhv2ykfa12yxl" path="res://Assets/Sprites/inflado_neumatico/Tiempo.png" id="4_2ijxm"]
+[ext_resource type="AudioStream" uid="uid://cb8rlwdn04ks5" path="res://Assets/Audio/MinigameAudio/Neumaticos/Gota.wav" id="4_qjyv8"]
+[ext_resource type="PackedScene" uid="uid://c8n2rqp4dv6xk" path="res://Scenes/UI/ResumenAtencion.tscn" id="5_1wjuv"]
+[ext_resource type="Texture2D" uid="uid://cxqi1lh5nip8y" path="res://Assets/UI/button_style.png" id="5_bf0fi"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_768ge"]
+size = Vector2(219.0625, 181.34375)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qjyv8"]
+atlas = ExtResource("5_bf0fi")
+region = Rect2(1873, 492, 769, 568)
+
+[node name="MinijuegoAceite" type="Node2D" unique_id=281997983]
+script = ExtResource("1_08w3f")
+
+[node name="Fondo" type="Sprite2D" parent="." unique_id=1735663537]
+position = Vector2(576, 324)
+scale = Vector2(0.74999994, 0.63085943)
+texture = ExtResource("2_y1xvu")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="Fondo" unique_id=1674110749]
+position = Vector2(136, 55)
+
+[node name="Balde" type="Area2D" parent="." unique_id=1064234875]
+
+[node name="Sprite2D" type="Sprite2D" parent="Balde" unique_id=1650273409]
+position = Vector2(111, 546.99994)
+scale = Vector2(0.254023, 0.20927605)
+texture = ExtResource("2_bxk3r")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Balde" unique_id=1158272900]
+position = Vector2(111, 549)
+shape = SubResource("RectangleShape2D_768ge")
+
+[node name="ContenedorGotas" type="Node2D" parent="." unique_id=312198492]
+
+[node name="SpawnTimer" type="Timer" parent="." unique_id=952332292]
+wait_time = 0.7
+autostart = true
+
+[node name="AudioRecoger" type="AudioStreamPlayer2D" parent="." unique_id=1104548428]
+stream = ExtResource("4_qjyv8")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=508722450]
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer" unique_id=934263133]
+offset_top = 2.0
+offset_right = 131.0
+offset_bottom = 62.0
+texture = ExtResource("4_2ijxm")
+expand_mode = 1
+
+[node name="TiempoRestante" type="Label" parent="CanvasLayer" unique_id=1873786665]
+offset_left = 69.0
+offset_top = 24.0
+offset_right = 124.0
+offset_bottom = 55.0
+text = "10"
+
+[node name="DineroGanado" type="Label" parent="CanvasLayer" unique_id=1552994853]
+visible = false
+offset_left = 161.0
+offset_top = 169.0
+offset_right = 201.0
+offset_bottom = 192.0
+
+[node name="Hud" type="CanvasLayer" parent="." unique_id=59693471]
+
+[node name="ResumenAtencion" parent="Hud" unique_id=686501913 instance=ExtResource("5_1wjuv")]
+
+[node name="Tutorial" type="ColorRect" parent="Hud" unique_id=48218139]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -608.0
+offset_top = -364.0
+offset_right = 608.0
+offset_bottom = 364.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.16, 0.09, 0.04, 0.8)
+metadata/_edit_use_anchors_ = true
+
+[node name="PanelTutorial" type="NinePatchRect" parent="Hud/Tutorial" unique_id=605040394]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -428.0
+offset_top = -264.0
+offset_right = 428.0
+offset_bottom = 264.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_qjyv8")
+region_rect = Rect2(0, 0, 769, 568)
+patch_margin_left = 110
+patch_margin_top = 100
+patch_margin_right = 110
+patch_margin_bottom = 110
+metadata/_edit_use_anchors_ = true
+
+[node name="Titulo" type="Label" parent="Hud/Tutorial/PanelTutorial" unique_id=1010605896]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5081776
+anchor_top = 0.05871212
+anchor_right = 0.5081776
+anchor_bottom = 0.05871212
+offset_left = -256.0
+offset_top = 64.0
+offset_right = 255.5
+offset_bottom = 184.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 5
+theme_override_constants/shadow_outline_size = 3
+theme_override_font_sizes/font_size = 28
+text = "¡RECOGE EL ACEITE!"
+horizontal_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Instrucciones" type="Label" parent="Hud/Tutorial/PanelTutorial" unique_id=2043110171]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.75584114
+anchor_top = 0.5511364
+anchor_right = 0.5946262
+anchor_bottom = 0.54924244
+offset_left = -182.0
+offset_top = 40.0
+offset_right = 196.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Usa A y D para mover el balde."
+metadata/_edit_use_anchors_ = true
+
+[node name="Reglas" type="Label" parent="Hud/Tutorial/PanelTutorial" unique_id=318271184]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -264.0
+offset_top = -76.5
+offset_right = 281.0
+offset_bottom = -21.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Una fuga de aceite está cayendo desde el vehículo.
+
+Mueve el balde para recoger la mayor cantidad posible antes de que termine el tiempo."
+horizontal_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Comenzar" type="Label" parent="Hud/Tutorial/PanelTutorial" unique_id=15668726]
+layout_mode = 0
+offset_left = 223.0
+offset_top = 391.0
+offset_right = 660.0
+offset_bottom = 414.0
+theme_override_colors/font_color = Color(1, 0.8862745, 0, 1)
+text = "[ Presiona cualquier tecla de movimiento para empezar ]"
+metadata/_edit_use_anchors_ = true
+
+[connection signal="area_entered" from="Balde" to="." method="_on_balde_area_entered"]
+[connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]

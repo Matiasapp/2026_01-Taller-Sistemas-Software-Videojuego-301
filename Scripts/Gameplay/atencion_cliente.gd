@@ -20,7 +20,7 @@ const FALLA_A_MINIJUEGO: Dictionary = {
 	"generica": "res://Scenes/Minigames/Crossy_Road/Crossy Road.tscn",
 	"pinchazo": "res://Scenes/Minigames/Neumaticos/MinijuegoNeumatico.tscn",
 	"soldadura": "res://Scenes/Minigames/Soldadura/Game_start.tscn",
-	"gasolina": "res://Scenes/Minigames/TheFloorIsLava/the_floor_is_lava.tscn",
+	"gasolina": "res://Scenes/Minigames/Catch/MinijuegoAceite.tscn",
 	"circuito": "res://Scenes/Minigames/MemoryGame/MemoryGame.tscn",
 }
 
