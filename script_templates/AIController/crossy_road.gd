@@ -174,10 +174,21 @@ func get_reward() -> float:
 	return recompensa
 
 func get_done() -> bool:
-	return done or _player.esta_muerto or _player.ha_ganado
+	# Si cualquiera de estas condiciones es verdadera, terminamos el episodio
+	if _player.esta_muerto or _player.ha_ganado:
+		done = true # Sincronizamos tu variable local
+		return true
+	return done
 
 func reset() -> void:
+	# 1. Resetear estados internos de la IA
 	penalizacion_intencion = 0.0
+	
+	# 2. IMPORTANTE: resetear la variable 'done' que el plugin usa
+	# para saber si debe reiniciar el entorno.
+	done = false 
+	
+	# 3. Llamar al reset del padre para completar el ciclo del plugin
 	super.reset()
 
 # ---------------------------------------------------------

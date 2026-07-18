@@ -108,6 +108,7 @@ script = ExtResource("10_socup")
 "tamaño_casilla" = 64
 velocidad_movimiento = 0.15
 limite_retroceso = 3
+limite_lateral_casillas = 8
 bonus_meta = 200
 penalizacion_fracaso = 100
 tiempo_limite = 45.0

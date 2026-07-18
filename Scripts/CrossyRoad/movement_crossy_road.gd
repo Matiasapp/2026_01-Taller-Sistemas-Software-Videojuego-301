@@ -179,7 +179,7 @@ func ejecutar_movimiento(accion: int) -> void:
 	if direccion != Vector2.ZERO:
 		ultima_direccion = direccion
 
-		var posicion_destino_logica := posicion_logica + (direccion * tamaño_casilla)
+		var posicion_destino_logica: Vector2 = posicion_logica + (direccion * tamaño_casilla)
 		var desplazamiento_lateral := int(round((posicion_destino_logica.x - posicion_inicial_x) / tamaño_casilla))
 		if abs(desplazamiento_lateral) > limite_lateral_casillas:
 			actualizar_idle()
@@ -357,5 +357,7 @@ func reiniciar_entorno() -> void:
 	var generador := get_parent()
 	if generador and generador.has_method("reiniciar_entorno_entrenamiento"):
 		generador.reiniciar_entorno_entrenamiento()
+	if ai_controller:
+		ai_controller.done = false
 	
 	actualizar_idle()
