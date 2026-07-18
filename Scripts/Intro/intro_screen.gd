@@ -3,6 +3,7 @@ extends Node2D
 @onready var label = $CanvasLayer/VistaTextoIntroduccion/Panel/RichTextLabel
 @onready var vista_introduccion = $CanvasLayer/VistaTextoIntroduccion
 @onready var vista_genero = $CanvasLayer/VistaGenero
+@onready var imagen_intro: TextureRect = $CanvasLayer/VistaTextoIntroduccion/TextureRect
 @onready var bg_animation: AnimationPlayer = $CanvasLayer/VistaTextoIntroduccion/TextureRect/AnimationPlayer
 @onready var comenzar_button = $CanvasLayer/VistaTextoIntroduccion/Comenzar
 @onready var fade_rect = $CanvasLayer/FadeRect
@@ -16,13 +17,22 @@ extends Node2D
 
 var animador_texto: Tween
 var escribiendo := false
+var indice_escena := -1
 
-var mensajes_pendientes = [
-	"Es lunes por la mañana y el aire en el taller huele a aceite quemado y a desesperación.",
-	"Heredaste este negocio con la promesa de un futuro brillante, pero hoy la realidad es otra: las deudas se acumulan, el refrigerador está vacío y el inspector municipal ya ha pasado dos veces por la acera.",
-	"Tienes exactamente 7 días para evitar que la cortina metálica se cierre para siempre.",
-	"Deberás diagnosticar fallas con precisión, decidir si usas repuestos de calidad o piezas dudosas para ahorrar unos pesos, y gestionar tu reputación mientras el hambre aprieta.",
-	"En este taller, el motor más difícil de reparar no es el de un auto... es tu propia supervivencia.  ¿Lograrás llegar al domingo con el taller en pie o terminarás en la quiebra absoluta?"
+const MENSAJES_INTRO: Array[String] = [
+	"Es lunes por la mañana. Frente a ti está el taller que tu padre mantuvo abierto durante casi toda su vida.",
+	"Heredaste sus herramientas, sus clientes y su promesa de mantener el negocio familiar. También heredaste las cuentas que nunca pudo pagar.",
+	"El propietario dejó su última advertencia: si el arriendo no está al día este viernes, cambiará la cerradura. Tienes cinco días.",
+	"Tu madre insiste en que no te preocupes por ella. Dice que ya comió. El refrigerador casi vacío cuenta otra historia.",
+	"Cada noche tendrás que decidir qué pagar y qué postergar. Una cuenta pendiente puede salvarte hoy, pero mañana seguirá esperando. Tienes cinco días para recuperar a tus clientes, proteger a tu familia y evitar que estas puertas se cierren para siempre."
+]
+
+const IMAGENES_INTRO: Array[Texture2D] = [
+	preload("res://Assets/Events/IntroScreen/1.png"),
+	preload("res://Assets/Events/IntroScreen/2.png"),
+	preload("res://Assets/Events/IntroScreen/3.png"),
+	preload("res://Assets/Events/IntroScreen/4.png"),
+	preload("res://Assets/Events/IntroScreen/5.png")
 ]
 
 
@@ -81,11 +91,12 @@ func stop_talking() -> void:
 
 func _ready() -> void:
 	randomize()
+	assert(MENSAJES_INTRO.size() == IMAGENES_INTRO.size(), "Cada texto de la introducción necesita una imagen.")
 	bg_animation.play("background_move")
 	vista_genero.hide()
 	comenzar_button.disabled = true
 	comenzar_button.modulate.a = 0.35
-	mostrar_siguiente_mensaje()
+	mostrar_siguiente_escena()
 
 # =========================
 # TEXTO INTRO
@@ -98,8 +109,8 @@ func _input(event) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if escribiendo:
 			saltar_animacion()
-		else:
-			mostrar_siguiente_mensaje()
+		elif indice_escena < MENSAJES_INTRO.size() - 1:
+			mostrar_siguiente_escena()
 
 
 func animar_texto(nuevo_texto: String) -> void:
@@ -113,10 +124,7 @@ func animar_texto(nuevo_texto: String) -> void:
 	
 	animador_texto = create_tween()
 	animador_texto.tween_property(label, "visible_characters", nuevo_texto.length(), 1.5)
-	animador_texto.finished.connect(func():
-		escribiendo = false
-		stop_talking()
-	)
+	animador_texto.finished.connect(_finalizar_escritura)
 
 
 func saltar_animacion() -> void:
@@ -124,18 +132,26 @@ func saltar_animacion() -> void:
 		animador_texto.kill()
 	
 	label.visible_characters = label.text.length()
+	_finalizar_escritura()
+
+
+func _finalizar_escritura() -> void:
 	stop_talking()
 	escribiendo = false
-
-func mostrar_siguiente_mensaje() -> void:
-	if mensajes_pendientes.size() > 0:
-		var mensaje = mensajes_pendientes.pop_front()
-		animar_texto(mensaje)
-	else:
-		stop_talking()
+	if indice_escena == MENSAJES_INTRO.size() - 1:
 		print("Fin de la introducción")
 		comenzar_button.disabled = false
 		comenzar_button.modulate.a = 1.0
+
+
+func mostrar_siguiente_escena() -> void:
+	var siguiente_indice := indice_escena + 1
+	if siguiente_indice >= MENSAJES_INTRO.size():
+		return
+
+	indice_escena = siguiente_indice
+	imagen_intro.texture = IMAGENES_INTRO[indice_escena]
+	animar_texto(MENSAJES_INTRO[indice_escena])
 		
 
 # =========================

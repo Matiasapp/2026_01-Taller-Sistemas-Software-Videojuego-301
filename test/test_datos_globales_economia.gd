@@ -106,6 +106,47 @@ func test_registrar_gastos_diarios_no_cobra_dos_veces_el_mismo_dia() -> void:
 	assert_eq(DATOSGLOBALES.get_estadistica_dia(1)["gastos"], 120)
 
 
+func test_arriendos_postergados_se_acumulan_sin_duplicar_el_mismo_dia() -> void:
+	var pagados: Array[String] = []
+	var postergados: Array[String] = [DATOSGLOBALES.NOMBRE_GASTO_ARRIENDO]
+
+	DATOSGLOBALES.registrar_gastos_diarios(1, pagados, postergados, 0, 0)
+	DATOSGLOBALES.registrar_gastos_diarios(1, pagados, postergados, 0, 0)
+	DATOSGLOBALES.registrar_gastos_diarios(2, pagados, postergados, 0, 0)
+
+	assert_eq(DATOSGLOBALES.arriendos_postergados, 2)
+	assert_eq(
+		DATOSGLOBALES.get_estadistica_dia(2)["arriendos_postergados_acumulados"],
+		2
+	)
+
+
+func test_desalojo_solo_se_evalua_al_terminar_el_ultimo_dia() -> void:
+	var pagados: Array[String] = []
+	var postergados: Array[String] = [DATOSGLOBALES.NOMBRE_GASTO_ARRIENDO]
+
+	DATOSGLOBALES.registrar_gastos_diarios(1, pagados, postergados, 0, 0)
+	DATOSGLOBALES.registrar_gastos_diarios(2, pagados, postergados, 0, 0)
+	DATOSGLOBALES.registrar_gastos_diarios(3, pagados, postergados, 0, 0)
+
+	assert_eq(DATOSGLOBALES.final_pendiente_scene, "")
+
+	DATOSGLOBALES.dia_actual = DATOSGLOBALES.ULTIMO_DIA + 1
+	assert_eq(
+		DATOSGLOBALES._obtener_final_critico(),
+		DATOSGLOBALES.FINAL_DESALOJO_SCENE
+	)
+
+
+func test_pagar_arriendo_no_suma_un_atraso_nuevo() -> void:
+	var pagados: Array[String] = [DATOSGLOBALES.NOMBRE_GASTO_ARRIENDO]
+	var postergados: Array[String] = ["Luz y servicios"]
+
+	DATOSGLOBALES.registrar_gastos_diarios(1, pagados, postergados, 110, 0)
+
+	assert_eq(DATOSGLOBALES.arriendos_postergados, 0)
+
+
 func test_registrar_perdida_evento_actualiza_saldo_y_estadisticas() -> void:
 	watch_signals(DATOSGLOBALES)
 

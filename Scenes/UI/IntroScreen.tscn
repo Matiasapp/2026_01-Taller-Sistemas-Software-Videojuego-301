@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://cfm4bc83x7av4"]
+[gd_scene format=3 uid="uid://bnfuh7wsj0s6v"]
 
 [ext_resource type="Script" uid="uid://bepk0ocgdwr30" path="res://Scenes/Events/TransicionDia/transicion_día.gd" id="1_d2ggh"]
 [ext_resource type="Texture2D" uid="uid://dwuxd24ol4hjj" path="res://Assets/Sprites/background_game_screen.png" id="2_mco4c"]
