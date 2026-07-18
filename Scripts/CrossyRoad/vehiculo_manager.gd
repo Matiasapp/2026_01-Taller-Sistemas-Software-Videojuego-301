@@ -3,6 +3,7 @@ extends Area2D
 @export var texturas_derecha: Array[Texture2D]
 @export var texturas_izquierda: Array[Texture2D]
 @export var velocidad: float = 250.0
+@export var ancho_en_casillas: int = 2
 
 @export var probabilidad_sonido: float = 0.25
 @export var distancia_maxima_sonido: float = 500.0

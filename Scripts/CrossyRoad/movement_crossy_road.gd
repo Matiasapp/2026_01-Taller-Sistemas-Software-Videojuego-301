@@ -4,6 +4,7 @@ extends Node2D
 @export var tamaño_casilla = 64
 @export var velocidad_movimiento = 0.15 
 @export var limite_retroceso: int = 3 
+@export var limite_lateral_casillas: int = 8
 @onready var puntaje = $"../Hud/Puntaje"
 @onready var label_tiempo_restante = $"../Hud/TiempoRestante"
 
@@ -46,7 +47,7 @@ var posicion_inicial_x: float
 var maximas_casillas_avanzadas: int = 0
 
 # --- VARIABLES IA ---
-@onready var ai_controller = $AIController2D
+@onready var ai_controller = get_node_or_null("AIController2D")
 @export var modo_entrenamiento: bool = true # Cambia a false cuando quieras jugar tú manualmente
 var casillas_historico_ia: int = 0 # Para darle puntos a la IA solo cuando avanza a zonas nuevas
 var accion_ia: int = 0 # Guarda el input actual de la red neuronal
@@ -102,9 +103,9 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	# --- NUEVO: La IA revisa si necesita reiniciar el entorno ---
-	if modo_entrenamiento and ai_controller.needs_reset:
+	if modo_entrenamiento and ai_controller and ai_controller.needs_reset:
 		reiniciar_entorno()
-		ai_controller.reset() # Limpiamos la bandera interna del plugin
+		ai_controller.reset()
 		return # Cortamos el frame aquí para evitar errores visuales
 	if camara and not esta_muerto:
 		var destino_x = global_position.x
@@ -177,6 +178,12 @@ func ejecutar_movimiento(accion: int) -> void:
 
 	if direccion != Vector2.ZERO:
 		ultima_direccion = direccion
+
+		var posicion_destino_logica := posicion_logica + (direccion * tamaño_casilla)
+		var desplazamiento_lateral := int(round((posicion_destino_logica.x - posicion_inicial_x) / tamaño_casilla))
+		if abs(desplazamiento_lateral) > limite_lateral_casillas:
+			actualizar_idle()
+			return
 		
 		raycast.target_position = direccion * (tamaño_casilla - 33)
 		raycast.force_raycast_update()
@@ -235,7 +242,6 @@ func morir() -> void:
 	# MODO ENTRENAMIENTO: Abortamos la UI para no trabar a la IA
 	if modo_entrenamiento:
 		ai_controller.done = true
-		ai_controller.needs_reset = true
 		return
 	
 	entorno_visual.adjustment_enabled = true
@@ -259,7 +265,6 @@ func ganar() -> void:
 	# MODO ENTRENAMIENTO: Abortamos la UI para no trabar a la IA
 	if modo_entrenamiento:
 		ai_controller.done = true
-		ai_controller.needs_reset = true
 		return
 		
 	calculo_dinero_final()
@@ -335,6 +340,7 @@ func reiniciar_entorno() -> void:
 		
 	position = Vector2(posicion_inicial_x, posicion_inicial_y)
 	posicion_logica = position
+	accion_ia = 0
 	
 	# 2. Reseteo de contadores de la IA
 	tiempo_restante = tiempo_limite
@@ -345,10 +351,11 @@ func reiniciar_entorno() -> void:
 	esta_muerto = false
 	ha_ganado = false
 	se_esta_moviendo = false
-	
-	# 4. Asegurar que el controlador de IA reciba el estado de reset
-	if ai_controller:
-		ai_controller.done = false # Reseteamos la bandera de fin de episodio
-		ai_controller.needs_reset = false # Importante: limpiar esta bandera
+	atropellado = false
+	juego_iniciado = true
+
+	var generador := get_parent()
+	if generador and generador.has_method("reiniciar_entorno_entrenamiento"):
+		generador.reiniciar_entorno_entrenamiento()
 	
 	actualizar_idle()

@@ -9,7 +9,7 @@ enum ControlModes { HUMAN, TRAINING, ONNX_INFERENCE }
 @export var onnx_model_path := ""
 
 # Onnx model stored for each requested path
-var onnx_models: Dictionary
+var onnx_models: Dictionary = {}
 
 @onready var start_time = Time.get_ticks_msec()
 
@@ -51,6 +51,8 @@ var _obs_space_training: Array[Dictionary] = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	args = _get_args()
+	_set_seed()
 	await get_tree().root.ready
 	get_tree().set_pause(true)
 	_initialize()
@@ -60,7 +62,8 @@ func _ready():
 
 func _initialize():
 	_get_agents()
-	args = _get_args()
+	if args == null:
+		args = _get_args()
 	Engine.physics_ticks_per_second = _get_speedup() * 60  # Replace with function body.
 	Engine.time_scale = _get_speedup() * 1.0
 	prints(
@@ -77,7 +80,6 @@ func _initialize():
 	_initialize_inference_agents()
 	_initialize_demo_recording()
 
-	_set_seed()
 	_set_action_repeat()
 	initialized = true
 
@@ -515,7 +517,7 @@ func _call_method_on_agents(method):
 func _reset_agents_if_done(agents = all_agents):
 	for agent in agents:
 		if agent.get_done():
-			agent.set_done_false()
+			agent.needs_reset = true
 
 
 func _reset_agents(agents = all_agents):

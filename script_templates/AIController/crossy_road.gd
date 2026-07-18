@@ -12,6 +12,7 @@ extends "res://addons/godot_rl_agents/controller/ai_controller_2d.gd"
 # el resto de los objetos, así que su fila necesita una corrección aparte.
 # Positivo = mueve los autos una fila hacia ABAJO (Y aumenta hacia abajo).
 @export var ajuste_filas_vehiculos: int = 1
+@export var limite_columna: int = 8
 
 var celdas_debug: Array = []
 var penalizacion_intencion: float = 0.0
@@ -35,7 +36,7 @@ func _process(_delta: float) -> void:
 	for y_offset in range(-3, 2):
 		for x_offset in range(-3, 4):
 			var coordenada = Vector2(px + x_offset, py + y_offset)
-			var valor = grilla.get(coordenada, 0.0)
+			var valor = _valor_celda(grilla, coordenada)
 			celdas_debug.append({"pos": coordenada * _player.tamaño_casilla, "valor": valor})
 
 	queue_redraw()
@@ -59,7 +60,7 @@ func get_obs() -> Dictionary:
 	for y_offset in range(-3, 2):
 		for x_offset in range(-3, 4):
 			var coordenada_revisar = Vector2(px + x_offset, py + y_offset)
-			obs_array.append(grilla.get(coordenada_revisar, 0.0))
+			obs_array.append(_valor_celda(grilla, coordenada_revisar))
 
 	return {"obs": obs_array}
 
@@ -104,6 +105,11 @@ func _construir_grilla_peligro() -> Dictionary:
 
 	return grilla
 
+func _valor_celda(grilla: Dictionary, coordenada: Vector2) -> float:
+	if coordenada.x < -limite_columna or coordenada.x > limite_columna:
+		return 1.0
+	return float(grilla.get(coordenada, 0.0))
+
 # ---------------------------------------------------------
 # 2. ESPACIO DE ACCIÓN
 # ---------------------------------------------------------
@@ -114,7 +120,7 @@ func get_action_space() -> Dictionary:
 # 3. EJECUCIÓN MATEMÁTICA
 # ---------------------------------------------------------
 func set_action(action: Dictionary) -> void:
-	if not _player.modo_entrenamiento or _player.se_esta_moviendo or _player.esta_muerto or _player.ha_ganado:
+	if done or not _player.modo_entrenamiento or _player.se_esta_moviendo or _player.esta_muerto or _player.ha_ganado:
 		return
 
 	var accion = int(action["movimiento"])
@@ -126,16 +132,12 @@ func set_action(action: Dictionary) -> void:
 
 	match accion:
 		1: destino = Vector2(px, py - 1)
+		2: destino = Vector2(px, py + 1)
 		3: destino = Vector2(px - 1, py)
 		4: destino = Vector2(px + 1, py)
 
-	if destino != Vector2.ZERO:
-		for arbol in get_tree().get_nodes_in_group("arboles"):
-			var cx = round(arbol.global_position.x / _player.tamaño_casilla)
-			var cy = round(arbol.global_position.y / _player.tamaño_casilla)
-			if destino == Vector2(cx, cy):
-				penalizacion_intencion = -5.0
-				break
+	if destino != Vector2.ZERO and _valor_celda(_construir_grilla_peligro(), destino) > 0.0:
+		penalizacion_intencion = -1.0
 
 	_player.accion_ia = accion
 	if _player.accion_ia != 0:
@@ -147,6 +149,7 @@ func set_action(action: Dictionary) -> void:
 func get_reward() -> float:
 	var recompensa: float = 0.0
 	recompensa += (penalizacion_intencion * 2.0)
+	penalizacion_intencion = 0.0
 
 	var hay_auto_cerca = false
 	var distancia_alerta = _player.tamaño_casilla * 3.5
@@ -161,8 +164,9 @@ func get_reward() -> float:
 	elif _player.ha_ganado:
 		recompensa += 300.0
 	else:
-		if not hay_auto_cerca:
-			recompensa -= 0.1
+		recompensa -= 0.1
+		if hay_auto_cerca:
+			recompensa -= 0.2
 		if _player.maximas_casillas_avanzadas > _player.casillas_historico_ia:
 			recompensa += 5.0
 			_player.casillas_historico_ia = _player.maximas_casillas_avanzadas
@@ -170,7 +174,11 @@ func get_reward() -> float:
 	return recompensa
 
 func get_done() -> bool:
-	return _player.esta_muerto or _player.ha_ganado
+	return done or _player.esta_muerto or _player.ha_ganado
+
+func reset() -> void:
+	penalizacion_intencion = 0.0
+	super.reset()
 
 # ---------------------------------------------------------
 # 5. DIBUJO DE DEBUG

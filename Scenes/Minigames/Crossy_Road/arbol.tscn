@@ -9,7 +9,7 @@ region = Rect2(380, 153, 76, 167)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xq2n5"]
 size = Vector2(64, 64)
 
-[node name="Arbol" type="Node2D" unique_id=1385009933 groups=["objetos_crossy_road"]]
+[node name="Arbol" type="Node2D" unique_id=1385009933 groups=["arboles", "objetos_crossy_road"]]
 z_index = 2
 z_as_relative = false
 y_sort_enabled = true

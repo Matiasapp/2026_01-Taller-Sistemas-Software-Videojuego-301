@@ -14,8 +14,7 @@ enum ControlModes { INHERIT_FROM_SYNC, HUMAN, TRAINING, ONNX_INFERENCE, RECORD_E
 @export_group("Multi-policy mode options")
 @export var policy_name: String = "shared_policy"
 
-# LA LÍNEA PROBLEMÁTICA COMENTADA:
-# var onnx_model: ONNXModel
+var onnx_model: ONNXModel
 
 var heuristic := "human"
 var done := false
@@ -56,10 +55,10 @@ func get_action() -> Array:
 	assert(false, "the get_action method is not implemented in extended AIController but demo_recorder is used")
 	return []
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	n_steps += 1
-	if n_steps > reset_after:
-		needs_reset = true
+	if reset_after > 0 and n_steps >= reset_after:
+		done = true
 
 func get_obs_space():
 	var obs = get_obs()

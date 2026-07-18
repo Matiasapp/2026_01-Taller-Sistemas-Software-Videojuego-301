@@ -26,8 +26,6 @@ var meta_y: float = 0.0
 var meta_generada: bool = false
 
 func _ready() -> void:
-	randomize()
-
 	# En este minijuego no aplica la economía del taller: ocultamos el dinero y el
 	# indicador de "taller abierto/cerrado" del HUD compartido (solo en esta escena).
 	_ocultar_hud_taller()
@@ -53,6 +51,23 @@ func _ready() -> void:
 	for i in range(3):
 		generar_franja_segura()
 		
+	for i in range(franjas_iniciales - 3):
+		generar_franja_aleatoria()
+
+func reiniciar_entorno_entrenamiento() -> void:
+	for franja in franjas_activas:
+		if is_instance_valid(franja):
+			franja.queue_free()
+
+	franjas_activas.clear()
+	posicion_y_actual = 0
+	meta_generada = false
+
+	if jugador:
+		meta_y = jugador.position.y - (meta_casillas * tamaño_casilla)
+
+	for i in range(3):
+		generar_franja_segura()
 	for i in range(franjas_iniciales - 3):
 		generar_franja_aleatoria()
 
