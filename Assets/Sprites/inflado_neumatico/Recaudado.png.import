@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dambm844o400m"
-path="res://.godot/imported/Tiempo.png-691ef53d09dc8ca2f5818f47681aa49a.ctex"
+uid="uid://dmrbjvaoddmvt"
+path="res://.godot/imported/Recaudado.png-3eb1621ca5d7188594d4763e38020a9c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/inflado_neumatico/Tiempo.png"
-dest_files=["res://.godot/imported/Tiempo.png-691ef53d09dc8ca2f5818f47681aa49a.ctex"]
+source_file="res://Assets/Sprites/inflado_neumatico/Recaudado.png"
+dest_files=["res://.godot/imported/Recaudado.png-3eb1621ca5d7188594d4763e38020a9c.ctex"]
 
 [params]
 

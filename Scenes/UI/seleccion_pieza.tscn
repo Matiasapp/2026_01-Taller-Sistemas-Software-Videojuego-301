@@ -7,7 +7,7 @@
 [ext_resource type="AudioStream" uid="uid://beevsopvjddwc" path="res://Assets/Audio/GameScreen/whoosh1.wav" id="5_2xpxw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mny8t"]
-size = Vector2(332, 495.875)
+size = Vector2(332, 491.875)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_472ik"]
 size = Vector2(319, 495.25)
@@ -54,7 +54,7 @@ color = Color(0.7254902, 0.36862746, 0, 0)
 [node name="AreaBuena" type="Area2D" parent="." unique_id=1741316988]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AreaBuena" unique_id=1279123565]
-position = Vector2(230, 345.9375)
+position = Vector2(230, 347.9375)
 shape = SubResource("RectangleShape2D_mny8t")
 
 [node name="AreaBarata" type="Area2D" parent="." unique_id=568603749]

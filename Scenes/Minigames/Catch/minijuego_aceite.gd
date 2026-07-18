@@ -124,6 +124,8 @@ func _on_balde_area_entered(area):
 		gotas_atrapadas += 1
 
 		dinero_ganado += 10
+		label_dinero.text = "$" + str(dinero_ganado)
+
 
 		animar_label_dinero(Color.GREEN)
 
@@ -136,7 +138,7 @@ func _on_gota_perdida():
 		return
 
 	gotas_perdidas += 1
-	dinero_ganado -= 20
+	dinero_ganado -= 15
 
 	label_dinero.text = "$" + str(dinero_ganado)
 

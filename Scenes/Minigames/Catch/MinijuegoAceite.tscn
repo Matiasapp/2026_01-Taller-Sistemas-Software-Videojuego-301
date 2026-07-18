@@ -3,13 +3,15 @@
 [ext_resource type="Script" uid="uid://cjcnm3t44ks4p" path="res://Scenes/Minigames/Catch/minijuego_aceite.gd" id="1_08w3f"]
 [ext_resource type="Texture2D" uid="uid://clu3sgla6h45e" path="res://Assets/Sprites/inflado_neumatico/Balde.png" id="2_bxk3r"]
 [ext_resource type="Texture2D" uid="uid://jjbba5c76lw5" path="res://Assets/Sprites/inflado_neumatico/Fondo.png" id="2_y1xvu"]
-[ext_resource type="Texture2D" uid="uid://dhv2ykfa12yxl" path="res://Assets/Sprites/inflado_neumatico/Tiempo.png" id="4_2ijxm"]
+[ext_resource type="Texture2D" uid="uid://dambm844o400m" path="res://Assets/Sprites/inflado_neumatico/Tiempo.png" id="4_2ijxm"]
 [ext_resource type="AudioStream" uid="uid://cb8rlwdn04ks5" path="res://Assets/Audio/MinigameAudio/Neumaticos/Gota.wav" id="4_qjyv8"]
 [ext_resource type="PackedScene" uid="uid://c8n2rqp4dv6xk" path="res://Scenes/UI/ResumenAtencion.tscn" id="5_1wjuv"]
 [ext_resource type="Texture2D" uid="uid://cxqi1lh5nip8y" path="res://Assets/UI/button_style.png" id="5_bf0fi"]
+[ext_resource type="Texture2D" uid="uid://dmrbjvaoddmvt" path="res://Assets/Sprites/inflado_neumatico/Recaudado.png" id="6_alo7h"]
+[ext_resource type="FontFile" uid="uid://b1dalxnlh0wwq" path="res://Assets/Sprites/inflado_neumatico/5x7 MT Pixel.ttf" id="7_caue8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_768ge"]
-size = Vector2(219.0625, 181.34375)
+size = Vector2(201, 54)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qjyv8"]
 atlas = ExtResource("5_bf0fi")
@@ -19,8 +21,8 @@ region = Rect2(1873, 492, 769, 568)
 script = ExtResource("1_08w3f")
 
 [node name="Fondo" type="Sprite2D" parent="." unique_id=1735663537]
-position = Vector2(576, 324)
-scale = Vector2(0.74999994, 0.63085943)
+position = Vector2(576, 328)
+scale = Vector2(0.74999994, 0.6542969)
 texture = ExtResource("2_y1xvu")
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="Fondo" unique_id=1674110749]
@@ -34,7 +36,7 @@ scale = Vector2(0.254023, 0.20927605)
 texture = ExtResource("2_bxk3r")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Balde" unique_id=1158272900]
-position = Vector2(111, 549)
+position = Vector2(109, 485)
 shape = SubResource("RectangleShape2D_768ge")
 
 [node name="ContenedorGotas" type="Node2D" parent="." unique_id=312198492]
@@ -48,26 +50,35 @@ stream = ExtResource("4_qjyv8")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=508722450]
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer" unique_id=934263133]
-offset_top = 2.0
-offset_right = 131.0
-offset_bottom = 62.0
+[node name="Tiempo" type="TextureRect" parent="CanvasLayer" unique_id=934263133]
+offset_right = 162.0
+offset_bottom = 64.0
 texture = ExtResource("4_2ijxm")
 expand_mode = 1
 
+[node name="Dinero" type="TextureRect" parent="CanvasLayer" unique_id=1846356986]
+offset_left = 991.0
+offset_top = 1.0
+offset_right = 1152.0
+offset_bottom = 64.0
+texture = ExtResource("6_alo7h")
+expand_mode = 1
+
 [node name="TiempoRestante" type="Label" parent="CanvasLayer" unique_id=1873786665]
-offset_left = 69.0
-offset_top = 24.0
-offset_right = 124.0
-offset_bottom = 55.0
+offset_left = 82.0
+offset_top = 30.0
+offset_right = 137.0
+offset_bottom = 61.0
+theme_override_fonts/font = ExtResource("7_caue8")
 text = "10"
 
 [node name="DineroGanado" type="Label" parent="CanvasLayer" unique_id=1552994853]
-visible = false
-offset_left = 161.0
-offset_top = 169.0
-offset_right = 201.0
-offset_bottom = 192.0
+offset_left = 1060.0
+offset_top = 30.0
+offset_right = 1113.0
+offset_bottom = 62.0
+theme_override_fonts/font = ExtResource("7_caue8")
+text = "100"
 
 [node name="Hud" type="CanvasLayer" parent="." unique_id=59693471]
 
@@ -137,8 +148,8 @@ metadata/_edit_use_anchors_ = true
 [node name="Instrucciones" type="Label" parent="Hud/Tutorial/PanelTutorial" unique_id=2043110171]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.75584114
-anchor_top = 0.5511364
+anchor_left = 0.5946262
+anchor_top = 0.54924244
 anchor_right = 0.5946262
 anchor_bottom = 0.54924244
 offset_left = -182.0
