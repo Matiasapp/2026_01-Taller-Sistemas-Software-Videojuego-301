@@ -104,7 +104,6 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	# --- NUEVO: La IA revisa si necesita reiniciar el entorno ---
 	if modo_entrenamiento and ai_controller and ai_controller.needs_reset:
-		reiniciar_entorno()
 		ai_controller.reset()
 		return # Cortamos el frame aquí para evitar errores visuales
 	if camara and not esta_muerto:
@@ -346,6 +345,10 @@ func reiniciar_entorno() -> void:
 	tiempo_restante = tiempo_limite
 	maximas_casillas_avanzadas = 0
 	casillas_historico_ia = 0
+	if puntaje:
+		puntaje.text = "0 / " + str(meta_casillas)
+	if label_tiempo_restante:
+		label_tiempo_restante.text = "Tiempo Restante: " + str(int(tiempo_limite)) + "s"
 	
 	# 3. Limpieza de estados críticos
 	esta_muerto = false
@@ -353,11 +356,19 @@ func reiniciar_entorno() -> void:
 	se_esta_moviendo = false
 	atropellado = false
 	juego_iniciado = true
+	entorno_visual.adjustment_saturation = 1.0
+
+	if audio_salto:
+		audio_salto.stop()
+	if audio_muerte:
+		audio_muerte.stop()
+	if audio_atropello:
+		audio_atropello.stop()
+	if camara:
+		camara.global_position = global_position
 
 	var generador := get_parent()
 	if generador and generador.has_method("reiniciar_entorno_entrenamiento"):
 		generador.reiniciar_entorno_entrenamiento()
-	if ai_controller:
-		ai_controller.done = false
 	
 	actualizar_idle()

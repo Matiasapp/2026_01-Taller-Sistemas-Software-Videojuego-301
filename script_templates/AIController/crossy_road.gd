@@ -181,14 +181,9 @@ func get_done() -> bool:
 	return done
 
 func reset() -> void:
-	# 1. Resetear estados internos de la IA
 	penalizacion_intencion = 0.0
-	
-	# 2. IMPORTANTE: resetear la variable 'done' que el plugin usa
-	# para saber si debe reiniciar el entorno.
-	done = false 
-	
-	# 3. Llamar al reset del padre para completar el ciclo del plugin
+	if is_instance_valid(_player) and _player.has_method("reiniciar_entorno"):
+		_player.reiniciar_entorno()
 	super.reset()
 
 # ---------------------------------------------------------

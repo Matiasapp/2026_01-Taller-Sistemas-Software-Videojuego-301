@@ -517,13 +517,12 @@ func _call_method_on_agents(method):
 func _reset_agents_if_done(agents = all_agents):
 	for agent in agents:
 		if agent.get_done():
-			agent.needs_reset = true
+			agent.reset()
 
 
 func _reset_agents(agents = all_agents):
 	for agent in agents:
-		agent.needs_reset = true
-		#agent.reset()
+		agent.reset()
 
 
 func _get_obs_from_agents(agents: Array = all_agents):

@@ -6,10 +6,13 @@ const Sincronizador = preload("res://addons/godot_rl_agents/sync.gd")
 
 class AgenteTerminalFalso:
 	extends Node
-	var needs_reset := false
+	var reset_ejecutado := false
 
 	func get_done() -> bool:
 		return true
+
+	func reset() -> void:
+		reset_ejecutado = true
 
 
 func test_limite_de_pasos_cierra_el_episodio_sin_reiniciarlo() -> void:
@@ -39,13 +42,13 @@ func test_reset_limpia_estado_terminal_y_contador() -> void:
 	controlador.free()
 
 
-func test_inferencia_solicita_reset_al_terminar() -> void:
+func test_inferencia_resetea_el_agente_al_terminar() -> void:
 	var sincronizador := Sincronizador.new()
 	var agente := AgenteTerminalFalso.new()
 
 	sincronizador._reset_agents_if_done([agente])
 
-	assert_true(agente.needs_reset)
+	assert_true(agente.reset_ejecutado)
 	agente.free()
 	sincronizador.free()
 
