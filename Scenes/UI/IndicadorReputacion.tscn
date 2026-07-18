@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://bb4m8n2s6x0ve"]
+[gd_scene format=3 uid="uid://bb4m8n2s6x0ve"]
 
 [ext_resource type="Script" uid="uid://d3p7u6h5m2k9q" path="res://Scripts/UI/indicador_reputacion.gd" id="1_script"]
 [ext_resource type="Texture2D" path="res://Assets/Sprites/estrellas_reputacion/estrellas_contorno_blanco/estrella_0.png" id="2_star0"]
