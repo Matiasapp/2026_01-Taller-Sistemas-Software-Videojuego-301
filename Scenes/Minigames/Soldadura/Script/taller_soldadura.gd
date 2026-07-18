@@ -11,7 +11,7 @@ extends Node2D
 
 var piezas_completadas := 0
 
-var dinero_por_pieza := 36
+var dinero_por_pieza := 20
 
 var indice_pieza := 0
 var escena_anterior
