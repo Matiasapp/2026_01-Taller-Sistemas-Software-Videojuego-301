@@ -19,6 +19,9 @@ var pieza_seleccionada := ""
 @onready var label_precio_buena = $LabelPrecioBuena
 @onready var label_precio_barata = $LabelPrecioBarata
 @onready var label_precio_dudosa = $LabelPrecioDudosa
+@onready var label_reputacion_buena: Label = $LabelReputacionBuena
+@onready var label_reputacion_barata: Label = $LabelReputacionBarata
+@onready var label_reputacion_dudosa: Label = $LabelReputacionDudosa
 
 @onready var hover_sound: AudioStreamPlayer = $HoverSound
 @onready var click_sound: AudioStreamPlayer = $ClickSound
@@ -30,6 +33,10 @@ func _ready() -> void:
 	label_precio_buena.text = "$" + str(COSTO_BUENA)
 	label_precio_barata.text = "$" + str(COSTO_BARATA)
 	label_precio_dudosa.text = "$" + str(COSTO_DUDOSA)
+
+	label_reputacion_buena.text = "REPUTACIÓN  +%d" % DATOSGLOBALES.REP_PIEZA_BUENA
+	label_reputacion_barata.text = "REPUTACIÓN  +%d" % DATOSGLOBALES.REP_PIEZA_BARATA
+	label_reputacion_dudosa.text = "REPUTACIÓN EN RIESGO"
 
 
 func seleccionar_pieza(tipo: String) -> void:
