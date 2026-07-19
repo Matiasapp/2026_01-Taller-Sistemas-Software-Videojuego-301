@@ -1,6 +1,13 @@
 extends Node2D
 
 const GOTA = preload("res://Scenes/Minigames/Catch/GotaAceite.tscn")
+const VOLUMEN_SILENCIO_DB := -40.0
+const DURACION_FADE_IN := 0.1
+const DURACION_FADE_OUT := 0.15
+const AUDIO_MINIMO_RESTANTE := 0.4
+const PITCH_GOTA_MIN := 0.9
+const PITCH_GOTA_MAX := 1.1
+const PITCH_GOTA_PERDIDA := 0.7491535 # Cinco semitonos bajo el tono original.
 
 enum Estado{
 	INSTRUCCIONES,
@@ -8,7 +15,7 @@ enum Estado{
 	RESULTADO
 }
 
-@onready var balde = $Balde
+@onready var balde: Area2D = $Balde
 @onready var contenedor_gotas = $ContenedorGotas
 @onready var spawn_timer = $SpawnTimer
 
@@ -23,7 +30,9 @@ enum Estado{
 @onready var instrucciones = $Hud/Tutorial/PanelTutorial/Instrucciones
 @onready var reglas = $Hud/Tutorial/PanelTutorial/Reglas
 @onready var comenzar = $Hud/Tutorial/PanelTutorial/Comenzar
-@onready var audio_recoger = $AudioRecoger
+@onready var audio_recoger: AudioStreamPlayer2D = $AudioRecoger
+@onready var audio_gota_perdida: AudioStreamPlayer2D = $AudioGotaPerdida
+@onready var audio_arrastre: AudioStreamPlayer = $AudioArrastre
 
 @export var velocidad_balde := 500.0
 
@@ -34,6 +43,9 @@ var tiempo_restante := 30
 
 var gotas_atrapadas := 0
 var gotas_perdidas := 0
+
+var balde_en_movimiento := false
+var tween_audio_arrastre: Tween
 
 
 func _ready():
@@ -51,7 +63,7 @@ func _ready():
 		panel_resumen.hide()
 
 
-func _process(delta):
+func _process(delta: float):
 
 	match estado_actual:
 
@@ -85,12 +97,79 @@ func _process(delta):
 			if Input.is_key_pressed(KEY_D):
 				direccion += 1
 
+			var posicion_anterior: float = balde.position.x
+
 			balde.position.x += direccion * velocidad_balde * delta
 
 			balde.position.x = clamp(balde.position.x,40,1112)
 
+			actualizar_audio_arrastre(
+				not is_equal_approx(balde.position.x, posicion_anterior)
+			)
+
 		Estado.RESULTADO:
 			pass
+
+
+func actualizar_audio_arrastre(en_movimiento: bool) -> void:
+
+	if en_movimiento:
+
+		if not balde_en_movimiento or not audio_arrastre.playing:
+			iniciar_audio_arrastre()
+
+	elif balde_en_movimiento:
+		desvanecer_audio_arrastre()
+
+	balde_en_movimiento = en_movimiento
+
+
+func iniciar_audio_arrastre() -> void:
+
+	if tween_audio_arrastre:
+		tween_audio_arrastre.kill()
+
+	var duracion_audio: float = audio_arrastre.stream.get_length()
+	var ultimo_inicio: float = maxf(0.0, duracion_audio - AUDIO_MINIMO_RESTANTE)
+	var posicion_inicio: float = randf_range(0.0, ultimo_inicio)
+
+	audio_arrastre.volume_db = VOLUMEN_SILENCIO_DB
+	audio_arrastre.play(posicion_inicio)
+
+	tween_audio_arrastre = create_tween()
+	tween_audio_arrastre.tween_property(
+		audio_arrastre,
+		"volume_db",
+		0.0,
+		DURACION_FADE_IN
+	)
+
+
+func desvanecer_audio_arrastre() -> void:
+
+	if not audio_arrastre.playing:
+		return
+
+	if tween_audio_arrastre:
+		tween_audio_arrastre.kill()
+
+	tween_audio_arrastre = create_tween()
+	tween_audio_arrastre.tween_property(
+		audio_arrastre,
+		"volume_db",
+		VOLUMEN_SILENCIO_DB,
+		DURACION_FADE_OUT
+	)
+	tween_audio_arrastre.tween_callback(finalizar_audio_arrastre)
+
+
+func finalizar_audio_arrastre() -> void:
+
+	if balde_en_movimiento:
+		return
+
+	audio_arrastre.stop()
+	audio_arrastre.volume_db = VOLUMEN_SILENCIO_DB
 
 func crear_gota():
 
@@ -118,7 +197,7 @@ func _on_balde_area_entered(area):
 
 	if area.is_in_group("gotas"):
 
-		audio_recoger.pitch_scale = randf_range(0.95, 1.05)
+		audio_recoger.pitch_scale = randf_range(PITCH_GOTA_MIN, PITCH_GOTA_MAX)
 		audio_recoger.play()
 
 		gotas_atrapadas += 1
@@ -136,6 +215,9 @@ func _on_gota_perdida():
 
 	if estado_actual != Estado.JUGANDO:
 		return
+
+	audio_gota_perdida.pitch_scale = PITCH_GOTA_PERDIDA
+	audio_gota_perdida.play()
 
 	gotas_perdidas += 1
 	dinero_ganado -= 15
@@ -158,6 +240,7 @@ func _on_timer_juego_timeout():
 		return
 
 	estado_actual = Estado.RESULTADO
+	actualizar_audio_arrastre(false)
 
 	spawn_timer.stop()
 

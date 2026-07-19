@@ -56,6 +56,11 @@ folder_colors={
 vehiculos=""
 objetos_crossy_road=""
 
+[gui]
+
+theme/custom="res://Assets/Fonts/PixelFontTheme.tres"
+theme/custom_font="res://Assets/Fonts/ChakraPetchBold.res"
+
 [input]
 
 mover_derecha={

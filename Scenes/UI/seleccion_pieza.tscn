@@ -5,6 +5,7 @@
 [ext_resource type="AudioStream" uid="uid://d2txt8yf7fddh" path="res://Assets/Audio/Gameplay/Diagnostico/clickpieza.wav" id="3_dq7yn"]
 [ext_resource type="AudioStream" uid="uid://dekxqi0muv8nt" path="res://Assets/Audio/Gameplay/Diagnostico/hoverpieza.wav" id="4_2xpxw"]
 [ext_resource type="AudioStream" uid="uid://beevsopvjddwc" path="res://Assets/Audio/GameScreen/whoosh1.wav" id="5_2xpxw"]
+[ext_resource type="FontFile" path="res://Assets/Fonts/ChakraPetchBold.res" id="6_interface"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mny8t"]
 size = Vector2(332, 491.875)
@@ -74,6 +75,11 @@ offset_left = 316.0
 offset_top = 464.0
 offset_right = 357.0
 offset_bottom = 487.0
+theme_override_colors/font_color = Color(0.63, 0.82, 0.25, 1)
+theme_override_colors/font_outline_color = Color(0.04, 0.055, 0.035, 1)
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("6_interface")
+theme_override_font_sizes/font_size = 18
 text = "Pieza"
 
 [node name="LabelPrecioBarata" type="Label" parent="." unique_id=199806361]
@@ -81,6 +87,11 @@ offset_left = 655.0
 offset_top = 466.0
 offset_right = 696.0
 offset_bottom = 489.0
+theme_override_colors/font_color = Color(0.3, 0.67, 0.87, 1)
+theme_override_colors/font_outline_color = Color(0.03, 0.045, 0.055, 1)
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("6_interface")
+theme_override_font_sizes/font_size = 18
 text = "Pieza"
 
 [node name="LabelPrecioDudosa" type="Label" parent="." unique_id=177372636]
@@ -88,7 +99,54 @@ offset_left = 1003.0
 offset_top = 465.0
 offset_right = 1044.0
 offset_bottom = 488.0
+theme_override_colors/font_color = Color(0.95, 0.54, 0.12, 1)
+theme_override_colors/font_outline_color = Color(0.06, 0.04, 0.02, 1)
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("6_interface")
+theme_override_font_sizes/font_size = 18
 text = "Pieza"
+
+[node name="LabelReputacionBuena" type="Label" parent="." unique_id=1513861720]
+offset_left = 145.0
+offset_top = 523.0
+offset_right = 370.0
+offset_bottom = 561.0
+theme_override_colors/font_color = Color(0.63, 0.82, 0.25, 1)
+theme_override_colors/font_outline_color = Color(0.04, 0.055, 0.035, 1)
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("6_interface")
+theme_override_font_sizes/font_size = 17
+text = "REPUTACIÓN  +5"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LabelReputacionBarata" type="Label" parent="." unique_id=968341703]
+offset_left = 496.0
+offset_top = 523.0
+offset_right = 712.0
+offset_bottom = 561.0
+theme_override_colors/font_color = Color(0.3, 0.67, 0.87, 1)
+theme_override_colors/font_outline_color = Color(0.03, 0.045, 0.055, 1)
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("6_interface")
+theme_override_font_sizes/font_size = 17
+text = "REPUTACIÓN  +1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LabelReputacionDudosa" type="Label" parent="." unique_id=1033723199]
+offset_left = 825.0
+offset_top = 523.0
+offset_right = 1068.0
+offset_bottom = 561.0
+theme_override_colors/font_color = Color(0.95, 0.54, 0.12, 1)
+theme_override_colors/font_outline_color = Color(0.06, 0.04, 0.02, 1)
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("6_interface")
+theme_override_font_sizes/font_size = 16
+text = "REPUTACIÓN EN RIESGO"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="ClickSound" type="AudioStreamPlayer" parent="." unique_id=2093587348]
 stream = ExtResource("3_dq7yn")

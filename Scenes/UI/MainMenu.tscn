@@ -1,15 +1,37 @@
 [gd_scene format=3 uid="uid://tjyxg3ebxn0i"]
 
 [ext_resource type="Script" uid="uid://bd40brbnyh2wk" path="res://Scripts/UI/main_menu.gd" id="1_8saeu"]
-[ext_resource type="Script" path="res://Scenes/background_group.gd" id="3_cmrfp"]
+[ext_resource type="Script" uid="uid://dnrxfow5ve4cl" path="res://Scenes/background_group.gd" id="3_cmrfp"]
 [ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="3_k8um8"]
 [ext_resource type="Texture2D" uid="uid://cy7hlk7q6lmas" path="res://Assets/Sprites/MainMenu/background_menu_no_logo.png" id="3_xim88"]
 [ext_resource type="AudioStream" uid="uid://1atqkxlfiwhr" path="res://Assets/Audio/Menu/musicloop.ogg" id="4_ghw46"]
 [ext_resource type="Texture2D" uid="uid://e3pwsguobb8u" path="res://Assets/Sprites/MainMenu/logo.png" id="4_koqhg"]
 [ext_resource type="AudioStream" uid="uid://b2t66hdqmo381" path="res://Assets/Audio/Menu/click.wav" id="5_df05h"]
-[ext_resource type="Script" path="res://Scenes/logo_group.gd" id="5_loo7a"]
+[ext_resource type="Script" uid="uid://crfdiwrbe2kwe" path="res://Scenes/logo_group.gd" id="5_loo7a"]
 [ext_resource type="AudioStream" uid="uid://d0gkxqmj2s251" path="res://Assets/Audio/Menu/hoverclick.wav" id="6_8um5k"]
-[ext_resource type="PackedScene" path="res://Scenes/UI/ConfirmModal.tscn" id="10_confirm"]
+[ext_resource type="Texture2D" uid="uid://bmr1ahxg4eun8" path="res://Assets/Creditos/godot_logo.png" id="7_godot"]
+[ext_resource type="Texture2D" uid="uid://dp767l41vlhc3" path="res://Assets/Creditos/utem_logo.png" id="8_utem"]
+[ext_resource type="Texture2D" uid="uid://cxqi1lh5nip8y" path="res://Assets/UI/button_style.png" id="9_frame"]
+[ext_resource type="PackedScene" uid="uid://ddiosxxotf4a5" path="res://Scenes/UI/ConfirmModal.tscn" id="10_confirm"]
+[ext_resource type="AudioStream" uid="uid://beevsopvjddwc" path="res://Assets/Audio/GameScreen/whoosh1.wav" id="11_new_game_whoosh"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_creditos"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_creditos_frame"]
+atlas = ExtResource("9_frame")
+region = Rect2(1873, 492, 769, 568)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_volver_normal"]
+texture = ExtResource("9_frame")
+region_rect = Rect2(173, 492, 771, 568)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_volver_pressed"]
+texture = ExtResource("9_frame")
+region_rect = Rect2(1873, 492, 769, 568)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_volver_hover"]
+texture = ExtResource("9_frame")
+region_rect = Rect2(1032, 484, 752, 571)
 
 [sub_resource type="Animation" id="Animation_koqhg"]
 length = 0.001
@@ -114,7 +136,7 @@ title = "Aviso"
 size = Vector2i(438, 100)
 dialog_text = "Lo sentimos, esta función se encuentra en desarrollo !!"
 
-[node name="ConfirmarNuevaPartida" parent="." instance=ExtResource("10_confirm")]
+[node name="ConfirmarNuevaPartida" parent="." unique_id=495881908 instance=ExtResource("10_confirm")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=918920461]
 
@@ -160,6 +182,340 @@ theme_override_font_sizes/font_size = 16
 text = "Salir
 "
 
+[node name="CreditosResplandor" type="Label" parent="CanvasLayer" unique_id=1802480524]
+modulate = Color(1, 1, 1, 0)
+z_index = 4
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -220.0
+offset_top = -52.0
+offset_right = 220.0
+offset_bottom = -18.0
+grow_horizontal = 2
+grow_vertical = 0
+pivot_offset = Vector2(220, 17)
+theme_override_colors/font_color = Color(1, 0.74, 0.22, 1)
+theme_override_colors/font_outline_color = Color(1, 0.48, 0.08, 0.75)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 13
+text = "CREADO POR UN EQUIPO DE ESTUDIANTES"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CreditosLink" type="Button" parent="CanvasLayer" unique_id=687307594]
+z_index = 5
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -220.0
+offset_top = -52.0
+offset_right = 220.0
+offset_bottom = -18.0
+grow_horizontal = 2
+grow_vertical = 0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme = ExtResource("3_k8um8")
+theme_override_colors/font_color = Color(0.78, 0.72, 0.62, 0.78)
+theme_override_colors/font_focus_color = Color(0.96, 0.78, 0.34, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.91, 0.58, 1)
+theme_override_colors/font_hover_color = Color(0.96, 0.78, 0.34, 1)
+theme_override_colors/font_outline_color = Color(0.08, 0.04, 0.01, 0.9)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 13
+theme_override_styles/normal = SubResource("StyleBoxEmpty_creditos")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_creditos")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_creditos")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_creditos")
+text = "CREADO POR UN EQUIPO DE ESTUDIANTES"
+
+[node name="CreditosOverlay" type="Control" parent="CanvasLayer" unique_id=749789317]
+visible = false
+z_index = 20
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Fondo" type="ColorRect" parent="CanvasLayer/CreditosOverlay" unique_id=96640906]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.16, 0.09, 0.04, 0.8)
+
+[node name="CreditosPanel" type="NinePatchRect" parent="CanvasLayer/CreditosOverlay" unique_id=539368071]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -300.0
+offset_right = 400.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(400, 300)
+texture = SubResource("AtlasTexture_creditos_frame")
+region_rect = Rect2(0, 0, 769, 568)
+patch_margin_left = 110
+patch_margin_top = 100
+patch_margin_right = 110
+patch_margin_bottom = 110
+
+[node name="Contenido" type="Control" parent="CanvasLayer/CreditosOverlay/CreditosPanel" unique_id=268767862]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 135.0
+offset_top = 105.0
+offset_right = -135.0
+offset_bottom = -105.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_k8um8")
+
+[node name="Titulo" type="Label" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido" unique_id=84010103]
+layout_mode = 0
+offset_right = 530.0
+offset_bottom = 40.0
+theme_override_colors/font_color = Color(0.882, 0.686, 0.18, 1)
+theme_override_font_sizes/font_size = 30
+text = "CRÉDITOS"
+horizontal_alignment = 1
+
+[node name="Separador" type="ColorRect" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido" unique_id=1145155020]
+layout_mode = 0
+offset_top = 45.0
+offset_right = 530.0
+offset_bottom = 47.0
+mouse_filter = 2
+color = Color(0.882, 0.686, 0.18, 0.55)
+
+[node name="Rollo" type="ScrollContainer" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido" unique_id=1074814565]
+layout_mode = 0
+offset_top = 55.0
+offset_right = 530.0
+offset_bottom = 315.0
+horizontal_scroll_mode = 0
+
+[node name="Creditos" type="Control" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo" unique_id=221588218]
+custom_minimum_size = Vector2(500, 1160)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Logo" type="TextureRect" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo/Creditos" unique_id=2049293945]
+layout_mode = 0
+offset_top = 30.0
+offset_right = 500.0
+offset_bottom = 142.0
+texture = ExtResource("4_koqhg")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ProyectoUniversitario" type="Label" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo/Creditos" unique_id=1438115963]
+layout_mode = 0
+offset_top = 155.0
+offset_right = 500.0
+offset_bottom = 178.0
+theme_override_colors/font_color = Color(0.71, 0.65, 0.56, 1)
+theme_override_font_sizes/font_size = 13
+text = "UN PROYECTO UNIVERSITARIO"
+horizontal_alignment = 1
+
+[node name="CreadoPor" type="Label" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo/Creditos" unique_id=1567103314]
+layout_mode = 0
+offset_top = 188.0
+offset_right = 500.0
+offset_bottom = 210.0
+theme_override_colors/font_color = Color(0.71, 0.65, 0.56, 1)
+theme_override_font_sizes/font_size = 12
+text = "CREADO POR"
+horizontal_alignment = 1
+
+[node name="Equipo" type="Label" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo/Creditos" unique_id=1563237279]
+layout_mode = 0
+offset_top = 220.0
+offset_right = 500.0
+offset_bottom = 252.0
+theme_override_colors/font_color = Color(0.95, 0.86, 0.64, 1)
+theme_override_font_sizes/font_size = 21
+text = "UN EQUIPO DE ESTUDIANTES"
+horizontal_alignment = 1
+
+[node name="Descripcion" type="Label" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo/Creditos" unique_id=1309788505]
+layout_mode = 0
+offset_top = 266.0
+offset_right = 500.0
+offset_bottom = 312.0
+theme_override_colors/font_color = Color(0.82, 0.79, 0.73, 1)
+theme_override_font_sizes/font_size = 15
+text = "Proyecto universitario desarrollado en equipo,
+entre ideas, pruebas y mucho café."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EstudiantesDe" type="Label" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo/Creditos" unique_id=2119304974]
+layout_mode = 0
+offset_top = 335.0
+offset_right = 500.0
+offset_bottom = 362.0
+theme_override_colors/font_color = Color(0.882, 0.686, 0.18, 1)
+theme_override_font_sizes/font_size = 17
+text = "ESTUDIANTES DE"
+horizontal_alignment = 1
+
+[node name="LogoUTEM" type="TextureRect" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo/Creditos" unique_id=1295088094]
+layout_mode = 0
+offset_top = 375.0
+offset_right = 500.0
+offset_bottom = 483.0
+texture = ExtResource("8_utem")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="SeparadorEquipo" type="ColorRect" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo/Creditos" unique_id=2066969368]
+layout_mode = 0
+offset_top = 510.0
+offset_right = 500.0
+offset_bottom = 511.0
+mouse_filter = 2
+color = Color(0.882, 0.686, 0.18, 0.28)
+
+[node name="DesarrolloTitulo" type="Label" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo/Creditos" unique_id=135510218]
+layout_mode = 0
+offset_top = 535.0
+offset_right = 500.0
+offset_bottom = 562.0
+theme_override_colors/font_color = Color(0.882, 0.686, 0.18, 1)
+theme_override_font_sizes/font_size = 17
+text = "DESARROLLO"
+horizontal_alignment = 1
+
+[node name="DesarrolloTexto" type="Label" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo/Creditos" unique_id=867806331]
+layout_mode = 0
+offset_top = 575.0
+offset_right = 500.0
+offset_bottom = 620.0
+theme_override_colors/font_color = Color(0.82, 0.79, 0.73, 1)
+theme_override_font_sizes/font_size = 14
+text = "Diseño, programación, arte y pruebas
+realizadas en conjunto."
+horizontal_alignment = 1
+
+[node name="DesarrolladoCon" type="Label" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo/Creditos" unique_id=700337139]
+layout_mode = 0
+offset_top = 645.0
+offset_right = 500.0
+offset_bottom = 672.0
+theme_override_colors/font_color = Color(0.882, 0.686, 0.18, 1)
+theme_override_font_sizes/font_size = 17
+text = "DESARROLLADO CON"
+horizontal_alignment = 1
+
+[node name="LogoGodot" type="TextureRect" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo/Creditos" unique_id=301170474]
+layout_mode = 0
+offset_top = 685.0
+offset_right = 500.0
+offset_bottom = 793.0
+texture = ExtResource("7_godot")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="SeparadorHerramientas" type="ColorRect" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo/Creditos" unique_id=984769752]
+layout_mode = 0
+offset_top = 820.0
+offset_right = 500.0
+offset_bottom = 821.0
+mouse_filter = 2
+color = Color(0.882, 0.686, 0.18, 0.28)
+
+[node name="AgradecimientosTitulo" type="Label" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo/Creditos" unique_id=1081535969]
+layout_mode = 0
+offset_top = 845.0
+offset_right = 500.0
+offset_bottom = 872.0
+theme_override_colors/font_color = Color(0.882, 0.686, 0.18, 1)
+theme_override_font_sizes/font_size = 17
+text = "AGRADECIMIENTOS"
+horizontal_alignment = 1
+
+[node name="AgradecimientosTexto" type="Label" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo/Creditos" unique_id=1079051267]
+layout_mode = 0
+offset_top = 885.0
+offset_right = 500.0
+offset_bottom = 930.0
+theme_override_colors/font_color = Color(0.82, 0.79, 0.73, 1)
+theme_override_font_sizes/font_size = 14
+text = "A quienes acompañaron el proyecto,
+lo probaron y ayudaron a mejorarlo."
+horizontal_alignment = 1
+
+[node name="Gracias" type="Label" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo/Creditos" unique_id=1833750958]
+layout_mode = 0
+offset_top = 965.0
+offset_right = 500.0
+offset_bottom = 995.0
+theme_override_colors/font_color = Color(0.882, 0.686, 0.18, 1)
+theme_override_font_sizes/font_size = 18
+text = "Gracias por jugar."
+horizontal_alignment = 1
+
+[node name="Fin" type="Label" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo/Creditos" unique_id=406646054]
+layout_mode = 0
+offset_top = 1015.0
+offset_right = 500.0
+offset_bottom = 1040.0
+theme_override_colors/font_color = Color(0.71, 0.65, 0.56, 0.8)
+theme_override_font_sizes/font_size = 12
+text = "— FIN —"
+horizontal_alignment = 1
+
+[node name="BtnVolver" type="Button" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido" unique_id=1625812122]
+z_index = 2
+layout_mode = 0
+offset_left = 174.0
+offset_top = 350.0
+offset_right = 356.0
+offset_bottom = 376.0
+mouse_default_cursor_shape = 2
+theme = ExtResource("3_k8um8")
+theme_override_colors/font_color = Color(0.875, 0.875, 0.875, 1)
+theme_override_colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxTexture_volver_normal")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_volver_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_volver_hover")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_volver_pressed")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_creditos")
+text = "Volver"
+
+[node name="FadeNuevaPartida" type="ColorRect" parent="CanvasLayer" unique_id=367598139]
+visible = false
+z_index = 100
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
 [node name="WorldVisuals" type="Node2D" parent="CanvasLayer" unique_id=46761539]
 
 [node name="BackgroundGroup" type="Node2D" parent="CanvasLayer/WorldVisuals" unique_id=1859460047]
@@ -204,6 +560,11 @@ stream = ExtResource("6_8um5k")
 volume_db = -8.0
 bus = &"SFX"
 
+[node name="NuevaPartidaWhoosh" type="AudioStreamPlayer" parent="." unique_id=1266128886]
+stream = ExtResource("11_new_game_whoosh")
+volume_db = -4.0
+bus = &"SFX"
+
 [connection signal="mouse_entered" from="CanvasLayer/VBoxContainer/button_new_game" to="." method="_on_button_new_game_mouse_entered"]
 [connection signal="pressed" from="CanvasLayer/VBoxContainer/button_new_game" to="." method="_on_button_new_game_pressed"]
 [connection signal="mouse_entered" from="CanvasLayer/VBoxContainer/button_load_game" to="." method="_on_button_load_game_mouse_entered"]
@@ -212,3 +573,7 @@ bus = &"SFX"
 [connection signal="pressed" from="CanvasLayer/VBoxContainer/button_options" to="." method="_on_button_options_pressed"]
 [connection signal="mouse_entered" from="CanvasLayer/VBoxContainer/button_exit" to="." method="_on_button_exit_mouse_entered"]
 [connection signal="pressed" from="CanvasLayer/VBoxContainer/button_exit" to="." method="_on_button_exit_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/CreditosLink" to="." method="_on_creditos_link_mouse_entered"]
+[connection signal="pressed" from="CanvasLayer/CreditosLink" to="." method="_on_creditos_link_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/BtnVolver" to="." method="_on_creditos_volver_mouse_entered"]
+[connection signal="pressed" from="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/BtnVolver" to="." method="_on_cerrar_creditos_pressed"]

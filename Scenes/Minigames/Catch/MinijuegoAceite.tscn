@@ -4,11 +4,13 @@
 [ext_resource type="Texture2D" uid="uid://clu3sgla6h45e" path="res://Assets/Sprites/inflado_neumatico/Balde.png" id="2_bxk3r"]
 [ext_resource type="Texture2D" uid="uid://jjbba5c76lw5" path="res://Assets/Sprites/inflado_neumatico/Fondo.png" id="2_y1xvu"]
 [ext_resource type="Texture2D" uid="uid://dambm844o400m" path="res://Assets/Sprites/inflado_neumatico/Tiempo.png" id="4_2ijxm"]
-[ext_resource type="AudioStream" uid="uid://cb8rlwdn04ks5" path="res://Assets/Audio/MinigameAudio/Neumaticos/Gota.wav" id="4_qjyv8"]
+[ext_resource type="AudioStream" uid="uid://cb8rlwdn04ks5" path="res://Assets/Audio/MinigameAudio/Catch/Gota.wav" id="4_caue8"]
 [ext_resource type="PackedScene" uid="uid://c8n2rqp4dv6xk" path="res://Scenes/UI/ResumenAtencion.tscn" id="5_1wjuv"]
 [ext_resource type="Texture2D" uid="uid://cxqi1lh5nip8y" path="res://Assets/UI/button_style.png" id="5_bf0fi"]
 [ext_resource type="Texture2D" uid="uid://dmrbjvaoddmvt" path="res://Assets/Sprites/inflado_neumatico/Recaudado.png" id="6_alo7h"]
 [ext_resource type="FontFile" uid="uid://b1dalxnlh0wwq" path="res://Assets/Sprites/inflado_neumatico/5x7 MT Pixel.ttf" id="7_caue8"]
+[ext_resource type="AudioStream" uid="uid://bs0tkjhksgg63" path="res://Assets/Audio/MinigameAudio/Catch/bucketloop.ogg" id="10_flekr"]
+[ext_resource type="AudioStream" uid="uid://cli41kbmhx48f" path="res://Assets/Audio/MinigameAudio/Catch/bucketdrag.wav" id="11_bucketdrag"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_768ge"]
 size = Vector2(201, 54)
@@ -46,7 +48,15 @@ wait_time = 0.7
 autostart = true
 
 [node name="AudioRecoger" type="AudioStreamPlayer2D" parent="." unique_id=1104548428]
-stream = ExtResource("4_qjyv8")
+stream = ExtResource("4_caue8")
+
+[node name="AudioGotaPerdida" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_caue8")
+pitch_scale = 0.7491535
+
+[node name="AudioArrastre" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("11_bucketdrag")
+volume_db = -40.0
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=508722450]
 
@@ -190,6 +200,11 @@ offset_bottom = 414.0
 theme_override_colors/font_color = Color(1, 0.8862745, 0, 1)
 text = "[ Presiona cualquier tecla de movimiento para empezar ]"
 metadata/_edit_use_anchors_ = true
+
+[node name="MusicLoop" type="AudioStreamPlayer" parent="." unique_id=2097452545]
+stream = ExtResource("10_flekr")
+autoplay = true
+parameters/looping = true
 
 [connection signal="area_entered" from="Balde" to="." method="_on_balde_area_entered"]
 [connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]
