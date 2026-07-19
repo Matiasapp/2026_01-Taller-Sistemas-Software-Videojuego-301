@@ -164,6 +164,7 @@ bus = &"SFX"
 position = Vector2(2.0000002, 8)
 script = ExtResource("14_hdlxh")
 control_mode = 4
+onnx_model_path = "res://demos/crossy_bc.onnx"
 reset_after = 2800
 expert_demo_save_path = "res://demos/crossy_demos.json"
 remove_last_episode_key = SubResource("InputEventKey_svdu5")
