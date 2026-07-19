@@ -5,9 +5,10 @@ extends Node2D
 @onready var creditos_link: Button = $CanvasLayer/CreditosLink
 @onready var creditos_resplandor: Label = $CanvasLayer/CreditosResplandor
 @onready var creditos_overlay: Control = $CanvasLayer/CreditosOverlay
-@onready var creditos_panel: PanelContainer = $CanvasLayer/CreditosOverlay/CreditosPanel
+@onready var creditos_panel: NinePatchRect = $CanvasLayer/CreditosOverlay/CreditosPanel
 @onready var creditos_scroll: ScrollContainer = $CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo
-@onready var creditos_cerrar: Button = $CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Cerrar
+@onready var creditos_barra: VScrollBar = creditos_scroll.get_v_scroll_bar()
+@onready var creditos_cerrar: Button = $CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/BtnVolver
 
 const VELOCIDAD_CREDITOS := 18.0
 const ESPERA_INICIAL_CREDITOS := 0.8
@@ -15,6 +16,8 @@ const ESPERA_INICIAL_CREDITOS := 0.8
 var creditos_scroll_pos := 0.0
 var creditos_scroll_espera := 0.0
 var creditos_scroll_activo := false
+var creditos_scroll_arrastrando := false
+var creditos_scroll_actualizando := false
 
 @export var click_sound: AudioStreamPlayer
 @export var hover_sound: AudioStreamPlayer
@@ -60,6 +63,7 @@ func _ready() -> void:
 	$CanvasLayer/VBoxContainer/button_load_game.disabled = not PARTIDA.hay_partida()
 
 	confirmar_nueva_partida.confirmado.connect(_on_confirmar_nueva_partida_confirmed)
+	creditos_barra.value_changed.connect(_on_creditos_barra_value_changed)
 
 
 # ========================= 
@@ -158,13 +162,18 @@ func _abrir_creditos() -> void:
 	if creditos_overlay.visible:
 		return
 
+	creditos_link.release_focus()
+	creditos_cerrar.disabled = false
 	creditos_overlay.visible = true
 	creditos_overlay.modulate.a = 0.0
 	creditos_panel.scale = Vector2(0.96, 0.96)
+	creditos_scroll_actualizando = true
 	creditos_scroll.scroll_vertical = 0
+	creditos_scroll_actualizando = false
 	creditos_scroll_pos = 0.0
 	creditos_scroll_espera = ESPERA_INICIAL_CREDITOS
 	creditos_scroll_activo = true
+	creditos_scroll_arrastrando = false
 
 	var tween := create_tween().set_parallel(true)
 	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
@@ -178,6 +187,7 @@ func _cerrar_creditos() -> void:
 		return
 
 	creditos_scroll_activo = false
+	creditos_scroll_arrastrando = false
 
 	var tween := create_tween().set_parallel(true)
 	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
@@ -186,25 +196,63 @@ func _cerrar_creditos() -> void:
 	await tween.finished
 	creditos_overlay.visible = false
 	creditos_panel.scale = Vector2.ONE
-	creditos_link.grab_focus()
+	creditos_cerrar.release_focus()
+	creditos_link.release_focus()
 
 
 func _process(delta: float) -> void:
 	if not creditos_scroll_activo or not creditos_overlay.visible:
 		return
 
+	if creditos_scroll_arrastrando:
+		creditos_scroll_pos = float(creditos_scroll.scroll_vertical)
+		return
+
 	if creditos_scroll_espera > 0.0:
 		creditos_scroll_espera -= delta
 		return
 
-	var barra := creditos_scroll.get_v_scroll_bar()
-	var limite := maxf(0.0, barra.max_value - barra.page)
+	var limite := maxf(0.0, creditos_barra.max_value - creditos_barra.page)
 	if creditos_scroll_pos >= limite:
 		creditos_scroll_activo = false
 		return
 
 	creditos_scroll_pos = minf(creditos_scroll_pos + VELOCIDAD_CREDITOS * delta, limite)
+	creditos_scroll_actualizando = true
 	creditos_scroll.scroll_vertical = roundi(creditos_scroll_pos)
+	creditos_scroll_actualizando = false
+
+
+func _on_creditos_barra_value_changed(valor: float) -> void:
+	if creditos_scroll_actualizando or not creditos_overlay.visible:
+		return
+
+	creditos_scroll_pos = valor
+	var limite := maxf(0.0, creditos_barra.max_value - creditos_barra.page)
+	creditos_scroll_activo = valor < limite
+
+
+func _input(event: InputEvent) -> void:
+	if not creditos_overlay.visible or not event is InputEventMouseButton:
+		return
+
+	var evento_mouse := event as InputEventMouseButton
+	if evento_mouse.button_index != MOUSE_BUTTON_LEFT:
+		return
+
+	if evento_mouse.pressed and creditos_barra.get_global_rect().has_point(evento_mouse.position):
+		creditos_scroll_arrastrando = true
+		creditos_scroll_pos = float(creditos_scroll.scroll_vertical)
+	elif not evento_mouse.pressed and creditos_scroll_arrastrando:
+		creditos_scroll_arrastrando = false
+		call_deferred("_reanudar_creditos_desde_barra")
+
+
+func _reanudar_creditos_desde_barra() -> void:
+	creditos_scroll_pos = float(creditos_scroll.scroll_vertical)
+	creditos_scroll_espera = 0.0
+	var limite := maxf(0.0, creditos_barra.max_value - creditos_barra.page)
+	creditos_scroll_activo = creditos_scroll_pos < limite
 
 
 func _animar_resplandor_creditos() -> void:
@@ -251,3 +299,8 @@ func _on_button_exit_mouse_entered() -> void:
 
 func _on_creditos_link_mouse_entered() -> void:
 	play_hover()
+
+
+func _on_creditos_volver_mouse_entered() -> void:
+	if not creditos_cerrar.disabled and creditos_overlay.visible:
+		play_hover()
