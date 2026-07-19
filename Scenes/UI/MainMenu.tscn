@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://dp767l41vlhc3" path="res://Assets/Creditos/utem_logo.png" id="8_utem"]
 [ext_resource type="Texture2D" uid="uid://cxqi1lh5nip8y" path="res://Assets/UI/button_style.png" id="9_frame"]
 [ext_resource type="PackedScene" uid="uid://ddiosxxotf4a5" path="res://Scenes/UI/ConfirmModal.tscn" id="10_confirm"]
+[ext_resource type="AudioStream" uid="uid://beevsopvjddwc" path="res://Assets/Audio/GameScreen/whoosh1.wav" id="11_new_game_whoosh"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_creditos"]
 
@@ -24,13 +25,13 @@ region = Rect2(1873, 492, 769, 568)
 texture = ExtResource("9_frame")
 region_rect = Rect2(173, 492, 771, 568)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_volver_hover"]
-texture = ExtResource("9_frame")
-region_rect = Rect2(1032, 484, 752, 571)
-
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_volver_pressed"]
 texture = ExtResource("9_frame")
 region_rect = Rect2(1873, 492, 769, 568)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_volver_hover"]
+texture = ExtResource("9_frame")
+region_rect = Rect2(1032, 484, 752, 571)
 
 [sub_resource type="Animation" id="Animation_koqhg"]
 length = 0.001
@@ -493,16 +494,27 @@ mouse_default_cursor_shape = 2
 theme = ExtResource("3_k8um8")
 theme_override_colors/font_color = Color(0.875, 0.875, 0.875, 1)
 theme_override_colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
 theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
-theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 16
-theme_override_styles/focus = SubResource("StyleBoxEmpty_creditos")
-theme_override_styles/hover = SubResource("StyleBoxTexture_volver_hover")
-theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_volver_pressed")
 theme_override_styles/normal = SubResource("StyleBoxTexture_volver_normal")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_volver_pressed")
+theme_override_styles/hover = SubResource("StyleBoxTexture_volver_hover")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_volver_pressed")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_creditos")
 text = "Volver"
+
+[node name="FadeNuevaPartida" type="ColorRect" parent="CanvasLayer" unique_id=367598139]
+visible = false
+z_index = 100
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
 
 [node name="WorldVisuals" type="Node2D" parent="CanvasLayer" unique_id=46761539]
 
@@ -546,6 +558,11 @@ bus = &"SFX"
 [node name="HoverSound" type="AudioStreamPlayer" parent="." unique_id=1916066322]
 stream = ExtResource("6_8um5k")
 volume_db = -8.0
+bus = &"SFX"
+
+[node name="NuevaPartidaWhoosh" type="AudioStreamPlayer" parent="." unique_id=1266128886]
+stream = ExtResource("11_new_game_whoosh")
+volume_db = -4.0
 bus = &"SFX"
 
 [connection signal="mouse_entered" from="CanvasLayer/VBoxContainer/button_new_game" to="." method="_on_button_new_game_mouse_entered"]

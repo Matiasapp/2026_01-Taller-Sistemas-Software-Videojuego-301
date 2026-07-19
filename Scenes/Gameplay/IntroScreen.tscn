@@ -13,6 +13,7 @@
 [ext_resource type="AudioStream" uid="uid://c6ksaho7s4f52" path="res://Assets/Audio/IntroScreen/select_character.wav" id="11_1rwc0"]
 [ext_resource type="AudioStream" uid="uid://lnnltgws2f7" path="res://Assets/Audio/IntroScreen/whoosh.wav" id="12_cqw2y"]
 [ext_resource type="AudioStream" uid="uid://cc2twnwdewko7" path="res://Assets/Audio/IntroScreen/talking.wav" id="13_1rwc0"]
+[ext_resource type="AudioStream" uid="uid://60lwu6n4rom4" path="res://Assets/Audio/IntroScreen/loopintro.ogg" id="14_intro_music"]
 
 [sub_resource type="Animation" id="Animation_jy5sd"]
 length = 0.001
@@ -82,6 +83,7 @@ hover_character_sound = NodePath("HoverCharacterSound")
 select_character_sound = NodePath("SelectCharacterSound")
 whoosh_sound = NodePath("WhooshSound")
 talking_sound = NodePath("TalkingSound")
+intro_music = ExtResource("14_intro_music")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1697874380]
 editor_description = "

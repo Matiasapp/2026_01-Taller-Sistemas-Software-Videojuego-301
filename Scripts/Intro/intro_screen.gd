@@ -14,6 +14,7 @@ extends Node2D
 @export var select_character_sound: AudioStreamPlayer
 @export var whoosh_sound: AudioStreamPlayer
 @export var talking_sound: AudioStreamPlayer
+@export var intro_music: AudioStream
 
 var animador_texto: Tween
 var escribiendo := false
@@ -92,6 +93,13 @@ func stop_talking() -> void:
 
 func _ready() -> void:
 	randomize()
+	if intro_music:
+		if intro_music is AudioStreamOggVorbis:
+			(intro_music as AudioStreamOggVorbis).loop = true
+		GlobalMusic.set_intro_volume()
+		GlobalMusic.play_music(intro_music)
+	else:
+		push_warning("No hay música asignada para IntroScreen.")
 	assert(MENSAJES_INTRO.size() == IMAGENES_INTRO.size(), "Cada texto de la introducción necesita una imagen.")
 	bg_animation.play("background_move")
 	vista_genero.hide()

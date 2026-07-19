@@ -9,6 +9,8 @@ extends Node2D
 @onready var creditos_scroll: ScrollContainer = $CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo
 @onready var creditos_barra: VScrollBar = creditos_scroll.get_v_scroll_bar()
 @onready var creditos_cerrar: Button = $CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/BtnVolver
+@onready var fade_nueva_partida: ColorRect = $CanvasLayer/FadeNuevaPartida
+@onready var nueva_partida_whoosh: AudioStreamPlayer = $NuevaPartidaWhoosh
 
 const VELOCIDAD_CREDITOS := 18.0
 const ESPERA_INICIAL_CREDITOS := 0.8
@@ -18,6 +20,7 @@ var creditos_scroll_espera := 0.0
 var creditos_scroll_activo := false
 var creditos_scroll_arrastrando := false
 var creditos_scroll_actualizando := false
+var iniciando_nueva_partida := false
 
 @export var click_sound: AudioStreamPlayer
 @export var hover_sound: AudioStreamPlayer
@@ -91,6 +94,10 @@ func _on_confirmar_nueva_partida_confirmed() -> void:
 
 
 func _iniciar_nueva_partida() -> void:
+	if iniciando_nueva_partida:
+		return
+	iniciando_nueva_partida = true
+
 	# Nueva partida: borramos el guardado anterior y reiniciamos todo el estado.
 	PARTIDA.borrar()
 	DATOSGLOBALES.reiniciar()
@@ -99,12 +106,29 @@ func _iniciar_nueva_partida() -> void:
 	if TIEMPOMANAGER:
 		TIEMPOMANAGER.reset_day()
 
-	await get_tree().create_timer(0.15).timeout
-
-	GlobalMusic.set_intro_volume()
+	await get_tree().create_timer(0.12).timeout
+	await _transicion_a_intro()
 
 	print("Iniciando el nivel...")
 	get_tree().change_scene_to_file("res://Scenes/Gameplay/IntroScreen.tscn")
+
+
+func _transicion_a_intro() -> void:
+	fade_nueva_partida.visible = true
+	fade_nueva_partida.modulate.a = 0.0
+	fade_nueva_partida.mouse_filter = Control.MOUSE_FILTER_STOP
+
+	if nueva_partida_whoosh:
+		nueva_partida_whoosh.pitch_scale = 1.0
+		nueva_partida_whoosh.play()
+
+	var tween := create_tween()
+	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	tween.tween_property(fade_nueva_partida, "modulate:a", 1.0, 0.55)
+	await tween.finished
+
+	if nueva_partida_whoosh and nueva_partida_whoosh.playing:
+		await nueva_partida_whoosh.finished
 
 
 func _on_button_load_game_pressed() -> void:
