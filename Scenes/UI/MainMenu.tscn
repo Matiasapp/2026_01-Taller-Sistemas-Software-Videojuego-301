@@ -102,6 +102,22 @@ _data = {
 &"logo_float": SubResource("Animation_loo7a")
 }
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_creditos"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_creditos_panel"]
+content_margin_left = 34.0
+content_margin_top = 28.0
+content_margin_right = 34.0
+content_margin_bottom = 28.0
+bg_color = Color(0.105, 0.075, 0.047, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.882, 0.686, 0.18, 1)
+shadow_color = Color(0, 0, 0, 0.65)
+shadow_size = 12
+
 [node name="main_menu" type="Node2D" unique_id=793289241 node_paths=PackedStringArray("click_sound", "hover_sound")]
 script = ExtResource("1_8saeu")
 click_sound = NodePath("ClickSound")
@@ -160,6 +176,233 @@ theme_override_font_sizes/font_size = 16
 text = "Salir
 "
 
+[node name="CreditosResplandor" type="Label" parent="CanvasLayer"]
+z_index = 4
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -220.0
+offset_top = -52.0
+offset_right = 220.0
+offset_bottom = -18.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 0.74, 0.22, 1)
+theme_override_colors/font_outline_color = Color(1, 0.48, 0.08, 0.75)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 13
+text = "CREADO POR UN EQUIPO DE ESTUDIANTES"
+horizontal_alignment = 1
+vertical_alignment = 1
+pivot_offset = Vector2(220, 17)
+modulate = Color(1, 1, 1, 0)
+
+[node name="CreditosLink" type="Button" parent="CanvasLayer"]
+z_index = 5
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -220.0
+offset_top = -52.0
+offset_right = 220.0
+offset_bottom = -18.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_default_cursor_shape = 2
+theme = ExtResource("3_k8um8")
+theme_override_colors/font_color = Color(0.78, 0.72, 0.62, 0.78)
+theme_override_colors/font_focus_color = Color(0.96, 0.78, 0.34, 1)
+theme_override_colors/font_hover_color = Color(0.96, 0.78, 0.34, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.91, 0.58, 1)
+theme_override_colors/font_outline_color = Color(0.08, 0.04, 0.01, 0.9)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 13
+theme_override_styles/normal = SubResource("StyleBoxEmpty_creditos")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_creditos")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_creditos")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_creditos")
+text = "CREADO POR UN EQUIPO DE ESTUDIANTES"
+
+[node name="CreditosOverlay" type="Control" parent="CanvasLayer"]
+visible = false
+z_index = 20
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Fondo" type="ColorRect" parent="CanvasLayer/CreditosOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+color = Color(0.055, 0.035, 0.018, 0.78)
+
+[node name="CreditosPanel" type="PanelContainer" parent="CanvasLayer/CreditosOverlay"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -310.0
+offset_top = -260.0
+offset_right = 310.0
+offset_bottom = 260.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(310, 260)
+theme_override_styles/panel = SubResource("StyleBoxFlat_creditos_panel")
+
+[node name="Contenido" type="VBoxContainer" parent="CanvasLayer/CreditosOverlay/CreditosPanel"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Titulo" type="Label" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.882, 0.686, 0.18, 1)
+theme_override_colors/font_outline_color = Color(0.08, 0.04, 0.01, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 28
+text = "CRÉDITOS"
+horizontal_alignment = 1
+
+[node name="Separador" type="ColorRect" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido"]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.882, 0.686, 0.18, 0.55)
+
+[node name="Rollo" type="ScrollContainer" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Creditos" type="VBoxContainer" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo"]
+custom_minimum_size = Vector2(540, 760)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 14
+
+[node name="Inicio" type="Control" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo/Creditos"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Logo" type="TextureRect" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo/Creditos"]
+custom_minimum_size = Vector2(0, 112)
+layout_mode = 2
+texture = ExtResource("4_koqhg")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ProyectoUniversitario" type="Label" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo/Creditos"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.71, 0.65, 0.56, 1)
+theme_override_font_sizes/font_size = 13
+text = "UN PROYECTO UNIVERSITARIO"
+horizontal_alignment = 1
+
+[node name="CreadoPor" type="Label" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo/Creditos"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.71, 0.65, 0.56, 1)
+theme_override_font_sizes/font_size = 12
+text = "CREADO POR"
+horizontal_alignment = 1
+
+[node name="Equipo" type="Label" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo/Creditos"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.86, 0.64, 1)
+theme_override_font_sizes/font_size = 21
+text = "UN EQUIPO DE ESTUDIANTES"
+horizontal_alignment = 1
+
+[node name="Descripcion" type="Label" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo/Creditos"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.82, 0.79, 0.73, 1)
+theme_override_font_sizes/font_size = 15
+text = "Proyecto universitario desarrollado en equipo,\nentre ideas, pruebas y mucho café."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SeparadorEquipo" type="ColorRect" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo/Creditos"]
+custom_minimum_size = Vector2(0, 1)
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.882, 0.686, 0.18, 0.28)
+
+[node name="DesarrolloTitulo" type="Label" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo/Creditos"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.882, 0.686, 0.18, 1)
+theme_override_font_sizes/font_size = 17
+text = "DESARROLLO"
+horizontal_alignment = 1
+
+[node name="DesarrolloTexto" type="Label" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo/Creditos"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.82, 0.79, 0.73, 1)
+theme_override_font_sizes/font_size = 14
+text = "Diseño, programación, arte y pruebas\nrealizadas en conjunto."
+horizontal_alignment = 1
+
+[node name="AgradecimientosTitulo" type="Label" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo/Creditos"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.882, 0.686, 0.18, 1)
+theme_override_font_sizes/font_size = 17
+text = "AGRADECIMIENTOS"
+horizontal_alignment = 1
+
+[node name="AgradecimientosTexto" type="Label" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo/Creditos"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.82, 0.79, 0.73, 1)
+theme_override_font_sizes/font_size = 14
+text = "A quienes acompañaron el proyecto,\nlo probaron y ayudaron a mejorarlo."
+horizontal_alignment = 1
+
+[node name="Gracias" type="Label" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo/Creditos"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.882, 0.686, 0.18, 1)
+theme_override_font_sizes/font_size = 18
+text = "Gracias por jugar."
+horizontal_alignment = 1
+
+[node name="Fin" type="Label" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo/Creditos"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.71, 0.65, 0.56, 0.8)
+theme_override_font_sizes/font_size = 12
+text = "— FIN —"
+horizontal_alignment = 1
+
+[node name="MargenFinal" type="Control" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo/Creditos"]
+custom_minimum_size = Vector2(0, 54)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Cerrar" type="Button" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido"]
+custom_minimum_size = Vector2(0, 34)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme = ExtResource("3_k8um8")
+theme_override_colors/font_color = Color(0.74, 0.69, 0.6, 1)
+theme_override_colors/font_hover_color = Color(1, 0.84, 0.42, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.94, 0.72, 1)
+theme_override_font_sizes/font_size = 13
+theme_override_styles/normal = SubResource("StyleBoxEmpty_creditos")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_creditos")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_creditos")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_creditos")
+text = "[ VOLVER ]"
+
 [node name="WorldVisuals" type="Node2D" parent="CanvasLayer" unique_id=46761539]
 
 [node name="BackgroundGroup" type="Node2D" parent="CanvasLayer/WorldVisuals" unique_id=1859460047]
@@ -212,3 +455,7 @@ bus = &"SFX"
 [connection signal="pressed" from="CanvasLayer/VBoxContainer/button_options" to="." method="_on_button_options_pressed"]
 [connection signal="mouse_entered" from="CanvasLayer/VBoxContainer/button_exit" to="." method="_on_button_exit_mouse_entered"]
 [connection signal="pressed" from="CanvasLayer/VBoxContainer/button_exit" to="." method="_on_button_exit_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/CreditosLink" to="." method="_on_creditos_link_mouse_entered"]
+[connection signal="pressed" from="CanvasLayer/CreditosLink" to="." method="_on_creditos_link_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Cerrar" to="." method="_on_creditos_link_mouse_entered"]
+[connection signal="pressed" from="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Cerrar" to="." method="_on_cerrar_creditos_pressed"]
