@@ -542,6 +542,8 @@ func cerrar_dia() -> void:
 	# ¿Habrá robo esta noche? Se decide ahora, pero el robo se muestra DESPUÉS del cierre.
 	if randf() <= 0.30:
 		DATOSGLOBALES.siguiente_evento_dia = "robo"
+	elif DATOSGLOBALES.condicion_protesta():
+		DATOSGLOBALES.siguiente_evento_dia = "protesta"
 	else:
 		DATOSGLOBALES.siguiente_evento_dia = "transicion"
 

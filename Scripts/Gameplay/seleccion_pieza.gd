@@ -171,4 +171,5 @@ func _on_area_barata_input_event(_viewport, event, _shape_idx) -> void:
 
 func _on_area_dudosa_input_event(_viewport, event, _shape_idx) -> void:
 	if event is InputEventMouseButton and event.pressed:
+		DATOSGLOBALES.contador_pieza_defectuosa += 1
 		seleccionar_pieza("dudosa")

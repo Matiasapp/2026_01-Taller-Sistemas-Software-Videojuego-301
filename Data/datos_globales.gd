@@ -18,6 +18,11 @@ var estafa_pendiente: bool = false
 var dinero_antes_estafa: int = 0   # Dinero justo antes del minijuego (para revertir el pago falso)
 var nombre_estafador: String = ""
 
+## Evento de Protesta Pendiente: Se activa si se han utilizado 5 piezas defectuosas
+var protesta_pendiente: bool = false
+var contador_pieza_defectuosa: int = 0
+var pieza_limite: int = 5
+
 ## Para mostrar en el HUD cuánto cambió el dinero tras atender a un cliente (reparación).
 var dinero_antes_atencion: int = 0
 var volviendo_de_atencion: bool = false
@@ -59,6 +64,8 @@ var _cambiando_a_evento_final := false
 var _pieza_reputacion_registrada := false
 var _minijuego_reputacion_registrado := false
 var _avisos_reputacion_pendientes: Array[String] = []
+
+
 
 func _ready() -> void:
 	# El vigilante del final debe seguir activo incluso si una pantalla de
@@ -586,6 +593,8 @@ func reiniciar() -> void:
 	volviendo_de_atencion = false
 	resumen_atencion.clear()
 	estadisticas_dias.clear()
+	protesta_pendiente = false
+	contador_pieza_defectuosa = 0
 
 # Datos asociados a la reputacion
 signal reputacion_cambiado(nuevo_reputacion:int)
@@ -785,3 +794,10 @@ func guardar_dia():
 	print("Guardado:")
 	print(datos)
 	print("Total días:", historial_dias.size())
+
+func condicion_protesta():
+	if contador_pieza_defectuosa >= pieza_limite and protesta_pendiente == false:
+		protesta_pendiente = true
+		return true
+	else:
+		return false

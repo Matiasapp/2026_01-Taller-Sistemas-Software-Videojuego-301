@@ -1,5 +1,8 @@
 extends Node2D
 
+const PERDIDA_MINIMA := 15
+const PERDIDA_MAXIMA := 30
+
 @onready var label: RichTextLabel = $CanvasLayer/VistaTextoIntroduccion/Panel/RichTextLabel
 @onready var vista_evento: Control = $CanvasLayer/VistaTextoIntroduccion
 @onready var imagen: TextureRect = $CanvasLayer/VistaTextoIntroduccion/TextureRect
@@ -9,15 +12,9 @@ extends Node2D
 
 @export var talking_sound: AudioStreamPlayer
 
-@export var imagen_hombre_1: Texture2D
-@export var imagen_hombre_2: Texture2D
-@export var imagen_hombre_3: Texture2D
-@export var imagen_hombre_4: Texture2D
-
-@export var imagen_mujer_1: Texture2D
-@export var imagen_mujer_2: Texture2D
-@export var imagen_mujer_3: Texture2D
-@export var imagen_mujer_4: Texture2D
+@export var imagen_taller_1: Texture2D
+@export var imagen_taller_2: Texture2D
+@export var imagen_taller_3: Texture2D
 
 var animador_texto: Tween
 var escribiendo := false
@@ -25,10 +22,12 @@ var indice_mensaje := 0
 
 var mensajes := []
 var imagenes := []
+var reputacion_perdida := 0
 
 
 func _ready() -> void:
 	randomize()
+	_aplicar_consecuencias_robo()
 
 	if bg_animation:
 		bg_animation.play("background_move")
@@ -49,27 +48,31 @@ func _ready() -> void:
 
 func configurar_evento() -> void:
 	mensajes = [
-		"El taller por fin queda en silencio. Guardas las herramientas y cierras la jornada.",
-		"Ha sido un día largo: clientes, reparaciones, decisiones apresuradas y cuentas que todavía pesan en la cabeza.",
-		"Intentas descansar unas horas, sabiendo que mañana tendrás que volver a empezar con lo poco que queda en pie.",
-		"Un nuevo día te espera. Tal vez no sea más fácil... pero el taller sigue abierto."
+		"Estas abriendo las cortinas del taller para comenzar tu día de trabajo,pero notas algo extraño. Escuchas ruidos en la lejania.",
+		"Es una protesta fuera del taller, estan aqui por que sus vehiculos estan rotos por piezas defectuosas despues de traerlos al local. Por lo que cierras rapidamente para que el taller no se vea afectado",
+		"Llamas a la policia para que la disipar la protesta, pero tu reputacion ya ha sido manchada. El taller debe continuar.
+		Reputacion perdida:  %d" %reputacion_perdida
 	]
-
-	var es_mujer := DATOSGLOBALES.genero_jugador == "Femenino"
-
 	imagenes = [
-		imagen_mujer_1 if es_mujer else imagen_hombre_1,
-		imagen_mujer_2 if es_mujer else imagen_hombre_2,
-		imagen_mujer_3 if es_mujer else imagen_hombre_3,
-		imagen_mujer_4 if es_mujer else imagen_hombre_4
+		imagen_taller_1,
+		imagen_taller_2,
+		imagen_taller_3,
 	]
+
+func _aplicar_consecuencias_robo() -> void:
+	reputacion_perdida = randi_range(PERDIDA_MINIMA, PERDIDA_MAXIMA)
+	DATOSGLOBALES.restar_reputacion(
+		reputacion_perdida,
+		"Protesta por piezas defectuosas"
+	)
+	PARTIDA.guardar()
+
 
 func _input(event) -> void:
 	if not vista_evento.visible:
 		return
 
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		# Si el botón ya está habilitado, no avanzar con click global
 		if not continuar_button.disabled:
 			return
 
@@ -86,11 +89,7 @@ func mostrar_mensaje_actual() -> void:
 		continuar_button.modulate.a = 1.0
 		return
 
-	if indice_mensaje < imagenes.size() and imagenes[indice_mensaje]:
-		imagen.texture = imagenes[indice_mensaje]
-	else:
-		push_warning("Falta asignar imagen de transición día en índice: " + str(indice_mensaje))
-
+	imagen.texture = imagenes[indice_mensaje]
 	animar_texto(mensajes[indice_mensaje])
 
 
@@ -159,17 +158,9 @@ func finalizar_evento() -> void:
 
 	Engine.time_scale = 1.0
 	get_tree().paused = false
-
-	# Si esta noche hay robo, se muestra DESPUÉS del cierre del taller; si no, al taller.
-	var destino_normal: String
-	if DATOSGLOBALES.siguiente_evento_dia == "robo":
-		destino_normal = "res://Scenes/Events/EventoRobo/EventoRobo.tscn"
-	elif DATOSGLOBALES.siguiente_evento_dia == "protesta":
-		destino_normal = "res://Scenes/Events/EventoProtesta/EventoProtesta.tscn"
-	else:
-		destino_normal = "res://Scenes/Gameplay/GameScreen.tscn"
-
-	var destino := DATOSGLOBALES.obtener_destino_post_escena(destino_normal)
+	var destino := DATOSGLOBALES.obtener_destino_post_escena(
+		"res://Scenes/Gameplay/GameScreen.tscn"
+	)
 	get_tree().change_scene_to_file(destino)
 
 
