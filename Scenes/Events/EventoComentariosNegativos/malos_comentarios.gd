@@ -13,12 +13,12 @@ var usuarios = [
 
 var comentarios = [
 	"La atencion de este lugar a sido terrible",
-	"Fui por cambio de aceite y me cambiaron la suspencion",
-	"Me dijeron que necesitaban 2 motores",
+	"Fui por un cambio de aceite y terminaron revisando la suspensión.",
+	"Me dijeron que necesitaba cambiar dos motores. Mi auto tiene uno.",
 	"Las piezas que ocuparon parecen de jugete",
 	"Es una estafa, cobran por hacer nada",
-	"Es demasiado Caro, Ademas la persona a cargo tiene cara horrible",
-	"Volveria para el día de muertos, con los precios y el servicio me muero enseguida"
+	"Demasiado caro. Además, la persona que atiende no inspira ninguna confianza.",
+	"Volvería para el Día de Muertos. Con esos precios, me muero antes de pagar."
 ]
 
 @onready var labels = [
@@ -42,6 +42,7 @@ var comentarios = [
 var rng = RandomNumberGenerator.new()
 
 func _ready():
+	rng.randomize()
 	
 	var num_comentarios = rng.randi_range(1,labels.size())
 	
@@ -87,9 +88,14 @@ func _ready():
 	)
 	
 
-func _process(float):
-	if Input.is_key_pressed(KEY_SPACE):
+var saliendo := false
+
+func _process(_delta: float) -> void:
+	if Input.is_key_pressed(KEY_SPACE) and not saliendo:
+		saliendo = true
+
 		var destino := DATOSGLOBALES.obtener_destino_post_escena(
 			"res://Scenes/Gameplay/GameScreen.tscn"
 		)
+
 		CARGADOR.cambiar_escena(destino)

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://crfiucda8vg4d"
-path="res://.godot/imported/local_vacio_rd.png-575161cad9338c4cdd13c3bea8052ee1.ctex"
+uid="uid://dcyvld18sh1lm"
+path="res://.godot/imported/3h.png-ff337672dc3144411e432e953eabee82.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Events/EventoProtesta/local_vacio_rd.png"
-dest_files=["res://.godot/imported/local_vacio_rd.png-575161cad9338c4cdd13c3bea8052ee1.ctex"]
+source_file="res://Assets/Events/EventoProtesta/3h.png"
+dest_files=["res://.godot/imported/3h.png-ff337672dc3144411e432e953eabee82.ctex"]
 
 [params]
 

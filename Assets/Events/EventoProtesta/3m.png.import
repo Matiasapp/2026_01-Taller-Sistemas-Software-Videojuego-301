@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cuqjbwk712r0n"
-path="res://.godot/imported/policia_taller_rd.png-1b12301e67a0e11cd75c202be1cddfd8.ctex"
+uid="uid://sfgldwsbpkc1"
+path="res://.godot/imported/3m.png-11f45b70e479cba05b9ffedeaa3d145b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Events/EventoProtesta/policia_taller_rd.png"
-dest_files=["res://.godot/imported/policia_taller_rd.png-1b12301e67a0e11cd75c202be1cddfd8.ctex"]
+source_file="res://Assets/Events/EventoProtesta/3m.png"
+dest_files=["res://.godot/imported/3m.png-11f45b70e479cba05b9ffedeaa3d145b.ctex"]
 
 [params]
 
