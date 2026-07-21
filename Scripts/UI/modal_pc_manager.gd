@@ -113,6 +113,8 @@ func _on_boton_pc_hover(boton: Button) -> void:
 
 func _on_abrir_pc() -> void:
 	dia_consultado = DATOSGLOBALES.dia_actual
+	# Abrir la terminal cuenta como haber leído las reseñas pendientes.
+	DATOSGLOBALES.marcar_resenas_leidas()
 	_actualizar_estadisticas()
 	_animar_encendido()
 

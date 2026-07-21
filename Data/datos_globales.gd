@@ -216,6 +216,8 @@ func registrar_calidad_pieza(tipo: String, dia: int = -1) -> int:
 				delta = -REP_PIEZA_DUDOSA_PENALIZACION
 				mensaje = "La pieza dudosa fallo: reputacion -%d." % absi(delta)
 				motivo = "Pieza dudosa defectuosa"
+				# El cliente afectado publica una reseña; queda esperando en el PC.
+				registrar_resena_negativa(dia)
 			else:
 				mensaje = "La pieza dudosa no genero reclamos esta vez: reputacion sin cambios."
 		_:
@@ -295,6 +297,54 @@ func _agregar_evento_stats(stats: Dictionary, texto: String) -> void:
 	var eventos: Array = stats.get("eventos", [])
 	eventos.append(texto)
 	stats["eventos"] = eventos
+
+# =========================
+# RESEÑAS DE CLIENTES
+# =========================
+# Cuando una pieza dudosa falla, el cliente afectado deja una reseña publica.
+# NO vuelve a castigar la reputacion: la falla ya la descontó. La reseña es la
+# constancia visible de ese daño, y el jugador la lee en la bitácora del PC.
+
+const RESENA_USUARIOS: Array[String] = [
+	"Miguel83",
+	"Juancarlos@lospaseo",
+	"CaraTrolll",
+	"Juaquin",
+	"Miguelin2010",
+	"IsidoraLabadora",
+	"Destructor de Familias"
+]
+
+const RESENA_COMENTARIOS: Array[String] = [
+	"La atencion de este lugar a sido terrible",
+	"Fui por un cambio de aceite y terminaron revisando la suspensión.",
+	"Me dijeron que necesitaba cambiar dos motores. Mi auto tiene uno.",
+	"Las piezas que ocuparon parecen de jugete",
+	"Es una estafa, cobran por hacer nada",
+	"Demasiado caro. Además, la persona que atiende no inspira ninguna confianza.",
+	"Volvería para el Día de Muertos. Con esos precios, me muero antes de pagar."
+]
+
+## Reseñas que el jugador todavía no vio en el PC (para avisarle que hay algo nuevo).
+var resenas_sin_leer: int = 0
+
+
+## Deja una reseña negativa en la bitácora del día y la marca como no leída.
+func registrar_resena_negativa(dia: int = -1) -> void:
+	var usuario: String = RESENA_USUARIOS.pick_random()
+	var comentario: String = RESENA_COMENTARIOS.pick_random()
+
+	registrar_evento_dia(
+		'[color=#f85149]Resena de %s:[/color] "%s"' % [usuario, comentario],
+		dia
+	)
+	resenas_sin_leer += 1
+
+
+## El jugador abrió el PC: las reseñas dejan de estar pendientes.
+func marcar_resenas_leidas() -> void:
+	resenas_sin_leer = 0
+
 
 func registrar_evento_dia(texto: String, dia: int = -1) -> void:
 	if dia < 0:

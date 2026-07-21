@@ -28,6 +28,9 @@ func guardar() -> void:
 	# a cero al cargar y el evento podía no dispararse nunca.
 	cfg.set_value("partida", "contador_pieza_defectuosa", DATOSGLOBALES.contador_pieza_defectuosa)
 	cfg.set_value("partida", "protesta_pendiente", DATOSGLOBALES.protesta_pendiente)
+	# Las reseñas en sí viven dentro de estadisticas_dias; esto es solo el contador
+	# de las que el jugador todavía no fue a leer al PC.
+	cfg.set_value("partida", "resenas_sin_leer", DATOSGLOBALES.resenas_sin_leer)
 
 	var err := cfg.save(RUTA)
 	if err == OK:
@@ -59,6 +62,9 @@ func cargar() -> bool:
 	)
 	DATOSGLOBALES.protesta_pendiente = bool(
 		cfg.get_value("partida", "protesta_pendiente", false)
+	)
+	DATOSGLOBALES.resenas_sin_leer = int(
+		cfg.get_value("partida", "resenas_sin_leer", 0)
 	)
 	# Se agregan los datos diarios generales del juego
 	DATOSGLOBALES.historial_dias = cfg.get_value("partida","datos_del_dia",[0,0,0,0,0,0])

@@ -148,6 +148,8 @@ func _ready() -> void:
 
 	if hud and hud.has_method("mostrar_cambios_reputacion_pendientes"):
 		hud.mostrar_cambios_reputacion_pendientes()
+
+	_avisar_resenas_pendientes()
 	
 	iniciar_audio_taller()
 	
@@ -278,6 +280,8 @@ func play_pc_in() -> void:
 func play_pc_out() -> void:
 	if pc_sound_out:
 		pc_sound_out.play()
+	# Al cerrar el PC las reseñas ya se leyeron: el cartel vuelve a la normalidad.
+	actualizar_mensaje_pc()
 
 
 func _input(event):
@@ -704,9 +708,42 @@ func actualizar_mensaje_puerta():
 # INTERACCIÓN PC
 # =========================
 
+## Aviso de reseñas nuevas al volver de una reparación. Va encadenado después del
+## aviso de cambios de reputación (que dura ~2,2 s) porque el HUD solo muestra un
+## aviso a la vez: el segundo pisaría al primero.
+func _avisar_resenas_pendientes() -> void:
+	if hud == null or DATOSGLOBALES.resenas_sin_leer <= 0:
+		return
+
+	await get_tree().create_timer(2.5).timeout
+
+	if not is_inside_tree() or hud == null or DATOSGLOBALES.resenas_sin_leer <= 0:
+		return
+
+	var cantidad: int = DATOSGLOBALES.resenas_sin_leer
+	hud.mostrar_aviso(
+		"💬 %s sin leer. Revisa el [color=yellow]PC del taller[/color]."
+		% ("Tienes 1 reseña nueva" if cantidad == 1 else "Tienes %d reseñas nuevas" % cantidad)
+	)
+
+
+## El cartel del PC avisa si hay reseñas esperando.
+func actualizar_mensaje_pc() -> void:
+	var pendientes: int = DATOSGLOBALES.resenas_sin_leer
+	if pendientes > 0:
+		mensaje_interactuar_pc.text = "Presiona [E] para usar el PC (%s)" % (
+			"1 reseña nueva" if pendientes == 1 else "%d reseñas nuevas" % pendientes
+		)
+		mensaje_interactuar_pc.modulate = Color.YELLOW
+	else:
+		mensaje_interactuar_pc.text = "Presiona [E] para usar el PC"
+		mensaje_interactuar_pc.modulate = Color.WHITE
+
+
 func _on_area_interactuar_pc_body_entered(body):
 	if body.name == "Player":
 		jugador_en_rango_interactuar_pc = true
+		actualizar_mensaje_pc()
 		mensaje_interactuar_pc.visible = true
 
 
