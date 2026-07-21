@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://btpvov7obpn5j"]
+
+[ext_resource type="Script" uid="uid://dt2nn7ky8k378" path="res://Scenes/Minigames/Soldadura/Script/resultados.gd" id="1_atjc4"]
+[ext_resource type="Texture2D" uid="uid://c3dacvm42g81q" path="res://Scenes/Minigames/Soldadura/Imagenes/fondo minijuego.png" id="2_yqkg3"]
+[ext_resource type="PackedScene" uid="uid://c8n2rqp4dv6xk" path="res://Scenes/UI/ResumenAtencion.tscn" id="3_2kgw7"]
+
+[node name="Node2D" type="Node2D" unique_id=2133097898]
+script = ExtResource("1_atjc4")
+
+[node name="ResumenAtencion" parent="." unique_id=686501913 instance=ExtResource("3_2kgw7")]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=313298436]
+position = Vector2(587, 372)
+texture = ExtResource("2_yqkg3")

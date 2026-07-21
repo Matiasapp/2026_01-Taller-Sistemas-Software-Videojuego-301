@@ -1,0 +1,57 @@
+[gd_scene format=3 uid="uid://c2nkml6b4geer"]
+
+[ext_resource type="Script" uid="uid://bhh5xusnrc5y1" path="res://Scenes/Clientes/C_Enojado/Scripts/clientefurioso.gd" id="1_mcr4w"]
+[ext_resource type="Texture2D" uid="uid://cqrbv3mmvx003" path="res://Scenes/Clientes/C_Enojado/Imagenes/AncianoFurioso.png" id="2_mcr4w"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pqa80"]
+atlas = ExtResource("2_mcr4w")
+region = Rect2(0, 0, 498, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xyc33"]
+atlas = ExtResource("2_mcr4w")
+region = Rect2(498, 0, 498, 512)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2eufn"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pqa80")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xyc33")
+}],
+"loop": true,
+"name": &"ClienteMov",
+"speed": 1.0
+}]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7d55f"]
+bg_color = Color(0.062616155, 0.69710237, 0.59351194, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[node name="ClienteFurioso_1" type="Node2D" unique_id=1156141758]
+script = ExtResource("1_mcr4w")
+
+[node name="SpriteCliente" type="AnimatedSprite2D" parent="." unique_id=1242923094]
+position = Vector2(872.99994, 447)
+scale = Vector2(1.0783132, 1.0195313)
+sprite_frames = SubResource("SpriteFrames_2eufn")
+animation = &"ClienteMov"
+frame_progress = 0.481842
+
+[node name="TextEdit" type="Label" parent="." unique_id=903613317]
+offset_left = 54.0
+offset_top = 183.0
+offset_right = 599.0
+offset_bottom = 353.0
+theme_override_colors/font_color = Color(0.9372549, 0.08627451, 0.09019608, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_7d55f")
+text = " Yo no entiendo de mecánica, pero sí entiendo que el auto
+no funciona como debería. Cada vez que lo traigo me hablan
+de repuestos, de diagnósticos y de cosas que no sé ni pronunciar,
+pero al final sigo con el mismo problema. Me siento impotente 
+porque dependo de ustedes para que el vehículo ande, y lo único
+ que recibo son explicaciones confusas y cuentas cada vez más altas."

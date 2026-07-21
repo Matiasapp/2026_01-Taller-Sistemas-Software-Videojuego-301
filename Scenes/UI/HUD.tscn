@@ -1,0 +1,203 @@
+[gd_scene format=3 uid="uid://cyl73mjtc24ao"]
+
+[ext_resource type="Script" uid="uid://cx1y7ow3g0hcx" path="res://Scripts/Managers/hud_manager.gd" id="1_sd512"]
+[ext_resource type="Texture2D" uid="uid://cxqi1lh5nip8y" path="res://Assets/UI/button_style.png" id="2_jo1ms"]
+[ext_resource type="AudioStream" uid="uid://bgojdqsxpecni" path="res://Assets/Audio/GameScreen/money.wav" id="3_xaom8"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qc5w2"]
+atlas = ExtResource("2_jo1ms")
+region = Rect2(1873, 492, 769, 568)
+
+[node name="Hud" type="CanvasLayer" unique_id=715583916]
+script = ExtResource("1_sd512")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=1098160619]
+offset_left = 944.00006
+offset_top = 520.0
+offset_right = 1585.9353
+offset_bottom = 920.0
+scale = Vector2(0.31, 0.31)
+texture = SubResource("AtlasTexture_qc5w2")
+region_rect = Rect2(0, 0, 769, 568)
+patch_margin_left = 250
+patch_margin_top = 150
+patch_margin_right = 250
+patch_margin_bottom = 250
+
+[node name="NinePatchRect2" type="NinePatchRect" parent="." unique_id=1009115055]
+offset_left = 16.0
+offset_top = 16.000008
+offset_right = 764.387
+offset_bottom = 416.0
+scale = Vector2(0.31, 0.31)
+texture = SubResource("AtlasTexture_qc5w2")
+region_rect = Rect2(0, 0, 769, 568)
+patch_margin_left = 250
+patch_margin_top = 150
+patch_margin_right = 250
+patch_margin_bottom = 250
+
+[node name="NinePatchRect4" type="NinePatchRect" parent="." unique_id=524064191]
+offset_left = 904.0
+offset_top = 16.000002
+offset_right = 1652.387
+offset_bottom = 351.48383
+scale = Vector2(0.31, 0.31)
+texture = SubResource("AtlasTexture_qc5w2")
+region_rect = Rect2(0, 0, 769, 568)
+patch_margin_left = 250
+patch_margin_top = 90
+patch_margin_right = 250
+patch_margin_bottom = 180
+
+[node name="PlataHoraDia" type="MarginContainer" parent="." unique_id=1640203519]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -296.0
+offset_top = 504.0
+offset_right = 16.0
+offset_bottom = 689.0
+grow_horizontal = 0
+size_flags_vertical = 8
+theme_override_constants/margin_left = 51
+theme_override_constants/margin_top = 36
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PlataHoraDia" unique_id=1230521768]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+
+[node name="LabelDinero" type="Label" parent="PlataHoraDia/VBoxContainer" unique_id=522878898]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 33
+text = "$0"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PlataHoraDia/VBoxContainer" unique_id=684228979]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="LabelHora" type="Label" parent="PlataHoraDia/VBoxContainer/HBoxContainer" unique_id=1645891486]
+layout_mode = 2
+text = "Hora: 8:00"
+
+[node name="LabelDia" type="Label" parent="PlataHoraDia/VBoxContainer/HBoxContainer" unique_id=485410212]
+layout_mode = 2
+text = "Día: 0"
+
+[node name="TallerAbiertoCerrado" type="MarginContainer" parent="." unique_id=1148068106]
+offset_left = 40.0
+offset_top = 48.0
+offset_right = 216.0
+offset_bottom = 71.0
+
+[node name="Label" type="RichTextLabel" parent="TallerAbiertoCerrado" unique_id=566617542]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 7
+bbcode_enabled = true
+text = "El taller está "
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="ClientesAtendidos" type="MarginContainer" parent="." unique_id=1310501263]
+offset_left = 40.0
+offset_top = 88.0
+offset_right = 240.0
+offset_bottom = 111.0
+
+[node name="Label" type="RichTextLabel" parent="ClientesAtendidos" unique_id=1305981533]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 7
+bbcode_enabled = true
+text = "Clientes atendidos: 0/5"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="AvisoCliente" type="RichTextLabel" parent="." unique_id=470012001]
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 16.0
+offset_top = 152.0
+offset_right = -760.0
+offset_bottom = 248.0
+grow_horizontal = 2
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="AvisoAbrirTaller" type="Label" parent="." unique_id=470012050]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -560.0
+offset_top = -252.0
+offset_right = -296.0
+offset_bottom = -45.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 16
+text = "Tienes que abrir el taller para comenzar a atender clientes"
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="MoneySound" type="AudioStreamPlayer" parent="." unique_id=1134441224]
+stream = ExtResource("3_xaom8")
+
+[node name="Label" type="Label" parent="." unique_id=263348492]
+offset_left = 975.00006
+offset_top = 31.999977
+offset_right = 1063.0
+offset_bottom = 54.999977
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_y = 11
+theme_override_constants/outline_size = 6
+theme_override_constants/shadow_outline_size = 12
+text = "Reputación"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=2042598285]
+offset_left = 928.00006
+offset_top = 63.99997
+offset_right = 1016.00006
+offset_bottom = 63.99997
+scale = Vector2(0.1, 0.1)
+
+[node name="stars_1" type="TextureRect" parent="HBoxContainer" unique_id=349789477]
+layout_mode = 2
+
+[node name="stars_2" type="TextureRect" parent="HBoxContainer" unique_id=116009265]
+layout_mode = 2
+
+[node name="stars_3" type="TextureRect" parent="HBoxContainer" unique_id=169403820]
+layout_mode = 2
+
+[node name="stars_4" type="TextureRect" parent="HBoxContainer" unique_id=1565517688]
+layout_mode = 2
+
+[node name="stars_5" type="TextureRect" parent="HBoxContainer" unique_id=161927442]
+layout_mode = 2

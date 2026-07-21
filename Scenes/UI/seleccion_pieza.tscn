@@ -1,0 +1,177 @@
+[gd_scene format=3 uid="uid://cddrfrs48lqns"]
+
+[ext_resource type="Script" uid="uid://bw173jp8mygmt" path="res://Scripts/Gameplay/seleccion_pieza.gd" id="1_oe38y"]
+[ext_resource type="Texture2D" uid="uid://ukhykgp4siyc" path="res://Assets/Sprites/Piezas.png" id="2_2xpxw"]
+[ext_resource type="AudioStream" uid="uid://d2txt8yf7fddh" path="res://Assets/Audio/Gameplay/Diagnostico/clickpieza.wav" id="3_dq7yn"]
+[ext_resource type="AudioStream" uid="uid://dekxqi0muv8nt" path="res://Assets/Audio/Gameplay/Diagnostico/hoverpieza.wav" id="4_2xpxw"]
+[ext_resource type="AudioStream" uid="uid://beevsopvjddwc" path="res://Assets/Audio/GameScreen/whoosh1.wav" id="5_2xpxw"]
+[ext_resource type="FontFile" path="res://Assets/Fonts/ChakraPetchBold.res" id="6_interface"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mny8t"]
+size = Vector2(332, 491.875)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_472ik"]
+size = Vector2(319, 495.25)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_iyxau"]
+size = Vector2(331.75, 489)
+
+[node name="SeleccionPieza" type="CanvasLayer" unique_id=1534977204]
+script = ExtResource("1_oe38y")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=352455206]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_2xpxw")
+expand_mode = 1
+
+[node name="ColorRectBuena" type="ColorRect" parent="." unique_id=1816744899]
+offset_left = 65.0
+offset_top = 102.0
+offset_right = 396.0
+offset_bottom = 590.0
+mouse_filter = 2
+color = Color(0, 1, 0, 0)
+
+[node name="ColorRectBarata" type="ColorRect" parent="." unique_id=68583827]
+offset_left = 421.0
+offset_top = 102.0
+offset_right = 736.0
+offset_bottom = 592.0
+mouse_filter = 2
+color = Color(0, 0.38560182, 0.85376436, 0)
+
+[node name="ColorRectDudosa" type="ColorRect" parent="." unique_id=2009573779]
+offset_left = 755.0
+offset_top = 102.0
+offset_right = 1084.0
+offset_bottom = 589.0
+mouse_filter = 2
+color = Color(0.7254902, 0.36862746, 0, 0)
+
+[node name="AreaBuena" type="Area2D" parent="." unique_id=1741316988]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AreaBuena" unique_id=1279123565]
+position = Vector2(230, 347.9375)
+shape = SubResource("RectangleShape2D_mny8t")
+
+[node name="AreaBarata" type="Area2D" parent="." unique_id=568603749]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AreaBarata" unique_id=284493533]
+position = Vector2(580, 347)
+shape = SubResource("RectangleShape2D_472ik")
+
+[node name="AreaDudosa" type="Area2D" parent="." unique_id=2115648225]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AreaDudosa" unique_id=1388713983]
+position = Vector2(919, 344.5)
+shape = SubResource("RectangleShape2D_iyxau")
+
+[node name="LabelPrecioBuena" type="Label" parent="." unique_id=1897752166]
+offset_left = 316.0
+offset_top = 464.0
+offset_right = 357.0
+offset_bottom = 487.0
+theme_override_colors/font_color = Color(0.63, 0.82, 0.25, 1)
+theme_override_colors/font_outline_color = Color(0.04, 0.055, 0.035, 1)
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("6_interface")
+theme_override_font_sizes/font_size = 18
+text = "Pieza"
+
+[node name="LabelPrecioBarata" type="Label" parent="." unique_id=199806361]
+offset_left = 655.0
+offset_top = 466.0
+offset_right = 696.0
+offset_bottom = 489.0
+theme_override_colors/font_color = Color(0.3, 0.67, 0.87, 1)
+theme_override_colors/font_outline_color = Color(0.03, 0.045, 0.055, 1)
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("6_interface")
+theme_override_font_sizes/font_size = 18
+text = "Pieza"
+
+[node name="LabelPrecioDudosa" type="Label" parent="." unique_id=177372636]
+offset_left = 1003.0
+offset_top = 465.0
+offset_right = 1044.0
+offset_bottom = 488.0
+theme_override_colors/font_color = Color(0.95, 0.54, 0.12, 1)
+theme_override_colors/font_outline_color = Color(0.06, 0.04, 0.02, 1)
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("6_interface")
+theme_override_font_sizes/font_size = 18
+text = "Pieza"
+
+[node name="LabelReputacionBuena" type="Label" parent="." unique_id=1513861720]
+offset_left = 145.0
+offset_top = 523.0
+offset_right = 370.0
+offset_bottom = 561.0
+theme_override_colors/font_color = Color(0.63, 0.82, 0.25, 1)
+theme_override_colors/font_outline_color = Color(0.04, 0.055, 0.035, 1)
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("6_interface")
+theme_override_font_sizes/font_size = 17
+text = "REPUTACIÓN  +5"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LabelReputacionBarata" type="Label" parent="." unique_id=968341703]
+offset_left = 496.0
+offset_top = 523.0
+offset_right = 712.0
+offset_bottom = 561.0
+theme_override_colors/font_color = Color(0.3, 0.67, 0.87, 1)
+theme_override_colors/font_outline_color = Color(0.03, 0.045, 0.055, 1)
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("6_interface")
+theme_override_font_sizes/font_size = 17
+text = "REPUTACIÓN  +1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LabelReputacionDudosa" type="Label" parent="." unique_id=1033723199]
+offset_left = 825.0
+offset_top = 523.0
+offset_right = 1068.0
+offset_bottom = 561.0
+theme_override_colors/font_color = Color(0.95, 0.54, 0.12, 1)
+theme_override_colors/font_outline_color = Color(0.06, 0.04, 0.02, 1)
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("6_interface")
+theme_override_font_sizes/font_size = 16
+text = "REPUTACIÓN EN RIESGO"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ClickSound" type="AudioStreamPlayer" parent="." unique_id=2093587348]
+stream = ExtResource("3_dq7yn")
+
+[node name="HoverSound" type="AudioStreamPlayer" parent="." unique_id=747173765]
+stream = ExtResource("4_2xpxw")
+
+[node name="TransitionWhoosh" type="AudioStreamPlayer" parent="." unique_id=501270874]
+stream = ExtResource("5_2xpxw")
+
+[node name="FadeRect" type="ColorRect" parent="." unique_id=2093372044]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[connection signal="input_event" from="AreaBuena" to="." method="_on_area_buena_input_event"]
+[connection signal="mouse_entered" from="AreaBuena" to="." method="_on_area_buena_mouse_entered"]
+[connection signal="mouse_exited" from="AreaBuena" to="." method="_on_area_buena_mouse_exited"]
+[connection signal="input_event" from="AreaBarata" to="." method="_on_area_barata_input_event"]
+[connection signal="mouse_entered" from="AreaBarata" to="." method="_on_area_barata_mouse_entered"]
+[connection signal="mouse_exited" from="AreaBarata" to="." method="_on_area_barata_mouse_exited"]
+[connection signal="input_event" from="AreaDudosa" to="." method="_on_area_dudosa_input_event"]
+[connection signal="mouse_entered" from="AreaDudosa" to="." method="_on_area_dudosa_mouse_entered"]
+[connection signal="mouse_exited" from="AreaDudosa" to="." method="_on_area_dudosa_mouse_exited"]

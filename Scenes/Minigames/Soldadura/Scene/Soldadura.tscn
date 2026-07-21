@@ -1,0 +1,87 @@
+[gd_scene format=3 uid="uid://chyfxn8kct54"]
+
+[ext_resource type="Script" uid="uid://b70uk0b1usa17" path="res://Scenes/Minigames/Soldadura/Script/soldadura.gd" id="1_duqhs"]
+[ext_resource type="Texture2D" uid="uid://bf2nk63ft67p4" path="res://Scenes/Minigames/Soldadura/Imagenes/soldadura.png" id="2_310yo"]
+[ext_resource type="AudioStream" uid="uid://clufobdmrg6p3" path="res://Assets/Audio/MinigameAudio/Soldadura/welding.wav" id="3_f3p2b"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ml5y2"]
+radius = 95.049515
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f3p2b"]
+atlas = ExtResource("2_310yo")
+region = Rect2(0, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3g0aq"]
+atlas = ExtResource("2_310yo")
+region = Rect2(200, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ip56p"]
+atlas = ExtResource("2_310yo")
+region = Rect2(400, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vka81"]
+atlas = ExtResource("2_310yo")
+region = Rect2(600, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ejr20"]
+atlas = ExtResource("2_310yo")
+region = Rect2(0, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nh5bp"]
+atlas = ExtResource("2_310yo")
+region = Rect2(600, 0, 200, 200)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_e1ii6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f3p2b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3g0aq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ip56p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vka81")
+}],
+"loop": true,
+"name": &"encender",
+"speed": 15.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ejr20")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nh5bp")
+}],
+"loop": true,
+"name": &"reposo",
+"speed": 12.0
+}]
+
+[node name="Soldadura" type="Area2D" unique_id=1291004349]
+script = ExtResource("1_duqhs")
+
+[node name="AreaSoldadura" type="CollisionShape2D" parent="." unique_id=386031984]
+light_mask = 2
+position = Vector2(-17, 2.0000005)
+scale = Vector2(0.2630208, 0.34457475)
+shape = SubResource("CircleShape2D_ml5y2")
+
+[node name="ChispaSprite" type="AnimatedSprite2D" parent="." unique_id=1321025761]
+visibility_layer = 5
+position = Vector2(-3.0000002, 3.0000002)
+scale = Vector2(0.26302084, 0.34457478)
+sprite_frames = SubResource("SpriteFrames_e1ii6")
+animation = &"reposo"
+
+[node name="TimerSoldadura" type="Timer" parent="." unique_id=1497355922]
+wait_time = 0.2
+autostart = true
+
+[node name="WeldingSound" type="AudioStreamPlayer" parent="." unique_id=780401406]
+stream = ExtResource("3_f3p2b")
+bus = &"SFX"

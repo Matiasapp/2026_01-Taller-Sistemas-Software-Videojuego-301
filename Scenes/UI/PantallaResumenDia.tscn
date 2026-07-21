@@ -1,0 +1,458 @@
+[gd_scene format=3 uid="uid://1gjadl8wqlap"]
+
+[ext_resource type="Script" uid="uid://6djhw1vij6nr" path="res://Scenes/UI/pantalla_resumen_dia.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://cxqi1lh5nip8y" path="res://Assets/UI/button_style.png" id="2_plate"]
+[ext_resource type="Texture2D" uid="uid://b8y14vue8yjgd" path="res://Assets/UI/Cuadros_UI.png" id="3_0hgfa"]
+[ext_resource type="Texture2D" uid="uid://ctkvq4chixrs6" path="res://Assets/Sprites/estrellas_reputacion/estrella_res_0.png" id="3_star0"]
+[ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="4_hvd4h"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1jnlx"]
+atlas = ExtResource("2_plate")
+region = Rect2(1873, 492, 769, 568)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l5o4k"]
+atlas = ExtResource("3_0hgfa")
+region = Rect2(96, 188, 284, 357)
+
+[sub_resource type="StyleBoxFlat" id="style_bar_bg"]
+bg_color = Color(0.09, 0.06, 0.04, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="style_bar_fill"]
+bg_color = Color(0.247, 0.729, 0.314, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0hgfa"]
+atlas = ExtResource("3_0hgfa")
+region = Rect2(96, 188, 284, 357)
+
+[node name="PantallaResumenDia" type="CanvasLayer" unique_id=1001350383]
+script = ExtResource("1_script")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=450530660]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.16, 0.09, 0.04, 0.8)
+
+[node name="Panel" type="NinePatchRect" parent="." unique_id=1708389863]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -435.0
+offset_top = -291.5
+offset_right = 435.0
+offset_bottom = 291.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_1jnlx")
+region_rect = Rect2(0, 0, 769, 568)
+patch_margin_left = 51
+patch_margin_top = 45
+patch_margin_right = 46
+patch_margin_bottom = 54
+
+[node name="BALANCE" type="Control" parent="Panel" unique_id=2013417835]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="NinePatchRect3" type="NinePatchRect" parent="Panel/BALANCE" unique_id=782420187]
+layout_mode = 0
+offset_left = 378.0
+offset_top = 252.0
+offset_right = 608.00037
+offset_bottom = 384.5
+scale = Vector2(0.79999876, 0.8)
+texture = SubResource("AtlasTexture_l5o4k")
+region_rect = Rect2(0, 0.28019667, 284.08963, 356.71982)
+patch_margin_left = 23
+patch_margin_top = 69
+patch_margin_bottom = 30
+
+[node name="BalanceValue" type="Label" parent="Panel/BALANCE" unique_id=880403506]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 408.0
+offset_top = 308.0
+offset_right = 535.0
+offset_bottom = 339.0
+theme_override_colors/font_color = Color(0.247, 0.729, 0.314, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 22
+text = "+$0"
+horizontal_alignment = 1
+
+[node name="TituloBalance" type="Label" parent="Panel/BALANCE" unique_id=1183763755]
+layout_mode = 0
+offset_left = 410.0
+offset_top = 270.0
+offset_right = 530.0
+offset_bottom = 292.0
+theme_override_colors/font_color = Color(0.78, 0.7, 0.55, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_constants/shadow_outline_size = 8
+theme_override_font_sizes/font_size = 14
+text = "BALANCE DEL DÍA"
+
+[node name="REPUTACION" type="Control" parent="Panel" unique_id=1520739739]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="NinePatchRect3" type="NinePatchRect" parent="Panel/REPUTACION" unique_id=626982542]
+layout_mode = 0
+offset_left = 117.0
+offset_top = 142.0
+offset_right = 423.25046
+offset_bottom = 619.5
+scale = Vector2(0.79999876, 0.8)
+texture = SubResource("AtlasTexture_l5o4k")
+region_rect = Rect2(0, 0.28019667, 284.08963, 356.71982)
+patch_margin_left = 23
+patch_margin_top = 69
+patch_margin_bottom = 30
+
+[node name="RepTitulo" type="Label" parent="Panel/REPUTACION" unique_id=1918402367]
+layout_mode = 0
+offset_left = 130.0
+offset_top = 158.0
+offset_right = 350.0
+offset_bottom = 178.0
+theme_override_colors/font_color = Color(0.882, 0.686, 0.18, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 7
+theme_override_constants/shadow_outline_size = 8
+theme_override_font_sizes/font_size = 14
+text = "REPUTACIÓN DEL TALLER"
+horizontal_alignment = 1
+
+[node name="stars_1" type="TextureRect" parent="Panel/REPUTACION" unique_id=558056477]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 142.0
+offset_top = 248.0
+offset_right = 178.0
+offset_bottom = 284.0
+texture = ExtResource("3_star0")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="stars_2" type="TextureRect" parent="Panel/REPUTACION" unique_id=1053809730]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 182.0
+offset_top = 248.0
+offset_right = 218.0
+offset_bottom = 284.0
+texture = ExtResource("3_star0")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="stars_3" type="TextureRect" parent="Panel/REPUTACION" unique_id=290476320]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 222.0
+offset_top = 248.0
+offset_right = 258.0
+offset_bottom = 284.0
+texture = ExtResource("3_star0")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="stars_4" type="TextureRect" parent="Panel/REPUTACION" unique_id=1300387245]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 262.0
+offset_top = 248.0
+offset_right = 298.0
+offset_bottom = 284.0
+texture = ExtResource("3_star0")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="stars_5" type="TextureRect" parent="Panel/REPUTACION" unique_id=2134615459]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 302.0
+offset_top = 248.0
+offset_right = 338.0
+offset_bottom = 284.0
+texture = ExtResource("3_star0")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ReputacionBar" type="ProgressBar" parent="Panel/REPUTACION" unique_id=1330439633]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 141.0
+offset_top = 318.0
+offset_right = 337.0
+offset_bottom = 337.0
+theme_override_styles/background = SubResource("style_bar_bg")
+theme_override_styles/fill = SubResource("style_bar_fill")
+show_percentage = false
+
+[node name="ReputacionLabel" type="Label" parent="Panel/REPUTACION" unique_id=999309988]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 130.0
+offset_top = 373.0
+offset_right = 346.0
+offset_bottom = 396.0
+theme_override_colors/font_color = Color(0.92, 0.9, 0.85, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "Reputación: 0/100"
+horizontal_alignment = 1
+
+[node name="CLIENTES" type="Control" parent="Panel" unique_id=579793276]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="NinePatchRect3" type="NinePatchRect" parent="Panel/CLIENTES" unique_id=480540929]
+layout_mode = 0
+offset_left = 377.99997
+offset_top = 142.0
+offset_right = 608.00037
+offset_bottom = 274.5
+scale = Vector2(0.79999876, 0.8)
+texture = SubResource("AtlasTexture_l5o4k")
+region_rect = Rect2(0, 0.28019667, 284.08963, 356.71982)
+patch_margin_left = 23
+patch_margin_top = 69
+patch_margin_bottom = 30
+
+[node name="ClientesValue" type="Label" parent="Panel/CLIENTES" unique_id=1114786683]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 408.0
+offset_top = 196.0
+offset_right = 535.0
+offset_bottom = 227.0
+theme_override_colors/font_color = Color(0.95, 0.93, 0.88, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 22
+text = "0 atendidos"
+
+[node name="TituloClientes" type="Label" parent="Panel/CLIENTES" unique_id=1894488396]
+layout_mode = 0
+offset_left = 440.0
+offset_top = 158.0
+offset_right = 503.0
+offset_bottom = 178.0
+theme_override_colors/font_color = Color(0.78, 0.7, 0.55, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_constants/shadow_outline_size = 8
+theme_override_font_sizes/font_size = 14
+text = "CLIENTES"
+
+[node name="DIAGNOSTICO" type="Control" parent="Panel" unique_id=297919389]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="NinePatchRect3" type="NinePatchRect" parent="Panel/DIAGNOSTICO" unique_id=1972610492]
+layout_mode = 0
+offset_left = 575.0
+offset_top = 142.0
+offset_right = 805.00037
+offset_bottom = 274.5
+scale = Vector2(0.79999876, 0.8)
+texture = SubResource("AtlasTexture_l5o4k")
+region_rect = Rect2(0, 0.28019667, 284.08963, 356.71982)
+patch_margin_left = 23
+patch_margin_top = 69
+patch_margin_bottom = 30
+
+[node name="TituloDiagnostico" type="Label" parent="Panel/DIAGNOSTICO" unique_id=56527242]
+layout_mode = 0
+offset_left = 619.0
+offset_top = 158.0
+offset_right = 715.0
+offset_bottom = 178.0
+theme_override_colors/font_color = Color(0.78, 0.7, 0.55, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_constants/shadow_outline_size = 8
+theme_override_font_sizes/font_size = 14
+text = "DIAGNÓSTICO"
+
+[node name="DiagnosticoValue" type="Label" parent="Panel/DIAGNOSTICO" unique_id=1292153512]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 599.0
+offset_top = 196.0
+offset_right = 742.0
+offset_bottom = 227.0
+theme_override_colors/font_color = Color(0.95, 0.93, 0.88, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 22
+text = "0 bien / 0 mal"
+
+[node name="CAJA" type="Control" parent="Panel" unique_id=1370871217]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="NinePatchRect3" type="NinePatchRect" parent="Panel/CAJA" unique_id=196381154]
+layout_mode = 0
+offset_left = 575.0
+offset_top = 252.0
+offset_right = 805.00037
+offset_bottom = 384.49997
+scale = Vector2(0.79999876, 0.8)
+texture = SubResource("AtlasTexture_0hgfa")
+region_rect = Rect2(0, 0.28019667, 284.08963, 356.71982)
+patch_margin_left = 23
+patch_margin_top = 69
+patch_margin_bottom = 30
+
+[node name="TituloCaja" type="Label" parent="Panel/CAJA" unique_id=555442783]
+layout_mode = 0
+offset_left = 630.0
+offset_top = 270.0
+offset_right = 705.0
+offset_bottom = 290.0
+theme_override_colors/font_color = Color(0.78, 0.7, 0.55, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_constants/shadow_outline_size = 8
+theme_override_font_sizes/font_size = 14
+text = "CAJA FINAL"
+
+[node name="CajaValue" type="Label" parent="Panel/CAJA" unique_id=885548636]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 597.0
+offset_top = 288.0
+offset_right = 699.0
+offset_bottom = 319.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.95, 0.93, 0.88, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 22
+text = "$0"
+horizontal_alignment = 1
+
+[node name="Titulo" type="Label" parent="Panel" unique_id=1608802335]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 130.0
+offset_top = 51.0
+offset_right = 770.0
+offset_bottom = 93.0
+theme_override_colors/font_color = Color(0.882, 0.686, 0.18, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 30
+text = "RESUMEN DEL DÍA"
+horizontal_alignment = 1
+
+[node name="Estado" type="Label" parent="Panel" unique_id=1007611175]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 130.0
+offset_top = 93.0
+offset_right = 770.0
+offset_bottom = 117.0
+theme_override_colors/font_color = Color(0.247, 0.729, 0.314, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 15
+text = "Jornada cerrada"
+horizontal_alignment = 1
+
+[node name="NinePatchRect3" type="NinePatchRect" parent="Panel" unique_id=609777510]
+layout_mode = 0
+offset_left = 378.0
+offset_top = 373.0
+offset_right = 854.2508
+offset_bottom = 561.75
+scale = Vector2(0.79999876, 0.8)
+texture = SubResource("AtlasTexture_l5o4k")
+region_rect = Rect2(0, 0.28019667, 284.08963, 356.71982)
+patch_margin_left = 23
+patch_margin_top = 31
+patch_margin_right = 17
+patch_margin_bottom = 30
+
+[node name="EventosLabel" type="RichTextLabel" parent="Panel" unique_id=1973966573]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 394.0
+offset_top = 412.0
+offset_right = 742.0
+offset_bottom = 504.0
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/normal_font_size = 14
+bbcode_enabled = true
+
+[node name="BotonCerrar" type="Button" parent="Panel" unique_id=229779570]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -64.0
+offset_top = -39.5
+offset_right = 63.875
+offset_bottom = -8.5
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("4_hvd4h")
+text = "Cerrar"
+
+[node name="Label" type="Label" parent="Panel" unique_id=1125772988]
+layout_mode = 0
+offset_left = 494.0
+offset_top = 382.0
+offset_right = 638.0
+offset_bottom = 405.0
+theme_override_colors/font_color = Color(0.69803923, 0.62352943, 0.49019608, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_constants/shadow_outline_size = 7
+text = "BITÁCORA DEL DÍA"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="Panel/BotonCerrar" to="." method="_on_cerrar_pressed"]

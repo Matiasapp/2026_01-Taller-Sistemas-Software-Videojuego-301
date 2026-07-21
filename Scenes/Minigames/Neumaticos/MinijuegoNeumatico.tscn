@@ -1,0 +1,505 @@
+[gd_scene format=3 uid="uid://pkdi2cbvnps4"]
+
+[ext_resource type="Script" uid="uid://dmrcpsorpmcsy" path="res://Scenes/Minigames/Neumaticos/minijuego_neumatico.gd" id="1_md1ki"]
+[ext_resource type="Texture2D" uid="uid://baeffdt1ey3pt" path="res://Assets/Sprites/inflado_neumatico/BarraBase.png" id="2_8hs81"]
+[ext_resource type="Texture2D" uid="uid://dtq1clrt0hp1r" path="res://Assets/Sprites/inflado_neumatico/Indicador.png" id="2_8lgja"]
+[ext_resource type="Texture2D" uid="uid://cbwokfuu3quy0" path="res://Assets/Sprites/inflado_neumatico/FondoTaller.png" id="2_ija6x"]
+[ext_resource type="Texture2D" uid="uid://cv8iyj8ikv3av" path="res://Assets/Sprites/inflado_neumatico/AreaVerde.png" id="3_ija6x"]
+[ext_resource type="Texture2D" uid="uid://bbhj6vpldkhmg" path="res://Assets/Sprites/inflado_neumatico/Cable.png" id="3_trxfn"]
+[ext_resource type="Texture2D" uid="uid://co81w8xxx6mkk" path="res://Assets/Sprites/inflado_neumatico/VidaTuercas.png" id="5_8hs81"]
+[ext_resource type="Texture2D" uid="uid://do46uuuci0hus" path="res://Assets/Sprites/inflado_neumatico/NeumaticoDesinflado.png" id="7_ija6x"]
+[ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="9_v74x8"]
+[ext_resource type="AudioStream" uid="uid://ckdcsitnq35ym" path="res://Assets/Audio/MinigameAudio/Neumaticos/break.wav" id="10_xi774"]
+[ext_resource type="PackedScene" uid="uid://c8n2rqp4dv6xk" path="res://Scenes/UI/ResumenAtencion.tscn" id="11_e2ey8"]
+[ext_resource type="AudioStream" uid="uid://cpr027gd7615q" path="res://Assets/Audio/MinigameAudio/Neumaticos/hit.wav" id="11_f37eh"]
+[ext_resource type="AudioStream" uid="uid://3lvr8kb4vatu" path="res://Assets/Audio/MinigameAudio/Neumaticos/inflate.wav" id="12_4nbr0"]
+[ext_resource type="AudioStream" uid="uid://cytnoh8w72o5v" path="res://Assets/Audio/MinigameAudio/Neumaticos/complete.wav" id="13_f37eh"]
+[ext_resource type="AudioStream" uid="uid://c8xoch5vohqlk" path="res://Assets/Audio/MinigameAudio/Neumaticos/neumaticosloop.ogg" id="14_4nbr0"]
+[ext_resource type="Texture2D" uid="uid://cxqi1lh5nip8y" path="res://Assets/UI/button_style.png" id="15_hudnp"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xrnwy"]
+atlas = ExtResource("5_8hs81")
+region = Rect2(150, 75, 75, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1dbkf"]
+atlas = ExtResource("5_8hs81")
+region = Rect2(150, 75, 75, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xi774"]
+atlas = ExtResource("5_8hs81")
+region = Rect2(300, 75, 75, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f37eh"]
+atlas = ExtResource("5_8hs81")
+region = Rect2(450, 75, 75, 75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4nbr0"]
+atlas = ExtResource("5_8hs81")
+region = Rect2(150, 150, 75, 75)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1j17g"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xrnwy")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1dbkf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xi774")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f37eh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4nbr0")
+}],
+"loop": false,
+"name": &"Romper",
+"speed": 10.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ija6x"]
+atlas = ExtResource("7_ija6x")
+region = Rect2(0, 0, 172, 174)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_trxfn"]
+atlas = ExtResource("7_ija6x")
+region = Rect2(172, 0, 172, 174)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v74x8"]
+atlas = ExtResource("7_ija6x")
+region = Rect2(344, 0, 172, 174)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1j17g"]
+atlas = ExtResource("7_ija6x")
+region = Rect2(507, 0, 169, 174)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_xrnwy"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ija6x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_trxfn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v74x8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1j17g")
+}],
+"loop": false,
+"name": &"Inflar",
+"speed": 4.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e2ey8"]
+atlas = ExtResource("7_ija6x")
+region = Rect2(507, 0, 169, 174)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kn8ba"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e2ey8")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ninehud"]
+atlas = ExtResource("15_hudnp")
+region = Rect2(1873, 492, 769, 568)
+
+[node name="MinijuegoNeumatico" type="Control" unique_id=121450491]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_md1ki")
+
+[node name="Fondo" type="ColorRect" parent="." unique_id=2023782361]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.07683582, 0.07683582, 0.07683582, 1)
+
+[node name="FondoImagen" type="TextureRect" parent="." unique_id=2126629665]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 480.0
+grow_horizontal = 2
+texture = ExtResource("2_ija6x")
+expand_mode = 1
+
+[node name="Cable" type="TextureRect" parent="." unique_id=110154492]
+layout_mode = 0
+offset_left = 765.0
+offset_top = 319.0
+offset_right = 1070.0
+offset_bottom = 405.0
+texture = ExtResource("3_trxfn")
+expand_mode = 1
+
+[node name="BarraBase" type="TextureRect" parent="." unique_id=43064667]
+layout_mode = 0
+offset_left = -40.0
+offset_top = 512.0
+offset_right = 1208.0
+offset_bottom = 680.0
+texture = ExtResource("2_8hs81")
+expand_mode = 1
+
+[node name="AreaMovimiento" type="Control" parent="." unique_id=1614972752]
+anchors_preset = 0
+offset_left = 56.0
+offset_top = 552.0
+offset_right = 1104.0
+offset_bottom = 624.0
+
+[node name="ZonaVerde" type="TextureRect" parent="AreaMovimiento" unique_id=2010497627]
+layout_mode = 0
+offset_left = 400.0
+offset_top = -8.0
+offset_right = 704.0
+offset_bottom = 80.0
+texture = ExtResource("3_ija6x")
+expand_mode = 1
+
+[node name="Indicador" type="TextureRect" parent="AreaMovimiento" unique_id=1183268623]
+layout_mode = 0
+offset_left = 520.0
+offset_top = -64.0
+offset_right = 584.0
+offset_bottom = 96.0
+texture = ExtResource("2_8lgja")
+expand_mode = 1
+
+[node name="Vidas" type="Label" parent="." unique_id=2103372476]
+layout_mode = 0
+offset_left = 83.0
+offset_top = 399.0
+offset_right = 123.0
+offset_bottom = 448.0
+text = "
+"
+
+[node name="Tuerca1" type="AnimatedSprite2D" parent="Vidas" unique_id=88883279]
+position = Vector2(-50.999996, -327.00003)
+scale = Vector2(0.64000005, 0.6399999)
+sprite_frames = SubResource("SpriteFrames_1j17g")
+animation = &"Romper"
+centered = false
+
+[node name="Tuerca2" type="AnimatedSprite2D" parent="Vidas" unique_id=133579218]
+position = Vector2(5, -327)
+scale = Vector2(0.64, 0.64000005)
+sprite_frames = SubResource("SpriteFrames_1j17g")
+animation = &"Romper"
+centered = false
+
+[node name="Tuerca3" type="AnimatedSprite2D" parent="Vidas" unique_id=1724222193]
+position = Vector2(61, -327)
+scale = Vector2(0.64, 0.6399999)
+sprite_frames = SubResource("SpriteFrames_1j17g")
+animation = &"Romper"
+centered = false
+
+[node name="Tuerca4" type="AnimatedSprite2D" parent="Vidas" unique_id=422233803]
+position = Vector2(117, -327.00003)
+scale = Vector2(0.6399995, 0.6399999)
+sprite_frames = SubResource("SpriteFrames_1j17g")
+animation = &"Romper"
+centered = false
+
+[node name="Tiempo" type="Label" parent="." unique_id=496573484]
+layout_mode = 0
+offset_left = 1032.0
+offset_top = 80.0
+offset_right = 1112.0
+offset_bottom = 103.0
+text = "30"
+
+[node name="Neumatico" type="AnimatedSprite2D" parent="." unique_id=842019133]
+position = Vector2(737.00006, 343.00003)
+scale = Vector2(0.9118754, 0.8023158)
+sprite_frames = SubResource("SpriteFrames_xrnwy")
+animation = &"Inflar"
+
+[node name="Neumaticos" type="Label" parent="." unique_id=998306052]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="Neumatico1" type="AnimatedSprite2D" parent="Neumaticos" unique_id=1961764149]
+visible = false
+position = Vector2(96, 216)
+scale = Vector2(0.59911245, 0.40804595)
+sprite_frames = SubResource("SpriteFrames_kn8ba")
+
+[node name="Neumatico2" type="AnimatedSprite2D" parent="Neumaticos" unique_id=1212677372]
+visible = false
+position = Vector2(127.99999, 216)
+scale = Vector2(0.59911245, 0.40804595)
+sprite_frames = SubResource("SpriteFrames_kn8ba")
+
+[node name="Neumatico3" type="AnimatedSprite2D" parent="Neumaticos" unique_id=1933898824]
+visible = false
+position = Vector2(159.99998, 216)
+scale = Vector2(0.59911245, 0.40804595)
+sprite_frames = SubResource("SpriteFrames_kn8ba")
+
+[node name="Neumatico4" type="AnimatedSprite2D" parent="Neumaticos" unique_id=1572078728]
+visible = false
+position = Vector2(96, 303.99997)
+scale = Vector2(0.59911245, 0.40804595)
+sprite_frames = SubResource("SpriteFrames_kn8ba")
+
+[node name="Neumatico5" type="AnimatedSprite2D" parent="Neumaticos" unique_id=1316377734]
+visible = false
+position = Vector2(127.99999, 304)
+scale = Vector2(0.59911245, 0.40804595)
+sprite_frames = SubResource("SpriteFrames_kn8ba")
+
+[node name="Neumatico6" type="AnimatedSprite2D" parent="Neumaticos" unique_id=1926703537]
+visible = false
+position = Vector2(159.99998, 304)
+scale = Vector2(0.59911245, 0.40804595)
+sprite_frames = SubResource("SpriteFrames_kn8ba")
+
+[node name="Neumatico7" type="AnimatedSprite2D" parent="Neumaticos" unique_id=192043057]
+visible = false
+position = Vector2(96, 391.99997)
+scale = Vector2(0.59911245, 0.40804595)
+sprite_frames = SubResource("SpriteFrames_kn8ba")
+
+[node name="Neumatico8" type="AnimatedSprite2D" parent="Neumaticos" unique_id=1724309354]
+visible = false
+position = Vector2(125, 392)
+scale = Vector2(0.59911245, 0.40804595)
+sprite_frames = SubResource("SpriteFrames_kn8ba")
+
+[node name="Neumatico9" type="AnimatedSprite2D" parent="Neumaticos" unique_id=1691164436]
+visible = false
+position = Vector2(158, 392)
+scale = Vector2(0.59911245, 0.40804595)
+sprite_frames = SubResource("SpriteFrames_kn8ba")
+
+[node name="Neumatico10" type="AnimatedSprite2D" parent="Neumaticos" unique_id=1928131353]
+visible = false
+position = Vector2(189, 392.99997)
+scale = Vector2(0.59911245, 0.40804595)
+sprite_frames = SubResource("SpriteFrames_kn8ba")
+
+[node name="Resumen" type="ColorRect" parent="." unique_id=629025858]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -608.0
+offset_top = -364.0
+offset_right = 608.0
+offset_bottom = 364.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.16, 0.09, 0.04, 0.8)
+
+[node name="PanelFinal" type="NinePatchRect" parent="Resumen" unique_id=1802932442]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -269.54266
+offset_top = -210.5
+offset_right = 269.54266
+offset_bottom = 210.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_ninehud")
+region_rect = Rect2(0, 0, 769, 568)
+patch_margin_left = 110
+patch_margin_top = 100
+patch_margin_right = 110
+patch_margin_bottom = 110
+
+[node name="PuntajeFinal" type="Label" parent="Resumen/PanelFinal" unique_id=1767653000]
+layout_mode = 0
+offset_left = 196.54266
+offset_top = 100.5
+offset_right = 315.54266
+offset_bottom = 123.5
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 5
+theme_override_constants/shadow_outline_size = 3
+text = "Puntaje Final: 0"
+
+[node name="Button" type="Button" parent="Resumen/PanelFinal" unique_id=876740829]
+layout_mode = 0
+offset_left = 225.54266
+offset_top = 286.5
+offset_right = 313.54266
+offset_bottom = 318.5
+theme = ExtResource("9_v74x8")
+text = "Continuar
+"
+
+[node name="DineroObtenido" type="Label" parent="Resumen/PanelFinal" unique_id=1464478374]
+layout_mode = 0
+offset_left = 184.54266
+offset_top = 146.5
+offset_right = 331.54266
+offset_bottom = 169.5
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 5
+theme_override_constants/shadow_outline_size = 3
+text = "Dinero Obtenido: 0"
+
+[node name="ResumenAtencion" parent="." unique_id=686501913 instance=ExtResource("11_e2ey8")]
+
+[node name="Tutorial" type="ColorRect" parent="." unique_id=611989632]
+process_mode = 2
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -608.0
+offset_top = -364.0
+offset_right = 608.0
+offset_bottom = 364.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.16, 0.09, 0.04, 0.8)
+
+[node name="PanelTutorial" type="NinePatchRect" parent="Tutorial" unique_id=1388779804]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -392.0
+offset_top = -244.0
+offset_right = 392.0
+offset_bottom = 244.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_ninehud")
+region_rect = Rect2(0, 0, 769, 568)
+patch_margin_left = 110
+patch_margin_top = 100
+patch_margin_right = 110
+patch_margin_bottom = 110
+
+[node name="Titulo" type="Label" parent="Tutorial/PanelTutorial" unique_id=1212421464]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -196.0
+offset_top = 65.0
+offset_right = 201.0
+offset_bottom = 104.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 5
+theme_override_constants/shadow_outline_size = 3
+theme_override_font_sizes/font_size = 28
+text = "¡INFLA LO QUE MÁS PUEDAS!"
+
+[node name="Instrucciones" type="Label" parent="Tutorial/PanelTutorial" unique_id=69458775]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -283.0
+offset_top = 38.0
+offset_right = 304.0
+offset_bottom = 62.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Pulsa el espacio justo en el área verde para progresar inflando neumáticos ."
+
+[node name="Reglas" type="Label" parent="Tutorial/PanelTutorial" unique_id=1533351474]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -331.0
+offset_top = -63.0
+offset_right = 335.0
+offset_bottom = -31.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Tienes 30 segundos. ¡Infla todos los neumáticos que puedas para ganar puntuacion!"
+
+[node name="Comenzar" type="Label" parent="Tutorial/PanelTutorial" unique_id=1973646582]
+layout_mode = 0
+offset_left = 272.0
+offset_top = 392.0
+offset_right = 533.0
+offset_bottom = 415.0
+theme_override_colors/font_color = Color(1, 0.8862745, 0, 1)
+text = "[ Presiona espacio para empezar ]"
+
+[node name="BreakSound" type="AudioStreamPlayer" parent="." unique_id=1397499049]
+stream = ExtResource("10_xi774")
+bus = &"SFX"
+
+[node name="HitSound" type="AudioStreamPlayer" parent="." unique_id=1533301797]
+stream = ExtResource("11_f37eh")
+bus = &"SFX"
+
+[node name="InflateSound" type="AudioStreamPlayer" parent="." unique_id=1218217973]
+stream = ExtResource("12_4nbr0")
+bus = &"SFX"
+
+[node name="CompleteSound" type="AudioStreamPlayer" parent="." unique_id=1979186773]
+stream = ExtResource("13_f37eh")
+bus = &"SFX"
+
+[node name="MusicLoop" type="AudioStreamPlayer" parent="." unique_id=2035088671]
+stream = ExtResource("14_4nbr0")
+volume_db = -20.0
+bus = &"Music"
+
+[connection signal="mouse_entered" from="Resumen/PanelFinal/Button" to="." method="_on_boton_continuar_mouse_entered"]
+[connection signal="pressed" from="Resumen/PanelFinal/Button" to="." method="_on_boton_continuar_pressed"]

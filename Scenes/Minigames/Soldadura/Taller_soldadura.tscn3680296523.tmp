@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://bk38ipu4ymsoo"]
+
+[ext_resource type="Texture2D" uid="uid://c3dacvm42g81q" path="res://minijuego soldadura/Imagenes/fondo minijuego.png" id="1_jybnu"]
+[ext_resource type="Script" uid="uid://cs6ra5g8h1xqp" path="res://minijuego soldadura/Script/taller_soldadura.gd" id="1_xe4cr"]
+[ext_resource type="PackedScene" uid="uid://chyfxn8kct54" path="res://minijuego soldadura/Scene/Soldadura.tscn" id="2_i3dfk"]
+[ext_resource type="PackedScene" uid="uid://ddjyyxfbp0hwr" path="res://minijuego soldadura/Scene/PiezasMetal/PiezaMetal.tscn" id="3_i3dfk"]
+
+[node name="Node2D" type="Node2D" unique_id=997942648]
+script = ExtResource("1_xe4cr")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1110295672]
+position = Vector2(507, 348)
+texture = ExtResource("1_jybnu")
+
+[node name="PiezaMetal" parent="." unique_id=1975928199 groups=["pieza"] instance=ExtResource("3_i3dfk")]
+position = Vector2(-90, -92)
+
+[node name="Soldadura" parent="." unique_id=1291004349 instance=ExtResource("2_i3dfk")]
+position = Vector2(-24, -22)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1831167566]
+
+[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer" unique_id=1429324301]
+offset_left = 11.0
+offset_top = 6.0
+offset_right = 98.0
+offset_bottom = 33.0
+
+[node name="LabelPiezas" type="Label" parent="CanvasLayer" unique_id=1699976849]
+offset_left = 14.0
+offset_top = 43.0
+offset_right = 96.0
+offset_bottom = 72.0
+
+[node name="Timer" type="Timer" parent="CanvasLayer" unique_id=421501296]

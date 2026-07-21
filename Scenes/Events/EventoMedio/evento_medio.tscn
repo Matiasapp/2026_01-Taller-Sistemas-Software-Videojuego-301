@@ -1,0 +1,320 @@
+[gd_scene format=3 uid="uid://cicimsvaknbec"]
+
+[ext_resource type="Script" uid="uid://da58w1siw4d34" path="res://Scenes/Events/EventoMedio/evento_medio.gd" id="1_d0b5v"]
+[ext_resource type="Texture2D" uid="uid://cqfsse7otjns2" path="res://Assets/Events/EventoMedio/1h.png" id="2_fudft"]
+[ext_resource type="Texture2D" uid="uid://c01pxm8xl3pve" path="res://Assets/Events/EventoMedio/2h.png" id="3_leimq"]
+[ext_resource type="Texture2D" uid="uid://nfentq2mh02d" path="res://Assets/Events/EventoMedio/1m.png" id="3_mn15x"]
+[ext_resource type="Texture2D" uid="uid://cm8jtjonh131l" path="res://Assets/Events/EventoMedio/3h.png" id="4_fqgj2"]
+[ext_resource type="Texture2D" uid="uid://dt7lkyj0teg6j" path="res://Assets/Events/EventoMedio/2m.png" id="5_ixsij"]
+[ext_resource type="Texture2D" uid="uid://jdxtg8scaavk" path="res://Assets/Events/EventoMedio/4h.png" id="5_r23yu"]
+[ext_resource type="Texture2D" uid="uid://cqdmrdgav7yhp" path="res://Assets/Events/EventoMedio/5h.png" id="6_ree4u"]
+[ext_resource type="Texture2D" uid="uid://cs4uaj164onkp" path="res://Assets/Events/EventoMedio/3m.png" id="7_gbvtw"]
+[ext_resource type="Texture2D" uid="uid://bo37r8fyrjfim" path="res://Assets/Events/EventoVictoria/9_fondo.png" id="8_fudft"]
+[ext_resource type="Texture2D" uid="uid://jxacrq41byet" path="res://Assets/Events/EventoMedio/4m.png" id="9_qro88"]
+[ext_resource type="Texture2D" uid="uid://crv2e2nsv4gcc" path="res://Assets/Events/EventoMedio/6h.png" id="9_ree4u"]
+[ext_resource type="Texture2D" uid="uid://cupqpwv6cbo7o" path="res://Assets/Events/EventoMedio/5m.png" id="11_skymo"]
+[ext_resource type="Texture2D" uid="uid://bnfi75kq45r3a" path="res://Assets/Events/EventoMedio/6m.png" id="13_rt0xp"]
+[ext_resource type="Texture2D" uid="uid://d0kpg6dic7l5c" path="res://Assets/Events/EventoVictoria/9_panel.png" id="14_yio2b"]
+[ext_resource type="Texture2D" uid="uid://dwuxd24ol4hjj" path="res://Assets/Sprites/background_game_screen.png" id="15_rti7t"]
+[ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="16_fn3xq"]
+[ext_resource type="Texture2D" uid="uid://cxqi1lh5nip8y" path="res://Assets/UI/button_style.png" id="17_lqj7r"]
+[ext_resource type="AudioStream" uid="uid://b2t66hdqmo381" path="res://Assets/Audio/Menu/click.wav" id="18_ffqec"]
+[ext_resource type="AudioStream" uid="uid://d0gkxqmj2s251" path="res://Assets/Audio/Menu/hoverclick.wav" id="19_p81u4"]
+[ext_resource type="AudioStream" uid="uid://c6ya5qvsib7as" path="res://Assets/Audio/IntroScreen/hover_character.wav" id="20_eaije"]
+[ext_resource type="AudioStream" uid="uid://b6bgpfuu8hl3x" path="res://Assets/Events/EventoMedio/medioloop.ogg" id="20_fudft"]
+[ext_resource type="AudioStream" uid="uid://c6ksaho7s4f52" path="res://Assets/Audio/IntroScreen/select_character.wav" id="21_k5bdn"]
+[ext_resource type="AudioStream" uid="uid://lnnltgws2f7" path="res://Assets/Audio/IntroScreen/whoosh.wav" id="22_gewgn"]
+[ext_resource type="AudioStream" uid="uid://cc2twnwdewko7" path="res://Assets/Audio/IntroScreen/talking.wav" id="23_0jewb"]
+[ext_resource type="PackedScene" uid="uid://bb4m8n2s6x0ve" path="res://Scenes/UI/IndicadorReputacion.tscn" id="24_reputacion"]
+
+[sub_resource type="Animation" id="Animation_jy5sd"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-569, -307)]
+}
+
+[sub_resource type="Animation" id="Animation_qrjfm"]
+resource_name = "background_move"
+length = 3.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.5, 3, 8.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(-569, -307), Vector2(-576, -307), Vector2(-569, -307), Vector2(-569, -307)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_r6180"]
+_data = {
+&"RESET": SubResource("Animation_jy5sd"),
+&"background_move": SubResource("Animation_qrjfm")
+}
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_m4id3"]
+texture = ExtResource("17_lqj7r")
+texture_margin_top = 2.0
+texture_margin_bottom = 4.0
+region_rect = Rect2(173, 492, 771, 568)
+
+[node name="Medio" type="Node2D" unique_id=1964637352 node_paths=PackedStringArray("talking_sound")]
+position = Vector2(0, 2)
+script = ExtResource("1_d0b5v")
+talking_sound = NodePath("TalkingSound")
+imagen_hombre_1 = ExtResource("2_fudft")
+imagen_mujer_1 = ExtResource("3_mn15x")
+imagen_hombre_2 = ExtResource("3_leimq")
+imagen_mujer_2 = ExtResource("5_ixsij")
+imagen_hombre_3 = ExtResource("4_fqgj2")
+imagen_mujer_3 = ExtResource("7_gbvtw")
+imagen_hombre_4 = ExtResource("5_r23yu")
+imagen_mujer_4 = ExtResource("9_qro88")
+imagen_hombre_5 = ExtResource("6_ree4u")
+imagen_mujer_5 = ExtResource("11_skymo")
+imagen_hombre_6 = ExtResource("9_ree4u")
+imagen_mujer_6 = ExtResource("13_rt0xp")
+imagen_resumen_fondo = ExtResource("8_fudft")
+imagen_resumen_panel = ExtResource("14_yio2b")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1697874380]
+editor_description = "
+"
+
+[node name="VistaTextoIntroduccion" type="Control" parent="CanvasLayer" unique_id=1675659681]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/VistaTextoIntroduccion" unique_id=2012560446]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -569.0
+offset_top = -307.0
+offset_right = 669.96655
+offset_bottom = 320.9925
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.000419, 1.000419)
+size_flags_horizontal = 4
+texture = ExtResource("15_rti7t")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/VistaTextoIntroduccion/TextureRect" unique_id=544547519]
+libraries/ = SubResource("AnimationLibrary_r6180")
+
+[node name="ResumenRect" type="TextureRect" parent="CanvasLayer/VistaTextoIntroduccion" unique_id=1824675138]
+layout_mode = 0
+offset_left = -367.0
+offset_top = -282.0
+offset_right = 476.0
+offset_bottom = 298.0
+expand_mode = 1
+
+[node name="LabelTextoReputacion" type="Label" parent="CanvasLayer/VistaTextoIntroduccion/ResumenRect" unique_id=2132014784]
+layout_mode = 0
+offset_left = 200.0
+offset_top = 146.0
+offset_right = 240.0
+offset_bottom = 169.0
+theme_override_colors/font_color = Color(0.95686275, 0.95686275, 0.95686275, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+
+[node name="LabelTextoClientes" type="Label" parent="CanvasLayer/VistaTextoIntroduccion/ResumenRect" unique_id=1664022553]
+layout_mode = 0
+offset_left = 208.0
+offset_top = 199.0
+offset_right = 248.0
+offset_bottom = 222.0
+theme_override_colors/font_color = Color(0.95686275, 0.95686275, 0.95686275, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+
+[node name="LabelTextoAutos" type="Label" parent="CanvasLayer/VistaTextoIntroduccion/ResumenRect" unique_id=1070789824]
+layout_mode = 0
+offset_left = 207.0
+offset_top = 254.0
+offset_right = 247.0
+offset_bottom = 277.0
+theme_override_colors/font_color = Color(0.95686275, 0.95686275, 0.95686275, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+
+[node name="LabelTextoDinero" type="Label" parent="CanvasLayer/VistaTextoIntroduccion/ResumenRect" unique_id=2132350032]
+layout_mode = 0
+offset_left = 207.0
+offset_top = 312.0
+offset_right = 247.0
+offset_bottom = 337.0
+theme_override_colors/font_color = Color(0.95686275, 0.95686275, 0.95686275, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+
+[node name="LabelTitulo" type="Label" parent="CanvasLayer/VistaTextoIntroduccion/ResumenRect" unique_id=1130766453]
+layout_mode = 0
+offset_left = 216.0
+offset_top = 61.0
+offset_right = 256.0
+offset_bottom = 103.0
+theme_override_colors/font_color = Color(0.95686275, 0.95686275, 0.95686275, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+
+[node name="LabelDescripcion" type="Label" parent="CanvasLayer/VistaTextoIntroduccion/ResumenRect" unique_id=1567227046]
+layout_mode = 0
+offset_left = 147.0
+offset_top = 394.0
+offset_right = 187.0
+offset_bottom = 417.0
+theme_override_colors/font_color = Color(0.95686275, 0.95686275, 0.95686275, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+
+[node name="LabelDinero" type="Label" parent="CanvasLayer/VistaTextoIntroduccion/ResumenRect" unique_id=1770665245]
+layout_mode = 0
+offset_left = 472.0
+offset_top = 311.0
+offset_right = 512.0
+offset_bottom = 334.0
+theme_override_colors/font_color = Color(0.95686275, 0.95686275, 0.95686275, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+
+[node name="LabelReputacion" type="Label" parent="CanvasLayer/VistaTextoIntroduccion/ResumenRect" unique_id=1130523063]
+layout_mode = 0
+offset_left = 343.0
+offset_top = 143.0
+offset_right = 383.0
+offset_bottom = 166.0
+theme_override_colors/font_color = Color(0.95686275, 0.95686275, 0.95686275, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+
+[node name="IndicadorReputacion" parent="CanvasLayer/VistaTextoIntroduccion/ResumenRect" unique_id=1638836213 instance=ExtResource("24_reputacion")]
+layout_mode = 0
+offset_left = 397.0
+offset_top = 139.0
+offset_right = 620.0
+offset_bottom = 171.0
+
+[node name="LabelAutos" type="Label" parent="CanvasLayer/VistaTextoIntroduccion/ResumenRect" unique_id=1715935034]
+layout_mode = 0
+offset_left = 485.0
+offset_top = 255.0
+offset_right = 525.0
+offset_bottom = 278.0
+theme_override_colors/font_color = Color(0.95686275, 0.95686275, 0.95686275, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+
+[node name="LabelClientes" type="Label" parent="CanvasLayer/VistaTextoIntroduccion/ResumenRect" unique_id=1286413152]
+layout_mode = 0
+offset_left = 482.0
+offset_top = 201.0
+offset_right = 572.0
+offset_bottom = 231.0
+theme_override_colors/font_color = Color(0.95686275, 0.95686275, 0.95686275, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+
+[node name="Comenzar" type="Button" parent="CanvasLayer/VistaTextoIntroduccion/ResumenRect" unique_id=1813346369]
+layout_mode = 0
+offset_left = 268.0
+offset_top = 464.0
+offset_right = 513.0
+offset_bottom = 520.0
+theme = ExtResource("16_fn3xq")
+text = "Comenzar"
+
+[node name="Panel" type="Panel" parent="CanvasLayer/VistaTextoIntroduccion" unique_id=1047493940]
+self_modulate = Color(1, 1, 1, 0.5254902)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -130.0
+offset_top = 131.0
+offset_right = 531.0
+offset_bottom = 285.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+theme = ExtResource("16_fn3xq")
+theme_override_styles/panel = SubResource("StyleBoxTexture_m4id3")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/VistaTextoIntroduccion/Panel" unique_id=108439981]
+layout_mode = 0
+offset_left = 35.0
+offset_top = 15.0
+offset_right = 630.0
+offset_bottom = 136.0
+
+[node name="FadeRect" type="ColorRect" parent="CanvasLayer" unique_id=1429713775]
+visible = false
+z_index = 100
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="ClickSound" type="AudioStreamPlayer" parent="." unique_id=859333656]
+stream = ExtResource("18_ffqec")
+volume_db = -5.0
+bus = &"SFX"
+
+[node name="HoverSound" type="AudioStreamPlayer" parent="." unique_id=1848906443]
+stream = ExtResource("19_p81u4")
+volume_db = -8.0
+bus = &"SFX"
+
+[node name="HoverCharacterSound" type="AudioStreamPlayer" parent="." unique_id=188759167]
+stream = ExtResource("20_eaije")
+volume_db = -8.0
+bus = &"SFX"
+
+[node name="SelectCharacterSound" type="AudioStreamPlayer" parent="." unique_id=434965810]
+stream = ExtResource("21_k5bdn")
+volume_db = -8.0
+bus = &"SFX"
+
+[node name="WhooshSound" type="AudioStreamPlayer" parent="." unique_id=1656864259]
+stream = ExtResource("22_gewgn")
+volume_db = -8.0
+bus = &"SFX"
+
+[node name="TalkingSound" type="AudioStreamPlayer" parent="." unique_id=871199411]
+stream = ExtResource("23_0jewb")
+volume_db = -8.0
+bus = &"SFX"
+
+[node name="StringLoop" type="AudioStreamPlayer" parent="." unique_id=323153690]
+stream = ExtResource("20_fudft")
+volume_db = -10.0
+autoplay = true
+bus = &"Music"
+parameters/looping = true
+
+[connection signal="mouse_entered" from="CanvasLayer/VistaTextoIntroduccion/ResumenRect/Comenzar" to="." method="_on_comenzar_mouse_entered"]
+[connection signal="pressed" from="CanvasLayer/VistaTextoIntroduccion/ResumenRect/Comenzar" to="." method="_on_comenzar_pressed"]

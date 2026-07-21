@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://uimfk7gyf1fe"]
+
+[ext_resource type="PackedScene" uid="uid://7tvlhshmaet0" path="res://Scenes/Events/FinalMalo/FinalMalo2.tscn" id="1_base"]
+[ext_resource type="Script" uid="uid://cqktjw015xgqi" path="res://Scenes/Events/EventoDesalojo/evento_desalojo.gd" id="2_script"]
+[ext_resource type="Texture2D" uid="uid://ojamnvdg7ktb" path="res://Assets/Events/EventoDesalojo/1h.png" id="3_1h"]
+[ext_resource type="Texture2D" uid="uid://cxy7m8r1brwfb" path="res://Assets/Events/EventoDesalojo/1m.png" id="4_1m"]
+[ext_resource type="Texture2D" uid="uid://tfqi0n5i733u" path="res://Assets/Events/EventoDesalojo/2.png" id="5_2"]
+[ext_resource type="Texture2D" uid="uid://cf1ei2j20nkbb" path="res://Assets/Events/EventoDesalojo/3.png" id="6_3"]
+[ext_resource type="Texture2D" uid="uid://bsm8v8g14uiu8" path="res://Assets/Events/EventoDesalojo/4h.png" id="7_4h"]
+[ext_resource type="Texture2D" uid="uid://ceomr7g7sdo7n" path="res://Assets/Events/EventoDesalojo/4m.png" id="8_4m"]
+[ext_resource type="Texture2D" uid="uid://ds7watynd67du" path="res://Assets/Events/EventoDesalojo/5h.png" id="9_5h"]
+[ext_resource type="Texture2D" uid="uid://cyf1bysuwqn1" path="res://Assets/Events/EventoDesalojo/5m.png" id="10_5m"]
+[ext_resource type="Texture2D" uid="uid://7qci1pnpvjy6" path="res://Assets/Events/EventoDesalojo/6h.png" id="11_6h"]
+[ext_resource type="Texture2D" uid="uid://cgnrp8nvkxvpc" path="res://Assets/Events/EventoDesalojo/6m.png" id="12_6m"]
+[ext_resource type="Texture2D" uid="uid://c1xj8netkc21o" path="res://Assets/Events/EventoDesalojo/7.png" id="13_7"]
+[ext_resource type="Texture2D" uid="uid://can0yond18pas" path="res://Assets/Events/EventoDesalojo/8h.png" id="14_8h"]
+[ext_resource type="Texture2D" uid="uid://b68asmgo31oph" path="res://Assets/Events/EventoDesalojo/8m.png" id="15_8m"]
+[ext_resource type="Texture2D" uid="uid://c7rgeblp6qyu" path="res://Assets/Events/EventoDesalojo/9.png" id="16_9"]
+[ext_resource type="Texture2D" uid="uid://dpuy62l7oiov8" path="res://Assets/Events/EventoDesalojo/10.png" id="17_10"]
+[ext_resource type="AudioStream" uid="uid://dpic4p08kdq6w" path="res://Assets/Events/EventoDesalojo/loopdesalojo.ogg" id="18_8do3p"]
+
+[node name="EventoDesalojo" unique_id=677323538 instance=ExtResource("1_base")]
+script = ExtResource("2_script")
+imagen_hombre_1 = ExtResource("3_1h")
+imagen_mujer_1 = ExtResource("4_1m")
+imagen_2 = ExtResource("5_2")
+imagen_3 = ExtResource("6_3")
+imagen_hombre_4 = ExtResource("7_4h")
+imagen_mujer_4 = ExtResource("8_4m")
+imagen_hombre_5 = ExtResource("9_5h")
+imagen_mujer_5 = ExtResource("10_5m")
+imagen_hombre_6 = ExtResource("11_6h")
+imagen_mujer_6 = ExtResource("12_6m")
+imagen_7 = ExtResource("13_7")
+imagen_hombre_8 = ExtResource("14_8h")
+imagen_mujer_8 = ExtResource("15_8m")
+imagen_9 = ExtResource("16_9")
+imagen_10_fondo = ExtResource("17_10")
+
+[node name="StringLoop" parent="." index="7" unique_id=323153690]
+stream = ExtResource("18_8do3p")
+volume_db = -7.0

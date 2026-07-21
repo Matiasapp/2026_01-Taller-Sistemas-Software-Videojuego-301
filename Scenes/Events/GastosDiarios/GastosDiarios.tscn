@@ -1,0 +1,526 @@
+[gd_scene format=3 uid="uid://d3da537iy1kop"]
+
+[ext_resource type="Script" uid="uid://x06itp0yjdqm" path="res://Scenes/Events/GastosDiarios/gastos_diarios.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://dwuxd24ol4hjj" path="res://Assets/Sprites/background_game_screen.png" id="2_bg"]
+[ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="3_theme"]
+[ext_resource type="Script" uid="uid://bc1onahfdrulf" path="res://Scenes/Events/GastosDiarios/gasto_diario_fila.gd" id="4_fila"]
+[ext_resource type="Texture2D" uid="uid://cxqi1lh5nip8y" path="res://Assets/UI/button_style.png" id="5_frame"]
+[ext_resource type="AudioStream" uid="uid://qu5f0tynvrol" path="res://Assets/Audio/Gameplay/GastosDiarios/workshopcloseloop.ogg" id="6_tq7jq"]
+
+[sub_resource type="AtlasTexture" id="AtlasFrame"]
+atlas = ExtResource("5_frame")
+region = Rect2(1873, 492, 769, 568)
+
+[sub_resource type="StyleBoxFlat" id="StylePaper"]
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleLine"]
+bg_color = Color(0.55, 0.31, 0.16, 0.85)
+
+[sub_resource type="StyleBoxFlat" id="StyleRow"]
+content_margin_left = 14.0
+content_margin_top = 9.0
+content_margin_right = 14.0
+content_margin_bottom = 9.0
+bg_color = Color(0.105, 0.075, 0.055, 0.94)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.51, 0.29, 0.16, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+shadow_color = Color(0, 0, 0, 0.55)
+shadow_size = 5
+
+[sub_resource type="StyleBoxTexture" id="StylePayButton"]
+texture = ExtResource("5_frame")
+region_rect = Rect2(173, 492, 771, 568)
+
+[node name="GastosDiarios" type="Control" unique_id=1795365506]
+editor_description = "Pantalla de cierre de caja. Para editar los gastos, selecciona una fila (Arriendo, Servicios o Comida) y cambia las secciones 'Contenido del gasto' y 'Costo' en el Inspector. Puedes duplicar o borrar filas sin modificar gastos_diarios.gd."
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_theme")
+script = ExtResource("1_script")
+
+[node name="Background" type="TextureRect" parent="." unique_id=1781639436]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Oscurecer" type="ColorRect" parent="." unique_id=1258919196]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.16, 0.09, 0.04, 0.8)
+
+[node name="Mesa" type="NinePatchRect" parent="." unique_id=1756464839]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -466.0
+offset_top = -298.0
+offset_right = 466.0
+offset_bottom = 298.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasFrame")
+region_rect = Rect2(0, 0, 769, 568)
+patch_margin_left = 51
+patch_margin_top = 45
+patch_margin_right = 46
+patch_margin_bottom = 54
+
+[node name="MargenMesa" type="Control" parent="Mesa" unique_id=2100753858]
+anchors_preset = 0
+offset_left = 18.0
+offset_top = 18.0
+offset_right = 914.0
+offset_bottom = 578.0
+
+[node name="Papel" type="Panel" parent="Mesa/MargenMesa" unique_id=2128659906]
+layout_mode = 0
+offset_right = 896.0
+offset_bottom = 560.0
+theme_override_styles/panel = SubResource("StylePaper")
+
+[node name="MargenPapel" type="Control" parent="Mesa/MargenMesa/Papel" unique_id=1918916919]
+anchors_preset = 0
+offset_left = 38.0
+offset_top = 25.0
+offset_right = 858.0
+offset_bottom = 535.0
+
+[node name="Contenido" type="Control" parent="Mesa/MargenMesa/Papel/MargenPapel" unique_id=1275262009]
+anchors_preset = 0
+offset_right = 820.0
+offset_bottom = 510.0
+
+[node name="Titulo" type="Label" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido" unique_id=518633005]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 820.0
+offset_bottom = 34.0
+theme_override_colors/font_color = Color(0.882, 0.686, 0.18, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 28
+text = "CIERRE DEL TALLER  ·  DÍA 1"
+horizontal_alignment = 1
+
+[node name="Subtitulo" type="Label" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido" unique_id=1445129265]
+layout_mode = 0
+offset_top = 42.0
+offset_right = 820.0
+offset_bottom = 62.0
+theme_override_colors/font_color = Color(0.247, 0.729, 0.314, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "Marca las obligaciones que pagarás esta noche. Lo que postergues tendrá consecuencias."
+horizontal_alignment = 1
+
+[node name="Linea1" type="Panel" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido" unique_id=1995276634]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 0
+offset_top = 70.0
+offset_right = 820.0
+offset_bottom = 72.0
+theme_override_styles/panel = SubResource("StyleLine")
+
+[node name="CajaLabel" type="Label" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido" unique_id=346058880]
+unique_name_in_owner = true
+layout_mode = 0
+offset_top = 80.0
+offset_right = 820.0
+offset_bottom = 105.0
+theme_override_colors/font_color = Color(0.95, 0.93, 0.88, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 19
+text = "Caja disponible:  $500"
+
+[node name="Arriendo" type="Panel" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido" unique_id=629762830 groups=["gasto_diario"]]
+editor_description = "Fila de gasto editable. Duplícala para agregar otro concepto; conserva el grupo 'gasto_diario' y la estructura de sus hijos."
+custom_minimum_size = Vector2(0, 72)
+layout_mode = 0
+offset_top = 113.0
+offset_right = 820.0
+offset_bottom = 185.0
+theme_override_styles/panel = SubResource("StyleRow")
+script = ExtResource("4_fila")
+nombre = "Arriendo del taller"
+detalle = "Mantiene el local disponible para la próxima jornada."
+costo_base = 110
+aumento_por_dia = 10
+
+[node name="Fila" type="Control" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Arriendo" unique_id=872211337]
+anchors_preset = 0
+offset_left = 14.0
+offset_top = 9.0
+offset_right = 806.0
+offset_bottom = 63.0
+
+[node name="Textos" type="Control" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Arriendo/Fila" unique_id=1318808452]
+anchors_preset = 0
+offset_right = 566.0
+offset_bottom = 54.0
+
+[node name="Nombre" type="Label" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Arriendo/Fila/Textos" unique_id=1288926584]
+layout_mode = 0
+offset_left = 69.0
+offset_top = 3.0
+offset_right = 306.0
+offset_bottom = 31.0
+theme_override_colors/font_color = Color(0.78, 0.7, 0.55, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 20
+text = "ARRIENDO DEL TALLER"
+
+[node name="Detalle" type="Label" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Arriendo/Fila/Textos" unique_id=1513631739]
+layout_mode = 0
+offset_left = 69.0
+offset_top = 34.0
+offset_right = 403.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0.72, 0.68, 0.61, 1)
+theme_override_font_sizes/font_size = 13
+text = "Mantiene el local disponible para la próxima jornada."
+
+[node name="Precio" type="Label" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Arriendo/Fila" unique_id=1703959013]
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 0
+offset_left = 536.0
+offset_top = 5.0
+offset_right = 626.0
+offset_bottom = 59.0
+theme_override_colors/font_color = Color(0.95, 0.93, 0.88, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 23
+text = "$110"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="PagarCheck" type="CheckButton" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Arriendo/Fila" unique_id=1695816380]
+custom_minimum_size = Vector2(104, 0)
+layout_mode = 0
+offset_left = 664.0
+offset_right = 792.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0.78, 0.7, 0.55, 1)
+theme_override_colors/font_pressed_color = Color(0.247, 0.729, 0.314, 1)
+theme_override_colors/font_hover_color = Color(0.882, 0.686, 0.18, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_constants/h_separation = 0
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StylePayButton")
+theme_override_styles/pressed = SubResource("StylePayButton")
+theme_override_styles/hover = SubResource("StylePayButton")
+theme_override_styles/hover_pressed = SubResource("StylePayButton")
+theme_override_styles/focus = SubResource("StylePayButton")
+text = "PAGAR"
+alignment = 1
+
+[node name="Servicios" type="Panel" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido" unique_id=469081101 groups=["gasto_diario"]]
+editor_description = "Fila de gasto editable. Duplícala para agregar otro concepto; conserva el grupo 'gasto_diario' y la estructura de sus hijos."
+custom_minimum_size = Vector2(0, 72)
+layout_mode = 0
+offset_top = 194.0
+offset_right = 820.0
+offset_bottom = 266.0
+theme_override_styles/panel = SubResource("StyleRow")
+script = ExtResource("4_fila")
+nombre = "Luz y servicios"
+detalle = "Electricidad, agua y herramientas conectadas."
+costo_base = 55
+aumento_por_dia = 5
+
+[node name="Fila" type="Control" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Servicios" unique_id=1841858814]
+anchors_preset = 0
+offset_left = 14.0
+offset_top = 9.0
+offset_right = 806.0
+offset_bottom = 63.0
+
+[node name="Textos" type="Control" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Servicios/Fila" unique_id=268819586]
+anchors_preset = 0
+offset_right = 566.0
+offset_bottom = 54.0
+
+[node name="Nombre" type="Label" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Servicios/Fila/Textos" unique_id=732407291]
+layout_mode = 0
+offset_left = 66.0
+offset_top = 1.0
+offset_right = 263.0
+offset_bottom = 29.0
+theme_override_colors/font_color = Color(0.78, 0.7, 0.55, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 20
+text = "LUZ Y SERVICIOS"
+
+[node name="Detalle" type="Label" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Servicios/Fila/Textos" unique_id=1425697922]
+layout_mode = 0
+offset_left = 66.0
+offset_top = 32.0
+offset_right = 354.0
+offset_bottom = 52.0
+theme_override_colors/font_color = Color(0.72, 0.68, 0.61, 1)
+theme_override_font_sizes/font_size = 13
+text = "Electricidad, agua y herramientas conectadas."
+
+[node name="Precio" type="Label" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Servicios/Fila" unique_id=179343848]
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 0
+offset_left = 536.0
+offset_top = 5.0
+offset_right = 626.0
+offset_bottom = 59.0
+theme_override_colors/font_color = Color(0.95, 0.93, 0.88, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 23
+text = "$55"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="PagarCheck" type="CheckButton" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Servicios/Fila" unique_id=1605324931]
+custom_minimum_size = Vector2(104, 0)
+layout_mode = 0
+offset_left = 664.0
+offset_right = 792.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0.78, 0.7, 0.55, 1)
+theme_override_colors/font_pressed_color = Color(0.247, 0.729, 0.314, 1)
+theme_override_colors/font_hover_color = Color(0.882, 0.686, 0.18, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_constants/h_separation = 0
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StylePayButton")
+theme_override_styles/pressed = SubResource("StylePayButton")
+theme_override_styles/hover = SubResource("StylePayButton")
+theme_override_styles/hover_pressed = SubResource("StylePayButton")
+theme_override_styles/focus = SubResource("StylePayButton")
+text = "PAGAR"
+alignment = 1
+
+[node name="Comida" type="Panel" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido" unique_id=1774453656 groups=["gasto_diario"]]
+editor_description = "Fila de gasto editable. Duplícala para agregar otro concepto; conserva el grupo 'gasto_diario' y la estructura de sus hijos."
+custom_minimum_size = Vector2(0, 72)
+layout_mode = 0
+offset_top = 275.0
+offset_right = 820.0
+offset_bottom = 347.0
+theme_override_styles/panel = SubResource("StyleRow")
+script = ExtResource("4_fila")
+nombre = "Comida"
+detalle = "Algo caliente para recuperar fuerzas."
+costo_base = 45
+aumento_por_dia = 5
+
+[node name="Fila" type="Control" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Comida" unique_id=697010438]
+anchors_preset = 0
+offset_left = 14.0
+offset_top = 9.0
+offset_right = 806.0
+offset_bottom = 63.0
+
+[node name="Textos" type="Control" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Comida/Fila" unique_id=950469882]
+anchors_preset = 0
+offset_right = 566.0
+offset_bottom = 54.0
+
+[node name="Nombre" type="Label" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Comida/Fila/Textos" unique_id=2090577628]
+layout_mode = 0
+offset_left = 66.0
+offset_top = 1.0
+offset_right = 337.0
+offset_bottom = 29.0
+theme_override_colors/font_color = Color(0.78, 0.7, 0.55, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 20
+text = "COMIDA"
+
+[node name="Detalle" type="Label" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Comida/Fila/Textos" unique_id=460763975]
+layout_mode = 0
+offset_left = 66.0
+offset_top = 32.0
+offset_right = 522.0
+offset_bottom = 52.0
+theme_override_colors/font_color = Color(0.72, 0.68, 0.61, 1)
+theme_override_font_sizes/font_size = 13
+text = "Algo caliente para recuperar fuerzas."
+
+[node name="Precio" type="Label" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Comida/Fila" unique_id=2130865651]
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 0
+offset_left = 536.0
+offset_top = 5.0
+offset_right = 626.0
+offset_bottom = 59.0
+theme_override_colors/font_color = Color(0.95, 0.93, 0.88, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 23
+text = "$45"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="PagarCheck" type="CheckButton" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Comida/Fila" unique_id=1234426729]
+custom_minimum_size = Vector2(104, 0)
+layout_mode = 0
+offset_left = 664.0
+offset_right = 792.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0.78, 0.7, 0.55, 1)
+theme_override_colors/font_pressed_color = Color(0.247, 0.729, 0.314, 1)
+theme_override_colors/font_hover_color = Color(0.882, 0.686, 0.18, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_constants/h_separation = 0
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StylePayButton")
+theme_override_styles/pressed = SubResource("StylePayButton")
+theme_override_styles/hover = SubResource("StylePayButton")
+theme_override_styles/hover_pressed = SubResource("StylePayButton")
+theme_override_styles/focus = SubResource("StylePayButton")
+text = "PAGAR"
+alignment = 1
+
+[node name="Linea2" type="Panel" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido" unique_id=1915830155]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 0
+offset_top = 356.0
+offset_right = 820.0
+offset_bottom = 358.0
+theme_override_styles/panel = SubResource("StyleLine")
+
+[node name="Totales" type="Control" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido" unique_id=1024201950]
+anchors_preset = 0
+offset_top = 367.0
+offset_right = 820.0
+offset_bottom = 393.0
+
+[node name="TotalLabel" type="Label" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Totales" unique_id=606810863]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 410.0
+offset_bottom = 26.0
+theme_override_colors/font_color = Color(0.95, 0.93, 0.88, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 18
+text = "TOTAL A PAGAR:  $210"
+
+[node name="SaldoLabel" type="Label" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Totales" unique_id=240768683]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 410.0
+offset_right = 820.0
+offset_bottom = 26.0
+theme_override_colors/font_color = Color(0.247, 0.729, 0.314, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 18
+text = "SALDO PARA MAÑANA:  $290"
+horizontal_alignment = 2
+
+[node name="Pie" type="Control" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido" unique_id=1644232026]
+custom_minimum_size = Vector2(0, 58)
+anchors_preset = 0
+offset_top = 402.0
+offset_right = 820.0
+offset_bottom = 460.0
+
+[node name="ConsecuenciaLabel" type="Label" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Pie" unique_id=157823239]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 588.0
+offset_bottom = 58.0
+theme_override_colors/font_color = Color(0.247, 0.729, 0.314, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 14
+text = "Todas las obligaciones quedarán cubiertas."
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="ConfirmarButton" type="Button" parent="Mesa/MargenMesa/Papel/MargenPapel/Contenido/Pie" unique_id=1128355137]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(220, 48)
+layout_mode = 0
+offset_left = 600.0
+offset_top = 5.0
+offset_right = 820.0
+offset_bottom = 53.0
+theme = ExtResource("3_theme")
+theme_override_colors/font_color = Color(0.95, 0.93, 0.88, 1)
+theme_override_colors/font_hover_color = Color(0.882, 0.686, 0.18, 1)
+theme_override_colors/font_disabled_color = Color(0.5, 0.48, 0.44, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 18
+text = "CONFIRMAR GASTOS"
+
+[node name="Sello" type="Label" parent="Mesa" unique_id=1067823390]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+offset_left = 680.0
+offset_top = 438.0
+offset_right = 862.0
+offset_bottom = 522.0
+rotation = -0.151844
+pivot_offset = Vector2(91, 42)
+theme_override_colors/font_color = Color(0.9, 0.35, 0.3, 0.95)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 23
+text = "REGISTRADO
+-$210"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FadeRect" type="ColorRect" parent="." unique_id=980440071]
+unique_name_in_owner = true
+visible = false
+z_index = 100
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="WorkshopClosingLoop" type="AudioStreamPlayer" parent="." unique_id=1368340065]
+stream = ExtResource("6_tq7jq")
+volume_db = -10.0
+autoplay = true
+bus = &"Music"
+parameters/looping = true

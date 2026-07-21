@@ -1,0 +1,153 @@
+[gd_scene format=3 uid="uid://bfrcla3yjhdkg"]
+
+[ext_resource type="Script" uid="uid://kl67iltbha5h" path="res://Scenes/Events/EventoDelApagon/EventoApagon.gd" id="1_s7jvp"]
+[ext_resource type="Texture2D" uid="uid://c00geqmlleey7" path="res://Assets/Sprites/inflado_neumatico/Tablero.png" id="2_s7jvp"]
+[ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="3_c2hvs"]
+[ext_resource type="AudioStream" uid="uid://d0gi4bt0pnf6h" path="res://Assets/Audio/GameScreen/PowerOutage.wav" id="4_kcvss"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_weg86"]
+texture = ExtResource("2_s7jvp")
+
+[sub_resource type="Animation" id="Animation_yl154"]
+resource_name = "Apagon"
+length = 4.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Oscuridad:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.8, 1, 1.3, 1.5, 1.8, 2, 2.3, 4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 0), Color(0, 0, 0, 0.15), Color(0, 0, 0, 0), Color(0, 0, 0, 0.35000002), Color(0, 0, 0, 0), Color(0, 0, 0, 0.6), Color(0, 0, 0, 0), Color(0, 0, 0, 0.85), Color(0, 0, 0, 0.85)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Destello:color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.79, 0.82, 0.88, 1.29, 1.32, 1.38),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 0.4), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 0.3), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_hbj5e"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Oscuridad:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Destello:color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hbj5e"]
+_data = {
+&"Apagon": SubResource("Animation_yl154"),
+&"RESET": SubResource("Animation_hbj5e")
+}
+
+[node name="EventoApagon" type="CanvasLayer" unique_id=1884400066]
+script = ExtResource("1_s7jvp")
+
+[node name="Oscuridad" type="ColorRect" parent="." unique_id=1743902185]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0)
+
+[node name="Destello" type="ColorRect" parent="." unique_id=2015172618]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0)
+
+[node name="Panel" type="Panel" parent="." unique_id=1880326512]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -243.0
+offset_top = -143.5
+offset_right = 243.0
+offset_bottom = 143.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_weg86")
+
+[node name="Titulo" type="Label" parent="Panel" unique_id=408885956]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -84.0
+offset_top = 51.5
+offset_right = 89.0
+offset_bottom = 74.5
+grow_horizontal = 2
+text = "⚡ CORTE DE ENERGÍA"
+
+[node name="Descripcion" type="Label" parent="Panel" unique_id=404280356]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -171.0
+offset_top = -24.5
+offset_right = 171.0
+offset_bottom = 24.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "La electricidad del taller se ha interrumpido.
+    La jornada terminó antes de tiempo."
+
+[node name="Continuar" type="Button" parent="Panel" unique_id=960717366]
+layout_mode = 0
+offset_left = 197.0
+offset_top = 223.5
+offset_right = 283.0
+offset_bottom = 254.5
+theme = ExtResource("3_c2hvs")
+text = "Continuar
+"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1802731973]
+libraries/ = SubResource("AnimationLibrary_hbj5e")
+
+[node name="AudioApagon" type="AudioStreamPlayer2D" parent="." unique_id=1768985677]
+stream = ExtResource("4_kcvss")
+max_distance = 4096.0
+bus = &"SFX"
+
+[connection signal="mouse_entered" from="Panel/Continuar" to="." method="_on_continuar_mouse_entered"]
+[connection signal="pressed" from="Panel/Continuar" to="." method="_on_continuar_pressed"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

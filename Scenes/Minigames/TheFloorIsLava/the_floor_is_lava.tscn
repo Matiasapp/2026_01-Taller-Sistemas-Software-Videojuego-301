@@ -1,0 +1,301 @@
+[gd_scene format=3 uid="uid://dmdooxhrinxhv"]
+
+[ext_resource type="Script" uid="uid://ciny2lx0jwxxs" path="res://Scenes/Minigames/TheFloorIsLava/snake_minigame.gd" id="1_6shj8"]
+[ext_resource type="PackedScene" uid="uid://c5lp1p4vmlx3t" path="res://Scenes/Minigames/TheFloorIsLava/Gasoline/Gasolina.tscn" id="2_nrjaw"]
+[ext_resource type="PackedScene" uid="uid://c80byqtkm0rum" path="res://Scenes/Minigames/TheFloorIsLava/Burn/burn_mark.tscn" id="2_tyt8e"]
+[ext_resource type="Texture2D" uid="uid://byra8s7qn0ulk" path="res://Scenes/Minigames/TheFloorIsLava/Background/checkboard.png" id="3_qrgef"]
+[ext_resource type="SpriteFrames" uid="uid://1wudhpdgds2f" path="res://Scenes/Minigames/TheFloorIsLava/Car/car_sprite_frames.tres" id="4_nrjaw"]
+[ext_resource type="Script" uid="uid://cr1t6tqa1jarg" path="res://Scenes/Minigames/TheFloorIsLava/node_2d.gd" id="6_b3uvg"]
+[ext_resource type="PackedScene" uid="uid://c8n2rqp4dv6xk" path="res://Scenes/UI/ResumenAtencion.tscn" id="6_qrgef"]
+[ext_resource type="AudioStream" uid="uid://dcjasma1c0uyk" path="res://Assets/Audio/MinigameAudio/TheFloorIsLava/lavaspawn.wav" id="7_34h8w"]
+[ext_resource type="AudioStream" uid="uid://vupbpt4ewj8b" path="res://Assets/Audio/MinigameAudio/TheFloorIsLava/lavaloop.ogg" id="8_1hw8h"]
+[ext_resource type="AudioStream" uid="uid://c5vxi8mwnt5ca" path="res://Assets/Audio/MinigameAudio/TheFloorIsLava/carskid.wav" id="9_76irg"]
+[ext_resource type="AudioStream" uid="uid://ddxxtqhwiogwg" path="res://Assets/Audio/MinigameAudio/TheFloorIsLava/lavadead.wav" id="10_revgn"]
+[ext_resource type="AudioStream" uid="uid://bpa2uc3vpewfs" path="res://Assets/Audio/MinigameAudio/TheFloorIsLava/thefloorislavaloop.ogg" id="11_tyt8e"]
+[ext_resource type="Texture2D" uid="uid://cxqi1lh5nip8y" path="res://Assets/UI/button_style.png" id="12_hudnp"]
+[ext_resource type="AudioStream" uid="uid://ddn7dexmficgy" path="res://Assets/Audio/MinigameAudio/TheFloorIsLava/collect.wav" id="14_y48l2"]
+[ext_resource type="AudioStream" uid="uid://cw6x55jn6bv65" path="res://Assets/Audio/MinigameAudio/TheFloorIsLava/clear.wav" id="15_b3uvg"]
+
+[sub_resource type="Gradient" id="Gradient_yumc8"]
+offsets = PackedFloat32Array(0, 0.4949495, 1)
+colors = PackedColorArray(0.7764706, 0.20392157, 0.03529412, 1, 0.627451, 0.07058824, 0, 1, 0.22670749, 0.22670749, 0.22670746, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_faefq"]
+gradient = SubResource("Gradient_yumc8")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_yumc8"]
+particle_flag_disable_z = true
+direction = Vector3(0, -1, 0)
+spread = 180.0
+initial_velocity_min = 60.0
+initial_velocity_max = 140.0
+gravity = Vector3(0, -80, 0)
+scale_min = 2.0
+scale_max = 5.0
+color = Color(0.72102803, 0.16017166, 0, 1)
+color_ramp = SubResource("GradientTexture1D_faefq")
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_yumc8"]
+specular_color = Color(0.42365062, 0.42365065, 0.42365062, 1)
+
+[sub_resource type="Gradient" id="Gradient_faefq"]
+offsets = PackedFloat32Array(0, 0.2979798, 0.47474748, 0.7323232, 0.88383836, 0.9141414, 1)
+colors = PackedColorArray(0.93383205, 0.88732594, 0.3716022, 1, 0.8586802, 0.569112, 0.15389225, 1, 1, 0.31666666, 0, 1, 0.8976843, 0.25784454, 0, 1, 0.51636773, 0.18275848, 0.1078823, 1, 0.52906674, 0.5290667, 0.5290667, 0.49411765, 0.3180198, 0.31801978, 0.31801975, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_4frya"]
+gradient = SubResource("Gradient_faefq")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_6ytos"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(10, 1, 1)
+emission_shape = 3
+emission_box_extents = Vector3(1, 1, 1)
+angle_min = -402.4
+angle_max = -402.4
+direction = Vector3(-1, 0, 0)
+spread = 3.902
+initial_velocity_min = 1.0
+initial_velocity_max = 10.0
+gravity = Vector3(0, -9, 0)
+scale_max = 2.0
+color_ramp = SubResource("GradientTexture1D_4frya")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ninehud"]
+atlas = ExtResource("12_hudnp")
+region = Rect2(1873, 492, 769, 568)
+
+[node name="SnakeMinigame" type="Node2D" unique_id=1131837256]
+script = ExtResource("1_6shj8")
+gasolina_scene = ExtResource("2_nrjaw")
+burn_mark_scene = ExtResource("2_tyt8e")
+
+[node name="Background" type="Sprite2D" parent="." unique_id=1121329477]
+position = Vector2(-14.499998, 0)
+scale = Vector2(1.0735645, 1.0648249)
+texture = ExtResource("3_qrgef")
+
+[node name="GridOrigin" type="Marker2D" parent="." unique_id=1281786702]
+
+[node name="TrailContainer" type="Node2D" parent="." unique_id=674163492]
+
+[node name="ObstacleContainer" type="Node2D" parent="." unique_id=515357766]
+
+[node name="Car" type="Node2D" parent="." unique_id=1314031482]
+z_index = 3
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Car" unique_id=350197503]
+scale = Vector2(0.5, 0.5)
+sprite_frames = ExtResource("4_nrjaw")
+animation = &"avanzar"
+frame_progress = 0.8705566
+
+[node name="DeathParticles" type="GPUParticles2D" parent="Car" unique_id=1708702627]
+emitting = false
+amount = 40
+lifetime = 0.6
+one_shot = true
+explosiveness = 0.8
+process_material = SubResource("ParticleProcessMaterial_yumc8")
+
+[node name="FirePaerticles" type="GPUParticles2D" parent="Car" unique_id=1208336500]
+z_index = 2
+position = Vector2(-1, 25)
+scale = Vector2(1.5, 1.5)
+amount = 20
+texture = SubResource("CanvasTexture_yumc8")
+lifetime = 3.17
+explosiveness = 0.4
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_6ytos")
+
+[node name="MoveTimer" type="Timer" parent="." unique_id=857158890]
+wait_time = 0.12
+autostart = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2023046386]
+
+[node name="HUD" type="Control" parent="CanvasLayer" unique_id=1715585278]
+layout_mode = 3
+anchor_left = -0.015625
+anchor_top = -0.0650987
+anchor_right = -0.015625
+anchor_bottom = -0.0046296297
+offset_left = -1271.0
+offset_top = -1331.816
+offset_right = -119.0
+offset_bottom = -723.0
+metadata/_edit_use_anchors_ = true
+
+[node name="TimeLabel" type="Label" parent="CanvasLayer/HUD" unique_id=291251375]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 20.0
+offset_right = 1.0
+offset_bottom = 756.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 48
+text = "10"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="StartLabel" type="Label" parent="CanvasLayer" unique_id=2034005148]
+z_index = 100
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1443.0
+offset_top = -1507.0
+offset_right = -1442.0
+offset_bottom = -1419.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 64
+text = "TEXT"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Tutorial" type="ColorRect" parent="CanvasLayer" unique_id=224879590]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1865.0
+offset_top = -1698.0
+offset_right = -649.0
+offset_bottom = -970.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.16, 0.09, 0.04, 0.8)
+
+[node name="PanelTutorial" type="NinePatchRect" parent="CanvasLayer/Tutorial" unique_id=1166985925]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -392.0
+offset_top = -244.0
+offset_right = 392.0
+offset_bottom = 244.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_ninehud")
+region_rect = Rect2(0, 0, 769, 568)
+patch_margin_left = 110
+patch_margin_top = 100
+patch_margin_right = 110
+patch_margin_bottom = 110
+
+[node name="Titulo" type="Label" parent="CanvasLayer/Tutorial/PanelTutorial" unique_id=72551404]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -240.0
+offset_top = 56.0
+offset_right = 238.0
+offset_bottom = 95.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 5
+theme_override_constants/shadow_outline_size = 3
+theme_override_font_sizes/font_size = 28
+text = "¡EL PISO ES LAVA!"
+horizontal_alignment = 1
+
+[node name="Instrucciones" type="Label" parent="CanvasLayer/Tutorial/PanelTutorial" unique_id=82745026]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -232.0
+offset_top = -9.0
+offset_right = 189.0
+offset_bottom = 66.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "• Muévete con WASD o Flechas.
+• Las casillas con grietas indican dónde aparecerá lava.
+• Si tocas lava o sales del tablero, pierdes."
+
+[node name="Reglas" type="Label" parent="CanvasLayer/Tutorial/PanelTutorial" unique_id=408900631]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -248.0
+offset_top = -96.0
+offset_right = 274.0
+offset_bottom = -64.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Sobrevive durante 30 segundos evitando las casillas de lava."
+
+[node name="Comenzar" type="Label" parent="CanvasLayer/Tutorial/PanelTutorial" unique_id=1121324694]
+layout_mode = 0
+offset_left = 176.0
+offset_top = 392.0
+offset_right = 613.0
+offset_bottom = 415.0
+theme_override_colors/font_color = Color(1, 0.8862745, 0, 1)
+text = "[ Presiona cualquier tecla de movimiento para empezar ]"
+
+[node name="ResumenAtencion" parent="." unique_id=686501913 instance=ExtResource("6_qrgef")]
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=790007625]
+zoom = Vector2(0.8, 0.8)
+
+[node name="GridDebug" type="Node2D" parent="." unique_id=511540467]
+visible = false
+position = Vector2(-380, -350)
+scale = Vector2(1, 1.008)
+script = ExtResource("6_b3uvg")
+
+[node name="LavaSpawnSound" type="AudioStreamPlayer2D" parent="." unique_id=1754876697]
+stream = ExtResource("7_34h8w")
+volume_db = -5.0
+bus = &"SFX"
+
+[node name="FireLoopSound" type="AudioStreamPlayer" parent="." unique_id=720571299]
+stream = ExtResource("8_1hw8h")
+volume_db = -15.0
+bus = &"SFX"
+
+[node name="TurnSound" type="AudioStreamPlayer" parent="." unique_id=1420837916]
+stream = ExtResource("9_76irg")
+bus = &"SFX"
+
+[node name="DeathSound" type="AudioStreamPlayer" parent="." unique_id=915119006]
+stream = ExtResource("10_revgn")
+volume_db = -5.0
+bus = &"SFX"
+
+[node name="CountdownSound" type="AudioStreamPlayer" parent="." unique_id=138248690]
+bus = &"SFX"
+
+[node name="MusicLoop" type="AudioStreamPlayer" parent="." unique_id=1878130425]
+stream = ExtResource("11_tyt8e")
+volume_db = -15.0
+bus = &"Music"
+parameters/looping = true
+
+[node name="CollectSound" type="AudioStreamPlayer2D" parent="." unique_id=29974056]
+stream = ExtResource("14_y48l2")
+volume_db = 13.0
+
+[node name="ClearSound" type="AudioStreamPlayer2D" parent="." unique_id=751178070]
+position = Vector2(-1, 0)
+stream = ExtResource("15_b3uvg")
+volume_db = 10.0
