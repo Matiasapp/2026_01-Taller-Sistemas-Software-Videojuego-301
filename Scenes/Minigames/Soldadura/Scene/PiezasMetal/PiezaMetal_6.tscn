@@ -14,6 +14,7 @@ scale = Vector2(0.44970703, 0.31396487)
 texture = ExtResource("2_qwmew")
 
 [node name="Trayectoria" type="Line2D" parent="." unique_id=1626430727]
+visible = false
 position = Vector2(-20, -160)
 points = PackedVector2Array(444, 395, 461.74533, 401.57236, 471, 405, 485, 416, 504, 419, 514.74243, 425.2664, 528, 433, 539, 446, 557, 449, 562, 468, 573, 482, 586, 491, 594, 507)
 
