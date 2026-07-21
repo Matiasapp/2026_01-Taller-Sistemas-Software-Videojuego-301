@@ -5,7 +5,7 @@
 [ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="3_qqw2n"]
 [ext_resource type="Texture2D" uid="uid://cxqi1lh5nip8y" path="res://Assets/UI/button_style.png" id="4_1luda"]
 [ext_resource type="Texture2D" uid="uid://jd4uohv35la" path="res://Assets/Sprites/selecciongenero.png" id="5_1luda"]
-[ext_resource type="Texture2D" path="res://Assets/Sprites/background_character_selection.png" id="5_bg_select"]
+[ext_resource type="Texture2D" uid="uid://c6qli76hk63va" path="res://Assets/Sprites/background_character_selection.png" id="5_bg_select"]
 [ext_resource type="Texture2D" uid="uid://d04h1vb5xdxep" path="res://Assets/Sprites/seleccionhover.png" id="6_bl2qt"]
 [ext_resource type="Texture2D" uid="uid://dv5b4kj8bk7hi" path="res://Assets/Sprites/seleccionpress.png" id="6_d0ygq"]
 [ext_resource type="AudioStream" uid="uid://b2t66hdqmo381" path="res://Assets/Audio/Menu/click.wav" id="8_r6180"]
@@ -161,13 +161,12 @@ disabled = true
 text = "Comenzar"
 
 [node name="VistaGenero" type="Control" parent="CanvasLayer" unique_id=981830191]
-visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 1154.0
 offset_bottom = 649.0
 
-[node name="Background" type="TextureRect" parent="CanvasLayer/VistaGenero"]
+[node name="Background" type="TextureRect" parent="CanvasLayer/VistaGenero" unique_id=1933291433]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -195,10 +194,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -79.75
-offset_top = -194.5
-offset_right = 136.0
-offset_bottom = -114.5
+offset_left = -99.0
+offset_top = -192.5
+offset_right = 116.75
+offset_bottom = -112.5
 grow_horizontal = 2
 grow_vertical = 2
 text = "Para continuar,
@@ -211,10 +210,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -617.0
-offset_top = -328.25
-offset_right = 617.0
-offset_bottom = 328.25
+offset_left = -642.0
+offset_top = -295.5
+offset_right = 592.0
+offset_bottom = 361.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("5_1luda")
@@ -223,10 +222,10 @@ stretch_mode = 4
 
 [node name="ChicoButton" type="TextureButton" parent="CanvasLayer/VistaGenero" unique_id=2049030381]
 layout_mode = 0
-offset_left = 25.0
-offset_top = 66.0
-offset_right = 545.0
-offset_bottom = 613.0
+offset_left = 389.0
+offset_top = 108.0
+offset_right = 909.0
+offset_bottom = 655.0
 texture_pressed = SubResource("AtlasTexture_01gxs")
 texture_hover = SubResource("AtlasTexture_d0ygq")
 ignore_texture_size = true
@@ -234,10 +233,10 @@ stretch_mode = 4
 
 [node name="ChicaButton" type="TextureButton" parent="CanvasLayer/VistaGenero" unique_id=1278745729]
 layout_mode = 0
-offset_left = 659.0
-offset_top = 70.0
-offset_right = 1136.0
-offset_bottom = 847.0
+offset_left = 60.0
+offset_top = 31.0
+offset_right = 537.0
+offset_bottom = 808.0
 texture_pressed = SubResource("AtlasTexture_mfuer")
 texture_hover = SubResource("AtlasTexture_1luda")
 ignore_texture_size = true
