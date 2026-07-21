@@ -222,10 +222,10 @@ stretch_mode = 4
 
 [node name="ChicoButton" type="TextureButton" parent="CanvasLayer/VistaGenero" unique_id=2049030381]
 layout_mode = 0
-offset_left = 389.0
-offset_top = 108.0
-offset_right = 909.0
-offset_bottom = 655.0
+offset_left = 6.0
+offset_top = 96.0
+offset_right = 526.0
+offset_bottom = 643.0
 texture_pressed = SubResource("AtlasTexture_01gxs")
 texture_hover = SubResource("AtlasTexture_d0ygq")
 ignore_texture_size = true
@@ -233,10 +233,10 @@ stretch_mode = 4
 
 [node name="ChicaButton" type="TextureButton" parent="CanvasLayer/VistaGenero" unique_id=1278745729]
 layout_mode = 0
-offset_left = 60.0
-offset_top = 31.0
-offset_right = 537.0
-offset_bottom = 808.0
+offset_left = 642.0
+offset_top = 102.0
+offset_right = 1119.0
+offset_bottom = 879.0
 texture_pressed = SubResource("AtlasTexture_mfuer")
 texture_hover = SubResource("AtlasTexture_1luda")
 ignore_texture_size = true
