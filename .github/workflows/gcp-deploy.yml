@@ -8,8 +8,8 @@ on:
       - QA
 
 permissions:
-  contents: 'read'
-  id-token: 'write'
+  contents: "read"
+  id-token: "write"
 
 jobs:
   build-and-deploy:
@@ -22,13 +22,13 @@ jobs:
       - name: Configurar Godot Headless
         run: |
           GODOT_VERSION="4.6.2"
-          
+
           echo "Descargando Godot Engine v${GODOT_VERSION}..."
           wget -q https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip
           unzip -q Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip
           sudo mv Godot_v${GODOT_VERSION}-stable_linux.x86_64 /usr/local/bin/godot
           sudo chmod +x /usr/local/bin/godot
-          
+
           echo "Descargando plantillas de exportación..."
           wget -q https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_export_templates.tpz
           unzip -q Godot_v${GODOT_VERSION}-stable_export_templates.tpz
@@ -38,39 +38,41 @@ jobs:
       - name: Exportar juego para HTML5
         run: |
           mkdir -p dist
-          
+
           echo "Importando assets del proyecto..."
-          # Al abrir y cerrar el editor una vez, Godot genera la carpeta .godot/ necesaria
           godot --headless --editor --quit || true
-          
+
           echo "Exportando versión Web..."
           godot --headless --export-release "Web" dist/index.html
-          
+
           echo "Verificando qué archivos se generaron:"
           ls -la dist
 
       - name: Autenticar en Google Cloud vía WIF
         id: auth
-        uses: google-github-actions/auth@v2
+        uses: google-github-actions/auth@v3 # Actualizado a v3
         with:
-          workload_identity_provider: 'projects/706450394717/locations/global/workloadIdentityPools/github-actions-pool/providers/github-provider'
-          service_account: 'github-actions-deploy@project-b6032d06-ae91-486b-836.iam.gserviceaccount.com'
+          workload_identity_provider: "projects/706450394717/locations/global/workloadIdentityPools/github-actions-pool/providers/github-provider"
+          service_account: "github-actions-deploy@project-b6032d06-ae91-486b-836.iam.gserviceaccount.com"
 
       - name: Configurar Google Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2
+        uses: google-github-actions/setup-gcloud@v3 # Actualizado a v3
 
       - name: Desplegar al Bucket
         run: |
-          # Convertimos el nombre de la rama a minúsculas para evitar errores (ej. QA vs qa)
+          # Convertimos el nombre de la rama a minúsculas
           BRANCH_NAME=$(echo "${{ github.ref_name }}" | tr '[:upper:]' '[:lower:]')
-          
+
           if [ "$BRANCH_NAME" == "main" ]; then
             DEST_FINAL="gs://infb6070-301-taller-en-crisis-2026-1"
           elif [ "$BRANCH_NAME" == "qa" ]; then
             DEST_FINAL="gs://infb6070-301-taller-en-crisis-2026-1-qa"
           elif [ "$BRANCH_NAME" == "develop" ] || [ "$BRANCH_NAME" == "dev" ]; then
             DEST_FINAL="gs://infb6070-301-taller-en-crisis-2026-1-dev"
+          else
+            echo "Error: Rama no soportada para despliegue automático (${BRANCH_NAME})"
+            exit 1
           fi
-          
+
           echo "Sincronizando binarios y assets de Godot en el bucket: $DEST_FINAL"
           gcloud storage rsync ./dist $DEST_FINAL --delete-unmatched-destination-objects
