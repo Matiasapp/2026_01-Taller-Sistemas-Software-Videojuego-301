@@ -75,7 +75,10 @@ var actualizando_selector: bool = false
 	interfaz.get_node("%stars_5"),
 ]
 @onready var boton_cerrar: Button = interfaz.get_node("%Button")
+@onready var btn_resenas: Button = interfaz.get_node("%BtnResenas")
 @onready var pantalla_crt: TextureRect = %Pantalla
+# Panel de reseñas: se superpone a la terminal dentro del mismo SubViewport.
+@onready var resenas_panel: Control = $Contenido/Resenas
 
 
 func _ready() -> void:
@@ -86,6 +89,9 @@ func _ready() -> void:
 	next_button.pressed.connect(_on_next_dia_pressed)
 	dia_selector.item_selected.connect(_on_dia_selector_selected)
 	boton_cerrar.pressed.connect(_on_button_pressed)
+	btn_resenas.pressed.connect(_on_resenas_pressed)
+	resenas_panel.cerrado.connect(_cerrar_resenas)
+	resenas_panel.visible = false
 
 	_conectar_sonidos_botones()
 
@@ -96,7 +102,7 @@ func _ready() -> void:
 ## Los botones de la terminal usan la variante suave del sonido de UI (la misma
 ## del enlace de créditos), para que se distingan del resto de los menús.
 func _conectar_sonidos_botones() -> void:
-	for boton in [prev_button, next_button, dia_selector, boton_cerrar]:
+	for boton in [prev_button, next_button, dia_selector, boton_cerrar, btn_resenas]:
 		boton.mouse_entered.connect(_on_boton_pc_hover.bind(boton))
 
 	# Abrir el desplegable de días también suena; elegir un día de la lista suena
@@ -113,8 +119,8 @@ func _on_boton_pc_hover(boton: Button) -> void:
 
 func _on_abrir_pc() -> void:
 	dia_consultado = DATOSGLOBALES.dia_actual
-	# Abrir la terminal cuenta como haber leído las reseñas pendientes.
-	DATOSGLOBALES.marcar_resenas_leidas()
+	# El PC siempre arranca en el tablero, nunca en el panel de reseñas.
+	_cerrar_resenas()
 	_actualizar_estadisticas()
 	_animar_encendido()
 
@@ -202,6 +208,25 @@ func _actualizar_estadisticas() -> void:
 
 	prev_button.disabled = dia_consultado <= 1
 	next_button.disabled = dia_consultado >= max_dia
+
+	# Si el panel está abierto, se repinta para seguir al selector de día, y esas
+	# reseñas pasan a estar leídas: el jugador las está viendo ahora mismo.
+	var resenas: Array = DATOSGLOBALES.get_resenas_dia(dia_consultado)
+	if resenas_panel.visible:
+		resenas_panel.mostrar_resenas(resenas)
+		DATOSGLOBALES.marcar_resenas_leidas(dia_consultado)
+
+	_actualizar_boton_resenas(resenas.size())
+
+
+## El botón muestra las del día visible y, si quedan pendientes en otros días,
+## el total sin leer: si no, el aviso manda al PC y el PC parece vacío.
+func _actualizar_boton_resenas(cantidad_dia: int) -> void:
+	var sin_leer: int = DATOSGLOBALES.contar_resenas_sin_leer()
+	if sin_leer > 0:
+		btn_resenas.text = "RESEÑAS (%d · %d sin leer)" % [cantidad_dia, sin_leer]
+	else:
+		btn_resenas.text = "RESEÑAS (%d)" % cantidad_dia
 
 
 func _actualizar_estrellas(reputacion: int) -> void:
@@ -337,8 +362,30 @@ func _on_dia_selector_selected(index: int) -> void:
 	_actualizar_estadisticas()
 
 
+## Abre el panel de reseñas del día consultado, encima de la terminal.
+func _on_resenas_pressed() -> void:
+	AUDIOMANAGER.play_ui_soft_click()
+
+	var resenas: Array = DATOSGLOBALES.get_resenas_dia(dia_consultado)
+	resenas_panel.mostrar_resenas(resenas)
+	DATOSGLOBALES.marcar_resenas_leidas(dia_consultado)
+	_actualizar_boton_resenas(resenas.size())
+
+	resenas_panel.visible = true
+	# Varios paneles del tablero se salen del marco de la terminal, así que no
+	# basta con taparlo: se oculta mientras las reseñas están en pantalla.
+	interfaz.visible = false
+
+
+func _cerrar_resenas() -> void:
+	resenas_panel.visible = false
+	interfaz.visible = true
+
+
 func _on_button_pressed() -> void:
 	AUDIOMANAGER.play_ui_soft_click()
+	# Si el PC se cierra con el panel abierto, la próxima vez debe abrir en la terminal.
+	_cerrar_resenas()
 	boton_cerrar.disabled = true
 	_animar_apagado()
 

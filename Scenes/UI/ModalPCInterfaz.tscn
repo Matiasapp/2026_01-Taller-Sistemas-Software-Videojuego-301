@@ -88,9 +88,9 @@ text = "Operacion estable"
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = 610.0
-offset_top = 54.0
+offset_top = 15.0
 offset_right = 646.0
-offset_bottom = 88.0
+offset_bottom = 49.0
 theme = ExtResource("1_3eavq")
 text = "<"
 
@@ -98,20 +98,30 @@ text = "<"
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = 650.0
-offset_top = 54.0
+offset_top = 15.0
 offset_right = 770.0
-offset_bottom = 88.0
+offset_bottom = 49.0
 theme = ExtResource("1_3eavq")
 
 [node name="NextButton" type="Button" parent="Panel" unique_id=1905920758]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = 774.0
-offset_top = 54.0
+offset_top = 15.0
 offset_right = 810.0
-offset_bottom = 88.0
+offset_bottom = 49.0
 theme = ExtResource("1_3eavq")
 text = ">"
+
+[node name="BtnResenas" type="Button" parent="Panel"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 610.0
+offset_top = 55.0
+offset_right = 810.0
+offset_bottom = 89.0
+theme = ExtResource("1_3eavq")
+text = "RESEÑAS"
 
 [node name="SPLASH" type="Control" parent="Panel" unique_id=1107219213]
 anchors_preset = 0

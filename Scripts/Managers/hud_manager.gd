@@ -264,9 +264,16 @@ func play_lose_money() -> void:
 	tween.tween_property(money_sound, "pitch_scale", 0.55, 0.35).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 
 
-#<<<<<<< HEAD
-func actualizar_reputacion():
-	var reputacion = clamp(DATOSGLOBALES.reputacion, 0, 100)
+## Repinta las estrellas de reputación.
+## Se conecta a la señal reputacion_cambiado, que envía el valor nuevo, y también
+## se llama sin argumentos al construir el HUD; por eso el parámetro es opcional.
+## Sin él, la conexión de la línea 41 fallaba en cada cambio de reputación y las
+## estrellas solo se actualizaban al recargar la escena.
+func actualizar_reputacion(nueva_reputacion: int = -1):
+	var reputacion = clamp(
+		nueva_reputacion if nueva_reputacion >= 0 else DATOSGLOBALES.reputacion,
+		0, 100
+	)
 	
 	# si la reputacion es 15 o menos
 	if reputacion <= 15:

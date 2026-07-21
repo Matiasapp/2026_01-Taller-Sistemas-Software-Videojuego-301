@@ -712,24 +712,47 @@ func actualizar_mensaje_puerta():
 ## aviso de cambios de reputación (que dura ~2,2 s) porque el HUD solo muestra un
 ## aviso a la vez: el segundo pisaría al primero.
 func _avisar_resenas_pendientes() -> void:
-	if hud == null or DATOSGLOBALES.resenas_sin_leer <= 0:
+	if hud == null or DATOSGLOBALES.contar_resenas_sin_leer() <= 0:
 		return
 
 	await get_tree().create_timer(2.5).timeout
 
-	if not is_inside_tree() or hud == null or DATOSGLOBALES.resenas_sin_leer <= 0:
+	if not is_inside_tree() or hud == null or DATOSGLOBALES.contar_resenas_sin_leer() <= 0:
 		return
 
-	var cantidad: int = DATOSGLOBALES.resenas_sin_leer
-	hud.mostrar_aviso(
-		"💬 %s sin leer. Revisa el [color=yellow]PC del taller[/color]."
-		% ("Tienes 1 reseña nueva" if cantidad == 1 else "Tienes %d reseñas nuevas" % cantidad)
-	)
+	hud.mostrar_aviso(_texto_aviso_resenas())
+
+
+## El aviso anticipa el tono: no es lo mismo que te esperen elogios que quejas.
+func _texto_aviso_resenas() -> String:
+	var positivas: int = DATOSGLOBALES.contar_resenas_sin_leer(true)
+	var negativas: int = DATOSGLOBALES.contar_resenas_sin_leer() - positivas
+	var pc_txt := "Revisa el [color=yellow]PC del taller[/color]."
+
+	if negativas <= 0:
+		return "⭐ [color=#3fb950]%s[/color] %s" % [
+			"Un cliente dejó una buena reseña." if positivas == 1
+			else "%d clientes dejaron buenas reseñas." % positivas,
+			pc_txt
+		]
+
+	if positivas <= 0:
+		return "💬 [color=#f85149]%s[/color] %s" % [
+			"Un cliente dejó una mala reseña." if negativas == 1
+			else "%d clientes dejaron malas reseñas." % negativas,
+			pc_txt
+		]
+
+	return "💬 Reseñas nuevas: [color=#3fb950]%d buena%s[/color] y [color=#f85149]%d mala%s[/color]. %s" % [
+		positivas, "" if positivas == 1 else "s",
+		negativas, "" if negativas == 1 else "s",
+		pc_txt
+	]
 
 
 ## El cartel del PC avisa si hay reseñas esperando.
 func actualizar_mensaje_pc() -> void:
-	var pendientes: int = DATOSGLOBALES.resenas_sin_leer
+	var pendientes: int = DATOSGLOBALES.contar_resenas_sin_leer()
 	if pendientes > 0:
 		mensaje_interactuar_pc.text = "Presiona [E] para usar el PC (%s)" % (
 			"1 reseña nueva" if pendientes == 1 else "%d reseñas nuevas" % pendientes
