@@ -161,7 +161,7 @@ func finalizar_evento() -> void:
 	var destino := DATOSGLOBALES.obtener_destino_post_escena(
 		"res://Scenes/Gameplay/GameScreen.tscn"
 	)
-	get_tree().change_scene_to_file(destino)
+	CARGADOR.cambiar_escena(destino)
 
 
 func _on_comenzar_pressed() -> void:

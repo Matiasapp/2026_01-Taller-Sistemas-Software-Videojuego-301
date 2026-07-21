@@ -148,5 +148,6 @@ stream = ExtResource("4_kcvss")
 max_distance = 4096.0
 bus = &"SFX"
 
+[connection signal="mouse_entered" from="Panel/Continuar" to="." method="_on_continuar_mouse_entered"]
 [connection signal="pressed" from="Panel/Continuar" to="." method="_on_continuar_pressed"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

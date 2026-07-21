@@ -125,7 +125,7 @@ func terminar_juego():
 	GLOBALSOLDADURA.piezas_completadas = piezas_completadas
 	GLOBALSOLDADURA.dinero = piezas_completadas * dinero_por_pieza
 
-	get_tree().change_scene_to_file(
+	CARGADOR.cambiar_escena_sin_pantalla(
 		"res://Scenes/Minigames/Soldadura/Scene/Resultados.tscn"
 	)
 	

@@ -41,6 +41,17 @@ func cerrar_taller() -> void:
 	taller_abierto = false
 	estado_taller_cambiado.emit(false)
 
+## Pone a cero el conteo del día al terminar la jornada, para que la mañana
+## siguiente no arrastre los clientes de ayer (el HUD los seguía mostrando
+## hasta que el jugador volvía a abrir el taller).
+##
+## Va aparte de cerrar_taller() a propósito: hay que llamarla DESPUÉS de
+## DATOSGLOBALES.guardar_dia(), que lee clientes_atendidos para el historial.
+func reiniciar_conteo_dia() -> void:
+	clientes_atendidos = 0
+	clientes_llegados = 0
+	clientes_atendidos_cambiado.emit(clientes_atendidos, MAX_CLIENTES_DIA)
+
 ## Reinicia el estado del taller/clientes (nueva partida o carga).
 func reiniciar() -> void:
 	taller_abierto = false

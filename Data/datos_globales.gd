@@ -746,7 +746,12 @@ func _ejecutar_evento_final_pendiente() -> void:
 	if not destino.is_empty():
 		consolidar_atencion_pendiente()
 		PARTIDA.guardar()
-		get_tree().change_scene_to_file(destino)
+		# El cambio es asincrono: la escena anterior sigue viva y jugandose unos
+		# frames mas. Mantenemos el guardia puesto hasta llegar al final (lo
+		# libera reiniciar() al empezar otra partida) para que el juego no
+		# vuelva a programar un final mientras la carga esta en curso.
+		if CARGADOR.cambiar_escena(destino):
+			return
 	_cambiando_a_evento_final = false
 
 # Ingreso y Gastos realizados

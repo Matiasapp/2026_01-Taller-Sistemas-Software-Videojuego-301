@@ -22,11 +22,11 @@ func _ready() -> void:
 
 func _on_color_rect_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")
+		CARGADOR.cambiar_escena("res://Scenes/Gameplay/GameScreen.tscn")
 	
 	
 
 
 func _on_continuar_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		get_tree().change_scene_to_file("res://Scenes/Gameplay/GameScreen.tscn")
+		CARGADOR.cambiar_escena("res://Scenes/Gameplay/GameScreen.tscn")

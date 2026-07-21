@@ -295,7 +295,7 @@ func _on_btn_continuar_pressed():
 		"res://Scenes/Gameplay/GameScreen.tscn"
 	)
 
-	get_tree().change_scene_to_file(destino)
+	CARGADOR.cambiar_escena(destino)
 
 
 func animar_label_dinero(color: Color):
