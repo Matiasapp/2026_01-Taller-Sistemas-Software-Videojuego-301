@@ -2,6 +2,11 @@ extends Node2D
 
 const PERDIDA_MINIMA := 30
 const PERDIDA_MAXIMA := 40
+## La protesta castiga fuerte, pero no debe terminar la partida por sí sola: el
+## texto cierra con "El taller debe continuar". Por eso el golpe nunca deja la
+## reputación por debajo de este piso, que si no caería a 0 y encadenaría
+## directo con el final malo por reputación.
+const REPUTACION_MINIMA_TRAS_PROTESTA := 10
 
 @onready var label: RichTextLabel = $CanvasLayer/VistaTextoIntroduccion/Panel/RichTextLabel
 @onready var vista_evento: Control = $CanvasLayer/VistaTextoIntroduccion
@@ -31,7 +36,7 @@ var reputacion_perdida := 0
 
 func _ready() -> void:
 	randomize()
-	_aplicar_consecuencias_robo()
+	_aplicar_consecuencias_protesta()
 
 	if bg_animation:
 		bg_animation.play("background_move")
@@ -66,12 +71,16 @@ func configurar_evento() -> void:
 	]
 	assert(mensajes.size() == imagenes.size(), "Cada texto de la protesta necesita una imagen.")
 
-func _aplicar_consecuencias_robo() -> void:
-	reputacion_perdida = randi_range(PERDIDA_MINIMA, PERDIDA_MAXIMA)
-	DATOSGLOBALES.restar_reputacion(
-		reputacion_perdida,
-		"Protesta por piezas defectuosas"
-	)
+func _aplicar_consecuencias_protesta() -> void:
+	var perdida := randi_range(PERDIDA_MINIMA, PERDIDA_MAXIMA)
+	var margen := maxi(0, DATOSGLOBALES.reputacion - REPUTACION_MINIMA_TRAS_PROTESTA)
+	reputacion_perdida = mini(perdida, margen)
+
+	if reputacion_perdida > 0:
+		DATOSGLOBALES.restar_reputacion(
+			reputacion_perdida,
+			"Protesta por piezas defectuosas"
+		)
 	PARTIDA.guardar()
 
 

@@ -41,6 +41,9 @@ var minijuegos := [
 
 # Pantalla de atención al cliente (diálogo + diagnóstico + minijuego según la falla).
 const ATENCION_CLIENTE_SCENE := "res://Scenes/Gameplay/AtencionCliente.tscn"
+# Protesta de clientes por piezas defectuosas. Se muestra al abrir la cortina,
+# porque el evento está escrito desde ese momento ("Abres la cortina del taller...").
+const PROTESTA_SCENE := "res://Scenes/Events/EventoProtesta/EventoProtesta.tscn"
 # Evento que se muestra al volver del minijuego si el cliente era un estafador.
 const EVENTO_ESTAFA_SCENE := "res://Scenes/Events/EventoEstafa.tscn"
 
@@ -348,6 +351,12 @@ func abrir_taller() -> void:
 	# Los clientes no se atienden enseguida: el primero llega tras una espera.
 	programar_llegada_cliente()
 
+	# Si se acumularon suficientes piezas dudosas, los clientes afectados están
+	# esperando afuera. Se comprueba al final para dejar el taller ya abierto:
+	# al volver del evento la jornada continúa con normalidad.
+	if DATOSGLOBALES.condicion_protesta():
+		await transition_to_protesta()
+
 ## Las partículas de polvo solo se ven con el taller abierto.
 ## Mantenemos la emisión siempre encendida (son 35 partículas, cuestan nada) y solo
 ## cambiamos la visibilidad: encender la emisión de golpe obligaba a simular de una
@@ -572,10 +581,9 @@ func cerrar_dia() -> void:
 		CLIENTMANAGER.reiniciar_conteo_dia()
 
 	# ¿Habrá robo esta noche? Se decide ahora, pero el robo se muestra DESPUÉS del cierre.
+	# La protesta ya no compite por esta ranura: ocurre de mañana, al abrir la cortina.
 	if randf() <= 0.30:
 		DATOSGLOBALES.siguiente_evento_dia = "robo"
-	elif DATOSGLOBALES.condicion_protesta():
-		DATOSGLOBALES.siguiente_evento_dia = "protesta"
 	else:
 		DATOSGLOBALES.siguiente_evento_dia = "transicion"
 
@@ -754,6 +762,22 @@ func fade_to_black(duration := 0.6) -> void:
 
 	await tween.finished		
 	
+## Salida a la protesta de clientes, justo después de abrir la cortina. El taller
+## queda abierto: al terminar el evento se vuelve al taller y la jornada sigue.
+func transition_to_protesta() -> void:
+	puede_interactuar = false
+	_bloquear_movimiento_jugador()
+
+	if transition_whoosh:
+		transition_whoosh.volume_db = -4.0
+		transition_whoosh.pitch_scale = 1.0
+		transition_whoosh.play()
+
+	await fade_to_black(0.45)
+
+	CARGADOR.cambiar_escena(PROTESTA_SCENE)
+
+
 func transition_to_atencion_cliente() -> void:
 	puede_interactuar = false
 
