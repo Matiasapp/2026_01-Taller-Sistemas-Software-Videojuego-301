@@ -1,7 +1,7 @@
 extends Node2D
 
-const PERDIDA_MINIMA := 15
-const PERDIDA_MAXIMA := 30
+const PERDIDA_MINIMA := 30
+const PERDIDA_MAXIMA := 40
 
 @onready var label: RichTextLabel = $CanvasLayer/VistaTextoIntroduccion/Panel/RichTextLabel
 @onready var vista_evento: Control = $CanvasLayer/VistaTextoIntroduccion
