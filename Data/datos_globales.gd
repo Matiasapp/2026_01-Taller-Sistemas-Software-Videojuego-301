@@ -446,6 +446,13 @@ func _elegir_sin_repetir(opciones: Array, resenas: Array, campo: String) -> Stri
 	return str(disponibles.pick_random())
 
 
+## True mientras se juega un minijuego lanzado como easter egg desde el menú.
+## En ese modo el minijuego no toca el estado de la partida (ni dinero, ni
+## reputación, ni el resumen de atención) y al terminar vuelve al menú.
+## No se guarda: es transitorio, solo dura lo que dura la partida suelta.
+var easter_egg_activo: bool = false
+
+
 ## Reseñas publicadas en un día concreto (array de {usuario, comentario}).
 func get_resenas_dia(dia: int) -> Array:
 	return get_estadistica_dia(dia).get("resenas", [])
@@ -554,6 +561,26 @@ func reportar_rendimiento_minijuego(
 	)
 	resumen_atencion["rep_desempeno"] = rep_desempeno
 	return rep_desempeno
+
+## Prepara el resumen para una partida suelta (easter egg): deja a la vista el
+## marcador del minijuego y nada más. A diferencia de reportar_rendimiento_minijuego(),
+## no mueve reputación ni escribe eventos en la bitácora del día, así que jugar
+## fuera del taller no deja rastro en la partida.
+func reportar_marcador_suelto(
+	rendimiento: float,
+	recompensa: int,
+	nivel_desempeno: int = DESEMPENO_ACEPTABLE
+) -> void:
+	iniciar_resumen_atencion()
+	resumen_atencion["rendimiento"] = clampf(rendimiento, 0.0, 1.0)
+	resumen_atencion["recompensa_minijuego"] = recompensa
+	resumen_atencion["nivel_desempeno"] = clampi(
+		nivel_desempeno,
+		DESEMPENO_FALLIDO,
+		DESEMPENO_EXITOSO
+	)
+	resumen_atencion["resultado_minijuego_registrado"] = true
+
 
 ## Devuelve el desglose completo de la atención para mostrarlo en la pantalla de
 ## resultado del minijuego: cuánto dinero varió (recompensa, costos, balance neto) y

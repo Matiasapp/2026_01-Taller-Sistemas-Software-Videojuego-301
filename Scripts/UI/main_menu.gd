@@ -40,7 +40,8 @@ const EQUIPO: Array[Dictionary] = [
 	{
 		"nombre": "Bruno Bernardo Roque Mendoza",
 		"rol": "Música y diseño de audio · Desarrollador",
-		"foto": "res://Assets/Creditos/Equipo/BrunoRoque.png"
+		"foto": "res://Assets/Creditos/Equipo/BrunoRoque.png",
+		"easter_egg": true
 	},
 	{"nombre": "Diego Constanzo", "rol": "Desarrollador", "foto": ""},
 	{"nombre": "Cristopher González", "rol": "Desarrollador", "foto": ""},
@@ -48,6 +49,10 @@ const EQUIPO: Array[Dictionary] = [
 ]
 
 const FOTO_LADO := 48
+
+## Easter egg: doble clic en la foto marcada abre un minijuego que quedó fuera
+## del taller. No lleva ninguna pista visual a propósito.
+const EASTER_EGG_SCENE := "res://Scenes/Minigames/TheFloorIsLava/the_floor_is_lava.tscn"
 ## Los créditos se maquetan con posiciones absolutas: todo lo que empiece a esta
 ## altura o más abajo se corre hacia abajo al insertar la lista del equipo.
 const ANCLA_EQUIPO_Y := 535.0
@@ -240,7 +245,11 @@ func _crear_fila_integrante(datos: Dictionary) -> HBoxContainer:
 	fila.custom_minimum_size = Vector2(0, FOTO_LADO)
 	fila.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
-	fila.add_child(_crear_marco_foto(str(datos.get("foto", ""))))
+	var marco := _crear_marco_foto(str(datos.get("foto", "")))
+	if bool(datos.get("easter_egg", false)):
+		marco.mouse_filter = Control.MOUSE_FILTER_STOP
+		marco.gui_input.connect(_on_foto_easter_egg_input)
+	fila.add_child(marco)
 
 	var textos := VBoxContainer.new()
 	textos.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -267,6 +276,31 @@ func _crear_fila_integrante(datos: Dictionary) -> HBoxContainer:
 
 	fila.add_child(textos)
 	return fila
+
+
+func _on_foto_easter_egg_input(event: InputEvent) -> void:
+	if not event is InputEventMouseButton:
+		return
+
+	var clic := event as InputEventMouseButton
+	if clic.button_index == MOUSE_BUTTON_LEFT and clic.double_click:
+		_lanzar_easter_egg()
+
+
+## Abre el minijuego suelto, sin tocar la partida: al terminar vuelve al menú.
+func _lanzar_easter_egg() -> void:
+	if CARGADOR.esta_cargando():
+		return
+
+	play_click()
+	DATOSGLOBALES.easter_egg_activo = true
+	_cerrar_creditos()
+
+	# GlobalMusic es autoload: si no se apaga acá, la música del menú se
+	# superpone con la del minijuego. Al volver, el _ready del menú la reanuda.
+	await GlobalMusic.fade_out_and_stop(0.35)
+
+	CARGADOR.cambiar_escena(EASTER_EGG_SCENE)
 
 
 func _crear_marco_foto(ruta: String) -> Panel:
