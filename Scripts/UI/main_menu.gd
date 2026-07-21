@@ -5,6 +5,7 @@ extends Node2D
 @onready var creditos_link: Button = $CanvasLayer/CreditosLink
 @onready var creditos_resplandor: Label = $CanvasLayer/CreditosResplandor
 @onready var creditos_overlay: Control = $CanvasLayer/CreditosOverlay
+@onready var creditos_fondo: ColorRect = $CanvasLayer/CreditosOverlay/Fondo
 @onready var creditos_panel: NinePatchRect = $CanvasLayer/CreditosOverlay/CreditosPanel
 @onready var creditos_scroll: ScrollContainer = $CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo
 @onready var creditos_barra: VScrollBar = creditos_scroll.get_v_scroll_bar()
@@ -171,8 +172,10 @@ func _on_button_options_pressed() -> void:
 # CRÉDITOS
 # =========================
 
+## El enlace de créditos usa la variante suave del sonido de UI, para
+## diferenciarse de los botones principales del menú.
 func _on_creditos_link_pressed() -> void:
-	play_click()
+	AUDIOMANAGER.play_ui_soft_click()
 	_animar_resplandor_creditos()
 	_abrir_creditos()
 
@@ -182,6 +185,9 @@ func _on_cerrar_creditos_pressed() -> void:
 	_cerrar_creditos()
 
 
+## Apertura: el panel crece desde el centro con un pequeño rebote mientras el fondo
+## aparece con un fundido. Es la misma animación que usa el menú de Opciones
+## (ver _animar_entrada en opciones.gd); si se ajusta una, ajustar la otra.
 func _abrir_creditos() -> void:
 	if creditos_overlay.visible:
 		return
@@ -189,8 +195,11 @@ func _abrir_creditos() -> void:
 	creditos_link.release_focus()
 	creditos_cerrar.disabled = false
 	creditos_overlay.visible = true
-	creditos_overlay.modulate.a = 0.0
-	creditos_panel.scale = Vector2(0.96, 0.96)
+	# El fundido lo hace el fondo, no el overlay completo: así el panel solo escala.
+	creditos_overlay.modulate.a = 1.0
+	creditos_fondo.modulate.a = 0.0
+	creditos_panel.pivot_offset = creditos_panel.size / 2.0
+	creditos_panel.scale = Vector2.ZERO
 	creditos_scroll_actualizando = true
 	creditos_scroll.scroll_vertical = 0
 	creditos_scroll_actualizando = false
@@ -200,12 +209,14 @@ func _abrir_creditos() -> void:
 	creditos_scroll_arrastrando = false
 
 	var tween := create_tween().set_parallel(true)
-	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	tween.tween_property(creditos_overlay, "modulate:a", 1.0, 0.18)
-	tween.tween_property(creditos_panel, "scale", Vector2.ONE, 0.22)
+	tween.tween_property(creditos_fondo, "modulate:a", 1.0, 0.25)
+	var t := tween.tween_property(creditos_panel, "scale", Vector2.ONE, 0.32)
+	t.set_trans(Tween.TRANS_BACK)
+	t.set_ease(Tween.EASE_OUT)
 	creditos_cerrar.grab_focus()
 
 
+## Cierre: el panel se encoge hacia el centro mientras el fondo se desvanece.
 func _cerrar_creditos() -> void:
 	if not creditos_overlay.visible:
 		return
@@ -213,13 +224,18 @@ func _cerrar_creditos() -> void:
 	creditos_scroll_activo = false
 	creditos_scroll_arrastrando = false
 
+	creditos_panel.pivot_offset = creditos_panel.size / 2.0
+
 	var tween := create_tween().set_parallel(true)
-	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
-	tween.tween_property(creditos_overlay, "modulate:a", 0.0, 0.14)
-	tween.tween_property(creditos_panel, "scale", Vector2(0.97, 0.97), 0.14)
+	tween.tween_property(creditos_fondo, "modulate:a", 0.0, 0.2)
+	var t := tween.tween_property(creditos_panel, "scale", Vector2.ZERO, 0.22)
+	t.set_trans(Tween.TRANS_BACK)
+	t.set_ease(Tween.EASE_IN)
 	await tween.finished
+
 	creditos_overlay.visible = false
 	creditos_panel.scale = Vector2.ONE
+	creditos_fondo.modulate.a = 1.0
 	creditos_cerrar.release_focus()
 	creditos_link.release_focus()
 
@@ -322,7 +338,7 @@ func _on_button_exit_mouse_entered() -> void:
 
 
 func _on_creditos_link_mouse_entered() -> void:
-	play_hover()
+	AUDIOMANAGER.play_ui_soft_hover()
 
 
 func _on_creditos_volver_mouse_entered() -> void:

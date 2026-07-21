@@ -87,8 +87,28 @@ func _ready() -> void:
 	dia_selector.item_selected.connect(_on_dia_selector_selected)
 	boton_cerrar.pressed.connect(_on_button_pressed)
 
+	_conectar_sonidos_botones()
+
 	if GLOBALSIGNALS and not GLOBALSIGNALS.abrir_pc.is_connected(_on_abrir_pc):
 		GLOBALSIGNALS.abrir_pc.connect(_on_abrir_pc)
+
+
+## Los botones de la terminal usan la variante suave del sonido de UI (la misma
+## del enlace de créditos), para que se distingan del resto de los menús.
+func _conectar_sonidos_botones() -> void:
+	for boton in [prev_button, next_button, dia_selector, boton_cerrar]:
+		boton.mouse_entered.connect(_on_boton_pc_hover.bind(boton))
+
+	# Abrir el desplegable de días también suena; elegir un día de la lista suena
+	# aparte, en _on_dia_selector_selected.
+	dia_selector.pressed.connect(AUDIOMANAGER.play_ui_soft_click)
+
+
+## Un botón deshabilitado (p. ej. "anterior" en el día 1) igual recibe el hover
+## del mouse, pero no debe sonar porque no se puede usar.
+func _on_boton_pc_hover(boton: Button) -> void:
+	if not boton.disabled:
+		AUDIOMANAGER.play_ui_soft_hover()
 
 
 func _on_abrir_pc() -> void:
@@ -295,11 +315,13 @@ func _actualizar_selector_dias(max_dia: int) -> void:
 
 
 func _on_prev_dia_pressed() -> void:
+	AUDIOMANAGER.play_ui_soft_click()
 	dia_consultado -= 1
 	_actualizar_estadisticas()
 
 
 func _on_next_dia_pressed() -> void:
+	AUDIOMANAGER.play_ui_soft_click()
 	dia_consultado += 1
 	_actualizar_estadisticas()
 
@@ -308,11 +330,13 @@ func _on_dia_selector_selected(index: int) -> void:
 	if actualizando_selector:
 		return
 
+	AUDIOMANAGER.play_ui_soft_click()
 	dia_consultado = dia_selector.get_item_id(index)
 	_actualizar_estadisticas()
 
 
 func _on_button_pressed() -> void:
+	AUDIOMANAGER.play_ui_soft_click()
 	boton_cerrar.disabled = true
 	_animar_apagado()
 
