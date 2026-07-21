@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://buxg2odqrvsi4"
-path="res://.godot/imported/bg_clientes_atender.png-752cfc8b776fecaf473cae70a45a0abd.ctex"
+uid="uid://dvwxsku0j6ss1"
+path="res://.godot/imported/FernandaDurandeau.jpeg-043bedf00d11a1dc83510f26c1c81298.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/clientes_atendidos/bg_clientes_atender.png"
-dest_files=["res://.godot/imported/bg_clientes_atender.png-752cfc8b776fecaf473cae70a45a0abd.ctex"]
+source_file="res://Assets/Creditos/Equipo/FernandaDurandeau.jpeg"
+dest_files=["res://.godot/imported/FernandaDurandeau.jpeg-043bedf00d11a1dc83510f26c1c81298.ctex"]
 
 [params]
 
@@ -23,7 +23,7 @@ compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=false
+mipmaps/generate=true
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
@@ -36,5 +36,5 @@ process/premult_alpha=false
 process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
-process/size_limit=1920
+process/size_limit=160
 detect_3d/compress_to=1

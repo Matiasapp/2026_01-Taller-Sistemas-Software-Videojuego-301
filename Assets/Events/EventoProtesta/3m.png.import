@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://caycqyc5flrg5"
-path="res://.godot/imported/protesta_taller_rd.png-3a053d47c7e8bae474a84bf95718cba4.ctex"
+uid="uid://sfgldwsbpkc1"
+path="res://.godot/imported/3m.png-11f45b70e479cba05b9ffedeaa3d145b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Events/EventoProtesta/protesta_taller_rd.png"
-dest_files=["res://.godot/imported/protesta_taller_rd.png-3a053d47c7e8bae474a84bf95718cba4.ctex"]
+source_file="res://Assets/Events/EventoProtesta/3m.png"
+dest_files=["res://.godot/imported/3m.png-11f45b70e479cba05b9ffedeaa3d145b.ctex"]
 
 [params]
 

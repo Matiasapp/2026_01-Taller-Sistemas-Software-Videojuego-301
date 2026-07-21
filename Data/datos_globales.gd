@@ -207,6 +207,11 @@ func registrar_calidad_pieza(tipo: String, dia: int = -1) -> int:
 			delta = REP_PIEZA_BUENA
 			mensaje = "Pieza buena instalada: reputacion +%d." % delta
 			motivo = "Pieza buena instalada"
+			# Reparacion excelente: no basta con pagar la pieza cara, hay que haber
+			# acertado la falla. Solo entonces el cliente se toma el trabajo de
+			# escribir algo bueno.
+			if bool(resumen_atencion.get("diagnostico_correcto", false)):
+				registrar_resena_positiva(dia)
 		"barata":
 			delta = REP_PIEZA_BARATA
 			mensaje = "Pieza barata instalada: reputacion +%d." % delta
@@ -216,6 +221,8 @@ func registrar_calidad_pieza(tipo: String, dia: int = -1) -> int:
 				delta = -REP_PIEZA_DUDOSA_PENALIZACION
 				mensaje = "La pieza dudosa fallo: reputacion -%d." % absi(delta)
 				motivo = "Pieza dudosa defectuosa"
+				# El cliente afectado publica una reseña; queda esperando en el PC.
+				registrar_resena_negativa(dia)
 			else:
 				mensaje = "La pieza dudosa no genero reclamos esta vez: reputacion sin cambios."
 		_:
@@ -296,6 +303,189 @@ func _agregar_evento_stats(stats: Dictionary, texto: String) -> void:
 	eventos.append(texto)
 	stats["eventos"] = eventos
 
+# =========================
+# RESEÑAS DE CLIENTES
+# =========================
+# Los clientes dejan reseñas publicas segun como les fue:
+#   - Negativa: la pieza dudosa que les instalaron fallo.
+#   - Positiva: reparacion excelente, o sea diagnostico correcto Y pieza buena.
+# Ninguna de las dos toca la reputacion: eso ya lo hizo el evento que las provoca.
+# La reseña es la constancia visible, y se lee en el panel RESEÑAS del PC.
+# Cada atencion genera como maximo una reseña, asi que un dia nunca pasa de 5.
+
+const RESENA_USUARIOS: Array[String] = [
+	"Miguel83",
+	"Juancarlos@lospaseo",
+	"CaraTrolll",
+	"Juaquin",
+	"Miguelin2010",
+	"IsidoraLabadora",
+	"Destructor de Familias"
+]
+
+const RESENA_COMENTARIOS_NEGATIVOS: Array[String] = [
+	"La atencion de este lugar a sido terrible",
+	"Fui por un cambio de aceite y terminaron revisando la suspensión.",
+	"Me dijeron que necesitaba cambiar dos motores. Mi auto tiene uno.",
+	"Las piezas que ocuparon parecen de jugete",
+	"Es una estafa, cobran por hacer nada",
+	"Demasiado caro. Además, la persona que atiende no inspira ninguna confianza.",
+	"Volvería para el Día de Muertos. Con esos precios, me muero antes de pagar."
+]
+
+const RESENA_COMENTARIOS_POSITIVOS: Array[String] = [
+	"Me explicaron la falla con paciencia y cobraron lo justo.",
+	"Llegué con el auto muerto y salí manejando. Impecable.",
+	"Me mostraron la pieza vieja antes de cambiarla. Eso es confianza.",
+	"Rápido, honesto y bien hecho. Ojalá todos los talleres fueran así.",
+	"Cobraron exactamente lo que dijeron que iban a cobrar.",
+	"Quedó mejor que cuando lo compré. Vuelvo sin pensarlo.",
+	"Le acertaron a la falla al primer intento. Se nota el oficio."
+]
+
+# Cuando se sabe qué falla se reparó, el cliente menciona el trabajo concreto.
+# Si ya se usaron todos los de su tipo en el día, se cae a los genéricos de arriba.
+const RESENA_POSITIVAS_POR_FALLA: Dictionary = {
+	"pinchazo": [
+		"Me cambiaron el neumático en minutos y quedó perfecto.",
+		"Pinchazo resuelto sin drama y sin cobrarme de más.",
+		"La rueda quedó como nueva, ni se nota que estuvo pinchada."
+	],
+	"soldadura": [
+		"La soldadura quedó prolija, no se ve dónde estaba partido.",
+		"Soldaron la pieza y dejó de sonar como tractor. Excelente.",
+		"Trabajo de soldadura impecable, se nota el oficio."
+	],
+	"gasolina": [
+		"Encontraron la fuga de combustible que otros tres talleres no vieron.",
+		"Me arreglaron el tema de la bencina y encima me explicaron por qué pasaba.",
+		"El auto dejó de oler a combustible. Por fin alguien lo hizo bien."
+	],
+	"circuito": [
+		"Encontraron el corto eléctrico en media hora. Increíble.",
+		"El sistema eléctrico quedó funcionando como el primer día.",
+		"Arreglaron el circuito sin cambiar medio auto. Se agradece."
+	]
+}
+
+const RESENA_POSITIVA := "positiva"
+const RESENA_NEGATIVA := "negativa"
+
+# "Sin leer" se guarda en cada reseña (campo 'leida'), no como contador aparte: el
+# panel del PC se navega por día, así que abrir la terminal no significa haber
+# leído las de todos los días. Los totales se derivan de ahí.
+
+
+## Deja una reseña negativa (pieza dudosa que falló).
+func registrar_resena_negativa(dia: int = -1) -> void:
+	_registrar_resena(RESENA_NEGATIVA, RESENA_COMENTARIOS_NEGATIVOS, "#f85149", dia)
+
+
+## Deja una reseña positiva (reparación excelente). Si se sabe qué falla se reparó,
+## el cliente menciona ese trabajo en concreto.
+func registrar_resena_positiva(dia: int = -1) -> void:
+	if dia < 0:
+		dia = dia_actual
+
+	var falla: String = str(resumen_atencion.get("falla", ""))
+	var especificos: Array = RESENA_POSITIVAS_POR_FALLA.get(falla, [])
+	var resenas: Array = get_estadistica_dia(dia).get("resenas", [])
+
+	# Solo se usan los específicos si queda alguno sin repetir ese día.
+	var usados: Array = []
+	for resena in resenas:
+		usados.append(str(resena.get("comentario", "")))
+	var libres: Array = especificos.filter(func(c): return not usados.has(c))
+
+	var pool: Array = libres if not libres.is_empty() else RESENA_COMENTARIOS_POSITIVOS
+	_registrar_resena(RESENA_POSITIVA, pool, "#3fb950", dia)
+
+
+## Guarda qué falla se está reparando, para que la reseña pueda mencionarla.
+func registrar_falla_atencion(falla: String) -> void:
+	resumen_atencion["falla"] = falla
+
+
+## Guarda la reseña estructurada (usuario, comentario y tono) para poder pintarla
+## en el panel del PC, y además como línea de color en la bitácora.
+func _registrar_resena(tipo: String, comentarios: Array, color: String, dia: int) -> void:
+	if dia < 0:
+		dia = dia_actual
+
+	var stats: Dictionary = asegurar_estadistica_dia(dia)
+	var resenas: Array = stats.get("resenas", [])
+
+	# Sin repetir dentro del mismo día: dos clientes distintos opinando con las
+	# mismas palabras exactas se nota mucho en el panel del PC.
+	var usuario: String = _elegir_sin_repetir(RESENA_USUARIOS, resenas, "usuario")
+	var comentario: String = _elegir_sin_repetir(comentarios, resenas, "comentario")
+
+	resenas.append({
+		"usuario": usuario, "comentario": comentario, "tipo": tipo, "leida": false
+	})
+	stats["resenas"] = resenas
+	estadisticas_dias[dia] = stats
+
+	registrar_evento_dia(
+		'[color=%s]Resena de %s:[/color] "%s"' % [color, usuario, comentario],
+		dia
+	)
+
+
+## Elige un valor de 'opciones' que no esté ya usado en ese campo de 'resenas'.
+## Si ya se agotaron todas, vuelve a permitir repetidos.
+func _elegir_sin_repetir(opciones: Array, resenas: Array, campo: String) -> String:
+	var usados: Array = []
+	for resena in resenas:
+		usados.append(str(resena.get(campo, "")))
+
+	var disponibles: Array = opciones.filter(func(o): return not usados.has(o))
+	if disponibles.is_empty():
+		disponibles = opciones
+
+	return str(disponibles.pick_random())
+
+
+## True mientras se juega un minijuego lanzado como easter egg desde el menú.
+## En ese modo el minijuego no toca el estado de la partida (ni dinero, ni
+## reputación, ni el resumen de atención) y al terminar vuelve al menú.
+## No se guarda: es transitorio, solo dura lo que dura la partida suelta.
+var easter_egg_activo: bool = false
+
+
+## Reseñas publicadas en un día concreto (array de {usuario, comentario}).
+func get_resenas_dia(dia: int) -> Array:
+	return get_estadistica_dia(dia).get("resenas", [])
+
+
+## El jugador miró el panel de reseñas de ese día: solo esas dejan de estar pendientes.
+func marcar_resenas_leidas(dia: int) -> void:
+	var stats: Dictionary = estadisticas_dias.get(dia, {})
+	var resenas: Array = stats.get("resenas", [])
+	if resenas.is_empty():
+		return
+
+	for resena in resenas:
+		resena["leida"] = true
+	stats["resenas"] = resenas
+	estadisticas_dias[dia] = stats
+
+
+## Reseñas pendientes de leer en toda la partida. Con 'solo_positivas' cuenta
+## únicamente los elogios, para poder anticipar el tono en el aviso del HUD.
+func contar_resenas_sin_leer(solo_positivas: bool = false) -> int:
+	var total: int = 0
+	for dia in estadisticas_dias:
+		for resena in estadisticas_dias[dia].get("resenas", []):
+			# Las reseñas guardadas antes de existir este campo ya se dan por leídas.
+			if bool(resena.get("leida", true)):
+				continue
+			if solo_positivas and str(resena.get("tipo", RESENA_NEGATIVA)) != RESENA_POSITIVA:
+				continue
+			total += 1
+	return total
+
+
 func registrar_evento_dia(texto: String, dia: int = -1) -> void:
 	if dia < 0:
 		dia = dia_actual
@@ -371,6 +561,26 @@ func reportar_rendimiento_minijuego(
 	)
 	resumen_atencion["rep_desempeno"] = rep_desempeno
 	return rep_desempeno
+
+## Prepara el resumen para una partida suelta (easter egg): deja a la vista el
+## marcador del minijuego y nada más. A diferencia de reportar_rendimiento_minijuego(),
+## no mueve reputación ni escribe eventos en la bitácora del día, así que jugar
+## fuera del taller no deja rastro en la partida.
+func reportar_marcador_suelto(
+	rendimiento: float,
+	recompensa: int,
+	nivel_desempeno: int = DESEMPENO_ACEPTABLE
+) -> void:
+	iniciar_resumen_atencion()
+	resumen_atencion["rendimiento"] = clampf(rendimiento, 0.0, 1.0)
+	resumen_atencion["recompensa_minijuego"] = recompensa
+	resumen_atencion["nivel_desempeno"] = clampi(
+		nivel_desempeno,
+		DESEMPENO_FALLIDO,
+		DESEMPENO_EXITOSO
+	)
+	resumen_atencion["resultado_minijuego_registrado"] = true
+
 
 ## Devuelve el desglose completo de la atención para mostrarlo en la pantalla de
 ## resultado del minijuego: cuánto dinero varió (recompensa, costos, balance neto) y

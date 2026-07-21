@@ -14,6 +14,9 @@ extends Node2D
 @export var valor_por_segundo := 11
 @export var bonus_victoria := 30
 @export var penalizacion_derrota := 20
+## Lo que paga cada bidón, SOLO en la partida suelta del easter egg. En el flujo
+## real no se aplica: ahí el balance está pensado para pagar por supervivencia.
+@export var valor_por_bidon := 25
 
 #Sprites
 @export var burn_mark_scene: PackedScene
@@ -368,6 +371,11 @@ func calcular_dinero_final() -> void:
 	elif is_game_over:
 		dinero_obtenido -= penalizacion_derrota
 
+	# En el easter egg los bidones sí pagan: ahí el número es un marcador suelto
+	# que nunca llega a la caja del taller, así que recogerlos vale la pena.
+	if DATOSGLOBALES.easter_egg_activo:
+		dinero_obtenido += bidones_recogidos * valor_por_bidon
+
 	dinero_obtenido = max(0, dinero_obtenido)
 
 	print("Tiempo: ", segundos_sobrevividos)
@@ -473,16 +481,23 @@ func mostrar_pantalla_final(gano: bool) -> void:
 		nivel_desempeno = DATOSGLOBALES.DESEMPENO_EXITOSO
 	elif elapsed_time >= survival_time * 0.70:
 		nivel_desempeno = DATOSGLOBALES.DESEMPENO_ACEPTABLE
-	DATOSGLOBALES.reportar_rendimiento_minijuego(
-		rendimiento,
-		dinero_obtenido,
-		nivel_desempeno,
-		"Reparacion de combustible",
-		"Bidones recogidos: %d." % bidones_recogidos
-	)
-	
-	# FUNDAMENTAL: Prevenir que el panel se autodestruya al nacer
-	DATOSGLOBALES.volviendo_de_atencion = true
+
+	if DATOSGLOBALES.easter_egg_activo:
+		# Como easter egg esto no es una reparación: se muestra el marcador pero no
+		# se reporta desempeño (eso movería reputación y escribiría en la bitácora)
+		# ni se marca que se vuelve de una atención.
+		DATOSGLOBALES.reportar_marcador_suelto(rendimiento, dinero_obtenido, nivel_desempeno)
+	else:
+		DATOSGLOBALES.reportar_rendimiento_minijuego(
+			rendimiento,
+			dinero_obtenido,
+			nivel_desempeno,
+			"Reparacion de combustible",
+			"Bidones recogidos: %d." % bidones_recogidos
+		)
+
+		# FUNDAMENTAL: Prevenir que el panel se autodestruya al nacer
+		DATOSGLOBALES.volviendo_de_atencion = true
 	
 	if panel_resumen:
 		panel_resumen.layer = 100 
@@ -575,14 +590,22 @@ func _on_boton_continuar_pressed() -> void:
 	# Timer a prueba de pausas
 	await get_tree().create_timer(0.15, true, false, true).timeout
 	
-	DATOSGLOBALES.sumar_dinero(dinero_obtenido)
-
 	Engine.time_scale = 1.0
 	get_tree().paused = false
-	
+
 	if music_loop:
 		music_loop.stop()
-		
+
+	# Partida suelta desde los créditos: no hay taller al que volver ni caja que
+	# engordar, así que el dinero no se cobra y se regresa al menú.
+	if DATOSGLOBALES.easter_egg_activo:
+		DATOSGLOBALES.easter_egg_activo = false
+		print("Easter egg terminado. Dinero (no se cobra): $", dinero_obtenido)
+		CARGADOR.cambiar_escena("res://Scenes/UI/MainMenu.tscn")
+		return
+
+	DATOSGLOBALES.sumar_dinero(dinero_obtenido)
+
 	print("Volviendo al taller desde The Floor Is Lava (Snake). Dinero: $", dinero_obtenido)
 	var destino := DATOSGLOBALES.obtener_destino_post_escena(
 		"res://Scenes/Gameplay/GameScreen.tscn"

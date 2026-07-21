@@ -24,6 +24,13 @@ func guardar() -> void:
 	cfg.set_value("partida", "clientes_usados", DATOSGLOBALES.clientes_usados)
 	cfg.set_value("partida", "modal_bienvenida_mostrado", DATOSGLOBALES.modal_bienvenida_mostrado)
 	cfg.set_value("partida", "estadisticas_dias", DATOSGLOBALES.estadisticas_dias)
+	# Progreso hacia la protesta: sin esto, el contador de piezas dudosas volvía
+	# a cero al cargar y el evento podía no dispararse nunca.
+	cfg.set_value("partida", "contador_pieza_defectuosa", DATOSGLOBALES.contador_pieza_defectuosa)
+	cfg.set_value("partida", "protesta_pendiente", DATOSGLOBALES.protesta_pendiente)
+	# Las reseñas en sí viven dentro de estadisticas_dias; esto es solo el contador
+	# de las que el jugador todavía no fue a leer al PC.
+	# Las reseñas y su estado de leída viajan dentro de estadisticas_dias.
 
 	var err := cfg.save(RUTA)
 	if err == OK:
@@ -50,6 +57,12 @@ func cargar() -> bool:
 	DATOSGLOBALES.genero_jugador = cfg.get_value("partida", "genero_jugador", "")
 	DATOSGLOBALES.modal_bienvenida_mostrado = cfg.get_value("partida", "modal_bienvenida_mostrado", false)
 	DATOSGLOBALES.estadisticas_dias = cfg.get_value("partida", "estadisticas_dias", {})
+	DATOSGLOBALES.contador_pieza_defectuosa = int(
+		cfg.get_value("partida", "contador_pieza_defectuosa", 0)
+	)
+	DATOSGLOBALES.protesta_pendiente = bool(
+		cfg.get_value("partida", "protesta_pendiente", false)
+	)
 	# Se agregan los datos diarios generales del juego
 	DATOSGLOBALES.historial_dias = cfg.get_value("partida","datos_del_dia",[0,0,0,0,0,0])
 	# clientes_usados es Array[int]: lo reconstruimos con el tipo correcto.
