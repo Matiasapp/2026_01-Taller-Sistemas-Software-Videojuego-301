@@ -10,11 +10,48 @@ extends Node2D
 @onready var creditos_scroll: ScrollContainer = $CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo
 @onready var creditos_barra: VScrollBar = creditos_scroll.get_v_scroll_bar()
 @onready var creditos_cerrar: Button = $CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/BtnVolver
+@onready var creditos_contenido: Control = $CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo/Creditos
+@onready var seccion_equipo: VBoxContainer = creditos_contenido.get_node("SeccionEquipo")
 @onready var fade_nueva_partida: ColorRect = $CanvasLayer/FadeNuevaPartida
 @onready var nueva_partida_whoosh: AudioStreamPlayer = $NuevaPartidaWhoosh
 
 const VELOCIDAD_CREDITOS := 18.0
 const ESPERA_INICIAL_CREDITOS := 0.8
+
+# =========================
+# EQUIPO (créditos detallados)
+# =========================
+# Una entrada por persona, en el orden en que aparecen en pantalla.
+# 'foto' es la ruta a una imagen cuadrada (basta 128x128, se dibuja a 48x48);
+# si se deja vacía se ve el marco vacío, así la lista funciona sin fotos.
+# El rol se dibuja en una sola línea: si no entra, se corta con puntos suspensivos.
+const EQUIPO: Array[Dictionary] = [
+	{
+		"nombre": "Fernanda Durandeau",
+		"rol": "Product Owner",
+		"foto": "res://Assets/Creditos/Equipo/FernandaDurandeau.jpeg"
+	},
+	{"nombre": "Ignacio Saavedra", "rol": "QA", "foto": ""},
+	{
+		"nombre": "Matías Ponce",
+		"rol": "Tech Lead · Infraestructura y seguridad · Desarrollador",
+		"foto": "res://Assets/Creditos/Equipo/MatiasPonce.png"
+	},
+	{
+		"nombre": "Bruno Bernardo Roque Mendoza",
+		"rol": "Música y diseño de audio · Desarrollador",
+		"foto": "res://Assets/Creditos/Equipo/BrunoRoque.png"
+	},
+	{"nombre": "Diego Constanzo", "rol": "Desarrollador", "foto": ""},
+	{"nombre": "Cristopher González", "rol": "Desarrollador", "foto": ""},
+	{"nombre": "Gabriel Araya", "rol": "Desarrollador", "foto": ""},
+]
+
+const FOTO_LADO := 48
+## Los créditos se maquetan con posiciones absolutas: todo lo que empiece a esta
+## altura o más abajo se corre hacia abajo al insertar la lista del equipo.
+const ANCLA_EQUIPO_Y := 535.0
+const MARGEN_TRAS_EQUIPO := 30.0
 
 var creditos_scroll_pos := 0.0
 var creditos_scroll_espera := 0.0
@@ -68,6 +105,8 @@ func _ready() -> void:
 
 	confirmar_nueva_partida.confirmado.connect(_on_confirmar_nueva_partida_confirmed)
 	creditos_barra.value_changed.connect(_on_creditos_barra_value_changed)
+
+	_construir_equipo()
 
 
 # ========================= 
@@ -166,6 +205,101 @@ func _on_button_options_pressed() -> void:
 	play_click()
 	var opciones := preload("res://Scenes/UI/Opciones.tscn").instantiate()
 	add_child(opciones)
+
+
+# =========================
+# EQUIPO EN LOS CRÉDITOS
+# =========================
+
+## Construye la lista del equipo y corre hacia abajo el resto de los créditos,
+## que están posicionados a mano. Así agregar o quitar gente no descuadra nada.
+func _construir_equipo() -> void:
+	for datos in EQUIPO:
+		seccion_equipo.add_child(_crear_fila_integrante(datos))
+
+	var alto: float = seccion_equipo.get_combined_minimum_size().y
+	seccion_equipo.size = Vector2(seccion_equipo.size.x, alto)
+
+	var desplazamiento: float = alto + MARGEN_TRAS_EQUIPO
+	for hijo in creditos_contenido.get_children():
+		if hijo == seccion_equipo or not hijo is Control:
+			continue
+		var control := hijo as Control
+		if control.offset_top >= ANCLA_EQUIPO_Y:
+			control.offset_top += desplazamiento
+			control.offset_bottom += desplazamiento
+
+	creditos_contenido.custom_minimum_size.y += desplazamiento
+
+
+## Una fila: marco con la foto (o vacío si todavía no hay) y, al lado, el nombre
+## sobre lo que hizo esa persona.
+func _crear_fila_integrante(datos: Dictionary) -> HBoxContainer:
+	var fila := HBoxContainer.new()
+	fila.add_theme_constant_override("separation", 12)
+	fila.custom_minimum_size = Vector2(0, FOTO_LADO)
+	fila.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+	fila.add_child(_crear_marco_foto(str(datos.get("foto", ""))))
+
+	var textos := VBoxContainer.new()
+	textos.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	textos.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	textos.add_theme_constant_override("separation", 2)
+	textos.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+	var nombre := Label.new()
+	nombre.text = str(datos.get("nombre", ""))
+	nombre.add_theme_color_override("font_color", Color(0.95, 0.86, 0.64))
+	nombre.add_theme_font_size_override("font_size", 14)
+	textos.add_child(nombre)
+
+	var rol := Label.new()
+	rol.text = str(datos.get("rol", ""))
+	rol.add_theme_color_override("font_color", Color(0.82, 0.79, 0.73))
+	rol.add_theme_font_size_override("font_size", 12)
+	# Sin autowrap a propósito: una etiqueta que ajusta líneas mide su altura
+	# contra el ancho que le asigne el contenedor, y los créditos viven en un
+	# overlay oculto, donde no corre el layout. Con una sola línea la altura es
+	# predecible; si el rol no entra, se corta con puntos suspensivos.
+	rol.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	textos.add_child(rol)
+
+	fila.add_child(textos)
+	return fila
+
+
+func _crear_marco_foto(ruta: String) -> Panel:
+	var marco := Panel.new()
+	marco.custom_minimum_size = Vector2(FOTO_LADO, FOTO_LADO)
+	marco.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	marco.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+	var estilo := StyleBoxFlat.new()
+	estilo.bg_color = Color(0.09, 0.06, 0.04, 0.9)
+	estilo.border_color = Color(0.882, 0.686, 0.18, 0.35)
+	estilo.set_border_width_all(1)
+	estilo.set_corner_radius_all(3)
+	marco.add_theme_stylebox_override("panel", estilo)
+
+	# Sin foto se deja el marco vacío: la lista se ve igual de ordenada y las
+	# imágenes se pueden ir agregando de a una.
+	if ruta.is_empty() or not ResourceLoader.exists(ruta):
+		if not ruta.is_empty():
+			push_warning("Creditos: no existe la foto '%s'." % ruta)
+		return marco
+
+	var foto := TextureRect.new()
+	foto.texture = load(ruta)
+	foto.set_anchors_preset(Control.PRESET_FULL_RECT)
+	foto.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	foto.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	foto.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	# El proyecto filtra en Nearest para el pixel art, pero una foto reducida a
+	# 48 px con ese filtro sale dentada: estas van suavizadas y con mipmaps.
+	foto.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
+	marco.add_child(foto)
+	return marco
 
 
 # =========================

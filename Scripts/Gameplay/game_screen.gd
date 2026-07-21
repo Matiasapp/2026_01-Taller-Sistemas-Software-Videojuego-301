@@ -124,7 +124,7 @@ func _ready() -> void:
 	if DATOSGLOBALES.estafa_pendiente:
 		var pago_estafa: int = DATOSGLOBALES.dinero - DATOSGLOBALES.dinero_antes_estafa
 		if pago_estafa > 0:
-			CARGADOR.cambiar_escena(EVENTO_ESTAFA_SCENE)
+			_lanzar_evento_estafa()
 			return
 		else:
 			DATOSGLOBALES.estafa_pendiente = false
@@ -822,6 +822,34 @@ func fade_to_black(duration := 0.6) -> void:
 
 	await tween.finished		
 	
+## Salida al evento de estafa, al volver del minijuego con un cliente estafador.
+##
+## No se puede pedir el cambio de escena directamente desde _ready(): el cargador
+## todavía está revelando este mismo taller, y su guardia contra peticiones
+## simultáneas descarta la nueva con un simple warning. El resultado era que el
+## evento no aparecía nunca y el jugador se quedaba en un taller a medio
+## inicializar (sin audio, sin ventilador y sin temporizador de clientes), porque
+## el _ready() ya había cortado en el return.
+func _lanzar_evento_estafa() -> void:
+	puede_interactuar = false
+	_bloquear_movimiento_jugador()
+
+	# El taller quedó a medio construir: se tapa para que no se vea mientras se
+	# espera a que el cargador termine de revelarlo.
+	fade_rect.visible = true
+	fade_rect.modulate.a = 1.0
+	fade_rect.mouse_filter = Control.MOUSE_FILTER_STOP
+
+	while CARGADOR.esta_cargando():
+		await get_tree().process_frame
+
+	if not is_inside_tree():
+		return
+
+	if not CARGADOR.cambiar_escena(EVENTO_ESTAFA_SCENE):
+		push_error("GameScreen: el cargador rechazó el evento de estafa.")
+
+
 ## Salida a la protesta de clientes, justo después de abrir la cortina. El taller
 ## queda abierto: al terminar el evento se vuelve al taller y la jornada sigue.
 func transition_to_protesta() -> void:
