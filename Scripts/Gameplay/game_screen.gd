@@ -79,6 +79,8 @@ const AUTO_FILAS_ALTO := [291, 290, 290, 283, 287]
 # aparición del auto no sea tan brusca. Es un nodo de la escena (ajustable en el
 # editor): GPUParticles2D "ParticulasAlzadora" con one_shot activado.
 @onready var particulas_alzadora: GPUParticles2D = $"Node2D/ParticulasAlzadora"
+# Color original del puff (se guarda para poder ocultarlo durante el precalentado).
+var polvo_alzadora_modulate := Color(1, 1, 1, 1)
 
 # Textura del mapa cuando el taller está abierto (la cerrada es la que trae la escena).
 const TEXTURA_TALLER_ABIERTO: Texture2D = preload("res://Assets/Sprites/mapa final abierto.png")
@@ -218,6 +220,9 @@ func _ready() -> void:
 	# Dejamos la alzadora en el estado correcto según si hay un cliente esperando.
 	actualizar_alzadora()
 
+	# Compilamos el shader del puff ahora (durante la carga) y no cuando llegue el auto.
+	_precalentar_polvo_alzadora()
+
 	# Modal de bienvenida: solo el día 1 a las 08:00, una única vez.
 	_verificar_modal_bienvenida()
 
@@ -343,10 +348,14 @@ func abrir_taller() -> void:
 	# Los clientes no se atienden enseguida: el primero llega tras una espera.
 	programar_llegada_cliente()
 
-## Las partículas de polvo solo se muestran/emiten con el taller abierto.
+## Las partículas de polvo solo se ven con el taller abierto.
+## Mantenemos la emisión siempre encendida (son 35 partículas, cuestan nada) y solo
+## cambiamos la visibilidad: encender la emisión de golpe obligaba a simular de una
+## vez todo el 'preprocess' del sistema en un único frame, que era el tirón que se
+## notaba al abrir la puerta en la versión web.
 func _actualizar_particulas() -> void:
 	if dust_particles:
-		dust_particles.emitting = taller_abierto
+		dust_particles.emitting = true
 		dust_particles.visible = taller_abierto
 
 
@@ -492,7 +501,26 @@ func actualizar_alzadora() -> void:
 ## Dispara el puff de polvo sobre la alzadora.
 func _reproducir_polvo_alzadora() -> void:
 	if particulas_alzadora:
+		particulas_alzadora.modulate = polvo_alzadora_modulate
 		particulas_alzadora.restart()
+
+## La primera emisión de un sistema de partículas compila su shader, y en web (WebGL)
+## esa compilación se traga varios frames. Lo disparamos una vez al cargar la escena,
+## con el puff invisible, para que la llegada del primer auto ya salga fluida.
+func _precalentar_polvo_alzadora() -> void:
+	if particulas_alzadora == null:
+		return
+
+	polvo_alzadora_modulate = particulas_alzadora.modulate
+	particulas_alzadora.modulate = Color(0, 0, 0, 0)
+	particulas_alzadora.restart()
+
+	await get_tree().create_timer(0.25).timeout
+
+	if not is_instance_valid(particulas_alzadora):
+		return
+	particulas_alzadora.emitting = false
+	particulas_alzadora.modulate = polvo_alzadora_modulate
 
 ## Texto del cartel de atención según haya o no un cliente esperando.
 func actualizar_mensaje_atender() -> void:

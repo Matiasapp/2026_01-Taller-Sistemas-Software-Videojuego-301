@@ -5,6 +5,7 @@
 [ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="3_qqw2n"]
 [ext_resource type="Texture2D" uid="uid://cxqi1lh5nip8y" path="res://Assets/UI/button_style.png" id="4_1luda"]
 [ext_resource type="Texture2D" uid="uid://jd4uohv35la" path="res://Assets/Sprites/selecciongenero.png" id="5_1luda"]
+[ext_resource type="Texture2D" path="res://Assets/Sprites/background_character_selection.png" id="5_bg_select"]
 [ext_resource type="Texture2D" uid="uid://d04h1vb5xdxep" path="res://Assets/Sprites/seleccionhover.png" id="6_bl2qt"]
 [ext_resource type="Texture2D" uid="uid://dv5b4kj8bk7hi" path="res://Assets/Sprites/seleccionpress.png" id="6_d0ygq"]
 [ext_resource type="AudioStream" uid="uid://b2t66hdqmo381" path="res://Assets/Audio/Menu/click.wav" id="8_r6180"]
@@ -166,13 +167,26 @@ anchors_preset = 0
 offset_right = 1154.0
 offset_bottom = 649.0
 
+[node name="Background" type="TextureRect" parent="CanvasLayer/VistaGenero"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("5_bg_select")
+expand_mode = 1
+stretch_mode = 6
+
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer/VistaGenero" unique_id=1283945026]
 layout_mode = 0
 offset_left = -47.0
 offset_top = -18.0
 offset_right = 1199.0
 offset_bottom = 673.0
-color = Color(0, 0, 0, 1)
+mouse_filter = 2
+color = Color(0, 0, 0, 0.2)
 
 [node name="Preguntagenero" type="RichTextLabel" parent="CanvasLayer/VistaGenero" unique_id=1184847108]
 layout_mode = 1
