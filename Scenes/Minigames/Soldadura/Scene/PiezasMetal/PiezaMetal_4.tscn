@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bxotu2mb0b2gy"]
 
 [ext_resource type="Script" uid="uid://c5xjurjb5lus3" path="res://Scenes/Minigames/Soldadura/Script/pieza.gd" id="1_llvml"]
-[ext_resource type="Texture2D" uid="uid://c5qbb5x3q2xa" path="res://Scenes/Minigames/Soldadura/Imagenes/pieza_5.png" id="2_llvml"]
+[ext_resource type="Texture2D" uid="uid://db3a8wmd1iho" path="res://Scenes/Minigames/Soldadura/Imagenes/pieza_4.png" id="2_llvml"]
 [ext_resource type="PackedScene" uid="uid://bglbyvw8gl8hc" path="res://Scenes/Minigames/Soldadura/Scene/Marca_soldadura.tscn" id="3_bn784"]
 
 [node name="PiezaMetal" type="Node2D" unique_id=409267960]
