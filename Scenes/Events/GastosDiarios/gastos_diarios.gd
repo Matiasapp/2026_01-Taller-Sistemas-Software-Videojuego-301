@@ -156,7 +156,7 @@ func _on_confirmar_pressed() -> void:
 	await get_tree().create_timer(0.85).timeout
 	await _fundir_a_negro()
 	var destino := DATOSGLOBALES.obtener_destino_post_escena(ESCENA_SIGUIENTE)
-	get_tree().change_scene_to_file(destino)
+	CARGADOR.cambiar_escena(destino)
 
 
 func _on_confirmar_mouse_entered() -> void:

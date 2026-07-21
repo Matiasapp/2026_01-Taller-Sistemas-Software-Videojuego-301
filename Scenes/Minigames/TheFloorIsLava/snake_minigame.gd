@@ -587,7 +587,7 @@ func _on_boton_continuar_pressed() -> void:
 	var destino := DATOSGLOBALES.obtener_destino_post_escena(
 		"res://Scenes/Gameplay/GameScreen.tscn"
 	)
-	get_tree().change_scene_to_file(destino)
+	CARGADOR.cambiar_escena(destino)
 
 
 func play_countdown_sound(semitones := 0) -> void:

@@ -210,7 +210,7 @@ func finalizar_evento() -> void:
 	await fade_to_black(0.6)
 	Engine.time_scale = 1.0
 	get_tree().paused = false
-	get_tree().change_scene_to_file("res://Scenes/UI/MainMenu.tscn")
+	CARGADOR.cambiar_escena("res://Scenes/UI/MainMenu.tscn")
 
 
 func _on_comenzar_pressed() -> void:

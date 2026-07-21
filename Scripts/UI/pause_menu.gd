@@ -59,4 +59,4 @@ func _on_salir_pressed() -> void:
 	_cerrando = true
 	await cerrar()
 	get_tree().paused = false
-	get_tree().change_scene_to_file("res://Scenes/UI/MainMenu.tscn")
+	CARGADOR.cambiar_escena("res://Scenes/UI/MainMenu.tscn")

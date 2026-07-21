@@ -119,7 +119,7 @@ func _ready() -> void:
 	if DATOSGLOBALES.estafa_pendiente:
 		var pago_estafa: int = DATOSGLOBALES.dinero - DATOSGLOBALES.dinero_antes_estafa
 		if pago_estafa > 0:
-			get_tree().change_scene_to_file(EVENTO_ESTAFA_SCENE)
+			CARGADOR.cambiar_escena(EVENTO_ESTAFA_SCENE)
 			return
 		else:
 			DATOSGLOBALES.estafa_pendiente = false
@@ -309,7 +309,7 @@ func _input(event):
 
 	if jugador_en_rango_easter_egg:
 		get_viewport().set_input_as_handled()
-		get_tree().change_scene_to_file("res://Scenes/Minigames/Crossy_Road/Crossy Road.tscn")
+		CARGADOR.cambiar_escena("res://Scenes/Minigames/Crossy_Road/Crossy Road.tscn")
 
 
 # =========================
@@ -514,7 +514,7 @@ func lanzar_minijuego_random() -> void:
 
 	var escena_random = minijuegos.pick_random()
 	print("Cargando minijuego:", escena_random)
-	get_tree().change_scene_to_file(escena_random)
+	CARGADOR.cambiar_escena(escena_random)
 
 
 func cerrar_dia() -> void:
@@ -539,6 +539,10 @@ func cerrar_dia() -> void:
 	# Autoguardado: se guarda el progreso al cerrar el día (ya con el nuevo día).
 	PARTIDA.guardar()
 
+	# La jornada terminó y ya está guardada: el conteo vuelve a cero.
+	if CLIENTMANAGER:
+		CLIENTMANAGER.reiniciar_conteo_dia()
+
 	# ¿Habrá robo esta noche? Se decide ahora, pero el robo se muestra DESPUÉS del cierre.
 	if randf() <= 0.30:
 		DATOSGLOBALES.siguiente_evento_dia = "robo"
@@ -556,7 +560,7 @@ func cerrar_dia() -> void:
 
 	# Primero se decide qué gastos del cierre pagar. Después se muestra la
 	# transición nocturna y, si corresponde, el evento de robo.
-	get_tree().change_scene_to_file(GASTOS_DIARIOS_SCENE)
+	CARGADOR.cambiar_escena(GASTOS_DIARIOS_SCENE)
 
 ## El apagon corta la jornada y evita el evento nocturno de robo, pero mantiene
 ## el cierre de caja: los gastos diarios siguen existiendo aunque se trabaje menos.
@@ -580,9 +584,13 @@ func cerrar_dia_por_apagon() -> void:
 	DATOSGLOBALES.mostrar_resumen_dia_al_volver = true
 	PARTIDA.guardar()
 
+	# El apagón corta la jornada a mitad: sin esto el día siguiente empezaba
+	# con los clientes ya atendidos antes del corte.
+	CLIENTMANAGER.reiniciar_conteo_dia()
+
 	get_tree().paused = false
 	Engine.time_scale = 1.0
-	get_tree().change_scene_to_file(GASTOS_DIARIOS_SCENE)
+	CARGADOR.cambiar_escena(GASTOS_DIARIOS_SCENE)
 
 func _puede_programar_apagon() -> bool:
 	return (
@@ -731,4 +739,4 @@ func transition_to_atencion_cliente() -> void:
 	if transition_whoosh and transition_whoosh.playing:
 		await transition_whoosh.finished
 
-	get_tree().change_scene_to_file(ATENCION_CLIENTE_SCENE)
+	CARGADOR.cambiar_escena(ATENCION_CLIENTE_SCENE)

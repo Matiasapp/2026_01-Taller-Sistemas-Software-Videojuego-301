@@ -125,11 +125,40 @@ func _input(event) -> void:
 			avanzar_mensaje()
 
 
+## Diferencia máxima de proporción para considerar que una imagen es del mismo
+## formato que la ventana.
+const TOLERANCIA_ASPECTO := 0.02
+
+
+## Pone la imagen de fondo ajustando cómo se estira.
+##
+## Casi toda la secuencia es 16:9 igual que la ventana, y con KEEP_ASPECT llena
+## la pantalla de borde a borde. Pero 3F.png es 3:2: al conservar su proporción
+## se queda corta de ancho y, como el marco alinea arriba a la izquierda, queda
+## descuadrada dejando una franja vacía a la derecha. Para cualquier imagen que
+## no comparta el formato de la ventana se usa COVERED, que la centra y la
+## agranda hasta cubrir el marco, recortando lo que sobra.
+func _mostrar_imagen(textura: Texture2D) -> void:
+	if textura == null:
+		return
+
+	imagen.texture = textura
+
+	var ventana := get_viewport_rect().size
+	var aspecto_ventana := ventana.x / ventana.y
+	var aspecto_imagen := float(textura.get_width()) / float(textura.get_height())
+
+	if absf(aspecto_imagen - aspecto_ventana) <= TOLERANCIA_ASPECTO:
+		imagen.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT
+	else:
+		imagen.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+
+
 func mostrar_mensaje_actual() -> void:
 	if indice_mensaje >= mensajes.size():
 		return
 
-	imagen.texture = imagenes[indice_mensaje]
+	_mostrar_imagen(imagenes[indice_mensaje])
 
 	if resumen_rect:
 		resumen_rect.visible = false
@@ -212,7 +241,7 @@ func finalizar_evento() -> void:
 
 	Engine.time_scale = 1.0
 	get_tree().paused = false
-	get_tree().change_scene_to_file("res://Scenes/UI/MainMenu.tscn")
+	CARGADOR.cambiar_escena("res://Scenes/UI/MainMenu.tscn")
 
 
 func _on_comenzar_pressed() -> void:
@@ -237,7 +266,7 @@ func mostrar_resumen_limpio() -> void:
 	resumen_listo_para_salir = true
 
 	if imagen_9_fondo:
-		imagen.texture = imagen_9_fondo
+		_mostrar_imagen(imagen_9_fondo)
 
 	if panel_texto:
 		panel_texto.visible = false

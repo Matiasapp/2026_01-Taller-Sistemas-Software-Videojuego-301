@@ -77,7 +77,7 @@ func _ready() -> void:
 func configurar_evento() -> void:
 	mensajes = [
 		"Llegaste a un taller al borde del colapso. Las deudas se acumulaban, las herramientas estaban desgastadas y cada vez menos clientes confiaban en volver. Todo parecía indicar que era demasiado tarde, pero decidiste intentarlo.",
-		"Día tras día trabajaste con los recursos disponibles. Soldaste piezas, inflaste neumáticosa y encontraste soluciones cuando los problemas parecían no tener salida. Cada reparación bien hecha fue un paso para mantener vivo el taller.",
+		"Día tras día trabajaste con los recursos disponibles. Soldaste piezas, inflaste neumáticos y encontraste soluciones cuando los problemas parecían no tener salida. Cada reparación bien hecha fue un paso para mantener vivo el taller.",
 		"Aprovechaste cada herramienta y cada repuesto disponible. Neumáticos, frenos, motores y baterías volvieron a pasar por tus manos. Poco a poco, el taller recuperó el orden y volvió a convertirse en un lugar donde los problemas podían resolverse.",
 		"Hubo jornadas agotadoras, averías difíciles y decisiones que nunca fueron sencillas. Sin embargo, mientras otros veían un negocio perdido, tú continuaste abriendo las puertas cada mañana.",
 		"No fue una semana perfecta. Hubo errores, gastos inesperados y momentos en los que parecía más fácil rendirse. Pero al observar el taller al final de cada jornada, comenzaste a notar que el esfuerzo estaba dando resultados.",
@@ -204,7 +204,7 @@ func finalizar_evento() -> void:
 
 	Engine.time_scale = 1.0
 	get_tree().paused = false
-	get_tree().change_scene_to_file("res://Scenes/UI/MainMenu.tscn")
+	CARGADOR.cambiar_escena("res://Scenes/UI/MainMenu.tscn")
 
 
 func _on_comenzar_pressed() -> void:

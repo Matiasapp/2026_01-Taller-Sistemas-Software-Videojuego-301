@@ -25,14 +25,18 @@ func iniciar() -> void:
 	# Mutear todos los audios
 	# ==========================
 
+	# La busqueda es recursiva sobre el taller, y este evento ya cuelga de el:
+	# hay que saltarse los audios propios o el apagon se dejaria mudo a si mismo.
 	for audio in game.find_children("*", "AudioStreamPlayer2D", true, false):
-		if audio == audio_apagon:
+		if is_ancestor_of(audio):
 			continue
 		audio.stop()
 		audio.seek(0.0)
 		audio.stream_paused = true
 
 	for audio in game.find_children("*", "AudioStreamPlayer", true, false):
+		if is_ancestor_of(audio):
+			continue
 		audio.stop()
 		audio.seek(0.0)
 		audio.stream_paused = true
@@ -80,5 +84,13 @@ func _on_continuar_pressed() -> void:
 	if continuar_button.disabled:
 		return
 	continuar_button.disabled = true
+	# Suena por el AUDIOMANAGER, igual que el resto de eventos: su reproductor
+	# vive fuera del taller y por tanto no lo alcanza el muteo de iniciar().
+	AUDIOMANAGER.play_ui_click()
 	panel.visible = false
 	evento_terminado.emit()
+
+
+func _on_continuar_mouse_entered() -> void:
+	if not continuar_button.disabled:
+		AUDIOMANAGER.play_ui_hover()

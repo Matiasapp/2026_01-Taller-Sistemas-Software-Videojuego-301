@@ -110,7 +110,7 @@ func _iniciar_nueva_partida() -> void:
 	await _transicion_a_intro()
 
 	print("Iniciando el nivel...")
-	get_tree().change_scene_to_file("res://Scenes/Gameplay/IntroScreen.tscn")
+	CARGADOR.cambiar_escena("res://Scenes/Gameplay/IntroScreen.tscn")
 
 
 func _transicion_a_intro() -> void:
