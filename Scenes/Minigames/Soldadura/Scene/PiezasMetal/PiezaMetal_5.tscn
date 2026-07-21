@@ -16,6 +16,6 @@ texture = ExtResource("2_ywoy3")
 [node name="Trayectoria" type="Line2D" parent="." unique_id=1626430727]
 visible = false
 position = Vector2(-6, -164)
-points = PackedVector2Array(383, 443, 396, 441, 412, 437, 426, 434, 439, 430, 446, 423, 456, 424, 466, 434, 474, 442, 485, 448, 498, 451, 507, 453, 510, 465, 517, 477, 523.5343, 483.7065, 528, 492)
+points = PackedVector2Array(383, 443, 402, 441, 417, 437, 432, 433, 441, 425, 455, 426, 468, 437, 480, 446, 492, 450, 507, 453, 513, 469, 522, 479, 528, 492)
 
 [node name="Marca_soldadura" parent="." unique_id=2143935098 instance=ExtResource("3_mi6pg")]
