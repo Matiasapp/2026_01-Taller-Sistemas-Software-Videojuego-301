@@ -162,10 +162,9 @@ func finalizar_evento() -> void:
 
 	# Si esta noche hay robo, se muestra DESPUÉS del cierre del taller; si no, al taller.
 	var destino_normal: String
+	# La protesta ya no sale de aquí: se dispara al abrir la cortina por la mañana.
 	if DATOSGLOBALES.siguiente_evento_dia == "robo":
 		destino_normal = "res://Scenes/Events/EventoRobo/EventoRobo.tscn"
-	elif DATOSGLOBALES.siguiente_evento_dia == "protesta":
-		destino_normal = "res://Scenes/Events/EventoProtesta/EventoProtesta.tscn"
 	else:
 		destino_normal = "res://Scenes/Gameplay/GameScreen.tscn"
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://crfiucda8vg4d"
-path="res://.godot/imported/local_vacio_rd.png-575161cad9338c4cdd13c3bea8052ee1.ctex"
+uid="uid://bn3aldnugnrl0"
+path="res://.godot/imported/BrunoRoque.png-48150145e4d2d9d24fb26b65d9a9a372.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Events/EventoProtesta/local_vacio_rd.png"
-dest_files=["res://.godot/imported/local_vacio_rd.png-575161cad9338c4cdd13c3bea8052ee1.ctex"]
+source_file="res://Assets/Creditos/Equipo/BrunoRoque.png"
+dest_files=["res://.godot/imported/BrunoRoque.png-48150145e4d2d9d24fb26b65d9a9a372.ctex"]
 
 [params]
 
@@ -23,7 +23,7 @@ compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=false
+mipmaps/generate=true
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
@@ -36,5 +36,5 @@ process/premult_alpha=false
 process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
-process/size_limit=0
+process/size_limit=160
 detect_3d/compress_to=1

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://buxg2odqrvsi4"
-path="res://.godot/imported/bg_clientes_atender.png-752cfc8b776fecaf473cae70a45a0abd.ctex"
+uid="uid://bbrvp17tmybl8"
+path="res://.godot/imported/2.png-7521cc59d2d7835833e62f3bf46de296.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/clientes_atendidos/bg_clientes_atender.png"
-dest_files=["res://.godot/imported/bg_clientes_atender.png-752cfc8b776fecaf473cae70a45a0abd.ctex"]
+source_file="res://Assets/Events/EventoProtesta/2.png"
+dest_files=["res://.godot/imported/2.png-7521cc59d2d7835833e62f3bf46de296.ctex"]
 
 [params]
 
@@ -36,5 +36,5 @@ process/premult_alpha=false
 process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
-process/size_limit=1920
+process/size_limit=0
 detect_3d/compress_to=1

@@ -2,6 +2,11 @@ extends Node2D
 
 const PERDIDA_MINIMA := 30
 const PERDIDA_MAXIMA := 40
+## La protesta castiga fuerte, pero no debe terminar la partida por sí sola: el
+## texto cierra con "El taller debe continuar". Por eso el golpe nunca deja la
+## reputación por debajo de este piso, que si no caería a 0 y encadenaría
+## directo con el final malo por reputación.
+const REPUTACION_MINIMA_TRAS_PROTESTA := 10
 
 @onready var label: RichTextLabel = $CanvasLayer/VistaTextoIntroduccion/Panel/RichTextLabel
 @onready var vista_evento: Control = $CanvasLayer/VistaTextoIntroduccion
@@ -12,22 +17,26 @@ const PERDIDA_MAXIMA := 40
 
 @export var talking_sound: AudioStreamPlayer
 
-@export var imagen_taller_1: Texture2D
-@export var imagen_taller_2: Texture2D
-@export var imagen_taller_3: Texture2D
+# Las escenas 1 y 3 muestran al protagonista, así que tienen versión de hombre y
+# de mujer; la 2 es del grupo de clientes frente al taller y sirve para ambos.
+@export var imagen_hombre_1: Texture2D
+@export var imagen_mujer_1: Texture2D
+@export var imagen_2: Texture2D
+@export var imagen_hombre_3: Texture2D
+@export var imagen_mujer_3: Texture2D
 
 var animador_texto: Tween
 var escribiendo := false
 var indice_mensaje := 0
 
 var mensajes := []
-var imagenes := []
+var imagenes: Array[Texture2D] = []
 var reputacion_perdida := 0
 
 
 func _ready() -> void:
 	randomize()
-	_aplicar_consecuencias_robo()
+	_aplicar_consecuencias_protesta()
 
 	if bg_animation:
 		bg_animation.play("background_move")
@@ -45,26 +54,33 @@ func _ready() -> void:
 	configurar_evento()
 	mostrar_mensaje_actual()
 
-
 func configurar_evento() -> void:
 	mensajes = [
-		"Estas abriendo las cortinas del taller para comenzar tu día de trabajo,pero notas algo extraño. Escuchas ruidos en la lejania.",
-		"Es una protesta fuera del taller, estan aqui por que sus vehiculos estan rotos por piezas defectuosas despues de traerlos al local. Por lo que cierras rapidamente para que el taller no se vea afectado",
-		"Llamas a la policia para que la disipar la protesta, pero tu reputacion ya ha sido manchada. El taller debe continuar.
-		Reputacion perdida:  %d" %reputacion_perdida
-	]
-	imagenes = [
-		imagen_taller_1,
-		imagen_taller_2,
-		imagen_taller_3,
+		"Abres la cortina del taller para comenzar una nueva jornada, pero algo interrumpe la tranquilidad de la mañana. Desde la calle llegan gritos, bocinas y voces cada vez más cercanas.",
+
+		"Frente al taller se ha reunido un grupo de clientes molestos. Algunos aseguran que sus vehículos volvieron a fallar después de las reparaciones y responsabilizan a las piezas instaladas en el local.",
+
+		"Intentas explicar la situación, pero los reclamos continúan y atraen la atención de todo el barrio. La policía interviene para controlar la protesta, aunque el daño ya está hecho: la confianza en el taller ha disminuido.\n\nReputación perdida: %d" % reputacion_perdida
 	]
 
-func _aplicar_consecuencias_robo() -> void:
-	reputacion_perdida = randi_range(PERDIDA_MINIMA, PERDIDA_MAXIMA)
-	DATOSGLOBALES.restar_reputacion(
-		reputacion_perdida,
-		"Protesta por piezas defectuosas"
-	)
+	var es_mujer := DATOSGLOBALES.genero_jugador == "Femenino"
+	imagenes = [
+		imagen_mujer_1 if es_mujer else imagen_hombre_1,
+		imagen_2,
+		imagen_mujer_3 if es_mujer else imagen_hombre_3
+	]
+	assert(mensajes.size() == imagenes.size(), "Cada texto de la protesta necesita una imagen.")
+
+func _aplicar_consecuencias_protesta() -> void:
+	var perdida := randi_range(PERDIDA_MINIMA, PERDIDA_MAXIMA)
+	var margen := maxi(0, DATOSGLOBALES.reputacion - REPUTACION_MINIMA_TRAS_PROTESTA)
+	reputacion_perdida = mini(perdida, margen)
+
+	if reputacion_perdida > 0:
+		DATOSGLOBALES.restar_reputacion(
+			reputacion_perdida,
+			"Protesta por piezas defectuosas"
+		)
 	PARTIDA.guardar()
 
 

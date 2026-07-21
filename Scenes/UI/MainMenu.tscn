@@ -394,6 +394,21 @@ offset_bottom = 511.0
 mouse_filter = 2
 color = Color(0.882, 0.686, 0.18, 0.28)
 
+[node name="SeccionEquipo" type="VBoxContainer" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo/Creditos" unique_id=875756164]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 535.0
+offset_right = 460.0
+offset_bottom = 570.0
+theme_override_constants/separation = 12
+
+[node name="Titulo" type="Label" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo/Creditos/SeccionEquipo" unique_id=1801728297]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.882, 0.686, 0.18, 1)
+theme_override_font_sizes/font_size = 17
+text = "EL EQUIPO"
+horizontal_alignment = 1
+
 [node name="DesarrolloTitulo" type="Label" parent="CanvasLayer/CreditosOverlay/CreditosPanel/Contenido/Rollo/Creditos" unique_id=135510218]
 layout_mode = 0
 offset_top = 535.0

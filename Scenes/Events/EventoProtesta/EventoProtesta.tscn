@@ -1,19 +1,22 @@
 [gd_scene format=3 uid="uid://b1tbgyqlx8dp3"]
 
 [ext_resource type="Script" uid="uid://bpeyxkjhvf6lo" path="res://Scenes/Events/EventoProtesta/EventoProtesta.gd" id="1_i3ktf"]
-[ext_resource type="Texture2D" uid="uid://crfiucda8vg4d" path="res://Assets/Events/EventoProtesta/local_vacio_rd.png" id="2_i3ktf"]
-[ext_resource type="Texture2D" uid="uid://caycqyc5flrg5" path="res://Assets/Events/EventoProtesta/protesta_taller_rd.png" id="3_ssuu7"]
-[ext_resource type="Texture2D" uid="uid://cuqjbwk712r0n" path="res://Assets/Events/EventoProtesta/policia_taller_rd.png" id="4_3sh86"]
+[ext_resource type="Texture2D" uid="uid://dbowwyg85ityk" path="res://Assets/Events/EventoProtesta/1h.png" id="2_1h"]
+[ext_resource type="Texture2D" uid="uid://cdhwne8r52lhk" path="res://Assets/Events/EventoProtesta/1m.png" id="3_1m"]
+[ext_resource type="Texture2D" uid="uid://bbrvp17tmybl8" path="res://Assets/Events/EventoProtesta/2.png" id="4_2"]
+[ext_resource type="Texture2D" uid="uid://dcyvld18sh1lm" path="res://Assets/Events/EventoProtesta/3h.png" id="5_3h"]
+[ext_resource type="Texture2D" uid="uid://sfgldwsbpkc1" path="res://Assets/Events/EventoProtesta/3m.png" id="6_3m"]
 [ext_resource type="Texture2D" uid="uid://dwuxd24ol4hjj" path="res://Assets/Sprites/background_game_screen.png" id="5_of38q"]
 [ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="6_ed0kk"]
 [ext_resource type="Texture2D" uid="uid://cxqi1lh5nip8y" path="res://Assets/UI/button_style.png" id="7_oychl"]
 [ext_resource type="AudioStream" uid="uid://b2t66hdqmo381" path="res://Assets/Audio/Menu/click.wav" id="8_uc248"]
 [ext_resource type="AudioStream" uid="uid://d0gkxqmj2s251" path="res://Assets/Audio/Menu/hoverclick.wav" id="9_g8u5c"]
 [ext_resource type="AudioStream" uid="uid://c6ya5qvsib7as" path="res://Assets/Audio/IntroScreen/hover_character.wav" id="10_a4vqm"]
+[ext_resource type="AudioStream" uid="uid://dfaucmmy5vjti" path="res://Assets/Events/EventoProtesta/cacerolazo.ogg" id="11_2o7bf"]
 [ext_resource type="AudioStream" uid="uid://c6ksaho7s4f52" path="res://Assets/Audio/IntroScreen/select_character.wav" id="11_sc55j"]
+[ext_resource type="AudioStream" uid="uid://d20tcbp23vfrr" path="res://Assets/Events/EventoProtesta/protestaloop.ogg" id="12_2us3l"]
 [ext_resource type="AudioStream" uid="uid://lnnltgws2f7" path="res://Assets/Audio/IntroScreen/whoosh.wav" id="12_ln4yu"]
 [ext_resource type="AudioStream" uid="uid://cc2twnwdewko7" path="res://Assets/Audio/IntroScreen/talking.wav" id="13_3b0l2"]
-[ext_resource type="AudioStream" uid="uid://bs3jaqxdqgwg0" path="res://Assets/Events/EventoProtesta/freesound_community-cacerolada.ogg" id="14_656ve"]
 
 [sub_resource type="Animation" id="Animation_jy5sd"]
 length = 0.001
@@ -62,9 +65,11 @@ region_rect = Rect2(173, 492, 771, 568)
 [node name="EventoProtesta" type="Node2D" unique_id=1964637352 node_paths=PackedStringArray("talking_sound")]
 script = ExtResource("1_i3ktf")
 talking_sound = NodePath("TalkingSound")
-imagen_taller_1 = ExtResource("2_i3ktf")
-imagen_taller_2 = ExtResource("3_ssuu7")
-imagen_taller_3 = ExtResource("4_3sh86")
+imagen_hombre_1 = ExtResource("2_1h")
+imagen_mujer_1 = ExtResource("3_1m")
+imagen_2 = ExtResource("4_2")
+imagen_hombre_3 = ExtResource("5_3h")
+imagen_mujer_3 = ExtResource("6_3m")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1697874380]
 editor_description = "
@@ -179,9 +184,18 @@ stream = ExtResource("13_3b0l2")
 volume_db = -8.0
 bus = &"SFX"
 
-[node name="FreesoundCommunityCacerolada" type="AudioStreamPlayer" parent="." unique_id=2026585858]
-stream = ExtResource("14_656ve")
+[node name="CacerolazoSound" type="AudioStreamPlayer" parent="." unique_id=2026585858]
+stream = ExtResource("11_2o7bf")
 autoplay = true
+bus = &"SFX"
+parameters/looping = true
+
+[node name="ProtestaLoop" type="AudioStreamPlayer" parent="." unique_id=944355489]
+stream = ExtResource("12_2us3l")
+volume_db = -10.0
+autoplay = true
+bus = &"Music"
+parameters/looping = true
 
 [connection signal="mouse_entered" from="CanvasLayer/VistaTextoIntroduccion/Panel/Comenzar" to="." method="_on_comenzar_mouse_entered"]
 [connection signal="pressed" from="CanvasLayer/VistaTextoIntroduccion/Panel/Comenzar" to="." method="_on_comenzar_pressed"]

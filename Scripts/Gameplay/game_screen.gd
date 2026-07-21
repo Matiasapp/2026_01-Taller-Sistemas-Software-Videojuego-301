@@ -41,6 +41,9 @@ var minijuegos := [
 
 # Pantalla de atención al cliente (diálogo + diagnóstico + minijuego según la falla).
 const ATENCION_CLIENTE_SCENE := "res://Scenes/Gameplay/AtencionCliente.tscn"
+# Protesta de clientes por piezas defectuosas. Se muestra al abrir la cortina,
+# porque el evento está escrito desde ese momento ("Abres la cortina del taller...").
+const PROTESTA_SCENE := "res://Scenes/Events/EventoProtesta/EventoProtesta.tscn"
 # Evento que se muestra al volver del minijuego si el cliente era un estafador.
 const EVENTO_ESTAFA_SCENE := "res://Scenes/Events/EventoEstafa.tscn"
 
@@ -121,7 +124,7 @@ func _ready() -> void:
 	if DATOSGLOBALES.estafa_pendiente:
 		var pago_estafa: int = DATOSGLOBALES.dinero - DATOSGLOBALES.dinero_antes_estafa
 		if pago_estafa > 0:
-			CARGADOR.cambiar_escena(EVENTO_ESTAFA_SCENE)
+			_lanzar_evento_estafa()
 			return
 		else:
 			DATOSGLOBALES.estafa_pendiente = false
@@ -145,6 +148,8 @@ func _ready() -> void:
 
 	if hud and hud.has_method("mostrar_cambios_reputacion_pendientes"):
 		hud.mostrar_cambios_reputacion_pendientes()
+
+	_avisar_resenas_pendientes()
 	
 	iniciar_audio_taller()
 	
@@ -275,6 +280,8 @@ func play_pc_in() -> void:
 func play_pc_out() -> void:
 	if pc_sound_out:
 		pc_sound_out.play()
+	# Al cerrar el PC las reseñas ya se leyeron: el cartel vuelve a la normalidad.
+	actualizar_mensaje_pc()
 
 
 func _input(event):
@@ -347,6 +354,12 @@ func abrir_taller() -> void:
 
 	# Los clientes no se atienden enseguida: el primero llega tras una espera.
 	programar_llegada_cliente()
+
+	# Si se acumularon suficientes piezas dudosas, los clientes afectados están
+	# esperando afuera. Se comprueba al final para dejar el taller ya abierto:
+	# al volver del evento la jornada continúa con normalidad.
+	if DATOSGLOBALES.condicion_protesta():
+		await transition_to_protesta()
 
 ## Las partículas de polvo solo se ven con el taller abierto.
 ## Mantenemos la emisión siempre encendida (son 35 partículas, cuestan nada) y solo
@@ -572,10 +585,9 @@ func cerrar_dia() -> void:
 		CLIENTMANAGER.reiniciar_conteo_dia()
 
 	# ¿Habrá robo esta noche? Se decide ahora, pero el robo se muestra DESPUÉS del cierre.
+	# La protesta ya no compite por esta ranura: ocurre de mañana, al abrir la cortina.
 	if randf() <= 0.30:
 		DATOSGLOBALES.siguiente_evento_dia = "robo"
-	elif DATOSGLOBALES.condicion_protesta():
-		DATOSGLOBALES.siguiente_evento_dia = "protesta"
 	else:
 		DATOSGLOBALES.siguiente_evento_dia = "transicion"
 
@@ -696,9 +708,65 @@ func actualizar_mensaje_puerta():
 # INTERACCIÓN PC
 # =========================
 
+## Aviso de reseñas nuevas al volver de una reparación. Va encadenado después del
+## aviso de cambios de reputación (que dura ~2,2 s) porque el HUD solo muestra un
+## aviso a la vez: el segundo pisaría al primero.
+func _avisar_resenas_pendientes() -> void:
+	if hud == null or DATOSGLOBALES.contar_resenas_sin_leer() <= 0:
+		return
+
+	await get_tree().create_timer(2.5).timeout
+
+	if not is_inside_tree() or hud == null or DATOSGLOBALES.contar_resenas_sin_leer() <= 0:
+		return
+
+	hud.mostrar_aviso(_texto_aviso_resenas())
+
+
+## El aviso anticipa el tono: no es lo mismo que te esperen elogios que quejas.
+func _texto_aviso_resenas() -> String:
+	var positivas: int = DATOSGLOBALES.contar_resenas_sin_leer(true)
+	var negativas: int = DATOSGLOBALES.contar_resenas_sin_leer() - positivas
+	var pc_txt := "Revisa el [color=yellow]PC del taller[/color]."
+
+	if negativas <= 0:
+		return "⭐ [color=#3fb950]%s[/color] %s" % [
+			"Un cliente dejó una buena reseña." if positivas == 1
+			else "%d clientes dejaron buenas reseñas." % positivas,
+			pc_txt
+		]
+
+	if positivas <= 0:
+		return "💬 [color=#f85149]%s[/color] %s" % [
+			"Un cliente dejó una mala reseña." if negativas == 1
+			else "%d clientes dejaron malas reseñas." % negativas,
+			pc_txt
+		]
+
+	return "💬 Reseñas nuevas: [color=#3fb950]%d buena%s[/color] y [color=#f85149]%d mala%s[/color]. %s" % [
+		positivas, "" if positivas == 1 else "s",
+		negativas, "" if negativas == 1 else "s",
+		pc_txt
+	]
+
+
+## El cartel del PC avisa si hay reseñas esperando.
+func actualizar_mensaje_pc() -> void:
+	var pendientes: int = DATOSGLOBALES.contar_resenas_sin_leer()
+	if pendientes > 0:
+		mensaje_interactuar_pc.text = "Presiona [E] para usar el PC (%s)" % (
+			"1 reseña nueva" if pendientes == 1 else "%d reseñas nuevas" % pendientes
+		)
+		mensaje_interactuar_pc.modulate = Color.YELLOW
+	else:
+		mensaje_interactuar_pc.text = "Presiona [E] para usar el PC"
+		mensaje_interactuar_pc.modulate = Color.WHITE
+
+
 func _on_area_interactuar_pc_body_entered(body):
 	if body.name == "Player":
 		jugador_en_rango_interactuar_pc = true
+		actualizar_mensaje_pc()
 		mensaje_interactuar_pc.visible = true
 
 
@@ -754,6 +822,50 @@ func fade_to_black(duration := 0.6) -> void:
 
 	await tween.finished		
 	
+## Salida al evento de estafa, al volver del minijuego con un cliente estafador.
+##
+## No se puede pedir el cambio de escena directamente desde _ready(): el cargador
+## todavía está revelando este mismo taller, y su guardia contra peticiones
+## simultáneas descarta la nueva con un simple warning. El resultado era que el
+## evento no aparecía nunca y el jugador se quedaba en un taller a medio
+## inicializar (sin audio, sin ventilador y sin temporizador de clientes), porque
+## el _ready() ya había cortado en el return.
+func _lanzar_evento_estafa() -> void:
+	puede_interactuar = false
+	_bloquear_movimiento_jugador()
+
+	# El taller quedó a medio construir: se tapa para que no se vea mientras se
+	# espera a que el cargador termine de revelarlo.
+	fade_rect.visible = true
+	fade_rect.modulate.a = 1.0
+	fade_rect.mouse_filter = Control.MOUSE_FILTER_STOP
+
+	while CARGADOR.esta_cargando():
+		await get_tree().process_frame
+
+	if not is_inside_tree():
+		return
+
+	if not CARGADOR.cambiar_escena(EVENTO_ESTAFA_SCENE):
+		push_error("GameScreen: el cargador rechazó el evento de estafa.")
+
+
+## Salida a la protesta de clientes, justo después de abrir la cortina. El taller
+## queda abierto: al terminar el evento se vuelve al taller y la jornada sigue.
+func transition_to_protesta() -> void:
+	puede_interactuar = false
+	_bloquear_movimiento_jugador()
+
+	if transition_whoosh:
+		transition_whoosh.volume_db = -4.0
+		transition_whoosh.pitch_scale = 1.0
+		transition_whoosh.play()
+
+	await fade_to_black(0.45)
+
+	CARGADOR.cambiar_escena(PROTESTA_SCENE)
+
+
 func transition_to_atencion_cliente() -> void:
 	puede_interactuar = false
 

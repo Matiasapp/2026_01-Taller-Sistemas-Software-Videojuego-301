@@ -207,8 +207,8 @@ theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 theme_override_constants/outline_size = 5
 theme_override_constants/shadow_outline_size = 3
-theme_override_font_sizes/font_size = 28
-text = "¡EL PISO ES LAVA!"
+theme_override_font_sizes/font_size = 26
+text = "¡ENCONTRASTE UN EASTER EGG!"
 horizontal_alignment = 1
 
 [node name="Instrucciones" type="Label" parent="CanvasLayer/Tutorial/PanelTutorial" unique_id=82745026]
@@ -224,9 +224,10 @@ offset_right = 189.0
 offset_bottom = 66.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "• Muévete con WASD o Flechas.
-• Las casillas con grietas indican dónde aparecerá lava.
-• Si tocas lava o sales del tablero, pierdes."
+text = "• Muévete con WASD o Flechas. El auto nunca se detiene.
+• Tu propio rastro se va prendiendo fuego detrás tuyo.
+• Cada bidón de gasolina alarga el rastro: más lava, menos espacio.
+• Si tocas lava o te sales del tablero, pierdes."
 
 [node name="Reglas" type="Label" parent="CanvasLayer/Tutorial/PanelTutorial" unique_id=408900631]
 layout_mode = 1
@@ -241,7 +242,8 @@ offset_right = 274.0
 offset_bottom = -64.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "Sobrevive durante 30 segundos evitando las casillas de lava."
+text = "El piso es lava: un minijuego que quedó fuera del taller.
+Sobrevive 30 segundos y quédate con la satisfacción."
 
 [node name="Comenzar" type="Label" parent="CanvasLayer/Tutorial/PanelTutorial" unique_id=1121324694]
 layout_mode = 0
