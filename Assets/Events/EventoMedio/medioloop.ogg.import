@@ -12,7 +12,7 @@ dest_files=["res://.godot/imported/medioloop.ogg-5a138f4d91acec435820fc1134de4e3
 
 [params]
 
-loop=false
+loop=true
 loop_offset=0
 bpm=0
 beat_count=0

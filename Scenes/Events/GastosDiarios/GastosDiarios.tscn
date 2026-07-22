@@ -520,7 +520,7 @@ color = Color(0, 0, 0, 1)
 
 [node name="WorkshopClosingLoop" type="AudioStreamPlayer" parent="." unique_id=1368340065]
 stream = ExtResource("6_tq7jq")
-volume_db = -10.0
+volume_db = -13.0
 autoplay = true
 bus = &"Music"
 parameters/looping = true
