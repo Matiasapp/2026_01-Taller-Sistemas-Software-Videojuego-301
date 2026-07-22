@@ -31,7 +31,11 @@ const EQUIPO: Array[Dictionary] = [
 		"rol": "Product Owner",
 		"foto": "res://Assets/Creditos/Equipo/FernandaDurandeau.jpeg"
 	},
-	{"nombre": "Ignacio Saavedra", "rol": "QA", "foto": ""},
+	{
+		"nombre": "Ignacio Saavedra",
+		"rol": "Quality Assurance",
+		"foto": "res://Assets/Creditos/Equipo/IgnacioSaavedra.png"
+	},
 	{
 		"nombre": "Matías Ponce",
 		"rol": "Tech Lead · Infraestructura y seguridad · Desarrollador",
@@ -43,9 +47,21 @@ const EQUIPO: Array[Dictionary] = [
 		"foto": "res://Assets/Creditos/Equipo/BrunoRoque.png",
 		"easter_egg": true
 	},
-	{"nombre": "Diego Constanzo", "rol": "Desarrollador", "foto": ""},
-	{"nombre": "Cristopher González", "rol": "Desarrollador", "foto": ""},
-	{"nombre": "Gabriel Araya", "rol": "Desarrollador", "foto": ""},
+	{
+		"nombre": "Diego Constanzo",
+		"rol": "Desarrollador",
+		"foto": "res://Assets/Creditos/Equipo/DiegoConstanzo.png"
+	},
+	{
+		"nombre": "Cristopher González",
+		"rol": "Desarrollador",
+		"foto": "res://Assets/Creditos/Equipo/ChristoferGonzalez.png"
+	},
+	{
+		"nombre": "Gabriel Araya",
+		"rol": "Desarrollador",
+		"foto": "res://Assets/Creditos/Equipo/GabrielAraya.png"
+	},
 ]
 
 const FOTO_LADO := 48

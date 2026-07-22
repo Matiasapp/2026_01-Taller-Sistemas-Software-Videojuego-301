@@ -36,7 +36,13 @@ func _physics_process(delta):
 	var actual_speed = walk_speed
 	var estado = "caminar"
 	
-	if Input.is_action_pressed("correr"):
+	# Con "correr automático" el personaje corre solo y la tecla de correr se
+	# invierte: mantenerla pasa a caminar, para no perder el paso lento.
+	var corriendo := Input.is_action_pressed("correr")
+	if AJUSTES.correr_automatico:
+		corriendo = not corriendo
+
+	if corriendo:
 		actual_speed = run_speed
 		estado = "correr"
 	
