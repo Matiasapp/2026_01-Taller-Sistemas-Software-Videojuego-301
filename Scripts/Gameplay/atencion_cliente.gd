@@ -325,6 +325,7 @@ func _on_diagnostico_resuelto(correcto: bool) -> void:
 	# La reseña del cliente se escribe más tarde (al elegir la pieza), cuando esta
 	# escena ya no existe: se deja anotado qué se reparó para que pueda mencionarlo.
 	DATOSGLOBALES.registrar_falla_atencion(cliente_actual.falla)
+	DATOSGLOBALES.registrar_cliente_atencion(cliente_actual.nombre)
 
 	var resultado_diagnostico: String = "correcto" if correcto else "incorrecto"
 	DATOSGLOBALES.registrar_evento_dia(
