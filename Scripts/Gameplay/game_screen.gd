@@ -91,6 +91,10 @@ const TEXTURA_TALLER_ABIERTO: Texture2D = preload("res://Assets/Sprites/mapa fin
 func _ready() -> void:
 	randomize()
 
+	# Red de seguridad: al volver al taller, el modo prueba (easter egg) siempre
+	# queda desactivado, para que nunca se quede "pegado" y bloquee la economía.
+	DATOSGLOBALES.modo_prueba = false
+
 	# Temporizador de llegada de clientes (uno a la vez).
 	timer_llegada = Timer.new()
 	timer_llegada.one_shot = true
@@ -321,7 +325,7 @@ func _input(event):
 
 	if jugador_en_rango_easter_egg:
 		get_viewport().set_input_as_handled()
-		CARGADOR.cambiar_escena("res://Scenes/Minigames/Crossy_Road/Crossy Road.tscn")
+		lanzar_minijuego_prueba()
 
 
 # =========================
@@ -535,11 +539,14 @@ func _precalentar_polvo_alzadora() -> void:
 	particulas_alzadora.emitting = false
 	particulas_alzadora.modulate = polvo_alzadora_modulate
 
-## Texto del cartel de atención según haya o no un cliente esperando.
+## Texto del cartel de atención según el estado del taller y si hay cliente.
 func actualizar_mensaje_atender() -> void:
 	if not jugador_en_rango_atender_cliente:
 		return
-	if hay_cliente_esperando():
+	if not taller_abierto:
+		mensaje_atender_cliente.text = "El taller está cerrado"
+		mensaje_atender_cliente.modulate = Color.GRAY
+	elif hay_cliente_esperando():
 		mensaje_atender_cliente.text = "Presiona [E] para Atender Cliente"
 		mensaje_atender_cliente.modulate = Color.WHITE
 	else:
@@ -555,6 +562,20 @@ func lanzar_minijuego_random() -> void:
 
 	var escena_random = minijuegos.pick_random()
 	print("Cargando minijuego:", escena_random)
+	CARGADOR.cambiar_escena(escena_random)
+
+
+## Easter egg del taller (collision shape del PC): lanza un minijuego CUALQUIERA en
+## modo prueba. No toca dinero ni reputación (guardas en DATOSGLOBALES) y al terminar
+## vuelve al taller. Solo activa el flag si de verdad hay un minijuego que cargar.
+func lanzar_minijuego_prueba() -> void:
+	if minijuegos.is_empty():
+		print("No hay minijuegos disponibles")
+		return
+
+	DATOSGLOBALES.modo_prueba = true
+	var escena_random = minijuegos.pick_random()
+	print("Easter egg (modo prueba, sin efecto en economía/reputación): ", escena_random)
 	CARGADOR.cambiar_escena(escena_random)
 
 

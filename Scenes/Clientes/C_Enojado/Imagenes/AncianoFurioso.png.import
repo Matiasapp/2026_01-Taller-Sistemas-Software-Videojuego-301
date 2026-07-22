@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/AncianoFurioso.png-bae9fcfc98e4c90beee5ef5268
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

@@ -6,10 +6,6 @@
 [ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="4_theme"]
 [ext_resource type="Texture2D" uid="uid://b8y14vue8yjgd" path="res://Assets/UI/Cuadros_UI.png" id="5_cuadro"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_marco"]
-atlas = ExtResource("5_cuadro")
-region = Rect2(96, 188, 284, 357)
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fondo"]
 bg_color = Color(0.09, 0.06, 0.04, 1)
 border_width_left = 2
@@ -17,6 +13,10 @@ border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0.882, 0.686, 0.18, 0.45)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_marco"]
+atlas = ExtResource("5_cuadro")
+region = Rect2(96, 188, 284, 357)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slbnv"]
 bg_color = Color(0.09, 0.06, 0.04, 0.9)
@@ -250,7 +250,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ol8d6")
 
-[node name="Fondo" type="Panel" parent="."]
+[node name="Fondo" type="Panel" parent="." unique_id=4753950]
 layout_mode = 0
 offset_left = 126.0
 offset_top = 24.0
@@ -258,7 +258,7 @@ offset_right = 1026.0
 offset_bottom = 624.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_fondo")
 
-[node name="Marco" type="NinePatchRect" parent="."]
+[node name="Marco" type="NinePatchRect" parent="." unique_id=1346533247]
 layout_mode = 0
 offset_left = 200.0
 offset_top = 70.0
@@ -267,12 +267,13 @@ offset_bottom = 695.0
 scale = Vector2(0.8, 0.8)
 texture = SubResource("AtlasTexture_marco")
 region_rect = Rect2(0, 0.28019667, 284.08963, 356.71982)
-patch_margin_left = 23
+patch_margin_left = 209
 patch_margin_top = 31
-patch_margin_right = 17
+patch_margin_right = 209
 patch_margin_bottom = 30
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=255714360]
+visible = false
 position = Vector2(585.5, 340.99997)
 scale = Vector2(0.41725853, 0.4453125)
 texture = ExtResource("2_slbnv")
@@ -293,7 +294,7 @@ text = "RESEÑAS"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SinResenas" type="Label" parent="."]
+[node name="SinResenas" type="Label" parent="." unique_id=625252303]
 layout_mode = 0
 offset_left = 250.0
 offset_top = 330.0
@@ -418,7 +419,7 @@ text = " Espacio
  para
  continuar"
 
-[node name="BtnVolver" type="Button" parent="."]
+[node name="BtnVolver" type="Button" parent="." unique_id=211840384]
 layout_mode = 0
 offset_left = 820.0
 offset_top = 582.0
@@ -426,6 +427,39 @@ offset_right = 960.0
 offset_bottom = 618.0
 theme = ExtResource("4_theme")
 text = "Volver"
+
+[node name="BtnAnteriorPag" type="Button" parent="." unique_id=946032332]
+visible = false
+layout_mode = 0
+offset_left = 250.0
+offset_top = 582.0
+offset_right = 330.0
+offset_bottom = 618.0
+theme = ExtResource("4_theme")
+text = "Ant."
+
+[node name="LabelPagina" type="Label" parent="." unique_id=496635441]
+visible = false
+layout_mode = 0
+offset_left = 340.0
+offset_top = 582.0
+offset_right = 480.0
+offset_bottom = 618.0
+theme_override_colors/font_color = Color(0.9, 0.9, 0.85, 1)
+theme_override_font_sizes/font_size = 18
+text = "Pagina 1/1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BtnSiguientePag" type="Button" parent="." unique_id=1124033778]
+visible = false
+layout_mode = 0
+offset_left = 490.0
+offset_top = 582.0
+offset_right = 570.0
+offset_bottom = 618.0
+theme = ExtResource("4_theme")
+text = "Sig."
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=697246481]
 libraries/ = SubResource("AnimationLibrary_2nl8y")

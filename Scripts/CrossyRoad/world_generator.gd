@@ -10,7 +10,7 @@ extends Node2D
 
 # META: distancia (en casillas) a la que se coloca la tienda de repuestos.
 # Debe coincidir con "meta_casillas" del jugador para que la victoria y la franja queden alineadas.
-@onready var meta_casillas: int = 79
+@onready var meta_casillas: int = 59
 @export var franja_meta_escena: PackedScene
 #Audio Ambiente
 @onready var ambiente_mapa: AudioStreamPlayer = $AmbienteMapa

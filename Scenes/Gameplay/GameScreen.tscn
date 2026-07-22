@@ -413,18 +413,22 @@ text = "Presiona E para abrir el taller"
 position = Vector2(1297, -119)
 
 [node name="LabelInteractuarPc" type="Label" parent="Marker2DInteractuarPc" unique_id=554658397]
-offset_right = 40.0
-offset_bottom = 23.0
+offset_left = 9.0
+offset_top = 193.0
+offset_right = 221.0
+offset_bottom = 216.0
 text = "Presiona [E] para usar el PC"
 
 [node name="Marker2DAtenderCliente" type="Marker2D" parent="." unique_id=233723869]
 
 [node name="LabelAtenderCliente" type="Label" parent="Marker2DAtenderCliente" unique_id=1208863323]
-offset_left = -209.0
-offset_top = 656.0
-offset_right = 123.0
-offset_bottom = 679.0
+offset_left = -204.0
+offset_top = 652.0
+offset_right = 139.0
+offset_bottom = 675.0
 text = "Presiona [E] para Atender a un Nuevo Cliente"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="AreaAbrirTaller" type="Area2D" parent="." unique_id=1436614710]
 
@@ -489,14 +493,16 @@ region_rect = Rect2(1097, 883, 446, 419)
 
 [node name="alzadora de autos ocupada" type="Sprite2D" parent="Node2D" unique_id=1354186150]
 visible = false
-position = Vector2(-627.125, -68.99998)
+position = Vector2(-588.125, -90.00001)
 scale = Vector2(0.99076205, 0.93793094)
 texture = SubResource("AtlasTexture_w8673")
+offset = Vector2(-39.363636, 22.38974)
 
 [node name="alzadora de autos desocupada" type="Sprite2D" parent="Node2D" unique_id=379708501]
-position = Vector2(-599.12506, -52.999985)
+position = Vector2(-589.125, -89)
 scale = Vector2(0.956, 0.92499995)
 texture = SubResource("AtlasTexture_odw3g")
+offset = Vector2(-10.460316, 38.918945)
 
 [node name="ParticulasAlzadora" type="GPUParticles2D" parent="Node2D" unique_id=778899001]
 modulate = Color(0, 0, 0, 1)

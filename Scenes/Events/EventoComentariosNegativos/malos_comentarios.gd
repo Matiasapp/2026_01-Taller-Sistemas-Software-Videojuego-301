@@ -42,6 +42,16 @@ var _estilo_base: StyleBoxFlat
 	$Comentario_1, $Comentario_2, $Comentario_3, $Comentario_4, $Comentario_5
 ]
 
+# --- PAGINACIÓN ---
+# El panel tiene 5 tarjetas; cuando se piden más reseñas (p. ej. "Todos los días"
+# desde el PC) se paginan de a 5. Los controles se ocultan si cabe todo en una.
+const POR_PAGINA := 5
+var _resenas_actuales: Array = []
+var _pagina := 0
+@onready var btn_pag_prev: Button = $BtnAnteriorPag
+@onready var btn_pag_next: Button = $BtnSiguientePag
+@onready var label_pagina: Label = $LabelPagina
+
 @onready var labels: Array[RichTextLabel] = [
 	$Comentario_1/RichTextLabel,
 	$Comentario_2/RichTextLabel,
@@ -76,17 +86,34 @@ func _ready() -> void:
 	boton_volver.pressed.connect(_on_volver_pressed)
 	boton_volver.mouse_entered.connect(AUDIOMANAGER.play_ui_soft_hover)
 
+	btn_pag_prev.pressed.connect(_on_pagina_anterior)
+	btn_pag_next.pressed.connect(_on_pagina_siguiente)
+	btn_pag_prev.mouse_entered.connect(AUDIOMANAGER.play_ui_soft_hover)
+	btn_pag_next.mouse_entered.connect(AUDIOMANAGER.play_ui_soft_hover)
 
-## Pinta las reseñas recibidas (array de {usuario, comentario}). Muestra tantas
-## tarjetas como reseñas haya, hasta el máximo de la escena.
+
+## Pinta las reseñas recibidas (array de {usuario, comentario}), paginadas de a 5.
+## Empieza siempre en la primera página.
 func mostrar_resenas(resenas: Array) -> void:
-	var cantidad: int = mini(resenas.size(), paneles.size())
+	_resenas_actuales = resenas
+	_pagina = 0
+	_pintar_pagina()
+
+
+## Pinta la página actual de reseñas y ajusta los controles de paginación.
+func _pintar_pagina() -> void:
+	var total: int = _resenas_actuales.size()
+	var paginas: int = maxi(1, ceili(float(total) / float(POR_PAGINA)))
+	_pagina = clampi(_pagina, 0, paginas - 1)
+
+	var inicio: int = _pagina * POR_PAGINA
+	var en_pagina: int = clampi(total - inicio, 0, POR_PAGINA)
 
 	for i in paneles.size():
-		paneles[i].visible = i < cantidad
+		paneles[i].visible = i < en_pagina
 
-	for i in cantidad:
-		var resena: Dictionary = resenas[i]
+	for i in en_pagina:
+		var resena: Dictionary = _resenas_actuales[inicio + i]
 		labels[i].text = "[b]%s[/b]\n%s" % [
 			str(resena.get("usuario", "Anonimo")),
 			str(resena.get("comentario", ""))
@@ -96,15 +123,37 @@ func mostrar_resenas(resenas: Array) -> void:
 
 	# El día sin reseñas se avisa con una línea dentro del marco, igual que hace la
 	# bitácora del tablero: el título del panel no cambia.
-	sin_resenas.visible = cantidad == 0
+	sin_resenas.visible = total == 0
 
-	if cantidad > 0:
+	# Controles de paginación: solo cuando hay más de una página.
+	var hay_paginas: bool = paginas > 1
+	btn_pag_prev.visible = hay_paginas
+	btn_pag_next.visible = hay_paginas
+	label_pagina.visible = hay_paginas
+	if hay_paginas:
+		label_pagina.text = "Pagina %d/%d" % [_pagina + 1, paginas]
+		btn_pag_prev.disabled = _pagina <= 0
+		btn_pag_next.disabled = _pagina >= paginas - 1
+
+	if en_pagina > 0:
 		# La animación escribe el texto de a poco. Ojo: hay dos animaciones en la
 		# librería y llamarlas seguidas hace que la segunda cancele a la primera.
 		animacion.stop()
 		animacion.play("mostrarTexto")
 	else:
 		animacion.stop()
+
+
+func _on_pagina_anterior() -> void:
+	AUDIOMANAGER.play_ui_soft_click()
+	_pagina -= 1
+	_pintar_pagina()
+
+
+func _on_pagina_siguiente() -> void:
+	AUDIOMANAGER.play_ui_soft_click()
+	_pagina += 1
+	_pintar_pagina()
 
 
 ## Pinta la tarjeta de verde o rojo según el tono de la reseña.

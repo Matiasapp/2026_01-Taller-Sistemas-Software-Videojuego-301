@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/ClienteFurMov1.png-292cb11a203f0863e0e1c84aa9
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
