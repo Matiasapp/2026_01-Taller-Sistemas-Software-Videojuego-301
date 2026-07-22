@@ -200,6 +200,34 @@ theme_override_constants/separation = 12
 modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 
+[node name="LblMovimiento" type="Label" parent="Marco/Contenido/Tabs/Juego/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Movimiento"
+
+[node name="FilaCorrerAuto" type="HBoxContainer" parent="Marco/Contenido/Tabs/Juego/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Marco/Contenido/Tabs/Juego/VBox/FilaCorrerAuto"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Correr automático"
+
+[node name="CheckCorrerAuto" type="CheckButton" parent="Marco/Contenido/Tabs/Juego/VBox/FilaCorrerAuto"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="LblCorrerAutoAyuda" type="Label" parent="Marco/Contenido/Tabs/Juego/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
+theme_override_font_sizes/font_size = 12
+text = "Corres sin mantener la tecla. Mantenla presionada para caminar."
+
+[node name="SeparadorMovimiento" type="HSeparator" parent="Marco/Contenido/Tabs/Juego/VBox"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+
 [node name="LblControles" type="Label" parent="Marco/Contenido/Tabs/Juego/VBox" unique_id=971995065]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
