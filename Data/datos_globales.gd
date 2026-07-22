@@ -313,15 +313,6 @@ func _agregar_evento_stats(stats: Dictionary, texto: String) -> void:
 # La reseña es la constancia visible, y se lee en el panel RESEÑAS del PC.
 # Cada atencion genera como maximo una reseña, asi que un dia nunca pasa de 5.
 
-const RESENA_USUARIOS: Array[String] = [
-	"Miguel83",
-	"Juancarlos@lospaseo",
-	"CaraTrolll",
-	"Juaquin",
-	"Miguelin2010",
-	"IsidoraLabadora",
-	"Destructor de Familias"
-]
 
 const RESENA_COMENTARIOS_NEGATIVOS: Array[String] = [
 	"La atencion de este lugar a sido terrible",
@@ -405,6 +396,11 @@ func registrar_resena_positiva(dia: int = -1) -> void:
 func registrar_falla_atencion(falla: String) -> void:
 	resumen_atencion["falla"] = falla
 
+## Guardar el nombre de la pernosa que realizara el comentario
+func registrar_cliente_atencion(nombre:String) -> void:
+	resumen_atencion["cliente"] = nombre
+
+
 
 ## Guarda la reseña estructurada (usuario, comentario y tono) para poder pintarla
 ## en el panel del PC, y además como línea de color en la bitácora.
@@ -414,10 +410,12 @@ func _registrar_resena(tipo: String, comentarios: Array, color: String, dia: int
 
 	var stats: Dictionary = asegurar_estadistica_dia(dia)
 	var resenas: Array = stats.get("resenas", [])
+	var reseñas = DATOSGLOBALES.get_resenas_dia(DATOSGLOBALES.dia_actual)
+
 
 	# Sin repetir dentro del mismo día: dos clientes distintos opinando con las
 	# mismas palabras exactas se nota mucho en el panel del PC.
-	var usuario: String = _elegir_sin_repetir(RESENA_USUARIOS, resenas, "usuario")
+	var usuario := str(resumen_atencion.get("cliente", "Cliente"))
 	var comentario: String = _elegir_sin_repetir(comentarios, resenas, "comentario")
 
 	resenas.append({
