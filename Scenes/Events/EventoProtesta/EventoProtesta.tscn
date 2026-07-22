@@ -5,8 +5,8 @@
 [ext_resource type="Texture2D" uid="uid://cdhwne8r52lhk" path="res://Assets/Events/EventoProtesta/1m.png" id="3_1m"]
 [ext_resource type="Texture2D" uid="uid://bbrvp17tmybl8" path="res://Assets/Events/EventoProtesta/2.png" id="4_2"]
 [ext_resource type="Texture2D" uid="uid://dcyvld18sh1lm" path="res://Assets/Events/EventoProtesta/3h.png" id="5_3h"]
-[ext_resource type="Texture2D" uid="uid://sfgldwsbpkc1" path="res://Assets/Events/EventoProtesta/3m.png" id="6_3m"]
 [ext_resource type="Texture2D" uid="uid://dwuxd24ol4hjj" path="res://Assets/Sprites/background_game_screen.png" id="5_of38q"]
+[ext_resource type="Texture2D" uid="uid://sfgldwsbpkc1" path="res://Assets/Events/EventoProtesta/3m.png" id="6_3m"]
 [ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="6_ed0kk"]
 [ext_resource type="Texture2D" uid="uid://cxqi1lh5nip8y" path="res://Assets/UI/button_style.png" id="7_oychl"]
 [ext_resource type="AudioStream" uid="uid://b2t66hdqmo381" path="res://Assets/Audio/Menu/click.wav" id="8_uc248"]
@@ -186,13 +186,14 @@ bus = &"SFX"
 
 [node name="CacerolazoSound" type="AudioStreamPlayer" parent="." unique_id=2026585858]
 stream = ExtResource("11_2o7bf")
+volume_db = -15.0
 autoplay = true
 bus = &"SFX"
 parameters/looping = true
 
 [node name="ProtestaLoop" type="AudioStreamPlayer" parent="." unique_id=944355489]
 stream = ExtResource("12_2us3l")
-volume_db = -10.0
+volume_db = -20.0
 autoplay = true
 bus = &"Music"
 parameters/looping = true

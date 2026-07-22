@@ -12,7 +12,7 @@ dest_files=["res://.godot/imported/finalmalo1.ogg-45dcb3607d9fde60a8c6bff7cbe370
 
 [params]
 
-loop=false
+loop=true
 loop_offset=0
 bpm=0
 beat_count=0
