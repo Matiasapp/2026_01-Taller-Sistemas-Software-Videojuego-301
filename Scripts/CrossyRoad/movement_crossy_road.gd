@@ -8,7 +8,7 @@ extends Node2D
 @onready var label_tiempo_restante = $"../Hud/TiempoRestante"
 
 # META: distancia (en casillas) que el jugador debe recorrer para llegar a la tienda y ganar.
-@onready var meta_casillas: int = 80
+@onready var meta_casillas: int = 60
 @export var bonus_meta: int = 200
 @export var penalizacion_fracaso: int = 100
 @export var tiempo_limite: float = 45.0

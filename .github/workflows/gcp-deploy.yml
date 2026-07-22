@@ -11,6 +11,9 @@ permissions:
   contents: "read"
   id-token: "write"
 
+env:
+  GODOT_VERSION: "4.6.2"
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -19,48 +22,80 @@ jobs:
       - name: Obtener el código
         uses: actions/checkout@v4
 
+      # Cacheamos el binario (~100 MB) y las plantillas (~500 MB) para no
+      # re-descargarlos en cada corrida. La clave depende de la versión de Godot.
+      - name: Cachear Godot y plantillas de exportación
+        id: cache-godot
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/godot-bin
+            ~/.local/share/godot/export_templates
+          key: godot-${{ env.GODOT_VERSION }}-linux
+
       - name: Configurar Godot Headless
         run: |
-          GODOT_VERSION="4.6.2"
+          set -uo pipefail
+          BIN="$HOME/godot-bin/godot"
+          TEMPLATES_DIR="$HOME/.local/share/godot/export_templates/${GODOT_VERSION}.stable"
 
-          echo "Descargando Godot Engine v${GODOT_VERSION}..."
-          wget -q https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip
-          unzip -q Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip
-          sudo mv Godot_v${GODOT_VERSION}-stable_linux.x86_64 /usr/local/bin/godot
-          sudo chmod +x /usr/local/bin/godot
+          if [ ! -f "$BIN" ]; then
+            echo "Descargando Godot Engine v${GODOT_VERSION}..."
+            mkdir -p "$HOME/godot-bin"
+            wget -q "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
+            unzip -q "Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
+            mv "Godot_v${GODOT_VERSION}-stable_linux.x86_64" "$BIN"
+            chmod +x "$BIN"
+          fi
+          # Lo dejamos accesible como 'godot' en el PATH.
+          sudo ln -sf "$BIN" /usr/local/bin/godot
 
-          echo "Descargando plantillas de exportación..."
-          wget -q https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_export_templates.tpz
-          unzip -q Godot_v${GODOT_VERSION}-stable_export_templates.tpz
-          mkdir -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
-          mv templates/* ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable/
+          if [ ! -d "$TEMPLATES_DIR" ]; then
+            echo "Descargando plantillas de exportación..."
+            wget -q "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_export_templates.tpz"
+            unzip -q "Godot_v${GODOT_VERSION}-stable_export_templates.tpz"
+            mkdir -p "$TEMPLATES_DIR"
+            mv templates/* "$TEMPLATES_DIR/"
+          fi
+
+          godot --version
 
       - name: Exportar juego para HTML5
         run: |
+          set -uo pipefail
           mkdir -p dist
 
+          # Importamos assets primero (genera los .import). Toleramos código != 0
+          # porque el proyecto emite advertencias de autoload en headless que no
+          # impiden el export; el guard de más abajo es el que decide si sirvió.
           echo "Importando assets del proyecto..."
-          godot --headless --editor --quit || true
+          godot --headless --import || true
 
           echo "Exportando versión Web..."
-          godot --headless --export-release "Web" dist/index.html
+          godot --headless --export-release "Web" dist/index.html || true
 
-          echo "Verificando qué archivos se generaron:"
+          echo "Archivos generados:"
           ls -la dist
+
+          # GUARD CRÍTICO: si el export no dejó los binarios clave, abortamos ANTES
+          # de tocar el bucket. Sin esto, un export a medias + rsync --delete
+          # borraría el sitio en producción.
+          test -s dist/index.wasm || { echo "ERROR: falta o está vacío dist/index.wasm"; exit 1; }
+          test -s dist/index.pck  || { echo "ERROR: falta o está vacío dist/index.pck";  exit 1; }
 
       - name: Autenticar en Google Cloud vía WIF
         id: auth
-        uses: google-github-actions/auth@v3 # Actualizado a v3
+        uses: google-github-actions/auth@v3
         with:
           workload_identity_provider: "projects/706450394717/locations/global/workloadIdentityPools/github-actions-pool/providers/github-provider"
           service_account: "github-actions-deploy@project-b6032d06-ae91-486b-836.iam.gserviceaccount.com"
 
       - name: Configurar Google Cloud SDK
-        uses: google-github-actions/setup-gcloud@v3 # Actualizado a v3
+        uses: google-github-actions/setup-gcloud@v3
 
       - name: Desplegar al Bucket
         run: |
-          # Convertimos el nombre de la rama a minúsculas
+          set -uo pipefail
           BRANCH_NAME=$(echo "${{ github.ref_name }}" | tr '[:upper:]' '[:lower:]')
 
           if [ "$BRANCH_NAME" == "main" ]; then
@@ -74,5 +109,22 @@ jobs:
             exit 1
           fi
 
-          echo "Sincronizando binarios y assets de Godot en el bucket: $DEST_FINAL"
-          gcloud storage rsync ./dist $DEST_FINAL --delete-unmatched-destination-objects
+          echo "Sincronizando en el bucket: $DEST_FINAL"
+          # --gzip-local: sube los archivos compresibles YA gzipeados y con la
+          # metadata Content-Encoding: gzip. Es la ÚNICA forma en que GCS sirve
+          # contenido comprimido (transcoding descompresivo). Nada de .gz/.br
+          # hermanos: eso no lo sirve GCS. Brotli no es compatible con GCS.
+          gcloud storage rsync ./dist "$DEST_FINAL" \
+            --recursive \
+            --delete-unmatched-destination-objects \
+            --gzip-local=wasm,pck,js,html,json,svg
+
+          # Aseguramos el Content-Type del .wasm (necesario para la compilación
+          # streaming del navegador). Preserva el Content-Encoding: gzip anterior.
+          gcloud storage objects update "$DEST_FINAL/index.wasm" \
+            --content-type=application/wasm
+
+          # index.html sin caché: así un deploy nuevo se ve al instante y no queda
+          # una versión vieja pegada en el CDN/navegador.
+          gcloud storage objects update "$DEST_FINAL/index.html" \
+            --cache-control="no-cache, max-age=0"

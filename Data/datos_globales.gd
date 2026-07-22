@@ -114,6 +114,9 @@ var dinero: int = 500:
 			_limpiar_final_pendiente()
 
 func sumar_dinero(cantidad: int):
+	# En modo prueba (easter egg del taller) el dinero no entra a la caja.
+	if modo_prueba:
+		return
 	dinero += cantidad
 	ingresos_dia += cantidad
 
@@ -450,6 +453,14 @@ func _elegir_sin_repetir(opciones: Array, resenas: Array, campo: String) -> Stri
 ## No se guarda: es transitorio, solo dura lo que dura la partida suelta.
 var easter_egg_activo: bool = false
 
+## True mientras se juega un minijuego de PRUEBA lanzado desde el taller (el easter
+## egg del PC/collision shape). Igual que easter_egg_activo NO toca dinero ni
+## reputación, pero al terminar vuelve al TALLER (no al menú), para no perder la
+## sesión. Las guardas están centralizadas en sumar_dinero(),
+## reportar_rendimiento_minijuego() y obtener_destino_post_escena(), así que TODOS
+## los minijuegos lo respetan sin tocar cada uno. Es transitorio y no se guarda.
+var modo_prueba: bool = false
+
 
 ## Reseñas publicadas en un día concreto (array de {usuario, comentario}).
 func get_resenas_dia(dia: int) -> Array:
@@ -544,6 +555,11 @@ func reportar_rendimiento_minijuego(
 	nombre_minijuego: String = "Minijuego",
 	detalle: String = ""
 ) -> int:
+	# En modo prueba (easter egg del taller) mostramos solo el marcador: no movemos
+	# reputación ni escribimos en la bitácora del día.
+	if modo_prueba:
+		reportar_marcador_suelto(rendimiento, recompensa, nivel_desempeno)
+		return 0
 	resumen_atencion["rendimiento"] = clampf(rendimiento, 0.0, 1.0)
 	resumen_atencion["recompensa_minijuego"] = recompensa
 	resumen_atencion["nivel_desempeno"] = clampi(
@@ -859,6 +875,13 @@ func limpiar_avisos_reputacion() -> void:
 ## Devuelve la escena que debe seguir a la actual. Los finales criticos tienen
 ## prioridad; la evaluacion semanal solo ocurre una vez terminado el dia 5.
 func obtener_destino_post_escena(destino_normal: String) -> String:
+	# Modo prueba (easter egg del taller): la partida no alteró el estado, así que
+	# volvemos directo al destino normal (el taller) sin evaluar finales ni guardar.
+	if modo_prueba:
+		modo_prueba = false
+		volviendo_de_atencion = false
+		return destino_normal
+
 	# Si la reputacion o el dinero alcanzaron un limite terminal durante una
 	# atencion, primero se completa el minijuego. Su resultado todavia puede
 	# compensar la perdida.
