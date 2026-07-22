@@ -13,6 +13,8 @@ extends CanvasLayer
 @onready var check_pantalla: CheckButton = %CheckPantalla
 @onready var check_vsync: CheckButton = %CheckVsync
 
+@onready var check_correr_auto: CheckButton = %CheckCorrerAuto
+
 @onready var btn_restablecer: Button = %BtnRestablecer
 @onready var btn_volver: Button = %BtnVolver
 
@@ -50,6 +52,12 @@ func _ready() -> void:
 	check_vsync.button_pressed = AJUSTES.vsync
 	check_pantalla.toggled.connect(func(activo: bool) -> void: AJUSTES.set_pantalla_completa(activo))
 	check_vsync.toggled.connect(func(activo: bool) -> void: AJUSTES.set_vsync(activo))
+
+	# --- Juego ---
+	check_correr_auto.button_pressed = AJUSTES.correr_automatico
+	check_correr_auto.toggled.connect(
+		func(activo: bool) -> void: AJUSTES.set_correr_automatico(activo)
+	)
 
 	# --- Controles ---
 	for accion in _botones_control:
@@ -139,6 +147,7 @@ func _on_restablecer() -> void:
 	slider_sfx.value = AJUSTES.get_volumen("SFX")
 	check_pantalla.button_pressed = AJUSTES.fullscreen
 	check_vsync.button_pressed = AJUSTES.vsync
+	check_correr_auto.button_pressed = AJUSTES.correr_automatico
 	for accion in _botones_control:
 		_botones_control[accion].text = AJUSTES.nombre_tecla(accion)
 

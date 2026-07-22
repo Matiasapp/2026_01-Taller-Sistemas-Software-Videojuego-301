@@ -17,6 +17,8 @@ var music_volume: float = 1.0
 var sfx_volume: float = 1.0
 var fullscreen: bool = false
 var vsync: bool = true
+## Con esto activo el personaje corre solo y la tecla de correr pasa a caminar.
+var correr_automatico: bool = false
 
 
 func _ready() -> void:
@@ -80,6 +82,11 @@ func aplicar_vsync(activo: bool) -> void:
 	)
 
 
+func set_correr_automatico(activo: bool) -> void:
+	correr_automatico = activo
+	guardar()
+
+
 func set_vsync(activo: bool) -> void:
 	aplicar_vsync(activo)
 	guardar()
@@ -126,6 +133,7 @@ func guardar() -> void:
 	cfg.set_value("audio", "sfx", sfx_volume)
 	cfg.set_value("video", "fullscreen", fullscreen)
 	cfg.set_value("video", "vsync", vsync)
+	cfg.set_value("juego", "correr_automatico", correr_automatico)
 	for accion in ACCIONES_REMAPEABLES:
 		var ev := get_evento_tecla(accion)
 		if ev:
@@ -145,6 +153,7 @@ func cargar() -> void:
 	sfx_volume = cfg.get_value("audio", "sfx", sfx_volume)
 	fullscreen = cfg.get_value("video", "fullscreen", fullscreen)
 	vsync = cfg.get_value("video", "vsync", vsync)
+	correr_automatico = cfg.get_value("juego", "correr_automatico", correr_automatico)
 
 	for accion in ACCIONES_REMAPEABLES:
 		var code: int = cfg.get_value("input", accion, -1)
@@ -164,6 +173,7 @@ func restablecer() -> void:
 	sfx_volume = 1.0
 	fullscreen = false
 	vsync = true
+	correr_automatico = false
 	InputMap.load_from_project_settings()
 	aplicar_todo()
 	guardar()
