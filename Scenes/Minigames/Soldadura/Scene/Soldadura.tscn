@@ -84,4 +84,5 @@ autostart = true
 
 [node name="WeldingSound" type="AudioStreamPlayer" parent="." unique_id=780401406]
 stream = ExtResource("3_f3p2b")
+volume_db = -7.0
 bus = &"SFX"

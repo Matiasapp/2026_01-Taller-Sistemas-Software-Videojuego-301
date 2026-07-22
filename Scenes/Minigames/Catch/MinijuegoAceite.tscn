@@ -50,11 +50,11 @@ autostart = true
 [node name="AudioRecoger" type="AudioStreamPlayer2D" parent="." unique_id=1104548428]
 stream = ExtResource("4_caue8")
 
-[node name="AudioGotaPerdida" type="AudioStreamPlayer2D" parent="."]
+[node name="AudioGotaPerdida" type="AudioStreamPlayer2D" parent="." unique_id=1066030441]
 stream = ExtResource("4_caue8")
 pitch_scale = 0.7491535
 
-[node name="AudioArrastre" type="AudioStreamPlayer" parent="."]
+[node name="AudioArrastre" type="AudioStreamPlayer" parent="." unique_id=2050903808]
 stream = ExtResource("11_bucketdrag")
 volume_db = -40.0
 
@@ -203,6 +203,7 @@ metadata/_edit_use_anchors_ = true
 
 [node name="MusicLoop" type="AudioStreamPlayer" parent="." unique_id=2097452545]
 stream = ExtResource("10_flekr")
+volume_db = -8.0
 autoplay = true
 parameters/looping = true
 

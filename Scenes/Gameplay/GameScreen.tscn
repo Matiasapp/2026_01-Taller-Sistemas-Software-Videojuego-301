@@ -16,8 +16,8 @@
 [ext_resource type="PackedScene" uid="uid://cyl73mjtc24ao" path="res://Scenes/UI/HUD.tscn" id="10_hi6fo"]
 [ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="11_4i3ym"]
 [ext_resource type="PackedScene" uid="uid://ponv4684dx6a" path="res://Scenes/UI/pause_menu.tscn" id="12_u8dp7"]
-[ext_resource type="AudioStream" uid="uid://oow22vmaxdqq" path="res://Assets/Audio/GameScreen/ambientfx.wav" id="13_imsci"]
-[ext_resource type="AudioStream" uid="uid://dsmrbqe7w6n7u" path="res://Assets/Audio/GameScreen/songloop.wav" id="14_h5ghc"]
+[ext_resource type="AudioStream" uid="uid://bglnii2l6r2pn" path="res://Assets/Audio/GameScreen/ambientfx.ogg" id="16_d4ukn"]
+[ext_resource type="AudioStream" uid="uid://bmwouygfnqut" path="res://Assets/Audio/GameScreen/musicloop.ogg" id="17_d4ukn"]
 [ext_resource type="AudioStream" uid="uid://b0sfqmvnpypyl" path="res://Assets/Audio/GameScreen/PCin.wav" id="17_vuvpm"]
 [ext_resource type="AudioStream" uid="uid://3u0kjs1x3ovr" path="res://Assets/Audio/GameScreen/PCout.wav" id="18_x4ih4"]
 [ext_resource type="AudioStream" uid="uid://b0dou5eelgkjo" path="res://Assets/Audio/GameScreen/opensound.wav" id="19_x4ih4"]
@@ -589,13 +589,18 @@ shape = SubResource("RectangleShape2D_u8dp7")
 
 [node name="AmbientFX" type="AudioStreamPlayer" parent="." unique_id=874564267]
 process_mode = 3
-stream = ExtResource("13_imsci")
+stream = ExtResource("16_d4ukn")
+volume_db = -6.0
 bus = &"SFX"
+parameters/looping = true
 
 [node name="MusicLoop" type="AudioStreamPlayer" parent="." unique_id=1205667077]
 process_mode = 3
-stream = ExtResource("14_h5ghc")
+stream = ExtResource("17_d4ukn")
+volume_db = -6.0
+autoplay = true
 bus = &"Music"
+parameters/looping = true
 
 [node name="PCSoundin" type="AudioStreamPlayer" parent="." unique_id=1059407186]
 stream = ExtResource("17_vuvpm")
@@ -609,6 +614,7 @@ bus = &"SFX"
 
 [node name="OpenSound" type="AudioStreamPlayer" parent="." unique_id=1774960755]
 stream = ExtResource("19_x4ih4")
+volume_db = -4.0
 bus = &"SFX"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=446820249]

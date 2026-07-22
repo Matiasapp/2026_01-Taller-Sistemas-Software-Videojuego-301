@@ -145,6 +145,7 @@ libraries/ = SubResource("AnimationLibrary_hbj5e")
 
 [node name="AudioApagon" type="AudioStreamPlayer2D" parent="." unique_id=1768985677]
 stream = ExtResource("4_kcvss")
+volume_db = -2.0
 max_distance = 4096.0
 bus = &"SFX"
 

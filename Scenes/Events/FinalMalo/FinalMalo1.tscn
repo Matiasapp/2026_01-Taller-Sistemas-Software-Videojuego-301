@@ -308,7 +308,7 @@ bus = &"SFX"
 
 [node name="StringLoop" type="AudioStreamPlayer" parent="." unique_id=323153690]
 stream = ExtResource("24_baaun")
-volume_db = -10.0
+volume_db = -18.0
 autoplay = true
 bus = &"Music"
 

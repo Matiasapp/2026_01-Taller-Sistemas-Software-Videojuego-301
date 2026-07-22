@@ -45,7 +45,7 @@ const ATENCION_CLIENTE_SCENE := "res://Scenes/Gameplay/AtencionCliente.tscn"
 # porque el evento está escrito desde ese momento ("Abres la cortina del taller...").
 const PROTESTA_SCENE := "res://Scenes/Events/EventoProtesta/EventoProtesta.tscn"
 # Evento que se muestra al volver del minijuego si el cliente era un estafador.
-const EVENTO_ESTAFA_SCENE := "res://Scenes/Events/EventoEstafa.tscn"
+const EVENTO_ESTAFA_SCENE := "res://Scenes/Events/EventoEstafa/EventoEstafa.tscn"
 
 @onready var en_desarrollo = $en_desarrollo
 @onready var resumen_dia = $PantallaResumenDia

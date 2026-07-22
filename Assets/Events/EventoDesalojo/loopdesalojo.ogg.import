@@ -12,7 +12,7 @@ dest_files=["res://.godot/imported/loopdesalojo.ogg-6728c9af171b13c92fd0c6003de8
 
 [params]
 
-loop=false
+loop=true
 loop_offset=0
 bpm=0
 beat_count=0
