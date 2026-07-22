@@ -482,23 +482,27 @@ text = "[ Presiona espacio para empezar ]"
 
 [node name="BreakSound" type="AudioStreamPlayer" parent="." unique_id=1397499049]
 stream = ExtResource("10_xi774")
+volume_db = -5.0
 bus = &"SFX"
 
 [node name="HitSound" type="AudioStreamPlayer" parent="." unique_id=1533301797]
 stream = ExtResource("11_f37eh")
+volume_db = -5.0
 bus = &"SFX"
 
 [node name="InflateSound" type="AudioStreamPlayer" parent="." unique_id=1218217973]
 stream = ExtResource("12_4nbr0")
+volume_db = -3.0
 bus = &"SFX"
 
 [node name="CompleteSound" type="AudioStreamPlayer" parent="." unique_id=1979186773]
 stream = ExtResource("13_f37eh")
+volume_db = -2.0
 bus = &"SFX"
 
 [node name="MusicLoop" type="AudioStreamPlayer" parent="." unique_id=2035088671]
 stream = ExtResource("14_4nbr0")
-volume_db = -20.0
+volume_db = -22.0
 bus = &"Music"
 
 [connection signal="mouse_entered" from="Resumen/PanelFinal/Button" to="." method="_on_boton_continuar_mouse_entered"]

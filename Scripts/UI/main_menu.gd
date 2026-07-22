@@ -42,7 +42,7 @@ const EQUIPO: Array[Dictionary] = [
 		"foto": "res://Assets/Creditos/Equipo/MatiasPonce.png"
 	},
 	{
-		"nombre": "Bruno Bernardo Roque Mendoza",
+		"nombre": "Bruno Roque",
 		"rol": "Música y diseño de audio · Desarrollador",
 		"foto": "res://Assets/Creditos/Equipo/BrunoRoque.png",
 		"easter_egg": true

@@ -39,4 +39,4 @@ imagen_10_fondo = ExtResource("17_10")
 
 [node name="StringLoop" parent="." index="7" unique_id=323153690]
 stream = ExtResource("18_8do3p")
-volume_db = -7.0
+volume_db = -10.0

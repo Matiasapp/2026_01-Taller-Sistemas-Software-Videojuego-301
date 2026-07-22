@@ -114,6 +114,9 @@ var dinero: int = 500:
 			_limpiar_final_pendiente()
 
 func sumar_dinero(cantidad: int):
+	# En modo prueba (easter egg del taller) el dinero no entra a la caja.
+	if modo_prueba:
+		return
 	dinero += cantidad
 	ingresos_dia += cantidad
 
@@ -313,15 +316,6 @@ func _agregar_evento_stats(stats: Dictionary, texto: String) -> void:
 # La reseña es la constancia visible, y se lee en el panel RESEÑAS del PC.
 # Cada atencion genera como maximo una reseña, asi que un dia nunca pasa de 5.
 
-const RESENA_USUARIOS: Array[String] = [
-	"Miguel83",
-	"Juancarlos@lospaseo",
-	"CaraTrolll",
-	"Juaquin",
-	"Miguelin2010",
-	"IsidoraLabadora",
-	"Destructor de Familias"
-]
 
 const RESENA_COMENTARIOS_NEGATIVOS: Array[String] = [
 	"La atencion de este lugar a sido terrible",
@@ -405,6 +399,11 @@ func registrar_resena_positiva(dia: int = -1) -> void:
 func registrar_falla_atencion(falla: String) -> void:
 	resumen_atencion["falla"] = falla
 
+## Guardar el nombre de la pernosa que realizara el comentario
+func registrar_cliente_atencion(nombre:String) -> void:
+	resumen_atencion["cliente"] = nombre
+
+
 
 ## Guarda la reseña estructurada (usuario, comentario y tono) para poder pintarla
 ## en el panel del PC, y además como línea de color en la bitácora.
@@ -414,10 +413,12 @@ func _registrar_resena(tipo: String, comentarios: Array, color: String, dia: int
 
 	var stats: Dictionary = asegurar_estadistica_dia(dia)
 	var resenas: Array = stats.get("resenas", [])
+	var reseñas = DATOSGLOBALES.get_resenas_dia(DATOSGLOBALES.dia_actual)
+
 
 	# Sin repetir dentro del mismo día: dos clientes distintos opinando con las
 	# mismas palabras exactas se nota mucho en el panel del PC.
-	var usuario: String = _elegir_sin_repetir(RESENA_USUARIOS, resenas, "usuario")
+	var usuario := str(resumen_atencion.get("cliente", "Cliente"))
 	var comentario: String = _elegir_sin_repetir(comentarios, resenas, "comentario")
 
 	resenas.append({
@@ -451,6 +452,14 @@ func _elegir_sin_repetir(opciones: Array, resenas: Array, campo: String) -> Stri
 ## reputación, ni el resumen de atención) y al terminar vuelve al menú.
 ## No se guarda: es transitorio, solo dura lo que dura la partida suelta.
 var easter_egg_activo: bool = false
+
+## True mientras se juega un minijuego de PRUEBA lanzado desde el taller (el easter
+## egg del PC/collision shape). Igual que easter_egg_activo NO toca dinero ni
+## reputación, pero al terminar vuelve al TALLER (no al menú), para no perder la
+## sesión. Las guardas están centralizadas en sumar_dinero(),
+## reportar_rendimiento_minijuego() y obtener_destino_post_escena(), así que TODOS
+## los minijuegos lo respetan sin tocar cada uno. Es transitorio y no se guarda.
+var modo_prueba: bool = false
 
 
 ## Reseñas publicadas en un día concreto (array de {usuario, comentario}).
@@ -546,6 +555,11 @@ func reportar_rendimiento_minijuego(
 	nombre_minijuego: String = "Minijuego",
 	detalle: String = ""
 ) -> int:
+	# En modo prueba (easter egg del taller) mostramos solo el marcador: no movemos
+	# reputación ni escribimos en la bitácora del día.
+	if modo_prueba:
+		reportar_marcador_suelto(rendimiento, recompensa, nivel_desempeno)
+		return 0
 	resumen_atencion["rendimiento"] = clampf(rendimiento, 0.0, 1.0)
 	resumen_atencion["recompensa_minijuego"] = recompensa
 	resumen_atencion["nivel_desempeno"] = clampi(
@@ -861,6 +875,13 @@ func limpiar_avisos_reputacion() -> void:
 ## Devuelve la escena que debe seguir a la actual. Los finales criticos tienen
 ## prioridad; la evaluacion semanal solo ocurre una vez terminado el dia 5.
 func obtener_destino_post_escena(destino_normal: String) -> String:
+	# Modo prueba (easter egg del taller): la partida no alteró el estado, así que
+	# volvemos directo al destino normal (el taller) sin evaluar finales ni guardar.
+	if modo_prueba:
+		modo_prueba = false
+		volviendo_de_atencion = false
+		return destino_normal
+
 	# Si la reputacion o el dinero alcanzaron un limite terminal durante una
 	# atencion, primero se completa el minijuego. Su resultado todavia puede
 	# compensar la perdida.

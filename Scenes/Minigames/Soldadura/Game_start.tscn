@@ -105,7 +105,7 @@ text = "[ Presiona la pantalla para empezar ]"
 
 [node name="MusicLoop" type="AudioStreamPlayer" parent="." unique_id=334908438]
 stream = ExtResource("3_5jfx2")
-volume_db = -20.0
+volume_db = -22.0
 autoplay = true
 bus = &"Music"
 

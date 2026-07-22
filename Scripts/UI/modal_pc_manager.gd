@@ -22,12 +22,16 @@ const SPLASHES: Dictionary = {
 		"texture": preload("res://Scenes/Minigames/TheFloorIsLava/Background/checkboard.png")
 	},
 	"circuito": {
-		"texture": preload("res://Assets/Sprites/clientes_atendidos/ventana_personajes.png")
+		"texture": preload("res://Assets/Sprites/MemorizeGame/fondo_memory.png")
 	}
 }
 
 const COL_VERDE := Color(0.247, 0.729, 0.314)
 const COL_ROJO := Color(0.9, 0.35, 0.3)
+
+# Valor sentinela de dia_consultado para el modo "Todos los días" (los días reales
+# son >= 1). En ese modo se muestran las estadísticas acumuladas y TODAS las reseñas.
+const DIA_TODOS := 0
 
 var texturas_estrellas := [
 	preload("res://Assets/Sprites/estrellas_reputacion/estrella_res_0.png"),
@@ -162,29 +166,31 @@ func _animar_apagado() -> Tween:
 func _actualizar_estadisticas() -> void:
 	var generales: Dictionary = DATOSGLOBALES.get_estadisticas_generales()
 	var max_dia: int = maxi(1, DATOSGLOBALES.dia_actual)
-	dia_consultado = clampi(dia_consultado, 1, max_dia)
+	var es_todos: bool = dia_consultado == DIA_TODOS
+	if not es_todos:
+		dia_consultado = clampi(dia_consultado, 1, max_dia)
 	_actualizar_selector_dias(max_dia)
 
-	var stats: Dictionary = DATOSGLOBALES.get_estadistica_dia(dia_consultado)
+	var stats: Dictionary = _stats_agregadas() if es_todos else DATOSGLOBALES.get_estadistica_dia(dia_consultado)
 	var reputacion: int = int(stats.get("reputacion", 50))
 	var correctos: int = int(stats.get("diagnosticos_correctos", 0))
 	var incorrectos: int = int(stats.get("diagnosticos_incorrectos", 0))
 	var balance: int = int(stats.get("balance", 0))
 	var eventos: Array = stats.get("eventos", [])
 
-	estado_label.text = _obtener_estado_dia(stats)
+	estado_label.text = "Historial completo | Todas las jornadas" if es_todos else _obtener_estado_dia(stats)
 	clientes_value.text = "%d atendidos" % int(stats.get("clientes_atendidos", 0))
 	diagnosticos_value.text = "%d bien / %d mal" % [correctos, incorrectos]
 	balance_value.text = DATOSGLOBALES.formatear_monto(balance)
 	balance_value.add_theme_color_override("font_color", COL_VERDE if balance >= 0 else COL_ROJO)
 	dinero_value.text = "$%d" % int(stats.get("dinero_final", DATOSGLOBALES.dinero))
 	reputacion_bar.value = reputacion
-	reputacion_label.text = "Reputacion del dia"
+	reputacion_label.text = "Reputacion actual" if es_todos else "Reputacion del dia"
 	reputacion_porcentaje_label.text = "%d/100" % reputacion
 	_actualizar_estrellas(reputacion)
 
 	detalle_dia_label.text = (
-		"Orden de trabajo del dia %d\n" % dia_consultado
+		("Resumen de todas las jornadas\n" if es_todos else "Orden de trabajo del dia %d\n" % dia_consultado)
 		+ "Ingresos: %s    Gastos/perdidas: %s\n" % [
 			DATOSGLOBALES.formatear_monto(int(stats.get("ingresos", 0))),
 			DATOSGLOBALES.formatear_monto(-int(stats.get("gastos", 0)))
@@ -193,7 +199,7 @@ func _actualizar_estadisticas() -> void:
 		% [int(stats.get("dinero_inicio", 0)), int(stats.get("dinero_final", DATOSGLOBALES.dinero))]
 	)
 
-	_actualizar_splash(_obtener_falla_destacada(eventos, dia_consultado))
+	_actualizar_splash(_obtener_falla_destacada(eventos, maxi(1, dia_consultado)))
 	_actualizar_eventos(eventos)
 
 	general_label.text = (
@@ -206,15 +212,18 @@ func _actualizar_estadisticas() -> void:
 		]
 	)
 
-	prev_button.disabled = dia_consultado <= 1
-	next_button.disabled = dia_consultado >= max_dia
+	prev_button.disabled = es_todos or dia_consultado <= 1
+	next_button.disabled = es_todos or dia_consultado >= max_dia
 
 	# Si el panel está abierto, se repinta para seguir al selector de día, y esas
 	# reseñas pasan a estar leídas: el jugador las está viendo ahora mismo.
-	var resenas: Array = DATOSGLOBALES.get_resenas_dia(dia_consultado)
+	var resenas: Array = _resenas_todas() if es_todos else DATOSGLOBALES.get_resenas_dia(dia_consultado)
 	if resenas_panel.visible:
 		resenas_panel.mostrar_resenas(resenas)
-		DATOSGLOBALES.marcar_resenas_leidas(dia_consultado)
+		if es_todos:
+			_marcar_todas_leidas()
+		else:
+			DATOSGLOBALES.marcar_resenas_leidas(dia_consultado)
 
 	_actualizar_boton_resenas(resenas.size())
 
@@ -338,7 +347,60 @@ func _actualizar_selector_dias(max_dia: int) -> void:
 		if dia == dia_consultado:
 			dia_selector.select(dia - 1)
 
+	# Opción para ver el acumulado y TODAS las reseñas juntas.
+	dia_selector.add_item("Todos los dias", DIA_TODOS)
+	if dia_consultado == DIA_TODOS:
+		dia_selector.select(dia_selector.get_item_count() - 1)
+
 	actualizando_selector = false
+
+
+## Suma las estadísticas de todos los días en un diccionario con la misma forma que
+## get_estadistica_dia(), para reutilizar todo el pintado de la terminal.
+func _stats_agregadas() -> Dictionary:
+	var max_dia: int = maxi(1, DATOSGLOBALES.dia_actual)
+	var eventos: Array = []
+	var agg := {
+		"clientes_atendidos": 0,
+		"diagnosticos_correctos": 0,
+		"diagnosticos_incorrectos": 0,
+		"ingresos": 0,
+		"gastos": 0,
+		"balance": 0,
+	}
+	for dia in range(1, max_dia + 1):
+		var s: Dictionary = DATOSGLOBALES.get_estadistica_dia(dia)
+		agg["clientes_atendidos"] += int(s.get("clientes_atendidos", 0))
+		agg["diagnosticos_correctos"] += int(s.get("diagnosticos_correctos", 0))
+		agg["diagnosticos_incorrectos"] += int(s.get("diagnosticos_incorrectos", 0))
+		agg["ingresos"] += int(s.get("ingresos", 0))
+		agg["gastos"] += int(s.get("gastos", 0))
+		agg["balance"] += int(s.get("balance", 0))
+		for ev in s.get("eventos", []):
+			eventos.append("D%d  %s" % [dia, str(ev)])
+	agg["eventos"] = eventos
+	agg["reputacion"] = int(DATOSGLOBALES.reputacion)
+	agg["dinero_final"] = int(DATOSGLOBALES.dinero)
+	agg["dinero_inicio"] = int(DATOSGLOBALES.get_estadistica_dia(1).get("dinero_inicio", 0))
+	return agg
+
+
+## Junta las reseñas de todos los días, con el día como prefijo del autor.
+func _resenas_todas() -> Array:
+	var todas: Array = []
+	var max_dia: int = maxi(1, DATOSGLOBALES.dia_actual)
+	for dia in range(1, max_dia + 1):
+		for r in DATOSGLOBALES.get_resenas_dia(dia):
+			var copia: Dictionary = (r as Dictionary).duplicate()
+			copia["usuario"] = "D%d · %s" % [dia, str(r.get("usuario", "Anonimo"))]
+			todas.append(copia)
+	return todas
+
+
+func _marcar_todas_leidas() -> void:
+	var max_dia: int = maxi(1, DATOSGLOBALES.dia_actual)
+	for dia in range(1, max_dia + 1):
+		DATOSGLOBALES.marcar_resenas_leidas(dia)
 
 
 func _on_prev_dia_pressed() -> void:
@@ -366,9 +428,13 @@ func _on_dia_selector_selected(index: int) -> void:
 func _on_resenas_pressed() -> void:
 	AUDIOMANAGER.play_ui_soft_click()
 
-	var resenas: Array = DATOSGLOBALES.get_resenas_dia(dia_consultado)
+	var es_todos: bool = dia_consultado == DIA_TODOS
+	var resenas: Array = _resenas_todas() if es_todos else DATOSGLOBALES.get_resenas_dia(dia_consultado)
 	resenas_panel.mostrar_resenas(resenas)
-	DATOSGLOBALES.marcar_resenas_leidas(dia_consultado)
+	if es_todos:
+		_marcar_todas_leidas()
+	else:
+		DATOSGLOBALES.marcar_resenas_leidas(dia_consultado)
 	_actualizar_boton_resenas(resenas.size())
 
 	resenas_panel.visible = true

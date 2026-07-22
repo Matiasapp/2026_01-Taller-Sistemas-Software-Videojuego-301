@@ -141,7 +141,7 @@ theme_override_font_sizes/normal_font_size = 16
 bbcode_enabled = true
 fit_content = true
 scroll_active = false
-autowrap_mode = 0
+autowrap_mode = 2
 
 [node name="AvisoAbrirTaller" type="Label" parent="." unique_id=470012050]
 anchors_preset = 8
