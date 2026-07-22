@@ -1,0 +1,64 @@
+[gd_scene format=3 uid="uid://bk38ipu4ymsoo"]
+
+[ext_resource type="Texture2D" uid="uid://c3dacvm42g81q" path="res://Scenes/Minigames/Soldadura/Imagenes/fondo minijuego.png" id="1_jybnu"]
+[ext_resource type="Script" uid="uid://cs6ra5g8h1xqp" path="res://Scenes/Minigames/Soldadura/Script/taller_soldadura.gd" id="1_xe4cr"]
+[ext_resource type="PackedScene" uid="uid://chyfxn8kct54" path="res://Scenes/Minigames/Soldadura/Scene/Soldadura.tscn" id="2_i3dfk"]
+[ext_resource type="PackedScene" uid="uid://d3vfdqw6s3e50" path="res://Scenes/Minigames/Soldadura/Scene/PiezaContainer.tscn" id="3_xe4cr"]
+[ext_resource type="AudioStream" uid="uid://c1svypuy6rqke" path="res://Assets/Audio/MinigameAudio/Soldadura/completesound.wav" id="5_t1okg"]
+
+[node name="Node2D" type="Node2D" unique_id=997942648]
+script = ExtResource("1_xe4cr")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1110295672]
+position = Vector2(600, 384)
+scale = Vector2(0.9980469, 0.9980469)
+texture = ExtResource("1_jybnu")
+
+[node name="PiezaContainer" parent="." unique_id=163485440 instance=ExtResource("3_xe4cr")]
+
+[node name="Soldadura" parent="." unique_id=1291004349 instance=ExtResource("2_i3dfk")]
+position = Vector2(104, -16)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1831167566]
+
+[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer" unique_id=1429324301]
+offset_left = 232.0
+offset_top = 520.0
+offset_right = 963.86816
+offset_bottom = 576.0
+theme_override_colors/font_color = Color(1, 0.9490196, 0.9490196, 1)
+theme_override_font_sizes/font_size = 25
+rounded = true
+
+[node name="LabelPiezas" type="Label" parent="CanvasLayer" unique_id=1699976849]
+offset_left = 14.0
+offset_top = 43.0
+offset_right = 176.0
+offset_bottom = 104.0
+theme_override_font_sizes/font_size = 34
+
+[node name="Timer" type="Timer" parent="CanvasLayer" unique_id=421501296]
+
+[node name="LabelTiempo" type="Label" parent="CanvasLayer" unique_id=732719842]
+offset_left = 16.0
+offset_top = 104.0
+offset_right = 174.0
+offset_bottom = 168.0
+theme_override_font_sizes/font_size = 34
+
+[node name="start_label" type="Label" parent="CanvasLayer" unique_id=1223224217]
+offset_left = 136.0
+offset_top = 208.0
+offset_right = 1056.0
+offset_bottom = 348.0
+pivot_offset = Vector2(32, 72)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 16
+theme_override_font_sizes/font_size = 102
+text = "3"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CompleteSound" type="AudioStreamPlayer" parent="." unique_id=1919188017]
+stream = ExtResource("5_t1okg")
+bus = &"SFX"

@@ -1,0 +1,173 @@
+[gd_scene format=3 uid="uid://cm6qptlpis012"]
+
+[ext_resource type="Script" uid="uid://dpfitycnkyiam" path="res://Scripts/memory_game.gd" id="1_game"]
+[ext_resource type="AudioStream" uid="uid://c2lxpg60tyflj" path="res://Assets/Audio/MinigameAudio/MemoryGame/memoryloop.ogg" id="3_ws1so"]
+[ext_resource type="AudioStream" uid="uid://bd70o16yeox1q" path="res://Assets/Audio/MinigameAudio/MemoryGame/cardflip.wav" id="4_63w7e"]
+[ext_resource type="AudioStream" uid="uid://dojpag0buidym" path="res://Assets/Audio/MinigameAudio/MemoryGame/matchsound.wav" id="5_eohb8"]
+[ext_resource type="PackedScene" uid="uid://c8n2rqp4dv6xk" path="res://Scenes/UI/ResumenAtencion.tscn" id="5_pheg3"]
+[ext_resource type="Texture2D" uid="uid://cxqi1lh5nip8y" path="res://Assets/UI/button_style.png" id="6_hudnp"]
+[ext_resource type="Theme" uid="uid://rx2leqe15rsm" path="res://Assets/Default.tres" id="7_theme"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ninehud"]
+atlas = ExtResource("6_hudnp")
+region = Rect2(1873, 492, 769, 568)
+
+[node name="MemoryGame" type="Node2D" unique_id=291353999]
+script = ExtResource("1_game")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1352626618]
+
+[node name="HUD" type="Control" parent="CanvasLayer" unique_id=243726531]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TimerLabel" type="Label" parent="CanvasLayer/HUD" unique_id=1639218916]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 10.0
+offset_right = 120.0
+offset_bottom = 38.0
+theme_override_colors/font_color = Color(0.882, 0.686, 0.18, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 20
+text = "01:00"
+
+[node name="MovesLabel" type="Label" parent="CanvasLayer/HUD" unique_id=1236203856]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 38.0
+offset_right = 160.0
+offset_bottom = 62.0
+theme_override_colors/font_color = Color(0.878, 0.878, 0.878, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 15
+text = "MOVS: 0"
+
+[node name="PairsLabel" type="Label" parent="CanvasLayer/HUD" unique_id=1116263682]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 60.0
+offset_right = 180.0
+offset_bottom = 84.0
+theme_override_colors/font_color = Color(0.247, 0.729, 0.314, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 15
+text = "PARES: 0/10"
+
+[node name="PantallaIntro" type="ColorRect" parent="CanvasLayer" unique_id=1644727116]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.16, 0.09, 0.04, 0.8)
+
+[node name="Panel" type="NinePatchRect" parent="CanvasLayer/PantallaIntro" unique_id=1761068915]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -398.0
+offset_top = -262.0
+offset_right = 400.0
+offset_bottom = 260.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_ninehud")
+region_rect = Rect2(0, 0, 769, 568)
+patch_margin_left = 110
+patch_margin_top = 100
+patch_margin_right = 110
+patch_margin_bottom = 110
+
+[node name="VBox" type="VBoxContainer" parent="CanvasLayer/PantallaIntro/Panel" unique_id=389768804]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 130.0
+offset_top = 110.0
+offset_right = -130.0
+offset_bottom = -110.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Icono" type="Label" parent="CanvasLayer/PantallaIntro/Panel/VBox" unique_id=949629243]
+layout_mode = 2
+theme_override_font_sizes/font_size = 42
+text = "🔧"
+horizontal_alignment = 1
+
+[node name="Titulo" type="Label" parent="CanvasLayer/PantallaIntro/Panel/VBox" unique_id=1557629270]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.882, 0.686, 0.18, 1)
+theme_override_font_sizes/font_size = 24
+text = "MINIJUEGO: MEMORIA DEL TALLER"
+horizontal_alignment = 1
+
+[node name="Separador" type="HSeparator" parent="CanvasLayer/PantallaIntro/Panel/VBox" unique_id=955920480]
+layout_mode = 2
+
+[node name="LblInstrucciones" type="Label" parent="CanvasLayer/PantallaIntro/Panel/VBox" unique_id=1574742488]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
+theme_override_font_sizes/font_size = 14
+text = "Encuentra los 10 pares de cartas del taller antes de que se acabe el tiempo.
+
+• Haz clic en una carta para voltearla.
+• Si dos cartas coinciden, se quedan visibles.
+• Si no coinciden, se voltean de nuevo.
+• Tienes 60 segundos para encontrar todos los pares."
+autowrap_mode = 3
+
+[node name="Separador2" type="HSeparator" parent="CanvasLayer/PantallaIntro/Panel/VBox" unique_id=1257423529]
+layout_mode = 2
+
+[node name="LblRecompensa" type="Label" parent="CanvasLayer/PantallaIntro/Panel/VBox" unique_id=2018576539]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.55, 0.85, 0.55, 1)
+theme_override_font_sizes/font_size = 13
+text = "✓ Si ganas, recibiras una recompensa."
+autowrap_mode = 3
+
+[node name="LblPenitencia" type="Label" parent="CanvasLayer/PantallaIntro/Panel/VBox" unique_id=730143631]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.4, 0.4, 1)
+theme_override_font_sizes/font_size = 13
+text = "✗ Si pierdes: Penitencia de $30"
+autowrap_mode = 3
+
+[node name="Espaciado" type="Control" parent="CanvasLayer/PantallaIntro/Panel/VBox" unique_id=1541000009]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+
+[node name="BtnIniciar" type="Button" parent="CanvasLayer/PantallaIntro/Panel/VBox" unique_id=2065656393]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme = ExtResource("7_theme")
+theme_override_font_sizes/font_size = 16
+text = "▶  INICIAR MINIJUEGO"
+
+[node name="ResumenAtencion" parent="." unique_id=686501913 instance=ExtResource("5_pheg3")]
+
+[node name="MusicLoop" type="AudioStreamPlayer" parent="." unique_id=195818257]
+stream = ExtResource("3_ws1so")
+volume_db = -20.0
+bus = &"Music"
+
+[node name="CardFlipSound" type="AudioStreamPlayer" parent="." unique_id=484024872]
+stream = ExtResource("4_63w7e")
+bus = &"SFX"
+
+[node name="MatchSound" type="AudioStreamPlayer" parent="." unique_id=1567476839]
+stream = ExtResource("5_eohb8")
+volume_db = -7.0
+bus = &"SFX"

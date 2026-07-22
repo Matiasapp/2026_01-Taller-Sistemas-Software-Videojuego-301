@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://cu0ssuik4848n"]
+
+[ext_resource type="Texture2D" uid="uid://bdixjhy47kutr" path="res://Assets/Sprites/crossy_road/assets.png" id="1_pimfm"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cecsq"]
+atlas = ExtResource("1_pimfm")
+region = Rect2(97, 426, 127, 100)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ciqdn"]
+size = Vector2(128, 64)
+
+[node name="CartelTallerEnCrisis" type="Node2D" unique_id=1536797467]
+y_sort_enabled = true
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2132881368]
+y_sort_enabled = true
+position = Vector2(0, 34)
+texture = SubResource("AtlasTexture_cecsq")
+offset = Vector2(0, -50)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1235770199]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1296148451]
+shape = SubResource("RectangleShape2D_ciqdn")

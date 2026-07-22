@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://cu1rfmnj5qmg3"
+path="res://.godot/imported/estafaloop.ogg-5c98f50be9102edb2107fbabdb1ce30c.oggvorbisstr"
+
+[deps]
+
+source_file="res://Assets/Events/Evento Estafa/estafaloop.ogg"
+dest_files=["res://.godot/imported/estafaloop.ogg-5c98f50be9102edb2107fbabdb1ce30c.oggvorbisstr"]
+
+[params]
+
+loop=true
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

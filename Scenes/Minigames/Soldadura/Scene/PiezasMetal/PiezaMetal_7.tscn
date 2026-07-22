@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://ditayy5yflshq"]
+
+[ext_resource type="Script" uid="uid://c5xjurjb5lus3" path="res://Scenes/Minigames/Soldadura/Script/pieza.gd" id="1_tqmba"]
+[ext_resource type="Texture2D" uid="uid://bl5erv74wpimx" path="res://Scenes/Minigames/Soldadura/Imagenes/pieza_8.png" id="2_tqmba"]
+[ext_resource type="PackedScene" uid="uid://bglbyvw8gl8hc" path="res://Scenes/Minigames/Soldadura/Scene/Marca_soldadura.tscn" id="3_tw2v4"]
+
+[node name="PiezaMetal" type="Node2D" unique_id=409267960]
+script = ExtResource("1_tqmba")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1048477109]
+visibility_layer = 2
+position = Vector2(531, 276)
+scale = Vector2(0.44970703, 0.31396487)
+texture = ExtResource("2_tqmba")
+
+[node name="Trayectoria" type="Line2D" parent="." unique_id=1626430727]
+visible = false
+position = Vector2(-20, -160)
+points = PackedVector2Array(605, 377, 587, 393, 576, 402, 562, 413, 544, 417, 519, 420, 527, 436, 540, 447, 556, 454, 564, 470, 577, 481, 588, 493, 601, 506)
+
+[node name="Marca_soldadura" parent="." unique_id=2143935098 instance=ExtResource("3_tw2v4")]

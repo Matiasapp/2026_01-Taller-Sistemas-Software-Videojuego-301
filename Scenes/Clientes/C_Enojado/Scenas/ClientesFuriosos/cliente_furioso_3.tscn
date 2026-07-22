@@ -1,0 +1,58 @@
+[gd_scene format=3 uid="uid://bfbtjt1qr1gqv"]
+
+[ext_resource type="Script" uid="uid://bhh5xusnrc5y1" path="res://Scenes/Clientes/C_Enojado/Scripts/clientefurioso.gd" id="1_ghxcw"]
+[ext_resource type="Texture2D" uid="uid://bnc6wdttxs34d" path="res://Scenes/Clientes/C_Enojado/Imagenes/MujerFuriosa.png" id="2_5wqes"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y5q0i"]
+atlas = ExtResource("2_5wqes")
+region = Rect2(0, 0, 510, 496)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_btuxo"]
+atlas = ExtResource("2_5wqes")
+region = Rect2(510, 0, 510, 496)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2eufn"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y5q0i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_btuxo")
+}],
+"loop": true,
+"name": &"ClienteMov",
+"speed": 1.0
+}]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l44mk"]
+bg_color = Color(0.5209324, 0.5408282, 1, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[node name="ClienteFurioso_1" type="Node2D" unique_id=1156141758]
+script = ExtResource("1_ghxcw")
+
+[node name="SpriteCliente" type="AnimatedSprite2D" parent="." unique_id=1242923094]
+position = Vector2(881, 398)
+scale = Vector2(1.0783132, 1.0195313)
+sprite_frames = SubResource("SpriteFrames_2eufn")
+animation = &"ClienteMov"
+frame_progress = 0.481842
+
+[node name="TextEdit" type="Label" parent="." unique_id=981756229]
+offset_left = 52.0
+offset_top = 177.0
+offset_right = 621.0
+offset_bottom = 352.0
+theme_override_colors/font_color = Color(0.9354673, 0.08574965, 0.089784585, 1)
+theme_override_font_sizes/font_size = 17
+theme_override_styles/normal = SubResource("StyleBoxFlat_l44mk")
+text = " Miren, yo vine porque el auto hacía un ruido en la rueda,
+ y ahora me dicen que es la transmisión, que hay que
+ cambiar no sé cuántas cosas más. ¿Cómo esperan que
+ yo entienda todo eso? Lo único que quiero es que me
+ expliquen claramente qué tiene y que lo arreglen de una
+ vez, porque cada explicación me deja con más dudas que certezas."

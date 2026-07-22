@@ -1,0 +1,144 @@
+name: Despliegue CI/CD de Videojuego (Godot a GCP)
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - QA
+
+permissions:
+  contents: "read"
+  id-token: "write"
+
+env:
+  GODOT_VERSION: "4.6.2"
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Obtener el código
+        uses: actions/checkout@v4
+
+      # Cacheamos el binario (~100 MB) y las plantillas (~500 MB) para no
+      # re-descargarlos en cada corrida. La clave depende de la versión de Godot.
+      - name: Cachear Godot y plantillas de exportación
+        id: cache-godot
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/godot-bin
+            ~/.local/share/godot/export_templates
+          key: godot-${{ env.GODOT_VERSION }}-linux
+
+      - name: Configurar Godot Headless
+        run: |
+          set -uo pipefail
+          BIN="$HOME/godot-bin/godot"
+          TEMPLATES_DIR="$HOME/.local/share/godot/export_templates/${GODOT_VERSION}.stable"
+
+          if [ ! -f "$BIN" ]; then
+            echo "Descargando Godot Engine v${GODOT_VERSION}..."
+            mkdir -p "$HOME/godot-bin"
+            wget -q "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
+            unzip -q "Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
+            mv "Godot_v${GODOT_VERSION}-stable_linux.x86_64" "$BIN"
+            chmod +x "$BIN"
+          fi
+          # Lo dejamos accesible como 'godot' en el PATH.
+          sudo ln -sf "$BIN" /usr/local/bin/godot
+
+          if [ ! -d "$TEMPLATES_DIR" ]; then
+            echo "Descargando plantillas de exportación..."
+            wget -q "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_export_templates.tpz"
+            unzip -q "Godot_v${GODOT_VERSION}-stable_export_templates.tpz"
+            mkdir -p "$TEMPLATES_DIR"
+            mv templates/* "$TEMPLATES_DIR/"
+          fi
+
+          godot --version
+
+      - name: Exportar juego para HTML5
+        run: |
+          set -uo pipefail
+          mkdir -p dist
+
+          # Importamos assets primero (genera los .import). Toleramos código != 0
+          # porque el proyecto emite advertencias de autoload en headless que no
+          # impiden el export; el guard de más abajo es el que decide si sirvió.
+          echo "Importando assets del proyecto..."
+          godot --headless --import || true
+
+          echo "Exportando versión Web..."
+          godot --headless --export-release "Web" dist/index.html || true
+
+          echo "Archivos generados:"
+          ls -la dist
+
+          # GUARD CRÍTICO: si el export no dejó los binarios clave, abortamos ANTES
+          # de tocar el bucket. Sin esto, un export a medias + rsync --delete
+          # borraría el sitio en producción.
+          test -s dist/index.wasm || { echo "ERROR: falta o está vacío dist/index.wasm"; exit 1; }
+          test -s dist/index.pck  || { echo "ERROR: falta o está vacío dist/index.pck";  exit 1; }
+
+      - name: Autenticar en Google Cloud vía WIF
+        id: auth
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: "projects/706450394717/locations/global/workloadIdentityPools/github-actions-pool/providers/github-provider"
+          service_account: "github-actions-deploy@project-b6032d06-ae91-486b-836.iam.gserviceaccount.com"
+
+      - name: Configurar Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v3
+
+      - name: Desplegar al Bucket
+        run: |
+          set -uo pipefail
+          BRANCH_NAME=$(echo "${{ github.ref_name }}" | tr '[:upper:]' '[:lower:]')
+
+          if [ "$BRANCH_NAME" == "main" ]; then
+            DEST_FINAL="gs://infb6070-301-taller-en-crisis-2026-1"
+          elif [ "$BRANCH_NAME" == "qa" ]; then
+            DEST_FINAL="gs://infb6070-301-taller-en-crisis-2026-1-qa"
+          elif [ "$BRANCH_NAME" == "develop" ] || [ "$BRANCH_NAME" == "dev" ]; then
+            DEST_FINAL="gs://infb6070-301-taller-en-crisis-2026-1-dev"
+          else
+            echo "Error: Rama no soportada para despliegue automático (${BRANCH_NAME})"
+            exit 1
+          fi
+
+          echo "Sincronizando en el bucket: $DEST_FINAL"
+
+          # OJO: 'gcloud storage rsync' NO soporta --gzip-local (solo 'cp' lo hace).
+          # Por eso el despliegue va en dos pasos:
+
+          # 1) Sincroniza los NO compresibles (imágenes, audio) y borra lo que sobra.
+          #    Excluimos los compresibles para no subir el .pck grande dos veces ni
+          #    pisar su versión gzip.
+          gcloud storage rsync ./dist "$DEST_FINAL" \
+            --recursive \
+            --delete-unmatched-destination-objects \
+            --exclude='.*\.(wasm|pck|js|html|json|svg)$'
+
+          # 2) Sube los COMPRESIBLES con Content-Encoding: gzip (--gzip-local-all,
+          #    soportado por 'cp'). Es la única forma en que GCS sirve comprimido
+          #    (transcoding descompresivo). Brotli no es compatible con GCS.
+          find dist -type f \( -name '*.wasm' -o -name '*.pck' -o -name '*.js' \
+              -o -name '*.html' -o -name '*.json' -o -name '*.svg' \) -print0 \
+            | while IFS= read -r -d '' f; do
+                rel="${f#dist/}"
+                echo "  gzip -> $rel"
+                gcloud storage cp --gzip-local-all "$f" "$DEST_FINAL/$rel"
+              done
+
+          # 3) Content-Type del .wasm (compilación streaming del navegador).
+          #    Preserva el Content-Encoding: gzip que puso el paso 2.
+          gcloud storage objects update "$DEST_FINAL/index.wasm" \
+            --content-type=application/wasm
+
+          # 4) index.html sin caché: así un deploy nuevo se ve al instante y no
+          #    queda una versión vieja pegada en el CDN/navegador.
+          gcloud storage objects update "$DEST_FINAL/index.html" \
+            --cache-control="no-cache, max-age=0"

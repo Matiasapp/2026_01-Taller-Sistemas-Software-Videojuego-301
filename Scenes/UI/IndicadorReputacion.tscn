@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://bb4m8n2s6x0ve"]
+
+[ext_resource type="Script" uid="uid://d3p7u6h5m2k9q" path="res://Scripts/UI/indicador_reputacion.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://Assets/Sprites/estrellas_reputacion/estrellas_contorno_blanco/estrella_0.png" id="2_star0"]
+
+[node name="IndicadorReputacion" type="HBoxContainer"]
+offset_right = 223.0
+offset_bottom = 32.0
+mouse_filter = 2
+theme_override_constants/separation = 6
+alignment = 1
+script = ExtResource("1_script")
+
+[node name="Estrella1" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(27, 26)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("2_star0")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Estrella2" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(27, 26)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("2_star0")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Estrella3" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(27, 26)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("2_star0")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Estrella4" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(27, 26)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("2_star0")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Estrella5" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(27, 26)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("2_star0")
+expand_mode = 1
+stretch_mode = 5

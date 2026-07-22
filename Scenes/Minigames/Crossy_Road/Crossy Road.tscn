@@ -1,0 +1,318 @@
+[gd_scene format=3 uid="uid://bsrmonvnku0av"]
+
+[ext_resource type="Script" uid="uid://dhlun5yln7nvx" path="res://Scripts/CrossyRoad/world_generator.gd" id="1_d0mq6"]
+[ext_resource type="Texture2D" uid="uid://bdixjhy47kutr" path="res://Assets/Sprites/crossy_road/assets.png" id="1_hw670"]
+[ext_resource type="PackedScene" uid="uid://ct3356eys7jbo" path="res://Scenes/Gameplay/Player.tscn" id="2_3x3vj"]
+[ext_resource type="PackedScene" uid="uid://dtc8u5lkkxjhs" path="res://Scenes/Minigames/Crossy_Road/calle.tscn" id="2_cfljh"]
+[ext_resource type="Script" uid="uid://0nxmsg1crbbv" path="res://Scripts/CrossyRoad/movement_crossy_road.gd" id="3_3x3vj"]
+[ext_resource type="PackedScene" uid="uid://43eaehpmc00w" path="res://Scenes/Minigames/Crossy_Road/FranjaPasto.tscn" id="3_ijbgn"]
+[ext_resource type="PackedScene" uid="uid://vuy4bk71txai" path="res://Scenes/Minigames/Crossy_Road/FranjaMeta.tscn" id="3_meta1"]
+[ext_resource type="PackedScene" uid="uid://0l8f5dotsieg" path="res://Scenes/Minigames/Crossy_Road/arbol.tscn" id="7_ijbgn"]
+[ext_resource type="PackedScene" uid="uid://cu0ssuik4848n" path="res://Scenes/Minigames/Crossy_Road/CartelTallerEnCrisis.tscn" id="8_mfv65"]
+[ext_resource type="AudioStream" uid="uid://cv2aaoesql834" path="res://Assets/Audio/MinigameAudio/Crossy Road/hop.wav" id="9_fpi7r"]
+[ext_resource type="AudioStream" uid="uid://b8u6eyn1c1mgo" path="res://Assets/Audio/MinigameAudio/Crossy Road/atropello.wav" id="10_k3elq"]
+[ext_resource type="AudioStream" uid="uid://ckssv244g63lg" path="res://Assets/Audio/MinigameAudio/Crossy Road/dead.wav" id="10_nh0ng"]
+[ext_resource type="AudioStream" uid="uid://b0jv72gjvmr2c" path="res://Assets/Audio/MinigameAudio/Crossy Road/ciudadambient.ogg" id="12_k3elq"]
+[ext_resource type="PackedScene" uid="uid://c8n2rqp4dv6xk" path="res://Scenes/UI/ResumenAtencion.tscn" id="14_dug1p"]
+[ext_resource type="AudioStream" uid="uid://doowsmrd45t0u" path="res://Assets/Audio/MinigameAudio/Crossy Road/crossyroadloop.ogg" id="15_g6t81"]
+[ext_resource type="Texture2D" uid="uid://cxqi1lh5nip8y" path="res://Assets/UI/button_style.png" id="16_hudnp"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d0mq6"]
+atlas = ExtResource("1_hw670")
+region = Rect2(0, 1235, 1080, 265)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ijbgn"]
+radius = 6.666667
+
+[sub_resource type="Environment" id="Environment_ijbgn"]
+background_mode = 3
+adjustment_enabled = true
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ijbgn"]
+size = Vector2(1152, 242)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ninehud"]
+atlas = ExtResource("16_hudnp")
+region = Rect2(1873, 492, 769, 568)
+
+[node name="CrossyRoad" type="Node2D" unique_id=579727455 node_paths=PackedStringArray("jugador")]
+z_as_relative = false
+y_sort_enabled = true
+script = ExtResource("1_d0mq6")
+franjas_posibles = Array[PackedScene]([ExtResource("2_cfljh"), ExtResource("3_ijbgn")])
+jugador = NodePath("Player")
+franja_meta_escena = ExtResource("3_meta1")
+
+[node name="objetos inicio" type="Node2D" parent="." unique_id=65350012]
+y_sort_enabled = true
+position = Vector2(-6, 240)
+
+[node name="Arbol" parent="objetos inicio" unique_id=1385009933 instance=ExtResource("7_ijbgn")]
+position = Vector2(-122, -48)
+
+[node name="Arbol2" parent="objetos inicio" unique_id=424490467 instance=ExtResource("7_ijbgn")]
+position = Vector2(-186, -112)
+
+[node name="Arbol3" parent="objetos inicio" unique_id=227244910 instance=ExtResource("7_ijbgn")]
+position = Vector2(-250, -176)
+
+[node name="Arbol4" parent="objetos inicio" unique_id=1045776025 instance=ExtResource("7_ijbgn")]
+position = Vector2(134, -48)
+
+[node name="Arbol5" parent="objetos inicio" unique_id=613026789 instance=ExtResource("7_ijbgn")]
+position = Vector2(198, -112)
+
+[node name="Arbol6" parent="objetos inicio" unique_id=123290717 instance=ExtResource("7_ijbgn")]
+position = Vector2(262, -176)
+
+[node name="CartelTallerEnCrisis" parent="objetos inicio" unique_id=1536797467 groups=["objetos_crossy_road"] instance=ExtResource("8_mfv65")]
+z_index = 2
+z_as_relative = false
+position = Vector2(-410, -112)
+
+[node name="ArbolesInicioLimitederecho" type="Node2D" parent="objetos inicio" unique_id=78506721]
+
+[node name="Arbol" parent="objetos inicio/ArbolesInicioLimitederecho" unique_id=776265993 instance=ExtResource("7_ijbgn")]
+position = Vector2(590, 16)
+
+[node name="Arbol2" parent="objetos inicio/ArbolesInicioLimitederecho" unique_id=1618055430 instance=ExtResource("7_ijbgn")]
+position = Vector2(590, -48)
+
+[node name="Arbol3" parent="objetos inicio/ArbolesInicioLimitederecho" unique_id=1512695996 instance=ExtResource("7_ijbgn")]
+position = Vector2(590, -104)
+
+[node name="Arbol4" parent="objetos inicio/ArbolesInicioLimitederecho" unique_id=1364506899 instance=ExtResource("7_ijbgn")]
+position = Vector2(590, -176)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=443189297]
+z_index = -1
+position = Vector2(0, 32)
+scale = Vector2(1.0064815, 1.0018868)
+texture = SubResource("AtlasTexture_d0mq6")
+offset = Vector2(0, 121.77024)
+
+[node name="Player" parent="." unique_id=332878050 node_paths=PackedStringArray("label_parpadeo") groups=["jugador"] instance=ExtResource("2_3x3vj")]
+physics_interpolation_mode = 1
+z_index = 2
+z_as_relative = false
+y_sort_enabled = true
+position = Vector2(-6.0000005, 240)
+scale = Vector2(3, 3)
+script = ExtResource("3_3x3vj")
+"tamaño_casilla" = 64
+velocidad_movimiento = 0.15
+limite_retroceso = 3
+bonus_meta = 200
+penalizacion_fracaso = 100
+tiempo_limite = 45.0
+label_parpadeo = NodePath("../Hud/Tutorial/PanelTutorial/Comenzar")
+
+[node name="Camera2D" type="Camera2D" parent="Player" unique_id=440032078]
+position = Vector2(0, -0.5)
+scale = Vector2(0.33333334, 0.33333334)
+offset = Vector2(0, -25)
+zoom = Vector2(1.2, 1.2)
+limit_left = -544
+limit_right = 544
+limit_bottom = 288
+
+[node name="Area2D" type="Area2D" parent="Player" unique_id=2107450111]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player/Area2D" unique_id=771872164]
+position = Vector2(2.0000002, 5.3333335)
+shape = SubResource("CircleShape2D_ijbgn")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Player" unique_id=827792979]
+environment = SubResource("Environment_ijbgn")
+
+[node name="RayCast2D" type="RayCast2D" parent="Player" unique_id=1571651749]
+position = Vector2(2.0000002, 5)
+enabled = false
+target_position = Vector2(-1.5894572e-07, 21.666672)
+collision_mask = 2
+
+[node name="SaltoAudio" type="AudioStreamPlayer" parent="Player" unique_id=1969883524]
+process_mode = 3
+stream = ExtResource("9_fpi7r")
+volume_db = -5.0
+bus = &"SFX"
+
+[node name="MuerteAudio" type="AudioStreamPlayer" parent="Player" unique_id=1040600682]
+process_mode = 3
+stream = ExtResource("10_nh0ng")
+bus = &"SFX"
+
+[node name="AtropelloAudio" type="AudioStreamPlayer" parent="Player" unique_id=1980688837]
+process_mode = 3
+stream = ExtResource("10_k3elq")
+bus = &"SFX"
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=2025136447]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1396928967]
+position = Vector2(0, 408)
+shape = SubResource("RectangleShape2D_ijbgn")
+
+[node name="ArbolesInicioLimiteIzquierdo" type="Node2D" parent="." unique_id=1828587698]
+position = Vector2(-1176, 240)
+
+[node name="Arbol" parent="ArbolesInicioLimiteIzquierdo" unique_id=1272766822 instance=ExtResource("7_ijbgn")]
+position = Vector2(590, 16)
+
+[node name="Arbol2" parent="ArbolesInicioLimiteIzquierdo" unique_id=605529895 instance=ExtResource("7_ijbgn")]
+position = Vector2(590, -48)
+
+[node name="Arbol3" parent="ArbolesInicioLimiteIzquierdo" unique_id=852214397 instance=ExtResource("7_ijbgn")]
+position = Vector2(590, -104)
+
+[node name="Arbol4" parent="ArbolesInicioLimiteIzquierdo" unique_id=1885989848 instance=ExtResource("7_ijbgn")]
+position = Vector2(590, -176)
+
+[node name="Hud" type="CanvasLayer" parent="." unique_id=581804483]
+
+[node name="ResumenAtencion" parent="Hud" unique_id=686501913 instance=ExtResource("14_dug1p")]
+
+[node name="Puntaje" type="Label" parent="Hud" unique_id=448035701]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -67.0
+offset_top = 80.0
+offset_right = 75.0
+offset_bottom = 154.0
+grow_horizontal = 2
+size_flags_horizontal = 0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 4
+theme_override_constants/outline_size = 4
+theme_override_constants/shadow_outline_size = 8
+theme_override_font_sizes/font_size = 54
+text = "0 / 80"
+
+[node name="TiempoRestante" type="Label" parent="Hud" unique_id=130651084]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -37.0
+offset_right = 557.0
+offset_bottom = 37.0
+grow_vertical = 2
+size_flags_horizontal = 0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 4
+theme_override_constants/outline_size = 4
+theme_override_constants/shadow_outline_size = 8
+theme_override_font_sizes/font_size = 24
+text = "Tiempo Restante: 45s"
+
+[node name="Tutorial" type="ColorRect" parent="Hud" unique_id=1459824079]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -608.0
+offset_top = -364.0
+offset_right = 608.0
+offset_bottom = 364.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.16, 0.09, 0.04, 0.8)
+
+[node name="PanelTutorial" type="NinePatchRect" parent="Hud/Tutorial" unique_id=186368530]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -428.0
+offset_top = -264.0
+offset_right = 428.0
+offset_bottom = 264.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_ninehud")
+region_rect = Rect2(0, 0, 769, 568)
+patch_margin_left = 110
+patch_margin_top = 100
+patch_margin_right = 110
+patch_margin_bottom = 110
+
+[node name="Titulo" type="Label" parent="Hud/Tutorial/PanelTutorial" unique_id=1427338398]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -256.0
+offset_top = 64.0
+offset_right = 255.5
+offset_bottom = 184.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 5
+theme_override_constants/shadow_outline_size = 3
+theme_override_font_sizes/font_size = 28
+text = "¡LLEGA A LA TIENDA DE RESPUESTOS ANTES DE QUE CIERRE!"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Instrucciones" type="Label" parent="Hud/Tutorial/PanelTutorial" unique_id=1840237153]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -182.0
+offset_top = 40.0
+offset_right = 196.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Usa las teclas de movimiento (WASD) para saltar."
+
+[node name="Reglas" type="Label" parent="Hud/Tutorial/PanelTutorial" unique_id=360552024]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -264.0
+offset_top = -76.5
+offset_right = 281.0
+offset_bottom = -21.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "La tienda cerrará en 45 segundos. ¡Esquiva el tráfico y recorre las 80 casillas para llegar antes de que cierre, necesitas el respuesto para hacer la reparación!"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Comenzar" type="Label" parent="Hud/Tutorial/PanelTutorial" unique_id=1795225587]
+layout_mode = 0
+offset_left = 223.0
+offset_top = 391.0
+offset_right = 660.0
+offset_bottom = 414.0
+theme_override_colors/font_color = Color(1, 0.8862745, 0, 1)
+text = "[ Presiona cualquier tecla de movimiento para empezar ]"
+
+[node name="AmbienteMapa" type="AudioStreamPlayer" parent="." unique_id=873459744]
+stream = ExtResource("12_k3elq")
+volume_db = -8.0
+bus = &"SFX"
+
+[node name="MusicLoop" type="AudioStreamPlayer" parent="." unique_id=1083092141]
+stream = ExtResource("15_g6t81")
+volume_db = -23.0
+bus = &"Music"
+
+[connection signal="area_entered" from="Player/Area2D" to="Player" method="_on_area_2d_area_entered"]

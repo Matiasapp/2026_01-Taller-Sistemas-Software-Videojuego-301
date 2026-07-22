@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://c5lp1p4vmlx3t"]
+
+[ext_resource type="Texture2D" uid="uid://bixl6jsborakg" path="res://Assets/Sprites/snake_sprites/gasoline.png" id="1_5046n"]
+[ext_resource type="Script" uid="uid://cyiw0snaf1ea8" path="res://Scenes/Minigames/TheFloorIsLava/Gasoline/sprite_2d.gd" id="2_4snog"]
+
+[node name="gasolina_scene" type="Node2D" unique_id=1581373728]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1090778298]
+position = Vector2(0, 9)
+scale = Vector2(0.075, 0.075)
+texture = ExtResource("1_5046n")
+script = ExtResource("2_4snog")
